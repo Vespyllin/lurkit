@@ -1,0 +1,42 @@
+type SubredditFeedData = {
+	after?: string;
+	dist: number;
+	posts: Listing[];
+};
+
+type Listing = {
+	author: string;
+	num_comments: number;
+	created_utc: number;
+	title: string;
+	subreddit: SubredditDetails;
+	selftext: string;
+	permalink: string;
+	url: string;
+	thumbnail: string;
+
+	post_hint: string;
+	is_video: boolean;
+	is_gallery: boolean;
+
+	media_metadata: any;
+	gallery_data?: { items: { media_id: string }[] };
+
+	name: string;
+	upvote_ratio: number;
+	secure_media?: null;
+	score: number;
+
+	edited: boolean;
+	is_self: boolean;
+
+	secure_media_embed: {};
+};
+
+type SubredditDetails = {
+	community_icon: string;
+	description: string;
+	display_name: string;
+	over_18: boolean;
+	icon_img?: string;
+};
