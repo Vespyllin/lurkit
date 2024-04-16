@@ -1,29 +1,29 @@
 import { PUBLIC_MOCK } from '$env/static/public';
+import type { ResultWrapper } from '$lib/types/custom';
 import feed from '../../../../static/feed.json';
 
 export const subredditClient = () => {
-	const fetchData = async (subreddit?: string, count?: number, after?: string) => {
+	const fetchData = async (
+		subreddit?: string,
+		count?: number,
+		after?: string
+	): Promise<ResultWrapper<FeedData>> => {
 		const baseURL = 'https://www.reddit.com';
 		const queryParams = '?limit=100&sr_detail=1';
 		const formattedSubreddit = subreddit ? `r/${subreddit}` : '';
 
 		if (PUBLIC_MOCK == 'true') {
 			console.log('Mock request for feed.json');
-			return { data: reduce(feed as any) };
+			return { status: 'OK', data: reduce(feed as any) };
 		}
 
 		const url = `${baseURL}/${formattedSubreddit}.json${queryParams}`;
 
 		const fetchRes = await fetch(url);
-		if (fetchRes.status == 403) {
+		if (fetchRes.status != 200) {
 			return {
-				data: [],
-				reason: 'Status 403: Access Denied.\nYou were most likely rate limited, try again later.'
-			};
-		} else if (fetchRes.status != 200) {
-			return {
-				data: [],
-				reason: `Not OK, status ${fetchRes.status}`
+				status: 'FAIL',
+				reason: `Status ${fetchRes.status}: ${fetchRes.statusText}`
 			};
 		}
 
@@ -31,11 +31,11 @@ export const subredditClient = () => {
 
 		const subredditFeedData = reduce(fetchData);
 
-		return { data: subredditFeedData };
+		return { status: 'OK', data: subredditFeedData };
 	};
 
 	const reduce = (feed: RedditListing) => {
-		const subredditFeedData: SubredditFeedData = {
+		const subredditFeedData: FeedData = {
 			dist: feed.data.dist,
 			after: feed.data.after,
 			posts: feed.data.children.map((child) => {

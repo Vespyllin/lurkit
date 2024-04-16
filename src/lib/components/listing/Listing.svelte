@@ -4,13 +4,16 @@
 	import ListingHeader from './ListingHeader.svelte';
 
 	let { post }: { post: Listing } = $props();
+	const community_icon_src = post?.subreddit?.community_icon;
+	const icon_url =
+		community_icon_src?.substring(0, community_icon_src.indexOf('?')) ?? post.subreddit.icon_img;
 </script>
 
 <div class="flex flex-col gap-1">
 	<ListingHeader
 		author={post.author}
 		created_utc={post.created_utc}
-		subreddit_icon={post.subreddit.icon_img}
+		subreddit_icon={icon_url}
 		subreddit_name={post.subreddit.display_name}
 	/>
 	<ListingBody {post} />

@@ -1,29 +1,25 @@
 import { PUBLIC_MOCK } from '$env/static/public';
+import type { ResultWrapper } from '$lib/types/custom';
 import post from '../../../../static/post.json';
 
 export const postClient = () => {
-	const fetchData = async (comment_uri: string) => {
+	const fetchData = async (comment_uri: string): Promise<ResultWrapper<PostData>> => {
 		const baseURL = 'https://www.reddit.com';
 		const queryParams = '?sr_detail=1';
 
 		if (PUBLIC_MOCK == 'true') {
 			console.log('Mock request for post.json');
-			return reduce(post);
+			return { status: 'OK', data: reduce(post) };
 		}
 
 		const url = `${baseURL}${comment_uri}.json${queryParams}`;
 		console.log(`Making request to ${url}`);
 
 		const fetchRes = await fetch(url);
-		if (fetchRes.status == 403) {
+		if (fetchRes.status != 200) {
 			return {
-				data: [],
-				reason: 'Status 403: Access Denied.\nYou were most likely rate limited, try again later.'
-			};
-		} else if (fetchRes.status != 200) {
-			return {
-				data: [],
-				reason: `Not OK, status ${fetchRes.status}`
+				status: 'FAIL',
+				reason: `Status ${fetchRes.status}: ${fetchRes.statusText}`
 			};
 		}
 
@@ -31,7 +27,7 @@ export const postClient = () => {
 
 		const subredditFeedData = reduce(fetchData);
 
-		return subredditFeedData;
+		return { status: 'OK', data: subredditFeedData };
 	};
 
 	const reduce = (post: any) => {

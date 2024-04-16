@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
 	import SyncedAv from '$lib/components/SyncedAV.svelte';
+	import { cn } from '$lib/utils';
 
 	let { post }: { post: Listing } = $props();
 
@@ -13,22 +14,21 @@
 
 <div>
 	{#if post.post_hint == 'link'}
+		{@const hasThumbnail = post.thumbnail && post.thumbnail.indexOf('.') > -1}
 		<div class="flex gap-2">
-			<div class="w-[calc(100%)] flex-col">
-				<h1 class="text-wrap break-words text-2xl font-semibold">
+			<div class={cn('mr-auto ', hasThumbnail && 'w-[calc(100%-9.5rem)]')}>
+				<h1 class="break-words text-2xl font-semibold">
 					{post.title}
 				</h1>
-				<div class="w-4/5 truncate text-ellipsis break-words">
-					<a
-						class="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
-						href={post.url}
-					>
-						{post.url}
-					</a>
-				</div>
+				<a
+					class="block overflow-hidden truncate text-ellipsis break-words text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+					href={post.url}
+				>
+					{post.url}
+				</a>
 			</div>
 
-			{#if post.thumbnail && post.thumbnail.indexOf('.') > -1}
+			{#if hasThumbnail}
 				<img src={post.thumbnail} class="h-24 w-32 rounded-2xl object-cover" />
 			{/if}
 		</div>

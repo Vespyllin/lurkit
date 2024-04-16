@@ -10,6 +10,10 @@
 	};
 </script>
 
+<svelte:head>
+	<script type="module" src="https://md-block.verou.me/md-block.js"></script>
+</svelte:head>
+
 <div class="border-l-2 pl-3 text-lg hover:border-blue-400">
 	<div on:click={collapse}>
 		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
@@ -26,7 +30,9 @@
 	</div>
 
 	{#if !collapsed}
-		<p class="text-bg-zinc-100 whitespace-pre text-wrap break-words">{comment.text}</p>
+		<p class="text-bg-zinc-100 whitespace-pre text-wrap break-words">
+			{comment.text}
+		</p>
 
 		<div class="ml-3 mt-3 flex flex-col">
 			{#if !!comment.children}

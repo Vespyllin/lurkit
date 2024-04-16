@@ -1,4 +1,4 @@
-type SubredditFeedData = {
+type FeedData = {
 	after?: string;
 	dist: number;
 	posts: Listing[];
