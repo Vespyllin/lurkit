@@ -3,5 +3,7 @@
 	import '../app.pcss';
 </script>
 
-<Header />
-<slot />
+<main class="py-2">
+	<Header />
+	<slot />
+</main>

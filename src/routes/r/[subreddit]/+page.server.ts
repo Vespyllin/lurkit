@@ -1,6 +1,6 @@
-import { subredditClient } from '$lib/client/subreddit';
+import { fetchFeedData } from '$lib/client/subreddit/index.js';
 
 export const load = async ({ params }) => {
 	const { subreddit } = params;
-	return await subredditClient().fetchData(`r/${subreddit}`, 100);
+	return await fetchFeedData(`r/${subreddit}`, 100);
 };

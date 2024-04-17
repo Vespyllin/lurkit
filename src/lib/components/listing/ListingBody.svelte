@@ -64,7 +64,7 @@
 		<p
 			class="max-h-[200px] truncate text-ellipsis whitespace-pre text-wrap break-words rounded-lg text-lg text-gray-300"
 		>
-			{post.selftext.replaceAll('\n', '')}
+			{post.selftext.replaceAll('\n', ' ')}
 		</p>
 	{:else}
 		<h1 class="mb-1 text-2xl font-semibold">{post.title}</h1>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTimeAgo } from '$lib/client';
+	import { getTimeAgo } from '$lib';
 
 	const {
 		subreddit_icon,

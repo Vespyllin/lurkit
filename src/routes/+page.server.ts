@@ -1,5 +1,5 @@
-import { subredditClient } from '$lib/client/subreddit';
+import { fetchFeedData } from '$lib/client/subreddit';
 
 export const load = async () => {
-	return await subredditClient().fetchData(undefined, 100);
+	return await fetchFeedData(undefined, 100);
 };

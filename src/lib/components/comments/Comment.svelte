@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTimeAgo } from '$lib/client';
+	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import CommentChain from './CommentChain.svelte';
 
