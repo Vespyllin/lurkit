@@ -25,6 +25,7 @@
 	<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
 	<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
 	<source src={`${url}/DASH_480.mp4`} type="video/mp4" />
+	<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
 
 	<track kind="captions" />
 </video>

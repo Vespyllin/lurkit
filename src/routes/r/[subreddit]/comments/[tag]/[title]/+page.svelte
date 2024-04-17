@@ -14,6 +14,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{data.status == 'OK' ? data.data.listing.title : data.reason}</title>
+</svelte:head>
+
 {#if data.status == 'FAIL' || data.status == 'INTERNAL'}
 	<div class="mx-auto w-full items-center justify-center space-y-2 p-32 lg:max-w-5xl">
 		<div class="flex flex-col">

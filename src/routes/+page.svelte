@@ -13,6 +13,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{data.status == 'OK' ? 'Lurkit' : data.reason}</title>
+</svelte:head>
+
 <svelte:window
 	on:scroll={async () => {
 		// maybe not nessesary anymore

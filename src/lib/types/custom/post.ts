@@ -11,5 +11,6 @@ type PostComment = {
 	author: string;
 	is_submitter: boolean;
 	created_utc: number;
+	edited: boolean | number;
 	children?: PostComments;
 };

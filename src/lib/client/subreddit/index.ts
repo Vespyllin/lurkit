@@ -21221,6 +21221,7 @@ export const fetchFeedData = async (
 	}
 
 	const url = `${baseURL}/${formattedSubreddit}.json${queryParams}`;
+	console.log(`Making request to ${url}`)
 
 	const fetchRes = await fetch(url);
 	if (fetchRes.status != 200) {

@@ -22,18 +22,12 @@
 			({upvote_ratio.toLocaleString(undefined, { minimumFractionDigits: 2 })})
 		</span>
 	</div>
-	<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
-		<ChatBubble size={20} />
-		<span class="ml-1">
-			{num_comments.toLocaleString()}
-		</span>
-	</div>
-	{#if permalink}
-		<a class="" href={`http://localhost:5173${permalink}`}>
-			<div class="inline-flex items-center gap-2 rounded-3xl bg-blue-800 p-2 pl-4 pr-5">
-				<ArrowRight size={20} />
-				<span>Go to Post</span>
-			</div>
-		</a>
-	{/if}
+	<a href={`http://localhost:5173${permalink}`}>
+		<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
+			<ChatBubble size={20} />
+			<span class="ml-1">
+				{num_comments.toLocaleString()}
+			</span>
+		</div>
+	</a>
 </div>

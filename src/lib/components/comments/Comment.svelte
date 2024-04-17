@@ -27,6 +27,10 @@
 		<span class="text-zinc-400">
 			{getTimeAgo(comment.created_utc)}
 		</span>
+		{#if typeof comment.edited == 'number'}
+			•
+			<span class="text-zinc-400"> *edited {getTimeAgo(comment.edited)} </span>
+		{/if}
 	</div>
 
 	{#if !collapsed}

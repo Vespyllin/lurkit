@@ -75,6 +75,7 @@ const getAllComments = (init: any) => {
 			text: x.data.body,
 			score: x.data.score,
 			author: x.data.author,
+			edited: x.data.edited,
 			is_submitter: x.data.is_submitter,
 			created_utc: x.data.created_utc,
 			children: getAllComments(x.data.replies)?.filter((x) => !!x?.text)
