@@ -8,7 +8,6 @@ scrollbar
 markdown  
 sidebar  
 video
-responsiveness (1080p)
 
 ## Feed
 

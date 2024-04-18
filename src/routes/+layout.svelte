@@ -8,7 +8,7 @@
 	<Header />
 	<div class="flex pt-16">
 		<Sidebar />
-		<div class="w-full py-4">
+		<div class="mx-64 w-full px-8 py-4">
 			<slot />
 		</div>
 	</div>
