@@ -35,7 +35,7 @@
 
 	{#if !collapsed}
 		<p class="text-bg-zinc-100 whitespace-pre text-wrap break-words">
-			{comment.text}
+			{@html comment.text}
 		</p>
 
 		<div class="ml-3 mt-3 flex flex-col">

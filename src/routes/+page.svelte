@@ -48,14 +48,14 @@
 	}}
 />
 
-{#if !feed && fetching}
+{#if !feed}
 	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
-		<h1 class="text-center text-3xl">LOADING</h1>
-	</div>
-{:else if !feed}
-	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
-		<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
-		<h2 class="text-center text-xl">{error}</h2>
+		{#if fetching}
+			<h1 class="text-center text-3xl">LOADING</h1>
+		{:else}
+			<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
+			<h2 class="text-center text-xl">{error}</h2>
+		{/if}
 	</div>
 {:else}
 	<Feed {feed} />

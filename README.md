@@ -1,17 +1,31 @@
 # lurkit - TODOs:
 
-## Layout
+## Form
 
-sidebar
+font  
+colors  
+scrollbar  
+markdown  
+sidebar  
+video
+responsiveness (1080p)
 
-markdown
+## Feed
 
-font
+### Subreddit
 
-## Infinite scroll
+sticky
 
-trigger once upon reaching the bottom
+## Post
 
-## Auth
+### Comments
 
-blacklist persistence through auth
+sticky  
+edited
+
+## Function
+
+icon redir  
+sorting  
+auth  
+data persistence
