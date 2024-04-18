@@ -3,33 +3,54 @@
 	import ListingFooter from '$lib/components/listing/ListingFooter.svelte';
 	import CommentChain from '$lib/components/comments/CommentChain.svelte';
 	import Post from '$lib/components/post/Post.svelte';
+	import { page } from '$app/stores';
+	import { fetchPostData } from '$lib/client/post';
 
-	let { data }: { data: ResultWrapper<PostData> } = $props();
+	const {
+		params: { subreddit, tag, title }
+	} = $page;
+
+	let fetching = $state(true);
+	let postData: PostData | undefined = $state();
+	let error: string | undefined = $state();
+
+	$effect(() => {
+		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`).then((data) => {
+			if (data.status == 'OK') {
+				postData = data.data;
+			} else {
+				error = data.reason;
+			}
+			fetching = false;
+		});
+	});
 
 	const getIcon = (post: Listing) => {
 		const community_icon_src = post?.subreddit?.community_icon;
-		return community_icon_src
-			? community_icon_src.substring(0, community_icon_src.indexOf('?'))
-			: post.subreddit.icon_img;
+		return community_icon_src?.substring(0, community_icon_src?.indexOf('?'));
 	};
 </script>
 
 <svelte:head>
-	<title>{data.status == 'OK' ? data.data.listing.title : data.reason}</title>
+	<title>{postData ? postData.listing.title : error}</title>
 </svelte:head>
 
-{#if data.status == 'FAIL' || data.status == 'INTERNAL'}
+{#if !postData && fetching}
+	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+		<h1 class="text-center text-3xl">LOADING</h1>
+	</div>
+{:else if !postData}
 	<div class="mx-auto w-full items-center justify-center space-y-2 p-32 lg:max-w-5xl">
 		<div class="flex flex-col">
 			<h1 class="text-center text-3xl">Could not reach Reddit servers.</h1>
-			<h2 class="text-center text-xl">{data.reason}</h2>
+			<h2 class="text-center text-xl">{error}</h2>
 		</div>
 	</div>
-{:else if data.status == 'OK'}
-	{@const { listing: post, comments } = data.data}
+{:else}
+	{@const { listing: post, comments } = postData}
 
 	<div class="mx-auto w-full space-y-2 p-2 lg:max-w-5xl">
-		<div class="flex w-full flex-col gap-2 rounded-2xl bg-zinc-900 p-4 px-6">
+		<div class="flex w-full flex-col gap-2 rounded-2xl pb-4">
 			<ListingHeader
 				author={post.author}
 				created_utc={post.created_utc}

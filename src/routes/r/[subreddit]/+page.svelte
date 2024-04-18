@@ -1,44 +1,47 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchFeedData } from '$lib/client/subreddit';
-	import Feed from '$lib/components/Feed.svelte';
+	import Feed from '$lib/components/feed/Feed.svelte';
 
-	let { data }: { data: ResultWrapper<FeedData> } = $props();
+	const {
+		params: { subreddit }
+	} = $page;
 
-	const { params } = $page;
-	const { subreddit } = params;
-
-	let fetching = $state(false);
-	let failed = $state(false);
+	let fetching = $state(true);
 	let feed: FeedData | undefined = $state();
+	let error: string | undefined = $state();
+
+	let lastPostId: string | undefined;
 	$effect(() => {
-		if (data.status == 'OK') {
-			feed = data.data;
-		}
+		fetchFeedData(subreddit, 100).then((data) => {
+			if (data.status == 'OK') {
+				feed = data.data;
+				lastPostId = data.data.posts.at(-1)?.name;
+			} else {
+				error = data.reason;
+			}
+			fetching = false;
+		});
 	});
 </script>
 
 <svelte:window
 	on:scroll={async () => {
-		// maybe not nessesary anymore
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
-		const scrolledY = window.scrollY;
 
-		if (data.status === 'OK' && !!feed && !fetching && feedHeight < scrolledY + 750) {
+		if (!!feed && !fetching && feedHeight < window.scrollY + 750) {
 			fetching = true;
 
-			const lastPostID = data.data.posts.at(-1)?.name;
-
 			// TODO: Retry policy
-
-			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostID);
+			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
 			if (fetchedFeed.status === 'OK') {
 				feed.after = fetchedFeed.data.after;
 				feed.dist += fetchedFeed.data.dist;
 				feed.posts = feed.posts.concat(fetchedFeed.data.posts);
+				lastPostId = fetchedFeed.data.posts.at(-1)?.name;
 			} else {
-				console.log('FAILED TO FETCH NEXT BATCH\nLAST ID:', lastPostID);
-				failed = true;
+				error = fetchedFeed.reason;
+				console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
 			}
 
 			fetching = false;
@@ -47,17 +50,24 @@
 />
 
 <svelte:head>
-	<title>{data.status == 'OK' ? `r/${subreddit}` : data.reason}</title>
+	<title>{!!feed ? `r/${subreddit}` : error}</title>
 </svelte:head>
 
-{#if data.status == 'FAIL' || data.status == 'INTERNAL'}
+{#if !feed && fetching}
+	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+		<h1 class="text-center text-3xl">LOADING</h1>
+	</div>
+{:else if !feed}
 	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
 		<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
-		<h2 class="text-center text-xl">{data.reason}</h2>
+		<h2 class="text-center text-xl">{error}</h2>
 	</div>
-{:else if data.status == 'OK' && !!feed}
+{:else}
 	<Feed {feed} />
-	{#if failed}
-		<div class="text-3xl">FAILED</div>
+	{#if error}
+		<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
+	{/if}
+	{#if fetching}
+		<h1 class="text--500 text-3xl">LOADING MORE POSTS</h1>
 	{/if}
 {/if}

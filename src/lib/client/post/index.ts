@@ -1,5 +1,4 @@
 import { PUBLIC_MOCK } from '$env/static/public';
-import post from '../../../../static/post.json';
 
 export const fetchPostData = async (comment_uri: string): Promise<ResultWrapper<PostData>> => {
 	const baseURL = 'https://www.reddit.com';
@@ -7,7 +6,11 @@ export const fetchPostData = async (comment_uri: string): Promise<ResultWrapper<
 
 	if (PUBLIC_MOCK == 'true') {
 		console.log('Mock request for post.json');
-		return { status: 'OK', data: cleanData(post) };
+		return {
+			status: 'INTERNAL',
+			reason: 'TODO: MOCK POST'
+			// data: cleanData(post)
+		};
 	}
 
 	const url = `${baseURL}${comment_uri}.json${queryParams}`;
