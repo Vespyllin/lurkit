@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
-	import SyncedAv from '$lib/components/SyncedAV.svelte';
+	import SyncedAv from '$lib/components/listing/SyncedAV.svelte';
 	import { cn } from '$lib/utils';
 
 	let { post }: { post: Listing } = $props();

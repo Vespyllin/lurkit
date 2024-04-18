@@ -1,13 +1,13 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
-	import SyncedAv from '$lib/components/SyncedAV.svelte';
+	import SyncedAv from '$lib/components/listing/SyncedAV.svelte';
 	import { cn } from '$lib/utils';
 
 	let { post }: { post: Listing } = $props();
 
 	const getMediaType = (post: Listing, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
-		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 2);
+		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
 	};
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div class="fixed flex h-14 w-full border-b-2 bg-background p-8">
+<div class="fixed z-50 flex h-14 w-full border-b-2 bg-background p-8">
 	<div class="mx-auto flex w-full items-center gap-4">
 		<img src="/favicon.png" class="h-10 w-10" />
 		<h1 class="text-3xl font-semibold tracking-tight">Lurkit</h1>

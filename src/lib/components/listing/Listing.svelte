@@ -9,7 +9,7 @@
 		community_icon_src?.substring(0, community_icon_src.indexOf('?')) ?? post.subreddit.icon_img;
 </script>
 
-<div class="flex flex-col gap-1">
+<div class="flex flex-col gap-2">
 	<ListingHeader
 		author={post.author}
 		created_utc={post.created_utc}
