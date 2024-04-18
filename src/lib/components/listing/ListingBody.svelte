@@ -10,6 +10,22 @@
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
 	};
+
+	const cleanText = (text: string) => {
+		let preCleanLen = 0;
+		while (preCleanLen != text.length) {
+			preCleanLen = text.length;
+			text = text.replaceAll('\n\n', '\n');
+		}
+
+		preCleanLen = 0;
+		while (preCleanLen != text.length) {
+			preCleanLen = text.length;
+			text = text.replaceAll('  ', ' ');
+		}
+
+		return text;
+	};
 </script>
 
 <div>
@@ -39,16 +55,14 @@
 		<SyncedAv url={post.url} />
 	{:else if post.is_gallery}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title} {post.post_hint}</h1>
-		<Carousel.Root class="flex h-[550px] justify-center">
-			<Carousel.Content>
+		<Carousel.Root class="rounded-2xl bg-black ">
+			<Carousel.Content class="pl-4">
 				{#each post?.gallery_data?.items ?? [] as gallery_picture}
-					<Carousel.Item class="rounded-2xl">
-						<div class="-p-4 flex justify-center rounded-2xl bg-black">
-							<img
-								class="max-h-[550px] object-contain"
-								src={`https://i.redd.it/${gallery_picture.media_id}.${getMediaType(post, gallery_picture.media_id)}`}
-							/>
-						</div>
+					<Carousel.Item>
+						<img
+							class="mx-auto max-h-[550px] object-contain"
+							src={`https://i.redd.it/${gallery_picture.media_id}.${getMediaType(post, gallery_picture.media_id)}`}
+						/>
 					</Carousel.Item>
 				{/each}
 			</Carousel.Content>
@@ -63,10 +77,8 @@
 		<h1 class="text-xl font-semibold text-red-500">TODO: Handle rich:video</h1>
 	{:else if post.selftext?.length > 0}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
-		<p
-			class="max-h-[200px] truncate text-ellipsis whitespace-pre text-wrap break-words rounded-lg text-lg text-gray-300"
-		>
-			{post.selftext.replaceAll('\n', ' ')}
+		<p class="line-clamp-6 whitespace-pre text-wrap text-lg text-gray-300">
+			{cleanText(post.selftext)}
 		</p>
 	{:else}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
