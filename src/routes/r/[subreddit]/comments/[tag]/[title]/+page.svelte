@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ListingHeader from '$lib/components/listing/ListingHeader.svelte';
 	import ListingFooter from '$lib/components/listing/ListingFooter.svelte';
-	import CommentChain from '$lib/components/comments/CommentChain.svelte';
+	import CommentChain from '$lib/components/post/CommentChain.svelte';
 	import Post from '$lib/components/post/Post.svelte';
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
@@ -15,7 +15,7 @@
 	let error: string | undefined = $state();
 
 	$effect(() => {
-		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`).then((data) => {
+		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, 'top').then((data) => {
 			if (data.status == 'OK') {
 				postData = data.data;
 			} else {
@@ -36,11 +36,11 @@
 </svelte:head>
 
 {#if !postData && fetching}
-	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
 		<h1 class="text-center text-3xl">LOADING</h1>
 	</div>
 {:else if !postData}
-	<div class="mx-auto w-full items-center justify-center space-y-2 p-32 lg:max-w-5xl">
+	<div class="mx-auto items-center justify-center space-y-2 p-32 lg:max-w-5xl">
 		<div class="flex flex-col">
 			<h1 class="text-center text-3xl">Could not reach Reddit servers.</h1>
 			<h2 class="text-center text-xl">{error}</h2>
@@ -49,7 +49,7 @@
 {:else}
 	{@const { listing: post, comments } = postData}
 
-	<div class="mx-auto w-full space-y-2 p-2 lg:max-w-5xl">
+	<div class="mx-auto space-y-2 p-2 lg:max-w-5xl">
 		<div class="flex w-full flex-col gap-2 rounded-2xl pb-4">
 			<ListingHeader
 				author={post.author}

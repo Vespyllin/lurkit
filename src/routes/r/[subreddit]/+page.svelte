@@ -54,11 +54,11 @@
 </svelte:head>
 
 {#if !feed && fetching}
-	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
 		<h1 class="text-center text-3xl">LOADING</h1>
 	</div>
 {:else if !feed}
-	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
 		<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
 		<h2 class="text-center text-xl">{error}</h2>
 	</div>

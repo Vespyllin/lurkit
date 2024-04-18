@@ -49,7 +49,7 @@
 />
 
 {#if !feed}
-	<div class="mx-auto w-full items-center justify-center p-32 lg:max-w-5xl">
+	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
 		{#if fetching}
 			<h1 class="text-center text-3xl">LOADING</h1>
 		{:else}
@@ -60,14 +60,12 @@
 {:else}
 	<Feed {feed} />
 	{#if error || fetching}
-		<div class="flex">
-			<div class="mx-auto w-full p-8 text-center lg:max-w-5xl">
-				{#if error}
-					<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
-				{:else if fetching}
-					<h1 class="text-3xl text-green-500">LOADING MORE POSTS</h1>
-				{/if}
-			</div>
+		<div class="mx-auto p-8 text-center lg:max-w-5xl">
+			{#if error}
+				<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
+			{:else if fetching}
+				<h1 class="text-3xl text-green-500">LOADING MORE POSTS</h1>
+			{/if}
 		</div>
 	{/if}
 {/if}

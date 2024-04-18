@@ -12,5 +12,6 @@ type PostComment = {
 	is_submitter: boolean;
 	created_utc: number;
 	edited: boolean | number;
+	stickied: boolean;
 	children?: PostComments;
 };

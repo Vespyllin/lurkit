@@ -3,14 +3,16 @@ import { PUBLIC_MOCK } from '$env/static/public';
 export const fetchFeedData = async (
 	subreddit?: string,
 	count?: number,
-	after?: string
+	after?: string,
+	sort?: RedditSortOptions
 ): Promise<ResultWrapper<FeedData>> => {
 	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?limit=100&sr_detail=1';
 	if (count !== undefined) queryParams += `&limit=${count}`;
 	if (after !== undefined) queryParams += `&after=${after}`;
 
-	const formattedSubreddit = subreddit ? `r/${subreddit}` : '';
+	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
+	const cleanSort = sort ? `/${sort}` : '';
 
 	if (PUBLIC_MOCK == 'true') {
 		console.log('Mock request for feed.json');
@@ -21220,8 +21222,8 @@ export const fetchFeedData = async (
 		return { status: 'OK', data: cleanResponse(x as any) };
 	}
 
-	const url = `${baseURL}/${formattedSubreddit}.json${queryParams}`;
-	console.log(`Making request to ${url}`)
+	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
+	console.log(`Making request to ${url}`);
 
 	const fetchRes = await fetch(url);
 	if (fetchRes.status != 200) {

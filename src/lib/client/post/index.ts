@@ -1,8 +1,12 @@
 import { PUBLIC_MOCK } from '$env/static/public';
 
-export const fetchPostData = async (comment_uri: string): Promise<ResultWrapper<PostData>> => {
+export const fetchPostData = async (
+	comment_uri: string,
+	sort?: RedditSortOptions
+): Promise<ResultWrapper<PostData>> => {
 	const baseURL = 'https://www.reddit.com';
-	const queryParams = '?sr_detail=1';
+	let queryParams = '?sr_detail=1';
+	if (sort) queryParams += `&sort=${sort}`;
 
 	if (PUBLIC_MOCK == 'true') {
 		console.log('Mock request for post.json');
@@ -81,6 +85,7 @@ const getAllComments = (init: any) => {
 			edited: x.data.edited,
 			is_submitter: x.data.is_submitter,
 			created_utc: x.data.created_utc,
+			stickied: x.data.stickied,
 			children: getAllComments(x.data.replies)?.filter((x) => !!x?.text)
 		};
 

@@ -1,3 +1,5 @@
+type RedditSortOptions = 'new' | 'controversial' | 'top' | 'hot' | 'random';
+
 type RedditListing = {
 	kind: 'Listing';
 	data: {
