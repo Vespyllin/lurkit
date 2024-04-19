@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { ArrowRight, ArrowUp, ChatBubble } from 'radix-icons-svelte';
+	import { ArrowUp, ChatBubble } from 'radix-icons-svelte';
 
 	const {
 		score,
@@ -18,7 +17,7 @@
 		<span>
 			{score.toLocaleString()}
 		</span>
-		<span style="color:hsl({120 * upvote_ratio}, 100%, 50%);">
+		<span style="color:hsl({120 * upvote_ratio}, 85%, 50%);">
 			({upvote_ratio.toLocaleString(undefined, { minimumFractionDigits: 2 })})
 		</span>
 	</div>

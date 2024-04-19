@@ -3,6 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
+	import Markdown from '@magidoc/plugin-svelte-marked';
 
 	const {
 		comment,
@@ -15,7 +16,7 @@
 </script>
 
 <div class="border-l-2 pl-3 text-lg hover:border-blue-400">
-	<div class="mb-2 flex items-center gap-2 leading-none" on:click={collapse}>
+	<div class="my-2 flex items-center gap-2 leading-none" on:click={collapse}>
 		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</span>
@@ -41,14 +42,14 @@
 	</div>
 
 	{#if !collapsed}
-		<p class="text-bg-zinc-100 whitespace-pre text-wrap break-words">
-			{@html comment.text}
+		<p class="flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100">
+			<Markdown source={comment.text ?? ''} />
 		</p>
 
-		<div class="ml-3 mt-3 flex flex-col">
-			{#if !!comment.children}
+		{#if !!comment.children}
+			<div class="ml-3 flex flex-col pt-1">
 				<CommentChain comments={comment.children} depth={depth + 1} />
-			{/if}
-		</div>
+			</div>
+		{/if}
 	{/if}
 </div>

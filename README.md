@@ -23,6 +23,7 @@ stickied subreddits
 
 upvote ratio blue-to-red  
 sorting
+image modal
 
 ### Subreddit
 
@@ -32,6 +33,7 @@ sticky
 
 upvote ratio blue-to-red  
 sorting
+image modal
 
 ## Function
 

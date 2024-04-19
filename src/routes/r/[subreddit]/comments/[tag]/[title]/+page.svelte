@@ -5,6 +5,8 @@
 	import Post from '$lib/components/post/Post.svelte';
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
+	import { CaretDown } from 'radix-icons-svelte';
+	import { DropdownMenu, Root } from '$lib/components/ui/dropdown-menu';
 
 	const {
 		params: { subreddit, tag, title }
@@ -13,9 +15,10 @@
 	let fetching = $state(true);
 	let postData: PostData | undefined = $state();
 	let error: string | undefined = $state();
+	let sort: RedditSortOptions = 'top';
 
 	$effect(() => {
-		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, 'top').then((data) => {
+		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort).then((data) => {
 			if (data.status == 'OK') {
 				postData = data.data;
 			} else {
@@ -65,7 +68,14 @@
 			/>
 		</div>
 
-		<div class="mt-4 text-xl font-semibold">Comments</div>
+		<div class="mt-4 flex leading-8">
+			<span class="mr-2 text-lg">Sort by:</span>
+
+			<div class="flex items-center rounded-sm text-zinc-400 hover:bg-zinc-800 hover:bg-opacity-55">
+				<span class="ml-2 text-lg">{sort}</span>
+				<CaretDown size={18} />
+			</div>
+		</div>
 		<CommentChain {comments} root />
 	</div>
 {/if}

@@ -2,6 +2,7 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 	import SyncedAv from '$lib/components/listing/SyncedAV.svelte';
 	import { cn } from '$lib/utils';
+	import Markdown from '@magidoc/plugin-svelte-marked';
 
 	let { post }: { post: Listing } = $props();
 
@@ -78,7 +79,7 @@
 	{:else if post.selftext?.length > 0}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
 		<p class="line-clamp-6 whitespace-pre text-wrap text-lg text-gray-300">
-			{cleanText(post.selftext)}
+			<Markdown source={cleanText(post.selftext)} />
 		</p>
 	{:else}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
