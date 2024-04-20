@@ -2,6 +2,8 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 	import SyncedAv from '$lib/components/listing/SyncedAV.svelte';
 	import { cn } from '$lib/utils';
+	import Markdown from '@magidoc/plugin-svelte-marked';
+	import { cleanText } from '$lib';
 
 	let { post }: { post: Listing } = $props();
 
@@ -38,13 +40,13 @@
 		<SyncedAv url={post.url} />
 	{:else if post.is_gallery}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title} {post.post_hint}</h1>
-		<Carousel.Root class="flex h-[550px] justify-center">
+		<Carousel.Root class="flex h-[600px] justify-center">
 			<Carousel.Content>
 				{#each post?.gallery_data?.items ?? [] as gallery_picture}
 					<Carousel.Item class="rounded-2xl">
-						<div class="-p-4 flex justify-center rounded-2xl bg-black">
+						<div class="-p-4 mx-auto flex justify-center">
 							<img
-								class="max-h-[550px] object-contain"
+								class="max-h-[600px] object-contain"
 								src={`https://i.redd.it/${gallery_picture.media_id}.${getMediaType(post, gallery_picture.media_id)}`}
 							/>
 						</div>
@@ -56,7 +58,9 @@
 		</Carousel.Root>
 	{:else if post.post_hint == 'image'}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
-		<img src={post.url} class="max-h-[550px] w-full rounded-2xl bg-black object-contain" />
+		<div class="flex items-center justify-center">
+			<img src={post.url} class="mx-32 max-h-[600px] rounded-2xl object-contain" />
+		</div>
 	{:else if post.post_hint == 'rich:video'}
 		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
 		<h1 class="text-xl font-semibold text-red-500">TODO: Handle rich:video</h1>
@@ -67,6 +71,6 @@
 	{/if}
 
 	<p class="mt-2 whitespace-pre text-wrap break-words rounded-lg text-lg text-gray-300">
-		{post.selftext}
+		<Markdown source={cleanText(post.selftext)} />
 	</p>
 </div>

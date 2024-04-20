@@ -21,7 +21,7 @@
 	});
 </script>
 
-<video bind:this={video} class="max-h-[550px] w-full rounded-2xl bg-black object-contain" controls>
+<video bind:this={video} class="max-h-[600px] w-full rounded-2xl bg-black object-contain" controls>
 	<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
 	<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
 	<source src={`${url}/DASH_480.mp4`} type="video/mp4" />

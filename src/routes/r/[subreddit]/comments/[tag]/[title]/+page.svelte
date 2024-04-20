@@ -6,7 +6,6 @@
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
 	import { CaretDown } from 'radix-icons-svelte';
-	import { DropdownMenu, Root } from '$lib/components/ui/dropdown-menu';
 
 	const {
 		params: { subreddit, tag, title }
@@ -52,7 +51,7 @@
 {:else}
 	{@const { listing: post, comments } = postData}
 
-	<div class="mx-auto space-y-2 p-2 lg:max-w-5xl">
+	<div class="space-y-2">
 		<div class="flex w-full flex-col gap-2 rounded-2xl pb-4">
 			<ListingHeader
 				author={post.author}

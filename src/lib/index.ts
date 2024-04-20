@@ -30,3 +30,45 @@ export const getTimeAgo = (timestamp: number) => {
 
 	return relativeTimeFormatter.format(-value, unit as any);
 };
+
+export const cleanText = (text: string, nowhitespace: boolean = false) => {
+	if (!text) return '';
+
+	text = text.trimStart().trimEnd();
+	text = decodeEntities(text);
+
+	if (!nowhitespace) return text;
+
+	let preCleanLen = 0;
+	while (preCleanLen != text.length) {
+		preCleanLen = text.length;
+		text = text.replaceAll('\n\n', '\n');
+	}
+
+	preCleanLen = 0;
+	while (preCleanLen != text.length) {
+		preCleanLen = text.length;
+		text = text.replaceAll('  ', ' ');
+	}
+
+	return text;
+};
+
+const decodeEntities = (encodedString: string) => {
+	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+	const translate: any = {
+		nbsp: ' ',
+		amp: '&',
+		quot: '"',
+		lt: '<',
+		gt: '>'
+	};
+	return encodedString
+		.replace(translate_re, (match, entity: any) => {
+			return translate[entity];
+		})
+		.replace(/&#(\d+);/gi, (match, numStr: any) => {
+			var num = parseInt(numStr, 10);
+			return String.fromCharCode(num);
+		});
+};

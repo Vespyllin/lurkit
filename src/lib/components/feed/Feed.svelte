@@ -5,10 +5,12 @@
 	let { feed }: { feed: FeedData } = $props();
 </script>
 
-<div class="mx-auto w-full space-y-2 lg:max-w-5xl">
+<div class="flex flex-col gap-4">
 	{#each feed.posts ?? [] as post}
-		<div class="flex w-full flex-col gap-2 rounded-2xl py-4">
-			<Listing {post} />
+		<div class="flex w-full flex-col rounded-2xl">
+			<div>
+				<Listing {post} />
+			</div>
 		</div>
 		<Separator />
 	{/each}
