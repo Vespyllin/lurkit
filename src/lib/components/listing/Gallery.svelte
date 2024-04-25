@@ -14,9 +14,9 @@
 	<Carousel.Content>
 		{#each post?.gallery_data?.items ?? [] as gallery_picture}
 			<Carousel.Item class="rounded-2xl">
-				<div class="-p-4 mx-auto flex justify-center">
+				<div class="-p-4 mx-auto flex h-full items-center justify-center">
 					<img
-						class="max-h-[600px] object-contain"
+						class="h-full max-h-[600px] w-full object-contain"
 						src={`https://i.redd.it/${gallery_picture.media_id}.${getMediaType(post, gallery_picture.media_id)}`}
 					/>
 				</div>

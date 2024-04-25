@@ -17,7 +17,9 @@ stickied subreddits
 
 ## Feed
 
-sorting
+redirect to subreddit  
+subreddit popover  
+sorting  
 image modal
 
 ### Subreddit

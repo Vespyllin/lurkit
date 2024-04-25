@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
-	import Markdown from '@magidoc/plugin-svelte-marked';
+	import Markdown from 'svelte-exmarkdown';
 
 	let { text, clamp }: { text: string; clamp?: boolean } = $props();
 </script>
@@ -12,5 +12,5 @@
 		clamp && 'line-clamp-6'
 	)}
 >
-	<Markdown source={cleanText(text, !!clamp)} />
+	<Markdown md={cleanText(text, !!clamp)} />
 </div>

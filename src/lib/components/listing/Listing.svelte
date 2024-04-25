@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Link from './parts/Link.svelte';
-	import Video from '$lib/components/listing/parts/Video.svelte';
-	import Gallery from './parts/Gallery.svelte';
-	import Image from './parts/Image.svelte';
-	import Text from './parts/Text.svelte';
+	import Link from './Link.svelte';
+	import Gallery from './Gallery.svelte';
+	import Image from './Image.svelte';
+	import Text from './Text.svelte';
+	import Video from './Video.svelte';
 	import { ArrowUp, ChatBubble } from 'radix-icons-svelte';
 	import { getTimeAgo } from '$lib';
 
@@ -44,10 +44,12 @@
 			<Image url={post.url} />
 		{:else if post.post_hint == 'rich:video'}
 			<h1 class="text-xl font-semibold text-red-500">TODO: Handle rich:video</h1>
+		{:else if post.selftext?.length > 0 && !expand}
+			<Text text={post.selftext} clamp />
 		{/if}
 
-		{#if post.selftext?.length > 0}
-			<Text text={post.selftext} clamp={!expand} />
+		{#if post.selftext?.length > 0 && expand}
+			<Text text={post.selftext} />
 		{/if}
 	{/if}
 

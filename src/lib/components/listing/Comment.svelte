@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
-	import Markdown from '@magidoc/plugin-svelte-marked';
+	import Markdown from 'svelte-exmarkdown';
 
 	const {
 		comment,
@@ -45,7 +45,7 @@
 		<p
 			class="mt-2 flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100 [&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800"
 		>
-			<Markdown source={cleanText(comment.text) ?? ''} />
+			<Markdown md={cleanText(comment.text) ?? ''} />
 		</p>
 
 		{#if !!comment.children}

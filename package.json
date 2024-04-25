@@ -12,7 +12,6 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@magidoc/plugin-svelte-marked": "^4.2.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -39,8 +38,8 @@
 		"clsx": "^2.1.0",
 		"embla-carousel-svelte": "^8.0.2",
 		"lucide-svelte": "^0.372.0",
-		"md-block": "^0.0.1",
 		"radix-icons-svelte": "^1.2.1",
+		"svelte-exmarkdown": "^3.0.3",
 		"tailwind-merge": "^2.2.2",
 		"tailwind-variants": "^0.2.1"
 	}
