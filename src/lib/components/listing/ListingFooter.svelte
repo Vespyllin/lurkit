@@ -9,7 +9,7 @@
 	}: { score: number; upvote_ratio: number; num_comments: number; permalink?: string } = $props();
 </script>
 
-<div class="mt-1 font-semibold">
+<div class="font-semibold">
 	<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
 		<div class="-ml-1">
 			<ArrowUp size={20} />

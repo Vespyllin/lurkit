@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchFeedData } from '$lib/client/subreddit';
-	import Feed from '$lib/components/feed/Feed.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	const {
 		params: { subreddit }
@@ -63,7 +64,10 @@
 		<h2 class="text-center text-xl">{error}</h2>
 	</div>
 {:else}
-	<Feed {feed} />
+	{#each feed.posts ?? [] as post}
+		<Listing {post} />
+		<Separator class="my-4" />
+	{/each}
 	{#if error}
 		<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
 	{/if}

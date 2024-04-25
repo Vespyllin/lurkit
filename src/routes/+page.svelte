@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fetchFeedData } from '$lib/client/subreddit';
-	import Feed from '$lib/components/feed/Feed.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	let fetching = $state(true);
 	let feed: FeedData | undefined = $state();
@@ -58,7 +59,11 @@
 		{/if}
 	</div>
 {:else}
-	<Feed {feed} />
+	{#each feed.posts ?? [] as post}
+		<Listing {post} />
+		<Separator class="my-4" />
+	{/each}
+
 	{#if error || fetching}
 		<div class="mx-auto p-8 text-center lg:max-w-5xl">
 			{#if error}

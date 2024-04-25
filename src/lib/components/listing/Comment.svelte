@@ -15,8 +15,8 @@
 	const collapse = () => (collapsed = !collapsed);
 </script>
 
-<div class="border-l-2 pl-3 text-lg hover:border-blue-400">
-	<div class="mb-2 flex items-center gap-2 leading-none" onclick={collapse}>
+<div class="mt-1 border-l-2 pl-3 text-lg hover:border-blue-400">
+	<div class="my-1 flex items-center gap-2 leading-none" onclick={collapse}>
 		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</span>
@@ -43,13 +43,13 @@
 
 	{#if !collapsed}
 		<p
-			class="flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100 [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800"
+			class="mt-2 flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100 [&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800"
 		>
 			<Markdown source={cleanText(comment.text) ?? ''} />
 		</p>
 
 		{#if !!comment.children}
-			<div class="ml-3 mt-2 flex flex-col pt-1">
+			<div class="ml-3 flex flex-col pt-1">
 				<CommentChain comments={comment.children} depth={depth + 1} />
 			</div>
 		{/if}

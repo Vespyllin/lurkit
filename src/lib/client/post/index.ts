@@ -38,6 +38,9 @@ export const fetchPostData = async (
 const cleanData = (post: any) => {
 	const postParent = post[0].data.children[0].data as any;
 	const postComments = post[1];
+	const cleanedComments = getAllComments(postComments) ?? [];
+	if (cleanedComments.length > 0 && !cleanedComments.at(-1)?.text)
+		cleanedComments.splice(cleanedComments.length - 1, 1);
 
 	const postData: PostData = {
 		listing: {
@@ -68,8 +71,10 @@ const cleanData = (post: any) => {
 			gallery_data: postParent.gallery_data,
 			secure_media: postParent.secure_media
 		},
-		comments: getAllComments(postComments) ?? []
+		comments: cleanedComments
 	};
+
+	console.log(postData.comments);
 
 	return postData;
 };

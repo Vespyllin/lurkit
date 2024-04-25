@@ -3,15 +3,11 @@
 ## Form
 
 font  
-colors  
 scrollbar  
-markdown  
-video
 loading spinner
+video overlay
 
 ## Layout
-
-icon redir
 
 ### Sidebar
 
@@ -21,7 +17,6 @@ stickied subreddits
 
 ## Feed
 
-upvote ratio blue-to-red  
 sorting
 image modal
 
@@ -31,9 +26,13 @@ sticky
 
 ## Post
 
-upvote ratio blue-to-red  
 sorting
 image modal
+
+### Comments
+
+gifs  
+collapse comments with less than 1/2 parent comment upvotes
 
 ## Function
 

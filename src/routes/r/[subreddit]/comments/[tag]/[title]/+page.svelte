@@ -1,11 +1,13 @@
 <script lang="ts">
 	import ListingHeader from '$lib/components/listing/ListingHeader.svelte';
 	import ListingFooter from '$lib/components/listing/ListingFooter.svelte';
-	import CommentChain from '$lib/components/post/CommentChain.svelte';
-	import Post from '$lib/components/post/Post.svelte';
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
 	import { CaretDown } from 'radix-icons-svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import CommentChain from '$lib/components/listing/CommentChain.svelte';
+	import ListingBody from '$lib/components/listing/ListingBody.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -52,14 +54,14 @@
 	{@const { listing: post, comments } = postData}
 
 	<div class="space-y-2">
-		<div class="flex w-full flex-col gap-2 rounded-2xl pb-4">
+		<div class="flex w-full flex-col gap-2 pb-4">
 			<ListingHeader
 				author={post.author}
 				created_utc={post.created_utc}
 				subreddit_icon={getIcon(post)}
 				subreddit_name={post.subreddit.display_name}
 			/>
-			<Post {post} />
+			<ListingBody {post} expand />
 			<ListingFooter
 				score={post.score}
 				num_comments={post.num_comments}
@@ -67,14 +69,29 @@
 			/>
 		</div>
 
-		<div class="mt-4 flex leading-8">
-			<span class="mr-2 text-lg">Sort by:</span>
+		<Separator class="my-2" />
 
-			<div class="flex items-center rounded-sm text-zinc-400 hover:bg-zinc-800 hover:bg-opacity-55">
-				<span class="ml-2 text-lg">{sort}</span>
-				<CaretDown size={18} />
-			</div>
-		</div>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<div class="mt-4 flex leading-8">
+					<span class="mr-2 text-lg">Sort by:</span>
+
+					<div
+						class="flex items-center rounded-sm text-zinc-400 hover:bg-zinc-800 hover:bg-opacity-55"
+					>
+						<span class="ml-2 text-lg">{sort}</span>
+						<CaretDown size={18} />
+					</div>
+				</div>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content class="bg-background ">
+				<DropdownMenu.Item>Profile</DropdownMenu.Item>
+				<DropdownMenu.Item>Billing</DropdownMenu.Item>
+				<DropdownMenu.Item>Team</DropdownMenu.Item>
+				<DropdownMenu.Item>Subscription</DropdownMenu.Item>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+
 		<CommentChain {comments} root />
 	</div>
 {/if}

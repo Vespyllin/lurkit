@@ -15,11 +15,11 @@
 	const collapse = () => (collapsed = !collapsed);
 </script>
 
-<div class={cn('flex flex-col', root ? 'gap-5' : 'gap-3')}>
+<div class={cn('mt-1 flex flex-col', root ? 'gap-4' : 'gap-2')}>
 	{#if collapsed && comments.length > 0}
-		<div class="flex cursor-pointer items-center gap-2 text-zinc-400" on:click={collapse}>
+		<div class="flex cursor-pointer items-center gap-2 text-zinc-400" onclick={collapse}>
 			<PlusCircled size={18} />
-			<span>Expand {comments.length} more</span>
+			<span class="hover:underline">Expand {comments.length} more</span>
 		</div>
 	{:else}
 		{#each comments as parent, idx}
