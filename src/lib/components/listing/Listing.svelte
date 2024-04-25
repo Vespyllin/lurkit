@@ -12,8 +12,6 @@
 	const icon_url = post?.subreddit?.community_icon?.split('?')[0] ?? post.subreddit.icon_img;
 </script>
 
-{JSON.stringify(post)}
-
 <div class="space-y-2">
 	<div class="flex h-5 items-center gap-2">
 		{#if icon_url}
