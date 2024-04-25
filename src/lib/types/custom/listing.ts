@@ -38,5 +38,5 @@ type SubredditDetails = {
 	description: string;
 	display_name: string;
 	over_18: boolean;
-	icon_img?: string;
+	icon_img: string | undefined;
 };

@@ -1,13 +1,11 @@
 <script lang="ts">
-	import ListingHeader from '$lib/components/listing/ListingHeader.svelte';
-	import ListingFooter from '$lib/components/listing/ListingFooter.svelte';
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
 	import { CaretDown } from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import CommentChain from '$lib/components/listing/CommentChain.svelte';
-	import ListingBody from '$lib/components/listing/ListingBody.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -28,11 +26,6 @@
 			fetching = false;
 		});
 	});
-
-	const getIcon = (post: Listing) => {
-		const community_icon_src = post?.subreddit?.community_icon;
-		return community_icon_src?.substring(0, community_icon_src?.indexOf('?'));
-	};
 </script>
 
 <svelte:head>
@@ -55,18 +48,7 @@
 
 	<div class="space-y-2">
 		<div class="flex w-full flex-col gap-2 pb-4">
-			<ListingHeader
-				author={post.author}
-				created_utc={post.created_utc}
-				subreddit_icon={getIcon(post)}
-				subreddit_name={post.subreddit.display_name}
-			/>
-			<ListingBody {post} expand />
-			<ListingFooter
-				score={post.score}
-				num_comments={post.num_comments}
-				upvote_ratio={post.upvote_ratio}
-			/>
+			<Listing {post} expand />
 		</div>
 
 		<Separator class="my-2" />

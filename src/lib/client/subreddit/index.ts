@@ -21272,7 +21272,7 @@ const cleanResponse = (feed: RedditListing) => {
 					community_icon: child.data.sr_detail.community_icon,
 					description: child.data.sr_detail.description,
 					over_18: child.data.sr_detail.over_18,
-					icon_img: child.data.sr_detail.icon_img ?? child.data.sr_detail.community_icon
+					icon_img: child.data.sr_detail.icon_img
 				}
 			} as Listing;
 		})

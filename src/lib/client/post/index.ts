@@ -63,7 +63,8 @@ const cleanData = (post: any) => {
 				community_icon: postParent.sr_detail.community_icon,
 				description: postParent.sr_detail.description,
 				display_name: postParent.sr_detail.display_name_prefixed,
-				over_18: postParent.sr_detail.over_18
+				over_18: postParent.sr_detail.over_18,
+				icon_img: postParent.sr_detail.icon_img
 			},
 			thumbnail: postParent.thumbnail,
 			upvote_ratio: postParent.upvote_ratio,
