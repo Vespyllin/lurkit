@@ -66,7 +66,7 @@
 					</div>
 				</div>
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content class="bg-background ">
+			<DropdownMenu.Content class="bg-background">
 				<DropdownMenu.Item>Profile</DropdownMenu.Item>
 				<DropdownMenu.Item>Billing</DropdownMenu.Item>
 				<DropdownMenu.Item>Team</DropdownMenu.Item>

@@ -14,7 +14,7 @@
 
 	let lastPostId: string | undefined;
 	$effect(() => {
-		fetchFeedData(subreddit, 100).then((data) => {
+		fetchFeedData(subreddit, 50).then((data) => {
 			if (data.status == 'OK') {
 				feed = data.data;
 				lastPostId = data.data.posts.at(-1)?.name;

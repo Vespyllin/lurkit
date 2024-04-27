@@ -23,6 +23,6 @@
 			</Carousel.Item>
 		{/each}
 	</Carousel.Content>
-	<Carousel.Previous class="translate-x-16" />
-	<Carousel.Next class="-translate-x-16" />
+	<Carousel.Previous class="translate-x-12" />
+	<Carousel.Next class="-translate-x-12" />
 </Carousel.Root>
