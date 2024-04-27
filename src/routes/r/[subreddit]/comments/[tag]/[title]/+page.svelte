@@ -29,7 +29,7 @@
 </script>
 
 <svelte:head>
-	<title>{postData ? postData.listing.title : error}</title>
+	<title>{postData ? postData.listing.title : error ? error : 'Lurkit'}</title>
 </svelte:head>
 
 {#if !postData && fetching}

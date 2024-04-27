@@ -1,5 +1,3 @@
-import { PUBLIC_MOCK } from '$env/static/public';
-
 export const fetchPostData = async (
 	comment_uri: string,
 	sort?: RedditSortOptions
@@ -7,15 +5,6 @@ export const fetchPostData = async (
 	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;
-
-	if (PUBLIC_MOCK == 'true') {
-		console.log('Mock request for post.json');
-		return {
-			status: 'INTERNAL',
-			reason: 'TODO: MOCK POST'
-			// data: cleanData(post)
-		};
-	}
 
 	const url = `${baseURL}${comment_uri}.json${queryParams}`;
 	console.log(`Making request to ${url}`);

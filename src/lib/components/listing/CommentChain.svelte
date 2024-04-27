@@ -16,12 +16,7 @@
 </script>
 
 <div class={cn('mt-1 flex flex-col', root ? 'gap-4' : 'gap-2')}>
-	{#if collapsed && comments.length > 0}
-		<div class="flex cursor-pointer items-center gap-2 text-zinc-400" onclick={collapse}>
-			<PlusCircled size={18} />
-			<span class="hover:underline">Expand {comments.length} more</span>
-		</div>
-	{:else}
+	{#if !collapsed || comments.length == 0}
 		{#each comments as parent, idx}
 			<Comment
 				comment={parent}
@@ -29,5 +24,10 @@
 				collapsed={exceededCollapseDepth && idx > 0}
 			/>
 		{/each}
+	{:else}
+		<div class="flex cursor-pointer items-center gap-2 text-zinc-400" onclick={collapse}>
+			<PlusCircled size={18} />
+			<span class="hover:underline">Expand {comments.length} more</span>
+		</div>
 	{/if}
 </div>
