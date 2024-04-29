@@ -1,13 +1,9 @@
 # lurkit - TODOs:
 
-## Form
+## Layout
 
-font  
 scrollbar  
 loading spinner
-video overlay
-
-## Layout
 
 ### Sidebar
 
@@ -21,6 +17,8 @@ redirect to subreddit
 subreddit popover  
 sorting  
 image modal
+video overlay  
+gallery picture counter
 
 ### Subreddit
 

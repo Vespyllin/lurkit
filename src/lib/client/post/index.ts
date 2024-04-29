@@ -7,7 +7,9 @@ export const fetchPostData = async (
 	if (sort) queryParams += `&sort=${sort}`;
 
 	const url = `${baseURL}${comment_uri}.json${queryParams}`;
-	console.log(`Making request to ${url}`);
+
+	// const headers = new Headers();
+	// headers.append('Cache-Control', 'public, max-age=300, immutable');
 
 	const fetchRes = await fetch(url);
 	if (fetchRes.status != 200) {

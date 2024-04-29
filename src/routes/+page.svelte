@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fetchFeedData } from '$lib/client/subreddit';
+	import Spinner from '$lib/components/layout/Spinner.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
@@ -8,16 +9,24 @@
 	let error: string | undefined = $state();
 
 	let lastPostId: string | undefined;
+	const init = async () => {
+		const data = await fetchFeedData(undefined, 50);
+		if (data.status == 'OK') {
+			feed = data.data;
+			lastPostId = data.data.posts.at(-1)?.name;
+		} else {
+			error = data.reason;
+		}
+	};
+
 	$effect(() => {
-		fetchFeedData(undefined, 100).then((data) => {
-			if (data.status == 'OK') {
-				feed = data.data;
-				lastPostId = data.data.posts.at(-1)?.name;
-			} else {
-				error = data.reason;
-			}
+		fetching = true;
+		try {
+			init().then(() => (fetching = false));
+		} catch (error) {
+			error = 'Error making request';
 			fetching = false;
-		});
+		}
 	});
 </script>
 
@@ -32,7 +41,6 @@
 		if (!!feed && !fetching && feedHeight < window.scrollY + 750) {
 			fetching = true;
 
-			// TODO: Retry policy
 			const fetchedFeed = await fetchFeedData(undefined, 100, lastPostId);
 			if (fetchedFeed.status === 'OK') {
 				feed.after = fetchedFeed.data.after;
@@ -52,7 +60,8 @@
 {#if !feed}
 	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
 		{#if fetching}
-			<h1 class="text-center text-3xl">LOADING</h1>
+			<Spinner class="mb-4 h-24 w-full" />
+			<h1 class="text-center text-3xl">Hold on, we're looking...</h1>
 		{:else}
 			<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
 			<h2 class="text-center text-xl">{error}</h2>
@@ -69,7 +78,10 @@
 			{#if error}
 				<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
 			{:else if fetching}
-				<h1 class="text-3xl text-green-500">LOADING MORE POSTS</h1>
+				<div class="flex items-center justify-center gap-4">
+					<Spinner class="h-8 w-8" />
+					<h1 class="text-center text-3xl">More? ok...</h1>
+				</div>
 			{/if}
 		</div>
 	{/if}

@@ -22,7 +22,7 @@
 		</span>
 		•
 		<span class="text-zinc-400">
-			{comment.score} upvote{comment.score != 1 ? 's' : ''}
+			{comment.score.toLocaleString()} upvote{comment.score != 1 ? 's' : ''}
 		</span>
 		•
 		<span class="text-zinc-400">

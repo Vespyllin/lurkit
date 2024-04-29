@@ -13,7 +13,6 @@ export const fetchFeedData = async (
 	const cleanSort = sort ? `/${sort}` : '';
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
-	console.log(`Making request to ${url}`);
 
 	const fetchRes = await fetch(url);
 	if (fetchRes.status != 200) {

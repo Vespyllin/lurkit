@@ -1,31 +1,48 @@
 export const getTimeAgo = (timestamp: number) => {
 	const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', { style: 'long' });
 
-	if (!timestamp) return `BAD TS: ${timestamp}`;
+	if (!timestamp) return `fuck`;
+	const timestampDate = new Date(timestamp * 1000);
+	const nowDate = new Date();
 
-	const givenDate = new Date(timestamp * 1000);
-	const difference = Date.now() - givenDate.getTime();
-	const differenceInSeconds = Math.floor(difference / 1000);
+	const timestampSeconds = timestampDate.getSeconds();
+	const timestampMinutes = timestampDate.getMinutes();
+	const timestampHours = timestampDate.getHours();
+	const timestampDays = timestampDate.getDate();
+	const timestampMonths = timestampDate.getMonth();
+	const timestampYears = timestampDate.getFullYear();
 
-	const minuteThreshold = 60;
-	const hourThreshold = minuteThreshold * 60;
-	const dayThreshold = hourThreshold * 24;
+	const nowSeconds = nowDate.getSeconds();
+	const nowMinutes = nowDate.getMinutes();
+	const nowHours = nowDate.getHours();
+	const nowDays = nowDate.getDate();
+	const nowMonths = nowDate.getMonth();
+	const nowYears = nowDate.getFullYear();
 
-	let unit;
+	let unit: Intl.RelativeTimeFormatUnit;
 	let value;
 
-	if (differenceInSeconds < minuteThreshold) {
-		unit = 'second';
-		value = differenceInSeconds;
-	} else if (differenceInSeconds < hourThreshold) {
-		unit = 'minute';
-		value = Math.floor(differenceInSeconds / minuteThreshold);
-	} else if (differenceInSeconds < dayThreshold) {
-		unit = 'hour';
-		value = Math.floor(differenceInSeconds / hourThreshold);
-	} else {
+	if (nowYears - timestampYears > 0) {
+		unit = 'year';
+		value = nowYears - timestampYears;
+	} else if (nowMonths - timestampMonths > 0) {
+		unit = 'month';
+		value = nowMonths - timestampMonths;
+	} else if (nowDays - timestampDays >= 7) {
+		unit = 'week';
+		value = Math.floor((nowDays - timestampDays) / 7);
+	} else if (nowDays - timestampDays > 0) {
 		unit = 'day';
-		value = Math.floor(differenceInSeconds / dayThreshold);
+		value = nowDays - timestampDays;
+	} else if (nowHours - timestampHours > 0) {
+		unit = 'hour';
+		value = nowHours - timestampHours;
+	} else if (nowMinutes - timestampMinutes > 0) {
+		unit = 'minute';
+		value = nowMinutes - timestampMinutes;
+	} else {
+		unit = 'seconds';
+		value = nowSeconds - timestampSeconds;
 	}
 
 	return relativeTimeFormatter.format(-value, unit as any);
