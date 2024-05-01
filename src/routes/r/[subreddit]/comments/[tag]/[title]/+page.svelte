@@ -6,6 +6,7 @@
 	import CommentChain from '$lib/components/listing/CommentChain.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
+	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -32,22 +33,13 @@
 	<title>{postData ? postData.listing.title : error ? error : 'Lurkit'}</title>
 </svelte:head>
 
-{#if !postData && fetching}
-	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
-		<h1 class="text-center text-3xl">LOADING</h1>
-	</div>
-{:else if !postData}
-	<div class="mx-auto items-center justify-center space-y-2 p-32 lg:max-w-5xl">
-		<div class="flex flex-col">
-			<h1 class="text-center text-3xl">Could not reach Reddit servers.</h1>
-			<h2 class="text-center text-xl">{error}</h2>
-		</div>
-	</div>
+{#if !postData}
+	<FetchStatus {fetching} {error} />
 {:else}
 	{@const { listing: post, comments } = postData}
 
-	<div class="space-y-2">
-		<div class="flex w-full flex-col gap-2 pb-4">
+	<div class="mx-auto flex max-w-4xl flex-col gap-2">
+		<div class="flex flex-col gap-2 pb-4">
 			<Listing {post} expand />
 		</div>
 

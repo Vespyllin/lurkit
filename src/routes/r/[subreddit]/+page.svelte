@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchFeedData } from '$lib/client/subreddit';
+	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
+	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
@@ -54,24 +56,15 @@
 	<title>{!!feed ? `r/${subreddit}` : error}</title>
 </svelte:head>
 
-{#if !feed && fetching}
-	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
-		<h1 class="text-center text-3xl">LOADING</h1>
-	</div>
-{:else if !feed}
-	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
-		<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
-		<h2 class="text-center text-xl">{error}</h2>
-	</div>
+{#if !feed}
+	<FetchStatus {fetching} {error} />
 {:else}
 	{#each feed.posts ?? [] as post}
 		<Listing {post} />
 		<Separator class="my-4" />
 	{/each}
-	{#if error}
-		<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
-	{/if}
-	{#if fetching}
-		<h1 class="text--500 text-3xl">LOADING MORE POSTS</h1>
+
+	{#if error || fetching}
+		<FetchMoreStatus {fetching} {error} />
 	{/if}
 {/if}

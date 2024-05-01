@@ -64,17 +64,24 @@ export const getTimeAgo = (timestamp: number) => {
 	} else if (differenceInSeconds < weekThreshold) {
 		unit = 'day';
 		value = Math.floor(differenceInSeconds / dayThreshold);
-	} else if (differenceInSeconds < monthThreshold) {
-		unit = 'week';
-		value = Math.floor(differenceInSeconds / weekThreshold);
-	} else if (differenceInSeconds < yearThreshold) {
-		// TODO: Calculate using date-time functions here
-		unit = 'month';
-		value = Math.floor(differenceInSeconds / monthThreshold);
 	} else {
-		// TODO: Calculate using date-time functions here
-		unit = 'year';
-		value = Math.floor(differenceInSeconds / yearThreshold);
+		const givenMonth = givenDate.getMonth();
+		const givenYear = givenDate.getFullYear();
+
+		const today = new Date();
+		const todayMonth = today.getMonth();
+		const todayYear = today.getFullYear();
+
+		if (todayYear - givenYear > 0) {
+			unit = 'year';
+			value = todayYear - givenYear;
+		} else if (todayMonth - givenMonth > 0) {
+			unit = 'month';
+			value = todayMonth - givenMonth;
+		} else {
+			unit = 'week';
+			value = Math.floor(differenceInSeconds / weekThreshold);
+		}
 	}
 
 	return relativeTimeFormatter.format(-value, unit as any);

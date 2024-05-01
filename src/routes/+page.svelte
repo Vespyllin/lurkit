@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { fetchFeedData } from '$lib/client/subreddit';
+	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
+	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Spinner from '$lib/components/layout/Spinner.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
@@ -58,15 +60,7 @@
 />
 
 {#if !feed}
-	<div class="mx-auto items-center justify-center p-32 lg:max-w-5xl">
-		{#if fetching}
-			<Spinner class="mb-4 h-24 w-full" />
-			<h1 class="text-center text-3xl">Hold on, we're looking...</h1>
-		{:else}
-			<h1 class="text-center text-3xl">Could not reach Reddit servers</h1>
-			<h2 class="text-center text-xl">{error}</h2>
-		{/if}
-	</div>
+	<FetchStatus {fetching} {error} />
 {:else}
 	{#each feed.posts ?? [] as post}
 		<Listing {post} />
@@ -74,15 +68,6 @@
 	{/each}
 
 	{#if error || fetching}
-		<div class="mx-auto p-8 text-center lg:max-w-5xl">
-			{#if error}
-				<h1 class="text-3xl text-red-500">FAILED TO FETCH MORE POSTS {error}</h1>
-			{:else if fetching}
-				<div class="flex items-center justify-center gap-4">
-					<Spinner class="h-8 w-8" />
-					<h1 class="text-center text-3xl">More? ok...</h1>
-				</div>
-			{/if}
-		</div>
+		<FetchMoreStatus {fetching} {error} />
 	{/if}
 {/if}

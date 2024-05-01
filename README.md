@@ -1,5 +1,7 @@
 # lurkit - TODOs:
 
+# FORMAT COMPONENTS TO TAKE CLASS NAMES
+
 ## Layout
 
 scrollbar  
@@ -16,7 +18,7 @@ stickied subreddits
 redirect to subreddit  
 subreddit popover  
 sorting  
-image modal
+image modal (disable scrolling)  
 video overlay  
 gallery picture counter
 
@@ -26,8 +28,7 @@ sticky
 
 ## Post
 
-sorting
-image modal
+sorting comments
 
 ### Comments
 
