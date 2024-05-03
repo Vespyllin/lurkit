@@ -12,7 +12,7 @@
 	const icon_url = post?.subreddit?.community_icon?.split('?')[0] ?? post.subreddit.icon_img;
 </script>
 
-<div class="space-y-2">
+<div class="flex flex-col gap-2">
 	<div class="flex h-5 items-center gap-2">
 		{#if icon_url}
 			<img src={icon_url} class="my-auto h-5 rounded-full object-contain" />
@@ -38,10 +38,10 @@
 
 		{#if post.is_video}
 			<Video url={post.url} />
-		{:else if post.is_gallery}
-			<Gallery {post} />
 		{:else if post.post_hint == 'image'}
 			<Image url={post.url} />
+		{:else if post.is_gallery}
+			<Gallery {post} />
 		{:else if post.post_hint == 'rich:video'}
 			<h1 class="text-xl font-semibold text-red-500">TODO: Handle rich:video</h1>
 		{:else if post.selftext?.length > 0 && !expand}
@@ -65,6 +65,7 @@
 				({post.upvote_ratio.toLocaleString(undefined, { minimumFractionDigits: 2 })})
 			</span>
 		</div>
+
 		<a href={`${post.permalink}`}>
 			<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
 				<ChatBubble size={20} />

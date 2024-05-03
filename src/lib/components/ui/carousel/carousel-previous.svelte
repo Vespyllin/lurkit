@@ -16,7 +16,7 @@
 	variant="ghost"
 	size="icon"
 	class={cn(
-		'absolute -left-12 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer touch-manipulation rounded-none ',
+		'absolute -left-12 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer touch-manipulation rounded-none hover:bg-opacity-25',
 		className
 	)}
 	disabled={!$canScrollPrev}

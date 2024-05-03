@@ -30,7 +30,13 @@
 </script>
 
 <svelte:head>
-	<title>{postData ? postData.listing.title : error ? error : 'Lurkit'}</title>
+	<title>
+		{postData
+			? `${postData.listing.title} - ${postData.listing.subreddit.display_name}`
+			: error
+				? error
+				: 'Loading...'}
+	</title>
 </svelte:head>
 
 {#if !postData}
