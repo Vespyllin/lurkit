@@ -5,16 +5,9 @@
 	let expanded = $state(false);
 	const handleExpand = () => {
 		expanded = !expanded;
-		const body = document.querySelector('body');
-		if (!body) return;
 
-		if (expanded) {
-			console.log('hiding');
-			body.style.overflow = 'hidden';
-		} else {
-			console.log('showing');
-			body.style.overflow = 'auto';
-		}
+		const body = document.querySelector('body');
+		if (body) body.style.overflow = expanded ? 'hidden' : 'auto';
 	};
 </script>
 
