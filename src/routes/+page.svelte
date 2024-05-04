@@ -2,7 +2,6 @@
 	import { fetchFeedData } from '$lib/client/subreddit';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import Spinner from '$lib/components/layout/Spinner.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
