@@ -13,7 +13,7 @@
 <main style="font-family: 'Ubuntu'" class="min-h-screen bg-background">
 	<Header />
 	<div class="flex pt-16">
-		<div class="mx-auto px-8 py-4 lg:max-w-6xl">
+		<div class="mx-auto w-[64rem] px-8 py-4">
 			<slot />
 		</div>
 	</div>

@@ -44,7 +44,7 @@
 {:else}
 	{@const { listing: post, comments } = postData}
 
-	<div class="mx-auto flex max-w-4xl flex-col gap-2">
+	<div class="flex flex-col gap-2">
 		<div class="flex flex-col gap-2 pb-4">
 			<Listing {post} expand />
 		</div>
