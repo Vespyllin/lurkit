@@ -62,8 +62,6 @@ const cleanData = (post: any) => {
 		comments: cleanedComments
 	};
 
-	console.log(postData.comments);
-
 	return postData;
 };
 

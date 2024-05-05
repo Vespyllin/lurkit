@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
-	import { CaretDown } from 'radix-icons-svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import CommentChain from '$lib/components/listing/CommentChain.svelte';
+	import CommentChain from '$lib/components/comments/CommentChain.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
+	import SortDropdown from '$lib/components/comments/SortDropdown.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -15,17 +14,23 @@
 	let fetching = $state(true);
 	let postData: PostData | undefined = $state();
 	let error: string | undefined = $state();
-	let sort: RedditSortOptions = 'top';
+	let sort: RedditSortOptions = $state('top');
+
+	const getData = async (sort: RedditSortOptions) => {
+		fetching = true;
+		const fetchRes = await fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort);
+
+		if (fetchRes.status == 'OK') {
+			if (!postData?.listing) postData = fetchRes.data;
+			else postData.comments = fetchRes.data.comments; // Only update the comments if the listing is already populated (changing comment sort options)
+		} else {
+			error = fetchRes.reason;
+		}
+		fetching = false;
+	};
 
 	$effect(() => {
-		fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort).then((data) => {
-			if (data.status == 'OK') {
-				postData = data.data;
-			} else {
-				error = data.reason;
-			}
-			fetching = false;
-		});
+		getData(sort);
 	});
 </script>
 
@@ -44,34 +49,17 @@
 {:else}
 	{@const { listing: post, comments } = postData}
 
-	<div class="flex flex-col gap-2">
-		<div class="flex flex-col gap-2 pb-4">
-			<Listing {post} expand />
-		</div>
+	<div class="flex flex-col">
+		<Listing {post} expand />
+
+		<SortDropdown class="mt-4" bind:sort />
 
 		<Separator class="my-2" />
 
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				<div class="mt-4 flex leading-8">
-					<span class="mr-2 text-lg">Sort by:</span>
-
-					<div
-						class="flex items-center rounded-sm text-zinc-400 hover:bg-zinc-800 hover:bg-opacity-55"
-					>
-						<span class="ml-2 text-lg">{sort}</span>
-						<CaretDown size={18} />
-					</div>
-				</div>
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content class="bg-background">
-				<DropdownMenu.Item>Profile</DropdownMenu.Item>
-				<DropdownMenu.Item>Billing</DropdownMenu.Item>
-				<DropdownMenu.Item>Team</DropdownMenu.Item>
-				<DropdownMenu.Item>Subscription</DropdownMenu.Item>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
-
-		<CommentChain {comments} root />
+		{#if fetching}
+			<FetchStatus {fetching} {error} />
+		{:else}
+			<CommentChain {comments} root />
+		{/if}
 	</div>
 {/if}

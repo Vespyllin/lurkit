@@ -12,8 +12,8 @@
 	const icon_url = post?.subreddit?.community_icon?.split('?')[0] ?? post.subreddit.icon_img;
 </script>
 
-<div class="flex flex-col gap-2">
-	<div class="flex h-5 items-center gap-2">
+<div>
+	<div class="mb-2 flex h-5 items-center gap-2">
 		{#if icon_url}
 			<img src={icon_url} class="my-auto h-5 rounded-full object-contain" />
 		{/if}
@@ -53,7 +53,7 @@
 		{/if}
 	{/if}
 
-	<div class="pt-1 font-semibold">
+	<div class="mt-2 font-semibold">
 		<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
 			<div class="-ml-1">
 				<ArrowUp size={20} />
