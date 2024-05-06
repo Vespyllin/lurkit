@@ -43,6 +43,6 @@
 	<div
 		class="absolute bottom-0 mb-1 flex h-fit w-fit items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1"
 	>
-		<span class="text-zinc-300 opacity-85">{imgIndex} ∕ {galleryItems.length}</span>
+		<span class="text-white opacity-85">{imgIndex} ∕ {galleryItems.length}</span>
 	</div>
 </div>
