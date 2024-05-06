@@ -2,6 +2,7 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 
 	let { post }: { post: Listing } = $props();
+	const galleryItems = post?.gallery_data?.items ?? [];
 
 	const getMediaType = (post: Listing, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
@@ -9,18 +10,18 @@
 		else return '';
 	};
 
-	let imgIndex = $state(0);
+	let imgIndex = $state(1);
 </script>
 
 <div class="relative flex justify-center">
 	<Carousel.Root class="flex h-[600px] justify-center">
 		<Carousel.Content>
-			{#each post?.gallery_data?.items ?? [] as gallery_picture}
+			{#each galleryItems as galleryItem}
 				<Carousel.Item class="rounded-2xl">
 					<div class="-p-4 mx-auto flex h-full items-center justify-center">
 						<img
 							class="h-full max-h-[600px] w-full object-contain"
-							src={`https://i.redd.it/${gallery_picture.media_id}.${getMediaType(post, gallery_picture.media_id)}`}
+							src={`https://i.redd.it/${galleryItem.media_id}.${getMediaType(post, galleryItem.media_id)}`}
 						/>
 					</div>
 				</Carousel.Item>
@@ -42,6 +43,6 @@
 	<div
 		class="absolute bottom-0 mb-1 flex h-fit w-fit items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1"
 	>
-		<span class="text-zinc-300">{imgIndex + 1} ∕ {(post?.gallery_data?.items ?? []).length}</span>
+		<span class="text-zinc-300 opacity-85">{imgIndex} ∕ {galleryItems.length}</span>
 	</div>
 </div>

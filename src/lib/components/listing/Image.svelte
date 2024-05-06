@@ -61,13 +61,17 @@
 		<CrossCircled size={50} />
 	</div>
 	<div
+		onclick={handleExpand}
 		class="fixed left-0 top-0 z-20 flex h-screen w-screen items-center overflow-auto bg-background"
 	>
 		<img
 			bind:this={imageState}
 			class={cn('m-auto ', zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}
 			src={url}
-			onclick={() => (zoomed = !zoomed)}
+			onclick={(e) => {
+				e.stopPropagation();
+				zoomed = !zoomed;
+			}}
 		/>
 	</div>
 {/if}
