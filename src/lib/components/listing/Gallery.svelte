@@ -2,7 +2,6 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 
 	let { post }: { post: Listing } = $props();
-	let expanded = $state(false);
 
 	const getMediaType = (post: Listing, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
