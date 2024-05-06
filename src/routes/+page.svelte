@@ -11,6 +11,8 @@
 
 	let lastPostId: string | undefined;
 	const init = async () => {
+		fetching = true;
+
 		const data = await fetchFeedData(undefined, 50);
 		if (data.status == 'OK') {
 			feed = data.data;
@@ -18,12 +20,13 @@
 		} else {
 			error = data.reason;
 		}
+
+		fetching = false;
 	};
 
 	$effect(() => {
-		fetching = true;
 		try {
-			init().then(() => (fetching = false));
+			init();
 		} catch (error) {
 			error = 'Error making request';
 			fetching = false;

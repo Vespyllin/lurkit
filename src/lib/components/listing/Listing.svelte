@@ -5,7 +5,8 @@
 	import Text from './Text.svelte';
 	import Video from './Video.svelte';
 	import { ArrowUp, ChatBubble } from 'radix-icons-svelte';
-	import { getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo } from '$lib';
+	import IFrame from './IFrame.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
 
@@ -34,7 +35,7 @@
 		{@const { thumbnail, title, url } = post}
 		<Link {thumbnail} {title} {url} />
 	{:else}
-		<h1 class="text-2xl font-semibold">{post.title}</h1>
+		<h1 class="mb-1 text-2xl font-semibold">{cleanText(post.title)}</h1>
 
 		{#if post.is_video}
 			<Video url={post.url} />
@@ -43,7 +44,7 @@
 		{:else if post.is_gallery}
 			<Gallery {post} />
 		{:else if post.post_hint == 'rich:video'}
-			<h1 class="text-xl font-semibold text-red-500">TODO: Handle rich:video</h1>
+			<IFrame {post} />
 		{:else if post.selftext?.length > 0 && !expand}
 			<Text text={post.selftext} clamp />
 		{/if}

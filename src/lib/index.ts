@@ -91,7 +91,7 @@ export const cleanText = (text: string, nowhitespace: boolean = false) => {
 	if (!text) return '';
 
 	text = text.trimStart().trimEnd();
-	text = decodeEntities(text);
+	text = decodeHTMLText(text);
 
 	if (!nowhitespace) return text;
 
@@ -110,7 +110,7 @@ export const cleanText = (text: string, nowhitespace: boolean = false) => {
 	return text;
 };
 
-const decodeEntities = (encodedString: string) => {
+const decodeHTMLText = (encodedString: string) => {
 	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
 	const translate: any = {
 		nbsp: ' ',

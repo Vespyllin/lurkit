@@ -30,7 +30,13 @@ type Listing = {
 	edited: boolean;
 	is_self: boolean;
 
-	secure_media_embed: {};
+	secure_media_embed: {
+		content: string;
+		width: number;
+		height: number;
+		scrolling: boolean;
+		media_domain_url: string;
+	};
 };
 
 type SubredditDetails = {
