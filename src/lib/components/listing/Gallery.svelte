@@ -9,9 +9,11 @@
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
 	};
+
+	let imgIndex = $state(0);
 </script>
 
-{#if !expanded}
+<div class="relative flex justify-center">
 	<Carousel.Root class="flex h-[600px] justify-center">
 		<Carousel.Content>
 			{#each post?.gallery_data?.items ?? [] as gallery_picture}
@@ -25,10 +27,22 @@
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
-		<Carousel.Previous class="translate-x-12" />
-		<Carousel.Next class="-translate-x-12" />
+		<Carousel.Previous
+			customClick={() => {
+				imgIndex = imgIndex - 1;
+			}}
+			class="translate-x-12"
+		/>
+		<Carousel.Next
+			customClick={() => {
+				imgIndex = imgIndex + 1;
+			}}
+			class="-translate-x-12"
+		/>
 	</Carousel.Root>
-{:else}
-	<!-- TODO: Handle Expand -->
-	<h1>TODO: Handle Expand</h1>
-{/if}
+	<div
+		class="absolute bottom-0 mb-1 flex h-fit w-fit items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1"
+	>
+		<span class="text-zinc-300">{imgIndex + 1} ∕ {(post?.gallery_data?.items ?? []).length}</span>
+	</div>
+</div>

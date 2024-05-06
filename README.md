@@ -4,8 +4,7 @@
 
 ## Layout
 
-scrollbar  
-loading spinner
+scrollbar
 
 ### Sidebar
 
@@ -15,20 +14,17 @@ stickied subreddits
 
 ## Feed
 
+gallery picture counter  
 redirect to subreddit  
 subreddit popover  
-sorting  
-image modal (disable scrolling)  
-video overlay  
-gallery picture counter
+sorting
+video overlay
 
 ### Subreddit
 
 sticky
 
 ## Post
-
-sorting comments
 
 ### Comments
 

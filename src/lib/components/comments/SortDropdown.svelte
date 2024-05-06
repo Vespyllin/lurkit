@@ -19,7 +19,7 @@
 				</div>
 			</DropdownMenu.Trigger>
 		</div>
-		<DropdownMenu.Content class="bg-background">
+		<DropdownMenu.Content class="bg-background font-['Ubuntu']">
 			<DropdownMenu.Item onclick={() => (sort = 'top')}>top</DropdownMenu.Item>
 			<DropdownMenu.Item onclick={() => (sort = 'controversial')}>controversial</DropdownMenu.Item>
 			<DropdownMenu.Item onclick={() => (sort = 'new')}>new</DropdownMenu.Item>

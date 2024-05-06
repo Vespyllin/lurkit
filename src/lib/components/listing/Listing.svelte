@@ -35,7 +35,7 @@
 		{@const { thumbnail, title, url } = post}
 		<Link {thumbnail} {title} {url} />
 	{:else}
-		<h1 class="mb-1 text-2xl font-semibold">{cleanText(post.title)}</h1>
+		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
 
 		{#if post.is_video}
 			<Video url={post.url} />
@@ -50,7 +50,7 @@
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}
-			<Text text={post.selftext} />
+			<Text class="mt-2" text={post.selftext} />
 		{/if}
 	{/if}
 
