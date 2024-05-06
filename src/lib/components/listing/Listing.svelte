@@ -4,23 +4,17 @@
 	import Image from './Image.svelte';
 	import Text from './Text.svelte';
 	import Video from './Video.svelte';
-	import { ArrowUp, ChatBubble } from 'radix-icons-svelte';
-	import { cleanText, getTimeAgo } from '$lib';
+	import { ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
+	import { getTimeAgo } from '$lib';
 	import IFrame from './IFrame.svelte';
+	import SubredditLink from './SubredditLink.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
-
-	const icon_url = post?.subreddit?.community_icon?.split('?')[0] ?? post.subreddit.icon_img;
 </script>
 
 <div>
 	<div class="mb-2 flex h-5 items-center gap-2">
-		{#if icon_url}
-			<img src={icon_url} class="my-auto h-5 rounded-full object-contain" />
-		{/if}
-		<span class="text-zinc-200">
-			{post.subreddit.display_name}
-		</span>
+		<SubredditLink subreddit={post.subreddit} />
 		•
 		<span class="text-zinc-400">
 			{post.author}
@@ -29,6 +23,15 @@
 		<span class="text-zinc-400">
 			{getTimeAgo(post.created_utc)}
 		</span>
+		{#if post.over_18}
+			•
+			<div class="flex h-5 items-center gap-1">
+				<div class="mt-1 rounded-full text-zinc-400">
+					<ExclamationTriangle />
+				</div>
+				<span class="text-zinc-400"> 18+ </span>
+			</div>
+		{/if}
 	</div>
 
 	{#if post.post_hint == 'link'}

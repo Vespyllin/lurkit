@@ -46,12 +46,15 @@ const cleanData = (post: any) => {
 			score: postParent.score,
 			secure_media_embed: postParent.secure_media_embed,
 			selftext: postParent.selftext,
+			over_18: postParent.over_18,
 			subreddit: {
 				community_icon: postParent.sr_detail.community_icon,
 				description: postParent.sr_detail.description,
 				display_name: postParent.sr_detail.display_name_prefixed,
 				over_18: postParent.sr_detail.over_18,
-				icon_img: postParent.sr_detail.icon_img
+				icon_img: postParent.sr_detail.icon_img,
+				public_description: postParent.sr_detail.public_description,
+				title: postParent.sr_detail.title
 			},
 			thumbnail: postParent.thumbnail,
 			upvote_ratio: postParent.upvote_ratio,

@@ -14,6 +14,7 @@ type Listing = {
 	permalink: string;
 	url: string;
 	thumbnail: string;
+	over_18: boolean;
 
 	post_hint: string;
 	is_video: boolean;
@@ -44,5 +45,7 @@ type SubredditDetails = {
 	description: string;
 	display_name: string;
 	over_18: boolean;
+	public_description: string;
 	icon_img: string | undefined;
+	title: string;
 };
