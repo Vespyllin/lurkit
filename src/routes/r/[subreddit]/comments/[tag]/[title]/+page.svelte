@@ -5,7 +5,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import SortDropdown from '$lib/components/comments/SortDropdown.svelte';
+	import SortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 
 	const {
 		params: { subreddit, tag, title }

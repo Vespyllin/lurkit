@@ -1,13 +1,8 @@
 <script lang="ts">
-	import Link from './Link.svelte';
-	import Gallery from './Gallery.svelte';
-	import Image from './Image.svelte';
-	import Text from './Text.svelte';
-	import Video from './Video.svelte';
+	import { Link, Gallery, Image, Text, Video, IFrame } from '../media';
 	import { ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
 	import { getTimeAgo } from '$lib';
-	import IFrame from './IFrame.svelte';
-	import SubredditLink from './SubredditLink.svelte';
+	import SubredditLink from './SubredditContainer.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
 </script>

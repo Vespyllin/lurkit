@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { cleanText } from '$lib';
 	import * as Tooltip from '../ui/tooltip';
-	import Markdown from 'svelte-exmarkdown';
 
 	let { subreddit }: { subreddit: SubredditDetails } = $props();
 
@@ -23,14 +21,11 @@
 		</div>
 	</Tooltip.Trigger>
 	<Tooltip.Content>
-		<div class="flex max-w-md gap-2 px-1 py-2">
+		<div class="flex max-h-28 max-w-2xl gap-3 px-1 py-2">
 			<img src={icon_url} class="my-auto h-24" />
 			<div>
 				<h2 class="text-xl font-semibold">{subreddit.display_name}</h2>
-				<div>
-					<p class="break-words">{subreddit.title}</p>
-					<p class="break-words text-zinc-400">{subreddit.public_description}</p>
-				</div>
+				<p class="line-clamp-3 break-words text-zinc-400">{subreddit.public_description}</p>
 			</div>
 		</div>
 	</Tooltip.Content>

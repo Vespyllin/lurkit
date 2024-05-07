@@ -35,7 +35,7 @@ const cleanData = (feed: RedditListing) => {
 	const subredditFeedData: FeedData = {
 		dist: feed.data.dist,
 		after: feed.data.after,
-		posts: feed.data.children.map(cleanListing)
+		posts: feed.data.children.map((post) => cleanListing(post.data))
 	};
 
 	return subredditFeedData;
