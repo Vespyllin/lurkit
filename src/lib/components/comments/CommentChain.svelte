@@ -10,7 +10,7 @@
 		root
 	}: { comments: PostComments; depth?: number; root?: boolean } = $props();
 
-	const exceededCollapseDepth = depth == ((PUBLIC_COLLAPSE_COMMENT_DEPTH ?? 1) as any) * 1;
+	const exceededCollapseDepth = depth == parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH ?? '1');
 	let collapsed = $state(exceededCollapseDepth);
 	const collapse = () => (collapsed = !collapsed);
 </script>
@@ -25,9 +25,12 @@
 			/>
 		{/each}
 	{:else}
-		<div class="flex cursor-pointer items-center gap-2 text-zinc-400" onclick={collapse}>
+		<div
+			class="flex cursor-pointer items-center gap-2 text-zinc-400 hover:underline"
+			onclick={collapse}
+		>
 			<PlusCircled size={18} />
-			<span class="hover:underline">Expand {comments.length} more</span>
+			<span>Expand {comments.length} more</span>
 		</div>
 	{/if}
 </div>

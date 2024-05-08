@@ -1,8 +1,24 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
+	import { cn } from '$lib/utils';
 
 	let { post }: { post: Listing } = $props();
 	const galleryItems = post?.gallery_data?.items ?? [];
+	let hideCounter = $state(true);
+	let hideTimer: number | undefined = undefined;
+
+	const setHide = () => {
+		hideCounter = false;
+
+		if (hideTimer) {
+			clearTimeout(hideTimer);
+			hideTimer = undefined;
+		}
+
+		hideTimer = setTimeout(() => {
+			hideCounter = true;
+		}, 1500);
+	};
 
 	const getMediaType = (post: Listing, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
@@ -30,18 +46,23 @@
 		<Carousel.Previous
 			customClick={() => {
 				imgIndex = imgIndex - 1;
+				setHide();
 			}}
 			class="translate-x-12"
 		/>
 		<Carousel.Next
 			customClick={() => {
 				imgIndex = imgIndex + 1;
+				setHide();
 			}}
 			class="-translate-x-12"
 		/>
 	</Carousel.Root>
 	<div
-		class="absolute bottom-0 mb-1 flex h-fit w-fit items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1"
+		class={cn(
+			'absolute bottom-0 mb-1 flex h-fit w-fit  items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1 transition-all duration-500',
+			!!hideCounter && 'select-none opacity-0'
+		)}
 	>
 		<span class="text-white opacity-85">{imgIndex} ∕ {galleryItems.length}</span>
 	</div>

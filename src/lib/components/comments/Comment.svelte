@@ -16,7 +16,7 @@
 </script>
 
 <div class="mt-1 border-l-2 pl-3 text-lg hover:border-blue-400">
-	<div class="my-1 flex items-center gap-2 leading-none" onclick={collapse}>
+	<div class="my-1 flex cursor-pointer items-center gap-2 leading-none" onclick={collapse}>
 		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</span>
@@ -35,15 +35,19 @@
 
 		{#if comment.stickied}
 			•
-			<span class="text-zinc-400"><DrawingPin size={18} /></span>
-
-			<span class="text-zinc-400"> stickied </span>
+			<span class="text-zinc-400">
+				<DrawingPin size={18} />
+			</span>
+			<span class="text-zinc-400"> stickied</span>
 		{/if}
 	</div>
 
 	{#if !collapsed}
 		<p
-			class="mt-2 flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100 [&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800"
+			class="	mt-2 flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100
+					[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800
+					[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:border-y-4 [&_blockquote]:p-2 [&_blockquote]:text-zinc-400
+					[&_blockquote_p]:before:content-['“'] [&_blockquote_p]:after:content-['”']"
 		>
 			<Markdown md={cleanText(comment.text) ?? ''} />
 		</p>

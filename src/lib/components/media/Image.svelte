@@ -55,7 +55,7 @@
 	</div>
 {:else}
 	<div
-		class="fixed left-4 top-4 z-30 h-fit w-fit cursor-pointer opacity-40 hover:opacity-100"
+		class="fixed right-4 top-4 z-30 h-fit w-fit cursor-pointer opacity-40 hover:opacity-100"
 		onclick={handleExpand}
 	>
 		<CrossCircled size={50} />

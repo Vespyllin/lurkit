@@ -22,7 +22,7 @@
 	</Tooltip.Trigger>
 	<Tooltip.Content>
 		<div class="flex max-h-28 max-w-2xl gap-3 px-1 py-2">
-			<img src={icon_url} class="my-auto h-24" />
+			<img src={icon_url} class="my-auto mr-1 h-24" />
 			<div>
 				<h2 class="text-xl font-semibold">{subreddit.display_name}</h2>
 				<p class="line-clamp-3 break-words text-zinc-400">{subreddit.public_description}</p>

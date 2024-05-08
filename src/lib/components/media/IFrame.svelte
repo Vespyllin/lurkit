@@ -5,9 +5,10 @@
 </script>
 
 <div class="flex">
-	<div class="mx-auto">
-		{@html cleanText(post.secure_media_embed.content)
+	<div class="mx-auto h-64 w-64">
+		IFRAME
+		<!-- {@html cleanText(post.secure_media_embed.content)
 			.replace('height="200"', 'height="300"')
-			.replace('width="356"', 'width="534"')}
+			.replace('width="356"', 'width="534"')} -->
 	</div>
 </div>
