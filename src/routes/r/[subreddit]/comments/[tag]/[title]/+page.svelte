@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
-	import CommentChain from '$lib/components/comments/CommentChain.svelte';
+	import CommentChain from '$lib/components/CommentChain.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import Listing from '$lib/components/listing/Listing.svelte';
+	import Listing from '$lib/components/Listing.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import SortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
+	import SortDropdown from '$lib/components/CommentSortDropdown.svelte';
 
 	const {
 		params: { subreddit, tag, title }

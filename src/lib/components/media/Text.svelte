@@ -2,7 +2,7 @@
 	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
 	import type { ClassValue } from 'clsx';
-	import Markdown from 'svelte-exmarkdown';
+	import Markdown from '../Markdown.svelte';
 
 	let {
 		text,
@@ -18,5 +18,5 @@
 		className
 	)}
 >
-	<Markdown md={cleanText(text, !!clamp)} />
+	<Markdown text={cleanText(text, !!clamp)} />
 </div>

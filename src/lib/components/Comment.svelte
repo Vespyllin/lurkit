@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { cleanText, getTimeAgo } from '$lib';
+	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import { DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
-	import Markdown from 'svelte-exmarkdown';
+	import Markdown from './Markdown.svelte';
 
 	const {
 		comment,
@@ -43,14 +43,7 @@
 	</div>
 
 	{#if !collapsed}
-		<p
-			class="	mt-2 flex flex-col gap-3 whitespace-pre text-wrap break-words text-zinc-100
-					[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800
-					[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:border-y-4 [&_blockquote]:p-2 [&_blockquote]:text-zinc-400
-					[&_blockquote_p]:before:content-['“'] [&_blockquote_p]:after:content-['”']"
-		>
-			<Markdown md={cleanText(comment.text) ?? ''} />
-		</p>
+		<Markdown text={comment.text} />
 
 		{#if !!comment.children}
 			<div class="ml-3 flex flex-col pt-1">

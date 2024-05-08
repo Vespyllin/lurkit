@@ -2,7 +2,7 @@
 	import { fetchFeedData } from '$lib/client/subreddit';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import Listing from '$lib/components/listing/Listing.svelte';
+	import Listing from '$lib/components/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	let fetching = $state(true);

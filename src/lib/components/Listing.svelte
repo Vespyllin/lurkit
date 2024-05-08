@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { Link, Gallery, Image, Text, Video, IFrame } from '../media';
+	import { Link, Gallery, Image, Text, Video, IFrame } from './media';
 	import { ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
 	import { getTimeAgo } from '$lib';
-	import SubredditLink from './SubredditContainer.svelte';
+	import SubredditContainer from './SubredditContainer.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
 </script>
 
 <div>
 	<div class="mb-2 flex h-5 items-center gap-2">
-		<SubredditLink subreddit={post.subreddit} />
+		<SubredditContainer subreddit={post.subreddit} />
 		•
 		<span class="text-zinc-400">
 			{post.author}
