@@ -14,7 +14,7 @@
 <div
 	class={cn(
 		'flex flex-col gap-5 whitespace-pre text-wrap text-lg text-gray-300 ',
-		clamp && 'line-clamp-6',
+		clamp && '[&_p]:line-clamp-6',
 		className
 	)}
 >
