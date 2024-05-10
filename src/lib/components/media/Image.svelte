@@ -11,30 +11,44 @@
 	let originalWidth = 0;
 
 	$effect(() => {
-		if (originalHeight == 0 && originalWidth == 0) {
-			if (!imageState) return;
+		if (originalHeight * originalWidth !== 0) return;
 
-			const { height, width } = imageState;
-			originalHeight = height;
-			originalWidth = width;
-			console.log('saving original');
-		}
+		if (!imageState) return;
+
+		const { height, width } = imageState;
+		originalHeight = height;
+		originalWidth = width;
 	});
+
+	const clamp = (v: number, l: number, h: number) => (v < l ? l : v > h ? h : v);
+
+	const getNewSize = (height: number, width: number, zoomed: boolean) => {
+		const maxHeight = document.documentElement.clientHeight;
+		const maxWidth = document.documentElement.clientWidth;
+
+		const ZOOM_RATIO = zoomed ? 1.5 : 1;
+		const ZOOM_OUT_SCREEN_RATIO = 0.8;
+
+		if (height >= width) {
+			const clampedHeight = clamp(height, height, maxHeight * ZOOM_OUT_SCREEN_RATIO) * ZOOM_RATIO;
+			return { height: clampedHeight, width: (clampedHeight / height) * width };
+		} else {
+			const clampedWidth = clamp(width, width, maxWidth * ZOOM_OUT_SCREEN_RATIO) * ZOOM_RATIO;
+			return { height: (clampedWidth / width) * height, width: clampedWidth };
+		}
+	};
 
 	$effect(() => {
 		if (!imageState || originalHeight * originalWidth === 0) return;
 
-		if (zoomed) {
-			imageState.height = originalHeight * 1.5;
-			imageState.width = originalWidth * 1.5;
-		} else {
-			imageState.height = originalHeight;
-			imageState.width = originalWidth;
-		}
+		const { height, width } = getNewSize(originalHeight, originalWidth, zoomed);
+		imageState.height = height;
+		imageState.width = width;
 	});
 
 	const handleExpand = () => {
 		expanded = !expanded;
+		zoomed = false;
 
 		const body = document.querySelector('body');
 		if (body) body.style.overflow = expanded ? 'hidden' : 'auto';
@@ -50,12 +64,16 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 {#if !expanded}
 	<div class="flex items-center justify-center">
-		<img src={url} class="max-h-[600px] cursor-pointer object-contain" onclick={handleExpand} />
+		<img
+			src={url}
+			class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
+			onclick={handleExpand}
+		/>
 	</div>
 {:else}
 	<div
 		onclick={handleExpand}
-		class="fixed left-0 top-0 z-20 flex h-screen w-screen items-center overflow-auto bg-background"
+		class="fixed left-0 top-0 z-20 flex h-[100lvh] w-[100lvw] items-center overflow-auto bg-background"
 	>
 		<img
 			bind:this={imageState}

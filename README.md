@@ -1,5 +1,6 @@
 # lurkit - TODOs:
 
+image sizing  
 markdown styling (ol and ul)  
 gifs in comments  
 scrollbar  

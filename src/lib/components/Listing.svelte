@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Link, Gallery, Image, Text, Video, IFrame } from './media';
 	import { ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
-	import { getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo } from '$lib';
 	import SubredditContainer from './SubredditContainer.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
@@ -31,9 +31,9 @@
 
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
-		<Link {thumbnail} {title} {url} />
+		<Link {thumbnail} title={cleanText(title)} {url} />
 	{:else}
-		<h1 class="mb-2 text-2xl font-semibold">{post.title}</h1>
+		<h1 class="mb-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
 
 		{#if post.is_video}
 			<Video url={post.url} />
