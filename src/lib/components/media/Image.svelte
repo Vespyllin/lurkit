@@ -22,7 +22,7 @@
 
 	const clamp = (v: number, l: number, h: number) => (v < l ? l : v > h ? h : v);
 
-	const getNewSize = (height: number, width: number, zoomed: boolean) => {
+	const getAdjustedImageDimensions = (height: number, width: number, zoomed: boolean) => {
 		const maxHeight = document.documentElement.clientHeight;
 		const maxWidth = document.documentElement.clientWidth;
 
@@ -41,7 +41,7 @@
 	$effect(() => {
 		if (!imageState || originalHeight * originalWidth === 0) return;
 
-		const { height, width } = getNewSize(originalHeight, originalWidth, zoomed);
+		const { height, width } = getAdjustedImageDimensions(originalHeight, originalWidth, zoomed);
 		imageState.height = height;
 		imageState.width = width;
 	});
