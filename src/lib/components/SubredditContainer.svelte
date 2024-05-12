@@ -13,12 +13,12 @@
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
-		<div class="flex items-center gap-2">
+		<a class="flex items-center gap-2" href={`/${subreddit.display_name}`}>
 			<img src={icon_url} class="h-5 rounded-full object-contain" />
 			<span class="text-zinc-200">
 				{subreddit.display_name}
 			</span>
-		</div>
+		</a>
 	</Tooltip.Trigger>
 	<Tooltip.Content>
 		<div class="flex max-h-28 max-w-2xl gap-3 px-1 py-2">
