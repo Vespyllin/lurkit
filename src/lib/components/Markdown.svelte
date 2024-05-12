@@ -9,7 +9,10 @@
 
 	const embedRedditImage = (text: string) => text.replace(REDDIT_IMAGE_PREVIEW_REGEX, '![]($&)');
 	const embedGiphy = (text: string) =>
-		text.replace(/!\[gif\]\(giphy\|(\w+)\)/, '![](https://media.giphy.com/media/$1/giphy.gif)');
+		text.replace(
+			/!\[gif\]\(giphy\|([\w-]+)\|?.*\)/g,
+			'![](https://media.giphy.com/media/$1/giphy.gif)'
+		);
 
 	const embedMedia = (text: string) => embedRedditImage(embedGiphy(text));
 </script>
