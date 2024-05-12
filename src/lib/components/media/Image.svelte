@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
+	import { Cross2 } from 'radix-icons-svelte';
 
 	let { url }: { url: string } = $props();
 
@@ -75,6 +76,11 @@
 		onclick={handleExpand}
 		class="fixed left-0 top-0 z-20 flex h-[100lvh] w-[100lvw] items-center overflow-auto bg-background"
 	>
+		<div
+			class="absolute left-3 top-3 cursor-pointer rounded-full bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
+		>
+			<Cross2 size={25} />
+		</div>
 		<img
 			bind:this={imageState}
 			class={cn('m-auto ', zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}
