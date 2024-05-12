@@ -12,9 +12,8 @@
 
 <main style="font-family: 'Ubuntu'" class="min-h-screen overflow-auto bg-background">
 	<Header />
-	<!-- <div class="flex h-screen overflow-y-scroll pt-16"> h-[100lvh-3.5rem]-->
-	<div class="scrollbar mt-16 h-[calc(100lvh-4rem)] overflow-y-scroll" id="scroll-container">
-		<div class="mx-auto h-full max-w-5xl px-8 py-4">
+	<div class="flex pt-16">
+		<div class="mx-auto max-w-5xl px-8 py-4">
 			<slot />
 		</div>
 	</div>

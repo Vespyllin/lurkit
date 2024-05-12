@@ -26,36 +26,33 @@
 			fetching = false;
 		});
 	});
-
-	$effect(() => {
-		const scrollContainer = document.getElementById('scroll-container');
-		if (!scrollContainer) return console.log('NO CONTAINER FOUND');
-
-		scrollContainer.onscroll = async () => {
-			const contentHeight = scrollContainer.scrollHeight;
-			const visibleHeight = scrollContainer.clientHeight;
-			const scrollTop = scrollContainer.scrollTop;
-			const scrolledPercentage = (scrollTop / (contentHeight - visibleHeight)) * 100;
-
-			if (!!feed && !fetching && scrolledPercentage > 95) {
-				fetching = true;
-
-				const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
-				if (fetchedFeed.status === 'OK') {
-					feed.after = fetchedFeed.data.after;
-					feed.dist += fetchedFeed.data.dist;
-					feed.posts = feed.posts.concat(fetchedFeed.data.posts);
-					lastPostId = fetchedFeed.data.posts.at(-1)?.name;
-				} else {
-					error = fetchedFeed.reason;
-					console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
-				}
-
-				fetching = false;
-			}
-		};
-	});
 </script>
+
+<svelte:window
+	on:scroll={async () => {
+		const feedHeight = document.body.offsetHeight - window.innerHeight;
+
+		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
+
+		if (!!feed && !fetching && scrolledPercentage > 95) {
+			fetching = true;
+
+			// TODO: Retry policy
+			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
+			if (fetchedFeed.status === 'OK') {
+				feed.after = fetchedFeed.data.after;
+				feed.dist += fetchedFeed.data.dist;
+				feed.posts = feed.posts.concat(fetchedFeed.data.posts);
+				lastPostId = fetchedFeed.data.posts.at(-1)?.name;
+			} else {
+				error = fetchedFeed.reason;
+				console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
+			}
+
+			fetching = false;
+		}
+	}}
+/>
 
 <svelte:head>
 	<title>{!!feed ? `r/${subreddit}` : error}</title>

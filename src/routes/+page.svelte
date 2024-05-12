@@ -1,104 +1,46 @@
 <script lang="ts">
-	import { fetchFeedData } from '$lib/client/subreddit';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import { FeedStore } from '$lib/stores/FeedState.svelte';
 
-	let fetching = $state(true);
-	let feed: FeedData | undefined = $state();
-	let error: string | undefined = $state();
-
-	let lastPostId: string | undefined;
-	const init = async () => {
-		fetching = true;
-
-		const data = await fetchFeedData(undefined, 50);
-		if (data.status == 'OK') {
-			feed = data.data;
-			lastPostId = data.data.posts.at(-1)?.name;
-		} else {
-			error = data.reason;
-		}
-
-		fetching = false;
-	};
-
+	const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
 	$effect(() => {
-		try {
-			init();
-		} catch (error) {
-			error = 'Error making request';
-			fetching = false;
-		}
-	});
+		const scrollTo = FeedStore.scrollTo;
+		if (!scrollTo) return;
 
-	$effect(() => {
-		const scrollContainer = document.getElementById('scroll-container');
-		if (!scrollContainer) return console.log('NO CONTAINER FOUND');
-
-		scrollContainer.onscroll = async () => {
-			const contentHeight = scrollContainer.scrollHeight;
-			const visibleHeight = scrollContainer.clientHeight;
-			const scrollTop = scrollContainer.scrollTop;
-			const scrolledPercentage = (scrollTop / (contentHeight - visibleHeight)) * 100;
-
-			if (!!feed && !fetching && scrolledPercentage > 95) {
-				fetching = true;
-
-				const fetchedFeed = await fetchFeedData(undefined, 100, lastPostId);
-				if (fetchedFeed.status === 'OK') {
-					feed.after = fetchedFeed.data.after;
-					feed.dist += fetchedFeed.data.dist;
-					feed.posts = feed.posts.concat(fetchedFeed.data.posts);
-					lastPostId = fetchedFeed.data.posts.at(-1)?.name;
-				} else {
-					error = fetchedFeed.reason;
-					console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
-				}
-
-				fetching = false;
-			}
-		};
+		sleep(30).then(() => {
+			document.getElementById(scrollTo)?.scrollIntoView(true);
+			window.scrollBy({ top: -80 });
+		});
 	});
 </script>
-
-<svelte:head>
-	<title>{feed ? 'Lurkit' : error}</title>
-</svelte:head>
 
 <svelte:window
 	on:scroll={async () => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
+		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
 
-		if (!!feed && !fetching && feedHeight < window.scrollY + 750) {
-			fetching = true;
-
-			const fetchedFeed = await fetchFeedData(undefined, 100, lastPostId);
-			if (fetchedFeed.status === 'OK') {
-				feed.after = fetchedFeed.data.after;
-				feed.dist += fetchedFeed.data.dist;
-				feed.posts = feed.posts.concat(fetchedFeed.data.posts);
-				lastPostId = fetchedFeed.data.posts.at(-1)?.name;
-			} else {
-				error = fetchedFeed.reason;
-				console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
-			}
-
-			fetching = false;
-		}
+		if (!!FeedStore.data && !FeedStore.fetching && scrolledPercentage > 95) FeedStore.fetchMore();
 	}}
 />
 
-{#if !feed}
-	<FetchStatus {fetching} {error} />
+<svelte:head>
+	<title>{FeedStore.data ? 'Lurkit' : FeedStore.error}</title>
+</svelte:head>
+
+{#if !FeedStore.data}
+	<FetchStatus fetching={FeedStore.fetching} error={FeedStore.error} />
 {:else}
-	{#each feed.posts ?? [] as post}
-		<Listing {post} />
-		<Separator class="my-4" />
+	{#each FeedStore.data.posts ?? [] as post, idx}
+		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
+			<Listing {post} />
+			<Separator class="my-4" />
+		</div>
 	{/each}
 
-	{#if error || fetching}
-		<FetchMoreStatus {fetching} {error} />
+	{#if FeedStore.error || FeedStore.fetching}
+		<FetchMoreStatus fetching={FeedStore.fetching} error={FeedStore.error} />
 	{/if}
 {/if}

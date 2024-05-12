@@ -20,7 +20,7 @@ export const fetchFeedData = async (
 	if (fetchRes.status != 200) {
 		return {
 			status: 'FAIL',
-			reason: `Status ${fetchRes.status}: ${fetchRes.statusText}`
+			reason: `Status ${fetchRes.status} ${!!fetchRes.statusText ? ':' + fetchRes.statusText : ''}`
 		};
 	}
 
