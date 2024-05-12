@@ -4,10 +4,14 @@
 
 	let { text }: { text: string } = $props();
 
-	const regexPattern =
+	const REDDIT_IMAGE_PREVIEW_REGEX =
 		/https:\/\/preview\.redd\.it\/\w+\.(png|jpg|jpeg|gif|bmp|svg|webp)\?width=\d+&format=\w+&auto=\w+&s=\w+/g;
 
-	const embedRedditImage = (text: string) => text.replace(regexPattern, '![]($&)');
+	const embedRedditImage = (text: string) => text.replace(REDDIT_IMAGE_PREVIEW_REGEX, '![]($&)');
+	const embedGiphy = (text: string) =>
+		text.replace(/!\[gif\]\(giphy\|(\w+)\)/, '![](https://media.giphy.com/media/$1/giphy.gif)');
+
+	const embedMedia = (text: string) => embedRedditImage(embedGiphy(text));
 </script>
 
 <div
@@ -15,8 +19,11 @@
 			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800
 			[&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”']
 			[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:border-b-4 [&_blockquote]:p-2 [&_blockquote]:text-zinc-400
+			[&_h1]:text-3xl [&_h1]:font-semibold
+			[&_h2]:text-2xl [&_h2]:font-semibold
+			[&_h3]:text-xl [&_h3]:font-semibold
 			[&_img]:h-48
 		"
 >
-	<Markdown md={embedRedditImage(cleanText(text))} />
+	<Markdown md={embedMedia(cleanText(text))} />
 </div>
