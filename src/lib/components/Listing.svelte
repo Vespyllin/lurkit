@@ -2,14 +2,14 @@
 	import { Link, Gallery, Image, Text, Video, IFrame } from './media';
 	import { ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
 	import { cleanText, getTimeAgo } from '$lib';
-	import SubredditContainer from './SubredditContainer.svelte';
+	import SubredditPopover from './SubredditPopover.svelte';
 
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
 </script>
 
 <div class="space-y-2">
 	<div class="flex h-5 items-center gap-2">
-		<SubredditContainer subreddit={post.subreddit} />
+		<SubredditPopover subreddit={post.subreddit} />
 		•
 		<span class="text-zinc-400">
 			{post.author}
