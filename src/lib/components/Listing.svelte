@@ -7,8 +7,8 @@
 	let { post, expand }: { post: Listing; expand?: boolean } = $props();
 </script>
 
-<div>
-	<div class="mb-2 flex h-5 items-center gap-2">
+<div class="space-y-2">
+	<div class="flex h-5 items-center gap-2">
 		<SubredditContainer subreddit={post.subreddit} />
 		•
 		<span class="text-zinc-400">
@@ -33,26 +33,28 @@
 		{@const { thumbnail, title, url } = post}
 		<Link {thumbnail} title={cleanText(title)} {url} />
 	{:else}
-		<h1 class="mb-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
+		<div class="space-y-2">
+			<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
 
-		{#if post.is_video}
-			<Video url={post.url} />
-		{:else if post.post_hint == 'image'}
-			<Image url={post.url} />
-		{:else if post.is_gallery}
-			<Gallery {post} />
-		{:else if post.post_hint == 'rich:video'}
-			<IFrame {post} />
-		{:else if post.selftext?.length > 0 && !expand}
-			<Text text={post.selftext} clamp />
-		{/if}
+			{#if post.is_video}
+				<Video url={post.url} />
+			{:else if post.post_hint == 'image'}
+				<Image url={post.url} />
+			{:else if post.is_gallery}
+				<Gallery {post} />
+			{:else if post.post_hint == 'rich:video'}
+				<IFrame {post} />
+			{:else if post.selftext?.length > 0 && !expand}
+				<Text text={post.selftext} clamp />
+			{/if}
 
-		{#if post.selftext?.length > 0 && expand}
-			<Text class="mt-2" text={post.selftext} />
-		{/if}
+			{#if post.selftext?.length > 0 && expand}
+				<Text text={post.selftext} />
+			{/if}
+		</div>
 	{/if}
 
-	<div class="mt-2 font-semibold">
+	<div class="font-semibold">
 		<div class="inline-flex items-center gap-1 rounded-3xl bg-black p-2 px-5">
 			<div class="-ml-1">
 				<ArrowUp size={20} />

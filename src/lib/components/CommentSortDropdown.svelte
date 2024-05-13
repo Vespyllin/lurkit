@@ -4,6 +4,8 @@
 
 	let { sort = $bindable(), class: className }: { sort: RedditSortOptions; class?: string } =
 		$props();
+
+	const sortOptions: RedditSortOptions[] = ['top', 'controversial', 'new', 'hot', 'random'];
 </script>
 
 <div class={className}>
@@ -20,11 +22,11 @@
 			</DropdownMenu.Trigger>
 		</div>
 		<DropdownMenu.Content class="bg-background font-['Ubuntu']">
-			<DropdownMenu.Item onclick={() => (sort = 'top')}>top</DropdownMenu.Item>
-			<DropdownMenu.Item onclick={() => (sort = 'controversial')}>controversial</DropdownMenu.Item>
-			<DropdownMenu.Item onclick={() => (sort = 'new')}>new</DropdownMenu.Item>
-			<DropdownMenu.Item onclick={() => (sort = 'hot')}>hot</DropdownMenu.Item>
-			<DropdownMenu.Item onclick={() => (sort = 'random')}>random</DropdownMenu.Item>
+			{#each sortOptions as sortOptionText}
+				<DropdownMenu.Item class="cursor-pointer" onclick={() => (sort = sortOptionText)}>
+					{sortOptionText}
+				</DropdownMenu.Item>
+			{/each}
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 </div>

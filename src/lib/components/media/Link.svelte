@@ -5,7 +5,7 @@
 
 <div class="flex gap-2">
 	<div class="mr-auto">
-		<h1 class="text-wrap break-words text-2xl font-semibold">
+		<h1 class="line-clamp-2 text-wrap break-words text-2xl font-semibold">
 			{title}
 		</h1>
 
@@ -18,8 +18,6 @@
 	</div>
 
 	{#if hasThumbnail}
-		<div class="flex items-center">
-			<img src={thumbnail} class="min-h-24 min-w-24 rounded-xl object-cover" />
-		</div>
+		<img src={thumbnail} class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover" />
 	{/if}
 </div>
