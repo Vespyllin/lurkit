@@ -1,6 +1,5 @@
 # lurkit - TODOs:
 
-remove non unique listings  
 image overlay for galleries  
 video overlay  
 markdown styling (ol and ul)  

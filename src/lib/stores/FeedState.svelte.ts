@@ -28,23 +28,18 @@ export function createFeedState() {
 	const fetchMore = async () => {
 		if (!feed) return;
 
-		console.log('Fetching more data');
-
 		fetching = true;
 
 		const fetchedFeed = await fetchFeedData(undefined, 50, lastPostId);
+
 		if (fetchedFeed.status === 'OK') {
-			const newPosts = fetchedFeed.data.posts.filter((x) => {
-				if (!uniqueIds.has(x.name)) {
-					return true;
-				}
-				console.log('FILTERING', x.title);
-				return false;
-			});
+			const newPosts = fetchedFeed.data.posts.filter((x) => !uniqueIds.has(x.name));
+			newPosts.forEach((x) => uniqueIds.add(x.name));
+
 			feed.after = fetchedFeed.data.after;
 			feed.dist += newPosts.length;
 			feed.posts = feed.posts.concat(newPosts);
-			lastPostId = fetchedFeed.data.posts.at(-1)?.name;
+			lastPostId = newPosts.at(-1)?.name;
 		} else {
 			error = fetchedFeed.reason;
 			console.log(`Failed to fetch next listings.\nLast post ID: ${lastPostId}\nReason: ${error}`);
@@ -56,7 +51,6 @@ export function createFeedState() {
 	return {
 		get data() {
 			if (!feed) init();
-
 			return feed;
 		},
 		get fetching() {
