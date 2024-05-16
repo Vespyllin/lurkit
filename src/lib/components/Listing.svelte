@@ -46,7 +46,7 @@
 				<IFrame {post} />
 			{:else if post.selftext?.length > 0 && !expand}
 				<Text text={post.selftext} clamp />
-			{:else}
+			{:else if expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
 				<Image url={post.url} />
 			{/if}
 
