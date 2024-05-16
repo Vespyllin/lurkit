@@ -16,19 +16,26 @@ export const fetchFeedData = async (
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
-	if (fetchRes.status != 200) {
+	try {
+		const fetchRes = await fetch(url);
+		if (fetchRes.status != 200) {
+			return {
+				status: 'FAIL',
+				reason: `Status ${fetchRes.status} ${!!fetchRes.statusText ? ':' + fetchRes.statusText : ''}`
+			};
+		}
+
+		const fetchData: RedditListing = await fetchRes.json();
+
+		const feedData = cleanData(fetchData);
+
+		return { status: 'OK', data: feedData };
+	} catch (e: any) {
 		return {
 			status: 'FAIL',
-			reason: `Status ${fetchRes.status} ${!!fetchRes.statusText ? ':' + fetchRes.statusText : ''}`
+			reason: `Status 500: ${e.message}`
 		};
 	}
-
-	const fetchData: RedditListing = await fetchRes.json();
-
-	const feedData = cleanData(fetchData);
-
-	return { status: 'OK', data: feedData };
 };
 
 const cleanData = (feed: RedditListing) => {
