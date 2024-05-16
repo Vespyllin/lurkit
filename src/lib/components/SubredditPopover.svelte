@@ -21,11 +21,11 @@
 		</a>
 	</Tooltip.Trigger>
 	<Tooltip.Content>
-		<div class="flex h-28 max-w-96 gap-3 px-1 py-2">
-			<img src={icon_url} class="my-auto mr-1 h-24" />
-			<div>
+		<div class="flex h-28 max-w-96 gap-3 py-1.5">
+			<img src={icon_url} class="my-auto mr-1 h-full" />
+			<div class="-mt-1">
 				<h2 class="text-xl font-semibold">{subreddit.display_name}</h2>
-				<p class="line-clamp-3 break-words text-zinc-400">{subreddit.public_description}</p>
+				<p class="line-clamp-4 break-words text-zinc-400">{subreddit.public_description}</p>
 			</div>
 		</div>
 	</Tooltip.Content>

@@ -15,9 +15,9 @@
 	const collapse = () => (collapsed = !collapsed);
 </script>
 
-<div class="border-l-2 pl-3 text-lg hover:border-blue-400">
+<div class="mt-1 border-l-2 pl-3 text-lg hover:border-blue-400">
 	<div class="my-1 flex cursor-pointer items-center gap-2 leading-none" onclick={collapse}>
-		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
+		<span class={cn('font-medium text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</span>
 		•
@@ -43,7 +43,7 @@
 	</div>
 
 	{#if !collapsed}
-		<Markdown class="mt-2" text={comment.text} />
+		<Markdown class=" mt-2" text={comment.text} />
 
 		{#if !!comment.children}
 			<div class="ml-3 flex flex-col pt-1">

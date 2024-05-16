@@ -4,6 +4,7 @@ export function createFeedState() {
 	let fetching = $state(true);
 	let feed: FeedData | undefined = $state();
 	let error: string | undefined = $state();
+	let uniqueIds: Set<string> = new Set<string>();
 
 	let scrollTo: string | undefined = undefined;
 
@@ -16,6 +17,7 @@ export function createFeedState() {
 		if (data.status == 'OK') {
 			feed = data.data;
 			lastPostId = data.data.posts.at(-1)?.name;
+			data.data.posts.forEach((x) => uniqueIds.add(x.name));
 		} else {
 			error = data.reason;
 		}
@@ -32,9 +34,16 @@ export function createFeedState() {
 
 		const fetchedFeed = await fetchFeedData(undefined, 50, lastPostId);
 		if (fetchedFeed.status === 'OK') {
+			const newPosts = fetchedFeed.data.posts.filter((x) => {
+				if (!uniqueIds.has(x.name)) {
+					return true;
+				}
+				console.log('FILTERING', x.title);
+				return false;
+			});
 			feed.after = fetchedFeed.data.after;
-			feed.dist += fetchedFeed.data.dist;
-			feed.posts = feed.posts.concat(fetchedFeed.data.posts);
+			feed.dist += newPosts.length;
+			feed.posts = feed.posts.concat(newPosts);
 			lastPostId = fetchedFeed.data.posts.at(-1)?.name;
 		} else {
 			error = fetchedFeed.reason;
