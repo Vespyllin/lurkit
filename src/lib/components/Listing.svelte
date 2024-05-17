@@ -22,7 +22,7 @@
 		{#if post.over_18}
 			•
 			<div class="flex h-5 items-center gap-1">
-				<div class="mt-1 rounded-full text-zinc-400">
+				<div class="rounded-full text-zinc-400">
 					<ExclamationTriangle />
 				</div>
 				<span class="text-zinc-400"> 18+ </span>
@@ -56,40 +56,32 @@
 	{/if}
 
 	<a href={post.permalink}>
-		<div class="flex text-lg font-semibold text-zinc-200">
-			<div class="inline-flex items-center gap-1 px-5">
-				<div class="-ml-1">
-					<ArrowUp size={20} />
-				</div>
+		<div class="flex gap-10 pr-5 text-lg font-semibold text-zinc-200">
+			<div class="inline-flex items-center gap-1">
+				<ArrowUp size={20} />
 				<span>
 					{post.score.toLocaleString()}
 				</span>
 			</div>
 
-			<div class="inline-flex items-center gap-1 px-5">
+			<div class="inline-flex items-center gap-1">
 				<div class="flex">
-					<div class="-ml-1">
-						<ArrowUp size={20} />
-					</div>
+					<ArrowUp size={20} />
 					<div class="-ml-2 mt-auto">
 						<ArrowDown size={14} />
 					</div>
 				</div>
 
-				<span>
-					{post.upvote_ratio * 100}%
-				</span>
+				<span>{post.upvote_ratio * 100}%</span>
 			</div>
 
-			<div class="inline-flex items-center gap-1 px-5">
+			<div class="inline-flex items-center gap-1">
 				<ChatBubble size={20} />
-				<span class="ml-1">
-					{post.num_comments.toLocaleString()}
-				</span>
+				<span class="ml-1">{post.num_comments.toLocaleString()}</span>
 			</div>
 
 			<div class="flex w-full items-center">
-				<Separator class="h-0.5 bg-zinc-600 " />
+				<Separator class="h-0.5 bg-zinc-600" />
 			</div>
 		</div>
 	</a>

@@ -15,7 +15,7 @@
 	const collapse = () => (collapsed = !collapsed);
 </script>
 
-<div class={cn('flex flex-col', root ? 'gap-4' : 'gap-2.5')}>
+<div class={cn('mt-1 flex flex-col', root ? 'gap-4' : 'gap-2.5')}>
 	{#if !collapsed || comments.length == 0}
 		{#each comments as parent, idx}
 			<Comment

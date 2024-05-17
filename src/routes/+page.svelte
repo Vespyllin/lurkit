@@ -36,7 +36,7 @@
 	{#each FeedStore.data.posts ?? [] as post, idx}
 		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
 			<Listing {post} />
-			<Separator class="my-4" />
+			<Separator class="mb-6 mt-4" />
 		</div>
 	{/each}
 
