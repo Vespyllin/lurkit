@@ -33,7 +33,7 @@
 {#if !FeedStore.data}
 	<FetchStatus fetching={FeedStore.fetching} error={FeedStore.error} />
 {:else}
-	{#each FeedStore.data.posts ?? [] as post, idx}
+	{#each FeedStore.data as post, idx}
 		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
 			<Listing {post} />
 			<Separator class="mb-6 mt-4" />

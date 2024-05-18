@@ -1,4 +1,4 @@
-export const cleanListing = (post: any): Listing => {
+export const cleanListing = (post: any): ListingData => {
 	return {
 		author: post.author,
 		created_utc: post.created_utc,

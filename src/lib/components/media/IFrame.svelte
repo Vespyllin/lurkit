@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
 
-	let { post }: { post: Listing } = $props();
+	let { post }: { post: ListingData } = $props();
 </script>
 
 <div class="mx-auto flex">

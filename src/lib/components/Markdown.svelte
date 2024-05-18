@@ -20,15 +20,15 @@
 
 <div
 	class={cn(
-		" 	flex flex-col gap-2 whitespace-pre text-wrap text-zinc-100 \
-			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 \
-			[&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”'] \
-			[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:p-2 [&_blockquote]:text-zinc-400 \
-			[&_ol]:flex [&_li]:flex \
-			[&_h1]:text-3xl [&_h1]:font-semibold \
-			[&_h2]:text-2xl [&_h2]:font-semibold \
-			[&_h3]:text-xl [&_h3]:font-semibold \
-			[&_img]:h-64",
+		`flex flex-col gap-2 whitespace-pre text-wrap text-zinc-100
+		[&_a]:inline-block [&_a]:text-blue-600
+		[&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 [&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”']
+		[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:p-2
+		[&_blockquote]:text-zinc-400 [&_h1]:text-3xl [&_h1]:font-semibold
+		[&_h2]:text-2xl [&_h2]:font-semibold [&_h3]:text-xl
+		[&_h3]:font-semibold 
+		[&_img]:h-64 
+		[&_ol]:flex-col`,
 		className
 	)}
 >

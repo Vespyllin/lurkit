@@ -2,24 +2,37 @@ import { fetchFeedData } from '$lib/client/subreddit';
 
 export function createFeedState() {
 	let fetching = $state(true);
-	let feed: FeedData | undefined = $state();
+	let feed: ListingData[] | undefined = $state();
 	let error: string | undefined = $state();
+
 	let uniqueIds: Set<string> = new Set<string>();
-
 	let scrollTo: string | undefined = undefined;
-
 	let lastPostId: string | undefined;
+
+	const subFilter = [
+		'r/nba',
+		'r/WhitePeopleTwitter',
+		'r/funny',
+		'r/cats',
+		'r/politicalhumor',
+		'r/goldenretrievers',
+		'r/OneOrangeBraincell',
+		'r/pics'
+	].map((x) => x.toLowerCase());
 
 	const init = async () => {
 		fetching = true;
 
-		const data = await fetchFeedData(undefined, 50);
-		if (data.status == 'OK') {
-			feed = data.data;
-			lastPostId = data.data.posts.at(-1)?.name;
-			data.data.posts.forEach((x) => uniqueIds.add(x.name));
+		const fetchRes = await fetchFeedData(undefined, 50);
+		if (fetchRes.status == 'OK') {
+			const { data } = fetchRes;
+
+			feed = data.filter((x) => !subFilter.includes(x.subreddit.display_name.toLowerCase()));
+			data.forEach((x) => uniqueIds.add(x.name));
+
+			lastPostId = data.at(-1)?.name;
 		} else {
-			error = data.reason;
+			error = fetchRes.reason;
 		}
 
 		fetching = false;
@@ -27,21 +40,21 @@ export function createFeedState() {
 
 	const fetchMore = async () => {
 		if (!feed) return;
-
 		fetching = true;
 
-		const fetchedFeed = await fetchFeedData(undefined, 50, lastPostId);
+		const fetchRes = await fetchFeedData(undefined, 50, lastPostId);
+		if (fetchRes.status === 'OK') {
+			const newPosts = fetchRes.data
+				.filter((listing) => !uniqueIds.has(listing.name))
+				.filter((listing) => !subFilter.includes(listing.subreddit.display_name.toLowerCase()));
 
-		if (fetchedFeed.status === 'OK') {
-			const newPosts = fetchedFeed.data.posts.filter((x) => !uniqueIds.has(x.name));
-			newPosts.forEach((x) => uniqueIds.add(x.name));
+			newPosts.forEach((listing) => uniqueIds.add(listing.name));
 
-			feed.after = fetchedFeed.data.after;
-			feed.dist += newPosts.length;
-			feed.posts = feed.posts.concat(newPosts);
+			feed = feed.concat(newPosts);
+
 			lastPostId = newPosts.at(-1)?.name;
 		} else {
-			error = fetchedFeed.reason;
+			error = fetchRes.reason;
 			console.log(`Failed to fetch next listings.\nLast post ID: ${lastPostId}\nReason: ${error}`);
 		}
 

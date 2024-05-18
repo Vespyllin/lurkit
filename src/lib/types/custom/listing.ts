@@ -1,10 +1,4 @@
-type FeedData = {
-	after?: string;
-	dist: number;
-	posts: Listing[];
-};
-
-type Listing = {
+type ListingData = {
 	author: string;
 	num_comments: number;
 	created_utc: number;

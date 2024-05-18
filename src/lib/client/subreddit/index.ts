@@ -5,7 +5,7 @@ export const fetchFeedData = async (
 	count?: number,
 	after?: string,
 	sort?: RedditSortOptions
-): Promise<ResultWrapper<FeedData>> => {
+): Promise<ResultWrapper<ListingData[]>> => {
 	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?limit=100&sr_detail=1';
 	if (count !== undefined) queryParams += `&limit=${count}`;
@@ -39,11 +39,5 @@ export const fetchFeedData = async (
 };
 
 const cleanData = (feed: RedditListing) => {
-	const subredditFeedData: FeedData = {
-		dist: feed.data.dist,
-		after: feed.data.after,
-		posts: feed.data.children.map((post) => cleanListing(post.data))
-	};
-
-	return subredditFeedData;
+	return feed.data.children.map((post) => cleanListing(post.data)) as ListingData[];
 };

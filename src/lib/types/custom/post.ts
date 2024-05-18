@@ -1,5 +1,5 @@
 type PostData = {
-	listing: Listing;
+	listing: ListingData;
 	comments: PostComments;
 };
 

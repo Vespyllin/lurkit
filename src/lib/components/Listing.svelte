@@ -5,7 +5,7 @@
 	import SubredditPopover from './SubredditPopover.svelte';
 	import Separator from './ui/separator/separator.svelte';
 
-	let { post, expand }: { post: Listing; expand?: boolean } = $props();
+	let { post, expand }: { post: ListingData; expand?: boolean } = $props();
 </script>
 
 <div class="flex flex-col gap-2">

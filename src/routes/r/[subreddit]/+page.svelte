@@ -11,17 +11,17 @@
 	} = $page;
 
 	let fetching = $state(true);
-	let feed: FeedData | undefined = $state();
+	let feed: ListingData[] | undefined = $state();
 	let error: string | undefined = $state();
 
 	let lastPostId: string | undefined;
 	$effect(() => {
-		fetchFeedData(subreddit, 50).then((data) => {
-			if (data.status == 'OK') {
-				feed = data.data;
-				lastPostId = data.data.posts.at(-1)?.name;
+		fetchFeedData(subreddit, 50).then((res) => {
+			if (res.status == 'OK') {
+				feed = res.data;
+				lastPostId = res.data.at(-1)?.name;
 			} else {
-				error = data.reason;
+				error = res.reason;
 			}
 			fetching = false;
 		});
@@ -37,13 +37,12 @@
 		if (!!feed && !fetching && scrolledPercentage > 95) {
 			fetching = true;
 
-			// TODO: Retry policy
 			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
+
 			if (fetchedFeed.status === 'OK') {
-				feed.after = fetchedFeed.data.after;
-				feed.dist += fetchedFeed.data.dist;
-				feed.posts = feed.posts.concat(fetchedFeed.data.posts);
-				lastPostId = fetchedFeed.data.posts.at(-1)?.name;
+				const x = fetchedFeed.data;
+				feed = feed.concat(fetchedFeed.data);
+				lastPostId = fetchedFeed.data.at(-1)?.name;
 			} else {
 				error = fetchedFeed.reason;
 				console.log(`FAILED TO FETCH NEXT BATCH\nLast post ID: ${lastPostId}\nReason: ${error}`);
@@ -61,7 +60,7 @@
 {#if !feed}
 	<FetchStatus {fetching} {error} />
 {:else}
-	{#each feed.posts ?? [] as post}
+	{#each feed as post}
 		<Listing {post} />
 		<Separator class="my-4" />
 	{/each}

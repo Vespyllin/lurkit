@@ -2,7 +2,7 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { cn } from '$lib/utils';
 
-	let { post }: { post: Listing } = $props();
+	let { post }: { post: ListingData } = $props();
 	const galleryItems = post?.gallery_data?.items ?? [];
 	let hideCounter = $state(true);
 	let hideTimer: number | undefined = undefined;
@@ -20,7 +20,7 @@
 		}, 1500);
 	};
 
-	const getMediaType = (post: Listing, media_id: string) => {
+	const getMediaType = (post: ListingData, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
