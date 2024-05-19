@@ -17,7 +17,8 @@ export function createFeedState() {
 		'r/politicalhumor',
 		'r/goldenretrievers',
 		'r/OneOrangeBraincell',
-		'r/pics'
+		'r/pics',
+		'r/politics'
 	].map((x) => x.toLowerCase());
 
 	const init = async () => {

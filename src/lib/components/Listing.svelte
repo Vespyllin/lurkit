@@ -11,14 +11,21 @@
 <div class="flex flex-col gap-2">
 	<div class="flex h-5 items-center gap-2">
 		<SubredditPopover subreddit={post.subreddit} />
+		<div class="hidden gap-2 overflow-x-hidden lg:flex">
+			•
+			<span class="text-zinc-400">
+				{post.author}
+			</span>
+		</div>
 		•
-		<span class="text-zinc-400">
-			{post.author}
-		</span>
-		•
-		<span class="text-zinc-400">
-			{getTimeAgo(post.created_utc)}
-		</span>
+		<div>
+			<span class="hidden text-zinc-400 lg:block">
+				{getTimeAgo(post.created_utc)}
+			</span>
+			<span class="text-zinc-400 lg:hidden">
+				{getTimeAgo(post.created_utc, true)}
+			</span>
+		</div>
 		{#if post.over_18}
 			•
 			<div class="flex h-5 items-center gap-1">
@@ -80,7 +87,7 @@
 				<span class="ml-1">{post.num_comments.toLocaleString()}</span>
 			</div>
 
-			<div class="flex w-full items-center">
+			<div class="hidden w-full items-center lg:flex">
 				<Separator class="h-0.5 bg-zinc-600" />
 			</div>
 		</div>

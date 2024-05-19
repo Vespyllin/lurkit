@@ -6,9 +6,7 @@
 
 	type $$Props = CarouselProps;
 
-	export let opts = {
-		watchDrag: false
-	} as any;
+	export let opts = {} as any;
 	export let plugins: NonNullable<$$Props['plugins']> = [];
 	export let api: $$Props['api'] = undefined;
 	export let orientation: NonNullable<$$Props['orientation']> = 'horizontal';

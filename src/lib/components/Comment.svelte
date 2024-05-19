@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
-	import { DrawingPin } from 'radix-icons-svelte';
+	import { ArrowUp, DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
 	import Markdown from './Markdown.svelte';
 
@@ -21,16 +21,29 @@
 			{comment.author}
 		</span>
 		•
-		<span class="text-zinc-400">
-			{comment.score.toLocaleString()} upvote{comment.score != 1 ? 's' : ''}
-		</span>
+		<div>
+			<span class="hidden text-zinc-400 lg:inline">
+				{comment.score.toLocaleString()} upvote{comment.score != 1 ? 's' : ''}
+			</span>
+			<div class="flex text-zinc-400 lg:hidden">
+				<ArrowUp size={18} />
+				{comment.score.toLocaleString()}
+			</div>
+		</div>
 		•
-		<span class="text-zinc-400">
+		<span class="hidden text-zinc-400 lg:inline">
 			{getTimeAgo(comment.created_utc)}
 		</span>
+		<span class="inline text-zinc-400 lg:hidden">
+			{getTimeAgo(comment.created_utc, true)}
+		</span>
+
 		{#if typeof comment.edited == 'number'}
 			•
-			<span class="text-zinc-400"> *edited {getTimeAgo(comment.edited)} </span>
+			<span class="hidden text-zinc-400 lg:inline"> *edited {getTimeAgo(comment.edited)}</span>
+			<span class="inline text-zinc-400 lg:hidden">
+				*edited {getTimeAgo(comment.edited, true)}</span
+			>
 		{/if}
 
 		{#if comment.stickied}
@@ -43,7 +56,7 @@
 	</div>
 
 	{#if !collapsed}
-		<Markdown class=" mt-2" text={comment.text} />
+		<Markdown class="mt-2" text={comment.text} />
 
 		{#if !!comment.children}
 			<div class="ml-3 flex flex-col pt-1">

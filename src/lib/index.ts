@@ -1,40 +1,7 @@
-// export const getTimeAgo = (timestamp: number) => {
-// 	const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', { style: 'long' });
-
-// 	if (!timestamp) return `fuck`;
-// 	const timestampDate = Math.floor(new Date(timestamp * 1000).getTime() / 1000);
-// 	const nowDate = Math.floor(new Date().getTime() / 1000);
-
-// 	let unit: Intl.RelativeTimeFormatUnit;
-// 	let value;
-
-// 	if (nowMonths - timestampMonths >= 12) {
-// 		unit = 'year';
-// 		value = nowYears - timestampYears;
-// 	} else if (nowDays - timestampDays > 28) {
-// 		unit = 'month';
-// 		value = nowMonths - timestampMonths;
-// 	} else if (nowDays - timestampDays >= 7) {
-// 		unit = 'week';
-// 		value = Math.floor((nowDays - timestampDays) / 7);
-// 	} else if (nowHours - timestampHours >= 24) {
-// 		unit = 'day';
-// 		value = nowDays - timestampDays;
-// 	} else if (nowMinutes - timestampMinutes >= 60) {
-// 		unit = 'hour';
-// 		value = nowHours - timestampHours;
-// 	} else if (nowDate - timestampDate >= 60) {
-// 		unit = 'minute';
-// 		value = Math.floor(nowDate - timestampDate) / 60;
-// 	} else {
-// 		unit = 'seconds';
-// 		value = nowDate - timestampDate;
-// 	}
-
-// 	return relativeTimeFormatter.format(-value, unit as any);
-// };
-export const getTimeAgo = (timestamp: number) => {
-	const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', { style: 'long' });
+export const getTimeAgo = (timestamp: number, short: boolean = false) => {
+	const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', {
+		style: short ? 'short' : 'long'
+	});
 
 	if (!timestamp) return `BAD TS: ${timestamp}`;
 
@@ -46,8 +13,6 @@ export const getTimeAgo = (timestamp: number) => {
 	const hourThreshold = minuteThreshold * 60;
 	const dayThreshold = hourThreshold * 24;
 	const weekThreshold = dayThreshold * 7;
-	const monthThreshold = Math.floor(dayThreshold * 30.44);
-	const yearThreshold = dayThreshold * 365;
 
 	let unit;
 	let value;

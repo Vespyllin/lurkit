@@ -4,11 +4,9 @@
 	import { Button, type Props } from '$lib/components/ui/button/index.js';
 	import { CaretRight } from 'radix-icons-svelte';
 
-	// type $$Props = Props;
-	type $$Props = any;
+	type $$Props = Props;
 
 	let className: $$Props['class'] = undefined;
-	let customClick: $$Props['customClick'] = undefined;
 	export { className as class, customClick };
 
 	const { canScrollNext, scrollNext, handleKeyDown } = getEmblaContext('<Carousel.Next/>');
@@ -22,10 +20,7 @@
 		className
 	)}
 	disabled={!$canScrollNext}
-	on:click={() => {
-		scrollNext();
-		customClick();
-	}}
+	on:click={scrollNext}
 	on:keydown={handleKeyDown}
 	{...$$restProps}
 >

@@ -53,7 +53,6 @@
 		<Listing {post} expand />
 
 		<SortDropdown class="mt-4" bind:sort />
-
 		<Separator class="my-2" />
 
 		{#if fetching}
