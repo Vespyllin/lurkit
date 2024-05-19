@@ -28,6 +28,9 @@
 			<div class="flex text-zinc-400 lg:hidden">
 				<ArrowUp size={18} />
 				{comment.score.toLocaleString()}
+				{#if typeof comment.edited == 'number'}
+					<span class="inline lg:hidden">*</span>
+				{/if}
 			</div>
 		</div>
 		•
@@ -39,15 +42,12 @@
 		</span>
 
 		{#if typeof comment.edited == 'number'}
-			•
+			<span class="hidden lg:inline">•</span>
 			<span class="hidden text-zinc-400 lg:inline"> *edited {getTimeAgo(comment.edited)}</span>
-			<span class="inline text-zinc-400 lg:hidden">
-				*edited {getTimeAgo(comment.edited, true)}</span
-			>
 		{/if}
 
 		{#if comment.stickied}
-			•
+			<span>•</span>
 			<span class="text-zinc-400">
 				<DrawingPin size={18} />
 			</span>
