@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
-	import CommentChain from '$lib/components/CommentChain.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Listing from '$lib/components/Listing.svelte';
+	import Comments from '$lib/components/comments';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import SortDropdown from '$lib/components/CommentSortDropdown.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -52,13 +50,6 @@
 	<div class="flex flex-col">
 		<Listing {post} expand />
 
-		<SortDropdown class="mt-4" bind:sort />
-		<Separator class="my-2" />
-
-		{#if fetching}
-			<FetchStatus {fetching} {error} />
-		{:else}
-			<CommentChain {comments} root />
-		{/if}
+		<Comments class="mt-4" {comments} {error} {fetching} />
 	</div>
 {/if}

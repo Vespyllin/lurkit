@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { PlusCircled } from 'radix-icons-svelte';
-	import Comment from './Comment.svelte';
+	import CommentContent from './CommentContent.svelte';
 	import { PUBLIC_COLLAPSE_COMMENT_DEPTH } from '$env/static/public';
 
 	const {
@@ -18,7 +18,7 @@
 <div class={cn('mt-1 flex flex-col', root ? 'gap-4' : 'gap-2.5')}>
 	{#if !collapsed || comments.length == 0}
 		{#each comments as parent, idx}
-			<Comment
+			<CommentContent
 				comment={parent}
 				depth={exceededCollapseDepth ? 0 : depth}
 				collapsed={exceededCollapseDepth && idx > 0}

@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { ArrowUp, DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
-	import Markdown from './Markdown.svelte';
+	import Markdown from '../Markdown.svelte';
 
 	const {
 		comment,
@@ -15,7 +15,7 @@
 	const collapse = () => (collapsed = !collapsed);
 </script>
 
-<div class="mt-1 border-l-2 pl-3 text-lg hover:border-blue-400">
+<div class="mt-1 border-l-2 pl-3 text-base hover:border-blue-400 lg:text-lg">
 	<div class="my-1 flex cursor-pointer items-center gap-2 leading-none" onclick={collapse}>
 		<span class={cn('font-medium text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
@@ -56,12 +56,14 @@
 	</div>
 
 	{#if !collapsed}
-		<Markdown class="mt-2" text={comment.text} />
+		<div class="max-w-[calc(100lvw-3rem)]">
+			<Markdown class="mt-2 text-base lg:[&_*]:text-lg" text={comment.text} />
 
-		{#if !!comment.children}
-			<div class="ml-3 flex flex-col pt-1">
-				<CommentChain comments={comment.children} depth={depth + 1} />
-			</div>
-		{/if}
+			{#if !!comment.children}
+				<div class="ml-1.5 flex flex-col pt-1 lg:ml-3">
+					<CommentChain comments={comment.children} depth={depth + 1} />
+				</div>
+			{/if}
+		</div>
 	{/if}
 </div>
