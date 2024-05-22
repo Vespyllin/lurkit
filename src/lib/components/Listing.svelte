@@ -29,7 +29,7 @@
 		{#if post.over_18}
 			•
 			<div class="flex h-5 items-center gap-1">
-				<div class="rounded-full text-zinc-400">
+				<div class="h-fit w-fit text-zinc-400">
 					<ExclamationTriangle />
 				</div>
 				<span class="text-zinc-400"> 18+ </span>
