@@ -1,69 +1,59 @@
 <script lang="ts">
+	import { cleanText } from '$lib';
 	import { Link, Gallery, Image, Text, Video, IFrame } from './media';
-	import { ArrowDown, ArrowUp, ChatBubble, ExclamationTriangle } from 'radix-icons-svelte';
-	import { cleanText, getTimeAgo } from '$lib';
-	import SubredditPopover from './SubredditPopover.svelte';
+	import { ArrowDown, ArrowUp, ChatBubble } from 'radix-icons-svelte';
 	import Separator from './ui/separator/separator.svelte';
+	import ListingHeader from './ListingHeader.svelte';
 
 	let { post, expand }: { post: ListingData; expand?: boolean } = $props();
 </script>
 
-<div class="flex flex-col gap-2">
-	<div class="flex h-5 items-center gap-2">
-		<SubredditPopover subreddit={post.subreddit} />
-		<div class="hidden gap-2 overflow-x-hidden lg:flex">
-			•
-			<span class="text-zinc-400">
-				{post.author}
-			</span>
-		</div>
-		•
-		<div>
-			<span class="hidden text-zinc-400 lg:block">
-				{getTimeAgo(post.created_utc)}
-			</span>
-			<span class="text-zinc-400 lg:hidden">
-				{getTimeAgo(post.created_utc, true)}
-			</span>
-		</div>
-		{#if post.over_18}
-			•
-			<div class="flex h-5 items-center gap-1">
-				<div class="h-fit w-fit text-zinc-400">
-					<ExclamationTriangle />
-				</div>
-				<span class="text-zinc-400"> 18+ </span>
-			</div>
-		{/if}
-	</div>
-
+<div class="flex flex-col">
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
-		<Link {thumbnail} title={cleanText(title)} {url} />
+		<a href={post.permalink} class="space-y-2">
+			<ListingHeader
+				author={post.author}
+				created_utc={post.created_utc}
+				over_18={post.over_18}
+				subreddit={post.subreddit}
+			/>
+			<Link {thumbnail} title={cleanText(title)} {url} />
+		</a>
 	{:else}
-		<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
+		<a href={post.permalink} class="space-y-2">
+			<ListingHeader
+				author={post.author}
+				created_utc={post.created_utc}
+				over_18={post.over_18}
+				subreddit={post.subreddit}
+			/>
+			<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
+		</a>
 
-		{#if post.is_video}
-			<Video url={post.url} />
-		{:else if post.post_hint == 'image'}
-			<Image url={post.url} />
-		{:else if post.is_gallery}
-			<Gallery {post} />
-		{:else if post.post_hint == 'rich:video'}
-			<IFrame {post} />
-		{:else if post.selftext?.length > 0 && !expand}
-			<Text text={post.selftext} clamp />
-		{:else if expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
-			<Image url={post.url} />
-		{/if}
+		<div class="mt-2">
+			{#if post.is_video}
+				<Video url={post.url} />
+			{:else if post.post_hint == 'image'}
+				<Image url={post.url} />
+			{:else if post.is_gallery}
+				<Gallery {post} />
+			{:else if post.post_hint == 'rich:video'}
+				<IFrame {post} />
+			{:else if post.selftext?.length > 0 && !expand}
+				<Text text={post.selftext} clamp />
+			{:else if expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
+				<Image url={post.url} />
+			{/if}
 
-		{#if post.selftext?.length > 0 && expand}
-			<Text text={post.selftext} />
-		{/if}
+			{#if post.selftext?.length > 0 && expand}
+				<Text class="mt-2" text={post.selftext} />
+			{/if}
+		</div>
 	{/if}
 
 	<a href={post.permalink}>
-		<div class="flex gap-10 pr-5 text-lg font-semibold text-zinc-200">
+		<div class="mt-2 flex gap-10 pr-5 text-lg font-semibold text-zinc-200">
 			<div class="inline-flex items-center gap-1">
 				<ArrowUp size={20} />
 				<span>

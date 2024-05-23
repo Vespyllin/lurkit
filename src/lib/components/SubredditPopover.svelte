@@ -13,7 +13,7 @@
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
-		<a class="flex items-center gap-2" href={`/${subreddit.display_name}`}>
+		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name}`}>
 			<img src={icon_url} class="h-5 rounded-full object-contain" />
 			<span class="text-zinc-200">
 				{subreddit.display_name}
