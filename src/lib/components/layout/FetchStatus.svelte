@@ -6,7 +6,9 @@
 
 <div class="mx-auto items-center py-32 text-center lg:max-w-5xl lg:p-32">
 	{#if fetching}
-		<Spinner class="mb-4 h-24 w-full" />
+		<div class="mb-4 h-fit w-full">
+			<Spinner class="mx-auto h-24 w-24" />
+		</div>
 		<h1 class="text-3xl">Hold on, we're workin' on it...</h1>
 	{:else}
 		<h1 class="text-3xl text-red-500">Could not reach Reddit servers</h1>
