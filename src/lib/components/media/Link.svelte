@@ -1,9 +1,16 @@
 <script lang="ts">
-	let { title, url, thumbnail }: { title: string; url: string; thumbnail: string } = $props();
+	import { cn } from '$lib/utils';
+
+	let {
+		title,
+		url,
+		thumbnail,
+		class: className
+	}: { title: string; url: string; thumbnail: string; class?: string } = $props();
 	const hasThumbnail = thumbnail && thumbnail.indexOf('.') > -1;
 </script>
 
-<div class="flex gap-2">
+<div class={cn('flex gap-2', className)}>
 	<div class="mr-auto">
 		<h1 class="line-clamp-2 text-wrap break-words text-2xl font-semibold">
 			{title}

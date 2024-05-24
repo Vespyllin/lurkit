@@ -8,52 +8,50 @@
 	let { post, expand }: { post: ListingData; expand?: boolean } = $props();
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col gap-2">
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
-		<a href={post.permalink} class="space-y-2">
+		<a href={post.permalink}>
 			<ListingHeader
 				author={post.author}
 				created_utc={post.created_utc}
 				over_18={post.over_18}
 				subreddit={post.subreddit}
 			/>
-			<Link {thumbnail} title={cleanText(title)} {url} />
+			<Link {thumbnail} class="mt-1" title={cleanText(title)} {url} />
 		</a>
 	{:else}
-		<a href={post.permalink} class="space-y-2">
+		<a href={post.permalink}>
 			<ListingHeader
 				author={post.author}
 				created_utc={post.created_utc}
 				over_18={post.over_18}
 				subreddit={post.subreddit}
 			/>
-			<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
+			<h1 class="mt-1 text-2xl font-semibold">{cleanText(post.title)}</h1>
 		</a>
 
-		<div class="mt-2">
-			{#if post.is_video}
-				<Video url={post.url} />
-			{:else if post.post_hint == 'image'}
-				<Image url={post.url} />
-			{:else if post.is_gallery}
-				<Gallery {post} />
-			{:else if post.post_hint == 'rich:video'}
-				<IFrame {post} />
-			{:else if post.selftext?.length > 0 && !expand}
-				<Text text={post.selftext} clamp />
-			{:else if expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
-				<Image url={post.url} />
-			{/if}
+		{#if post.is_video}
+			<Video url={post.url} />
+		{:else if post.post_hint == 'image'}
+			<Image url={post.url} />
+		{:else if post.is_gallery}
+			<Gallery {post} />
+		{:else if post.post_hint == 'rich:video'}
+			<IFrame {post} />
+		{:else if post.selftext?.length > 0 && !expand}
+			<Text text={post.selftext} clamp />
+		{:else if expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
+			<Image url={post.url} />
+		{/if}
 
-			{#if post.selftext?.length > 0 && expand}
-				<Text class="mt-2" text={post.selftext} />
-			{/if}
-		</div>
+		{#if post.selftext?.length > 0 && expand}
+			<Text text={post.selftext} />
+		{/if}
 	{/if}
 
 	<a href={post.permalink}>
-		<div class="mt-2 flex gap-10 pr-5 text-lg font-semibold text-zinc-200">
+		<div class="flex gap-10 pr-5 text-lg font-semibold text-zinc-200">
 			<div class="inline-flex items-center gap-1">
 				<ArrowUp size={20} />
 				<span>
