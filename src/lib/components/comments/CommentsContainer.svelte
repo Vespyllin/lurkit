@@ -8,15 +8,15 @@
 		comments,
 		error,
 		fetching,
+		sort = $bindable(),
 		class: className
 	}: {
 		comments: PostComments;
 		error: string | undefined;
 		fetching: boolean;
+		sort: RedditSortOptions;
 		class?: string;
 	} = $props();
-
-	let sort: RedditSortOptions = $state('top');
 </script>
 
 <div class={className}>
