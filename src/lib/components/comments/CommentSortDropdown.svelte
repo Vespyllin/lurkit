@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CaretDown } from 'radix-icons-svelte';
-	import * as DropdownMenu from '../ui/dropdown-menu';
 	import { cn } from '$lib/utils';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 	let { sort = $bindable(), class: className }: { sort: RedditSortOptions; class?: string } =
 		$props();

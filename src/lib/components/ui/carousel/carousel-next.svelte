@@ -16,7 +16,7 @@
 	variant="ghost"
 	size="icon"
 	class={cn(
-		'absolute -right-12 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer touch-manipulation rounded-none hover:bg-black hover:bg-opacity-15',
+		'absolute -right-12 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer touch-manipulation hover:bg-transparent',
 		className
 	)}
 	disabled={!$canScrollNext}
@@ -24,6 +24,6 @@
 	on:keydown={handleKeyDown}
 	{...$$restProps}
 >
-	<CaretRight class="h-12 w-12" />
+	<CaretRight class=" h-12 w-12 text-zinc-500 hover:brightness-200" />
 	<span class="sr-only">Previous slide</span>
 </Button>

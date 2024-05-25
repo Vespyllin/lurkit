@@ -42,11 +42,15 @@
 	};
 </script>
 
-<div class="relative flex justify-center">
-	<Carousel.Root bind:api class="flex h-[600px] items-center justify-center">
+<div class="relative flex justify-center rounded-md bg-black">
+	<Carousel.Root
+		opts={{ duration: 20 }}
+		bind:api
+		class="flex h-[600px] items-center justify-center"
+	>
 		<Carousel.Content>
 			{#each galleryItems as galleryItem}
-				<Carousel.Item class="rounded-2xl">
+				<Carousel.Item>
 					<div class="mx-auto flex h-full items-center justify-center">
 						<img
 							class="h-full max-h-[600px] w-full object-contain"
@@ -56,8 +60,8 @@
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
-		<Carousel.Previous class="translate-x-12" />
-		<Carousel.Next class="-translate-x-12" />
+		<Carousel.Previous class="translate-x-12 " />
+		<Carousel.Next class="h-fit -translate-x-12" />
 	</Carousel.Root>
 	<div
 		class={cn(

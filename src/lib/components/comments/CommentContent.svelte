@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { ArrowUp, DrawingPin } from 'radix-icons-svelte';
 	import CommentChain from './CommentChain.svelte';
-	import Markdown from '../Markdown.svelte';
+	import { Markdown } from '../ui/markdown';
 
 	const {
 		comment,

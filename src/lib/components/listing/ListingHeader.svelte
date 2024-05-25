@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ExclamationTriangle } from 'radix-icons-svelte';
-	import SubredditPopover from './SubredditPopover.svelte';
 	import { getTimeAgo } from '$lib';
+	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 
 	let {
 		subreddit,
@@ -9,7 +9,7 @@
 		created_utc,
 		over_18
 	}: {
-		subreddit: SubredditDetails;
+		subreddit?: SubredditDetails;
 		author: string;
 		created_utc: number;
 		over_18: boolean;
@@ -17,7 +17,9 @@
 </script>
 
 <div class="flex h-5 items-center gap-2">
-	<SubredditPopover {subreddit} />
+	{#if subreddit}
+		<SubredditPopover {subreddit} />
+	{/if}
 	<div class="hidden gap-2 overflow-x-hidden lg:flex">
 		•
 		<span class="text-zinc-400">

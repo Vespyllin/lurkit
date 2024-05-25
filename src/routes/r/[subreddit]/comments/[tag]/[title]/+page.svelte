@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { fetchPostData } from '$lib/client/post';
-	import Listing from '$lib/components/Listing.svelte';
-	import Comments from '$lib/components/comments';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
+	import Comments from '$lib/components/comments/';
 
 	const {
 		params: { subreddit, tag, title }

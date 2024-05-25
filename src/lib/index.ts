@@ -1,8 +1,4 @@
 export const getTimeAgo = (timestamp: number, short: boolean = false) => {
-	const relativeTimeFormatter = new Intl.RelativeTimeFormat('en', {
-		style: short ? 'short' : 'long'
-	});
-
 	if (!timestamp) return `BAD TS: ${timestamp}`;
 
 	const givenDate = new Date(timestamp * 1000);
@@ -18,16 +14,16 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 	let value;
 
 	if (differenceInSeconds < minuteThreshold) {
-		unit = 'second';
+		unit = short ? 's' : 'sec';
 		value = differenceInSeconds;
 	} else if (differenceInSeconds < hourThreshold) {
-		unit = 'minute';
+		unit = short ? 'm' : 'min';
 		value = Math.floor(differenceInSeconds / minuteThreshold);
 	} else if (differenceInSeconds < dayThreshold) {
-		unit = 'hour';
+		unit = short ? 'h' : 'hr';
 		value = Math.floor(differenceInSeconds / hourThreshold);
 	} else if (differenceInSeconds < weekThreshold) {
-		unit = 'day';
+		unit = short ? 'd' : 'day';
 		value = Math.floor(differenceInSeconds / dayThreshold);
 	} else {
 		const givenMonth = givenDate.getMonth();
@@ -38,18 +34,18 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		const todayYear = today.getFullYear();
 
 		if (todayYear - givenYear > 0) {
-			unit = 'year';
+			unit = short ? 'y' : 'yr';
 			value = todayYear - givenYear;
 		} else if (todayMonth - givenMonth > 0) {
-			unit = 'month';
+			unit = short ? 'm' : 'mnth';
 			value = todayMonth - givenMonth;
 		} else {
-			unit = 'week';
+			unit = short ? 'w' : 'week';
 			value = Math.floor(differenceInSeconds / weekThreshold);
 		}
 	}
 
-	return relativeTimeFormatter.format(-value, unit as any);
+	return `${value} ${value > 1 && !short ? unit + 's' : unit} ago`;
 };
 
 export const cleanText = (text: string, nowhitespace: boolean = false) => {

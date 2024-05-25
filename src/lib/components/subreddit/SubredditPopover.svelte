@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Tooltip from './ui/tooltip';
+	import * as Tooltip from '../ui/tooltip';
 
 	let { subreddit }: { subreddit: SubredditDetails } = $props();
 

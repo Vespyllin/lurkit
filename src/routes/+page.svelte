@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import Listing from '$lib/components/Listing.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { FeedStore } from '$lib/stores/FeedState.svelte';
 
@@ -36,7 +36,7 @@
 	{#each FeedStore.data as post, idx}
 		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
 			<Listing {post} />
-			<Separator class="mb-6 mt-4" />
+			<Separator class="my-4" />
 		</div>
 	{/each}
 

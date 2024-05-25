@@ -63,15 +63,16 @@
 />
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-{#if !expanded}
-	<div class="flex items-center justify-center">
-		<img
-			src={url}
-			class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
-			onclick={handleExpand}
-		/>
-	</div>
-{:else}
+<div class="flex items-center justify-center">
+	<img
+		src={url}
+		class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
+		onclick={handleExpand}
+	/>
+</div>
+
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+{#if expanded}
 	<div
 		onclick={handleExpand}
 		class="fixed left-0 top-0 z-20 m-0 flex h-[100lvh] w-[100lvw] items-center overflow-auto bg-background"
@@ -86,6 +87,7 @@
 			class={cn('m-auto', zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}
 			src={url}
 			onclick={(e) => {
+				e.preventDefault();
 				e.stopPropagation();
 				zoomed = !zoomed;
 			}}
