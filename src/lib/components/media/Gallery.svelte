@@ -61,7 +61,7 @@
 			{/each}
 		</Carousel.Content>
 		<Carousel.Previous class="translate-x-12 " />
-		<Carousel.Next class="h-fit -translate-x-12" />
+		<Carousel.Next class="-translate-x-12" />
 	</Carousel.Root>
 	<div
 		class={cn(
