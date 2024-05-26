@@ -1,9 +1,8 @@
 // import type { GeolocationData } from '$lib/geoClient';
-// import connectToDb from './connect';
+// import { connect } from './mongo';
 
 // export const saveLogToDb = async (data: GeolocationData) => {
-// 	const client = await connectToDb();
-// 	const db = client.db('lurkitDB');
+// 	const client = await connect();
 
-// 	return await db.collection('ip-log').insertOne(data);
+// 	return await client.collection('ip-log').insertOne(data);
 // };
