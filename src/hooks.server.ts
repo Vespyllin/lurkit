@@ -22,8 +22,10 @@ const log = async (reqIp: string) => {
 			mongoRes = await insertLog(geoLocData);
 		}
 
-		if (!mongoRes.acknowledged) {
+		if (!mongoRes || !mongoRes.acknowledged) {
 			console.log('Could not save log to DB. (no ack)');
+		} else {
+			console.log(`Saved log to DB. id: ${mongoRes.insertedId}`);
 		}
 	} catch (error) {
 		console.log(`Could not save log to DB. (${(error as Error)?.message})`);
