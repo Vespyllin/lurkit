@@ -1,6 +1,7 @@
 import { insertLog } from '$lib/db/log';
 import { getGeoLocationData } from '$lib/geoClient';
 import type { GeolocationData } from '$lib/geoClient/types';
+import type { InsertOneResult } from 'mongodb';
 
 const log = async (reqIp: string) => {
 	let geoLocData: GeolocationData | undefined;
@@ -14,7 +15,7 @@ const log = async (reqIp: string) => {
 	}
 
 	try {
-		let mongoRes = undefined;
+		let mongoRes: InsertOneResult<Document> | undefined;
 		if ('message' in geoLocData) {
 			mongoRes = await insertLog({ message: `${geoLocData.message} on IP: ${reqIp}` });
 		} else {
