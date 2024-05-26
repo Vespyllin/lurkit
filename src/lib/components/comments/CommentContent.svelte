@@ -2,7 +2,7 @@
 	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import { ArrowUp, DrawingPin } from 'radix-icons-svelte';
-	import CommentChain from './CommentChain.svelte';
+	import CommentContainer from './CommentContainer.svelte';
 	import { Markdown } from '../ui/markdown';
 
 	const {
@@ -61,7 +61,7 @@
 
 			{#if !!comment.children}
 				<div class="ml-1.5 flex flex-col pt-1 lg:ml-3">
-					<CommentChain comments={comment.children} depth={depth + 1} />
+					<CommentContainer comments={comment.children} depth={depth + 1} />
 				</div>
 			{/if}
 		</div>

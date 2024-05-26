@@ -1,5 +1,3 @@
-import CommentContainer from './CommentsContainer.svelte';
-
-const Comments = CommentContainer;
+import Comments from './Comments.svelte';
 
 export default Comments;

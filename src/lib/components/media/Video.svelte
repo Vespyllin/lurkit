@@ -18,6 +18,11 @@
 			audio.volume = 0.1;
 			audio.play();
 		});
+
+		video.addEventListener('click', () => {
+			if (!video) return;
+			video.paused ? video.play() : video.pause();
+		});
 	});
 </script>
 

@@ -17,9 +17,9 @@
 
 <div class={cn('mt-1 flex flex-col', root ? 'gap-4' : 'gap-2.5')}>
 	{#if !collapsed || comments.length == 0}
-		{#each comments as parent, idx}
+		{#each comments as comment, idx}
 			<CommentContent
-				comment={parent}
+				{comment}
 				depth={exceededCollapseDepth ? 0 : depth}
 				collapsed={exceededCollapseDepth && idx > 0}
 			/>

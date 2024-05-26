@@ -1,6 +1,7 @@
 # lurkit - TODOs:
 
 IP logging etc.  
+comment (store collapse state in parent comment state or a separate data structure)  
 comment layout - move upvotes and add reply number to bottom row  
 replace markdown library
 subreddit banner, sort, sticky, etc.  

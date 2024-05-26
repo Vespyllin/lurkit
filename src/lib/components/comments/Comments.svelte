@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import CommentChain from './CommentChain.svelte';
+	import CommentContainer from './CommentContainer.svelte';
 	import CommentSortDropdown from './CommentSortDropdown.svelte';
 
 	let {
@@ -27,6 +27,6 @@
 	{#if fetching}
 		<FetchStatus {fetching} {error} />
 	{:else}
-		<CommentChain {comments} root />
+		<CommentContainer {comments} root />
 	{/if}
 </div>
