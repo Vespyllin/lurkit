@@ -13,16 +13,16 @@
 			audio.pause();
 		});
 
-		video.addEventListener('play', () => {
+		video.addEventListener('play', async () => {
 			audio.currentTime = video?.currentTime ?? 0;
 			audio.volume = 0.1;
-			audio.play();
+			await audio.play();
 		});
 
-		video.addEventListener('click', () => {
+		video.onclick = async () => {
 			if (!video) return;
-			video.paused ? video.play() : video.pause();
-		});
+			video.paused ? await video.play() : video.pause();
+		};
 	});
 </script>
 
