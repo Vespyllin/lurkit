@@ -59,7 +59,4 @@ export type GeolocationData =
 	  }
 	| {
 			message: string;
-			time_zone: {
-				unix_timestamp: number;
-			};
 	  };
