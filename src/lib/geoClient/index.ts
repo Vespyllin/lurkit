@@ -1,0 +1,68 @@
+import { PRIVATE_IP_LOCATION_API_KEY } from '$env/static/private';
+
+export type GeolocationData = {
+	message?: string;
+	ip: string;
+	continent_code: string;
+	continent_name: string;
+	country_code2: string;
+	country_code3: string;
+	country_name: string;
+	country_name_official: string;
+	country_capital: string;
+	state_prov: string;
+	state_code: string;
+	district: string;
+	city: string;
+	zipcode: string;
+	latitude: string;
+	longitude: string;
+	is_eu: boolean;
+	calling_code: string;
+	country_tld: string;
+	languages: string;
+	country_flag: string;
+	geoname_id: string;
+	isp: string;
+	connection_type: string;
+	organization: string;
+	country_emoji: string;
+	currency: {
+		code: string;
+		name: string;
+		symbol: string;
+	};
+	time_zone: {
+		name: string;
+		offset: number;
+		offset_with_dst: number;
+		current_time: string;
+		current_time_unix: number;
+		is_dst: boolean;
+		dst_savings: number;
+		dst_exists: boolean;
+		dst_start: {
+			utc_time: string;
+			duration: string;
+			gap: boolean;
+			dateTimeAfter: string;
+			dateTimeBefore: string;
+			overlap: boolean;
+		};
+		dst_end: {
+			utc_time: string;
+			duration: string;
+			gap: boolean;
+			dateTimeAfter: string;
+			dateTimeBefore: string;
+			overlap: boolean;
+		};
+	};
+};
+
+export const getGeoLocationData = async (ip: string) => {
+	const apiURL = 'https://api.ipgeolocation.io/ipgeo';
+	const geoLocationRes = await fetch(`${apiURL}?apiKey=${PRIVATE_IP_LOCATION_API_KEY}&ip=${ip}`);
+
+	return (await geoLocationRes.json()) as GeolocationData;
+};

@@ -1,10 +1,14 @@
-import { PRIVATE_IP_LOCATION_API_KEY } from '$env/static/private';
+import { saveLogToDb } from '$lib/db';
+import { getGeoLocationData } from '$lib/geoClient';
+
+const log = async (reqIp: string) => {
+	const geoLocData = await getGeoLocationData(reqIp);
+	if (!!geoLocData?.message) return;
+
+	await saveLogToDb(geoLocData);
+};
 
 export async function handle({ event, resolve }) {
-	const ip = event.getClientAddress();
-	const ipLocationReq = fetch(
-		`https://api.ipgeolocation.io/ipgeo?apiKey=${PRIVATE_IP_LOCATION_API_KEY}&ip=${ip}`
-	);
-	ipLocationReq.then((x) => x.json().then((x) => console.log(x)));
+	log(event.getClientAddress());
 	return resolve(event);
 }
