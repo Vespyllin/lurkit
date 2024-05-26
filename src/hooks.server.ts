@@ -9,6 +9,6 @@ const log = async (reqIp: string) => {
 };
 
 export async function handle({ event, resolve }) {
-	await log(event.getClientAddress());
+	log(event.getClientAddress());
 	return resolve(event);
 }
