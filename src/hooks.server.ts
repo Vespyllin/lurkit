@@ -6,14 +6,21 @@ const log = async (reqIp: string) => {
 	let geoLocData: GeolocationData | undefined;
 	try {
 		geoLocData = await getGeoLocationData(reqIp);
+
 		console.log(geoLocData);
 	} catch (error) {
-		console.log('Could not retrieve IP data.');
+		console.log(`Could not retrieve IP data. ${reqIp}`);
 		return;
 	}
 
 	try {
-		const mongoRes = await insertLog(geoLocData);
+		let mongoRes = undefined;
+		if ('message' in geoLocData) {
+			mongoRes = await insertLog({ message: `${geoLocData.message} on IP: ${reqIp}` });
+		} else {
+			mongoRes = await insertLog(geoLocData);
+		}
+
 		if (!mongoRes.acknowledged) {
 			console.log('Could not save log to DB. (no ack)');
 		}
