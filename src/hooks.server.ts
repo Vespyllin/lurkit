@@ -1,12 +1,12 @@
-// import { saveLogToDb } from '$lib/db';
+import { insertLog } from '$lib/db/log';
 import { getGeoLocationData } from '$lib/geoClient';
 
-// const log = async (reqIp: string) => {
-// 	const geoLocData = await getGeoLocationData(reqIp);
-// 	if (!!geoLocData?.message) return;
+const log = async (reqIp: string) => {
+	const geoLocData = await getGeoLocationData(reqIp);
+	if (!!geoLocData?.message) return;
 
-// 	await saveLogToDb(geoLocData);
-// };
+	await insertLog(geoLocData);
+};
 
 export async function handle({ event, resolve }) {
 	// log(event.getClientAddress());
