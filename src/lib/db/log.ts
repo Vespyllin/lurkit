@@ -1,4 +1,4 @@
-import type { GeolocationData } from '$lib/geoClient';
+import type { GeolocationData } from '$lib/geoClient/types';
 import { connect } from './mongo';
 
 export const insertLog = async (data: GeolocationData) => {
