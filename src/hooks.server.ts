@@ -4,6 +4,9 @@ import type { GeolocationData } from '$lib/geoClient/types';
 import type { InsertOneResult } from 'mongodb';
 
 const log = async (reqIp: string) => {
+	const date = new Date().toString();
+	console.log('In log fn', date);
+
 	let geoLocData: GeolocationData | undefined;
 	try {
 		geoLocData = await getGeoLocationData(reqIp);
@@ -15,7 +18,9 @@ const log = async (reqIp: string) => {
 	}
 
 	try {
+		console.log('Attempting to save log to DB.', date);
 		let mongoRes: InsertOneResult<Document> | undefined;
+
 		if ('message' in geoLocData) {
 			mongoRes = await insertLog({ message: `${geoLocData.message} on IP: ${reqIp}` });
 		} else {
@@ -30,6 +35,8 @@ const log = async (reqIp: string) => {
 	} catch (error) {
 		console.log(`Could not save log to DB. (${(error as Error)?.message})`);
 	}
+
+	console.log('Log fn executed.', date);
 };
 
 export async function handle({ event, resolve }) {
