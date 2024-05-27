@@ -42,7 +42,7 @@
 	};
 </script>
 
-<div class="relative flex justify-center rounded-md bg-black">
+<div class="relative flex justify-center rounded-md">
 	<Carousel.Root
 		opts={{ duration: 20 }}
 		bind:api

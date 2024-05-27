@@ -45,7 +45,14 @@
 				<IFrame {post} />
 			</div>
 		{:else if post.selftext?.length > 0 && !expand}
-			<Text text={post.selftext} clamp />
+			<div class="hidden lg:block">
+				<Text text={post.selftext} clamp />
+			</div>
+
+			<!-- !BUGFIX: 89lvw chosen as most natural width to manually prevent the markdown from overflowing -->
+			<div class="block w-[89lvw] bg-red-500 lg:hidden">
+				<Text text={post.selftext} clamp />
+			</div>
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}
