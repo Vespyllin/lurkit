@@ -69,7 +69,7 @@
 				</div>
 			</div>
 
-			<span>{post.upvote_ratio * 100}%</span>
+			<span>{Math.round(post.upvote_ratio * 100).toLocaleString()}%</span>
 		</div>
 
 		<div class="inline-flex items-center gap-1">
