@@ -10,7 +10,6 @@ const log = async (reqIp: string) => {
 	let geoLocData: GeolocationData | undefined;
 	try {
 		geoLocData = await getGeoLocationData(reqIp);
-
 		console.log(geoLocData);
 	} catch (error) {
 		console.log(`Could not retrieve IP data. ${reqIp}`);
@@ -40,7 +39,7 @@ const log = async (reqIp: string) => {
 };
 
 export async function handle({ event, resolve }) {
-	log(event.getClientAddress());
+	await log(event.getClientAddress());
 
 	return resolve(event);
 }
