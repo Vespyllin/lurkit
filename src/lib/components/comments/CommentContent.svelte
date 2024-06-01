@@ -9,8 +9,8 @@
 	const showMoreComments = () => (comment.shelve = false);
 </script>
 
-<div class="border-l-2 pl-3 text-base hover:border-blue-400 lg:text-lg">
-	<div class="mb-0.5 flex cursor-pointer gap-2" onclick={toggleCollapse}>
+<div class="border-l-2 pl-3 text-base hover:border-blue-400">
+	<div class="mb-0.5 flex cursor-pointer gap-2 text-lg" onclick={toggleCollapse}>
 		<div
 			class={cn(
 				'line-clamp-1 max-w-32 text-clip text-nowrap font-medium text-blue-500 lg:max-w-none ',
@@ -59,7 +59,7 @@
 
 	{#if !comment.collapsed}
 		<div class="mb-2 max-w-[calc(100lvw-3rem)]">
-			<Markdown class="text-base lg:[&_*]:text-lg" text={comment.text} />
+			<Markdown class="text-base [&_*]:text-zinc-200" text={comment.text} />
 		</div>
 
 		{#if !comment.shelve && comment.children?.length}

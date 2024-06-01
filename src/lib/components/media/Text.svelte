@@ -13,7 +13,7 @@
 
 <div
 	class={cn(
-		'flex flex-col gap-5 whitespace-pre text-wrap text-lg text-gray-300 ',
+		'flex flex-col gap-5 whitespace-pre text-wrap text-base [&_*]:text-zinc-200',
 		clamp && '[&>div>*:not(:first-child)]:hidden [&_p]:line-clamp-6',
 		className
 	)}
