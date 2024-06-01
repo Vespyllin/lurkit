@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
-	import { ArrowUp, ChatBubble, PlusCircled } from 'radix-icons-svelte';
+	import { ArrowUp, ChatBubble, DrawingPin, PlusCircled } from 'radix-icons-svelte';
 	import Markdown from '../ui/markdown/Markdown.svelte';
 
 	const { comment = $bindable() }: { comment: CommentContentProps } = $props();
@@ -19,6 +19,14 @@
 		>
 			{comment.author}
 		</div>
+
+		{#if comment.stickied}
+			<span>•</span>
+			<div class="flex items-center gap-1 text-zinc-400">
+				<DrawingPin />
+				<span class="hidden text-zinc-400 lg:inline">stickied</span>
+			</div>
+		{/if}
 
 		<span>•</span>
 

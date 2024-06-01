@@ -38,7 +38,7 @@
 			return {
 				...originalComment,
 				depth: depth,
-				collapsed: false,
+				collapsed: originalComment.stickied,
 				children: childrenWithState,
 				totalChildren: subCommentCount,
 				shelve: depth >= shelveDepth
