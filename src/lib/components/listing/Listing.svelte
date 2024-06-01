@@ -49,7 +49,8 @@
 				<Text text={post.selftext} clamp />
 			</div>
 
-			<!-- !BUGFIX: 89lvw chosen as most natural width to manually prevent the markdown from overflowing on mobile -->
+			<!-- !BUGFIX: 	Provided fixed width to prevent the markdown from overflowing on mobile -->
+			<!-- ! 			89lvw was chosen manually as the most natural width -->
 			<div class="block w-[89lvw] bg-red-500 lg:hidden">
 				<Text text={post.selftext} clamp />
 			</div>

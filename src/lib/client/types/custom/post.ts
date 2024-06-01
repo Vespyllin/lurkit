@@ -1,9 +1,7 @@
 type PostData = {
 	listing: ListingData;
-	comments: PostComments;
+	comments: PostComment[];
 };
-
-type PostComments = PostComment[];
 
 type PostComment = {
 	text: string;
@@ -13,5 +11,5 @@ type PostComment = {
 	created_utc: number;
 	edited: boolean | number;
 	stickied: boolean;
-	children?: PostComments;
+	children?: PostComment[];
 };

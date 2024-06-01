@@ -57,7 +57,7 @@ const cleanAllComments = (init: any) => {
 		};
 
 		return commentData;
-	}) as PostComments;
+	}) as PostComment[];
 
 	return res;
 };
