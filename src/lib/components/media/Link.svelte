@@ -5,14 +5,15 @@
 		title,
 		url,
 		thumbnail,
+		clamp,
 		class: className
-	}: { title: string; url: string; thumbnail: string; class?: string } = $props();
+	}: { title: string; url: string; thumbnail: string; clamp?: boolean; class?: string } = $props();
 	const hasThumbnail = thumbnail && thumbnail.indexOf('.') > -1;
 </script>
 
 <div class={cn('flex gap-2', className)}>
 	<div class="mr-auto">
-		<h1 class="line-clamp-2 text-wrap break-words text-2xl font-semibold">
+		<h1 class={cn('text-wrap break-words text-2xl font-semibold', clamp && 'line-clamp-2')}>
 			{title}
 		</h1>
 

@@ -24,7 +24,7 @@
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
 
-		<Link {thumbnail} title={cleanText(title)} {url} />
+		<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
 	{:else}
 		<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
 

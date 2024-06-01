@@ -1,6 +1,7 @@
 # lurkit - TODOs:
 
-comment layout - move upvotes and add reply number to bottom row  
+sort dropdown spacing and rounding  
+comment layout - move upvotes | add reply number to bottom row | datetime instead of hrs ago for full screen (today at 12:30)  
 make image/gallery full width, smudge background  
 replace markdown library
 image overlay for galleries  
