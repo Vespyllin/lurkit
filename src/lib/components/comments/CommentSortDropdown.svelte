@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { CaretDown } from 'radix-icons-svelte';
-	import { cn } from '$lib/utils';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 	let { sort = $bindable(), class: className }: { sort: RedditSortOptions; class?: string } =
@@ -22,10 +21,10 @@
 				</div>
 			</DropdownMenu.Trigger>
 		</div>
-		<DropdownMenu.Content class="bg-background font-['Ubuntu']">
+		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
 			{#each sortOptions as sortOption}
 				<DropdownMenu.Item
-					class={cn('cursor-pointer font-normal', sort == sortOption && 'bg-accent')}
+					class={'cursor-pointer rounded-sm font-normal hover:bg-accent'}
 					onclick={() => (sort = sortOption)}
 				>
 					{sortOption}
