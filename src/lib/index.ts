@@ -1,5 +1,4 @@
 export const getTimeAgo = (timestamp: number, short: boolean = false) => {
-	console.log(short);
 	if (!timestamp) return `BAD TS: ${timestamp}`;
 
 	const givenDate = new Date(timestamp * 1000);

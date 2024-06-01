@@ -11,9 +11,14 @@
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400 lg:text-lg">
 	<div class="mb-0.5 flex cursor-pointer gap-2" onclick={toggleCollapse}>
-		<span class={cn('font-medium text-blue-500', comment.is_submitter && 'underline')}>
+		<div
+			class={cn(
+				'line-clamp-1 max-w-32 text-clip text-nowrap font-medium text-blue-500 ',
+				comment.is_submitter && 'underline'
+			)}
+		>
 			{comment.author}
-		</span>
+		</div>
 
 		<span>•</span>
 

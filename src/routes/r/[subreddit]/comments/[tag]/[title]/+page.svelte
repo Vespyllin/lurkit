@@ -50,6 +50,8 @@
 	<div class="flex flex-col">
 		<Listing {post} expand />
 
-		<Comments class="mt-4" bind:sort {comments} {error} {fetching} />
+		{#key comments}
+			<Comments class="mt-4" bind:sort {comments} {error} {fetching} />
+		{/key}
 	</div>
 {/if}

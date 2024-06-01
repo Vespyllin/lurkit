@@ -7,6 +7,7 @@
 
 	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_SHELVE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
+
 	let {
 		comments,
 		error,
