@@ -10,7 +10,7 @@
 </script>
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
-	<div class="mb-0.5 flex cursor-pointer gap-2 text-lg" onclick={toggleCollapse}>
+	<div class="mb-1 flex cursor-pointer gap-2 text-lg leading-tight" onclick={toggleCollapse}>
 		<div
 			class={cn(
 				'line-clamp-1 max-w-32 text-clip text-nowrap font-medium text-blue-500 lg:max-w-none ',

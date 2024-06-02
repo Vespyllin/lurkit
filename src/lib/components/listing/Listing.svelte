@@ -28,30 +28,26 @@
 	{:else}
 		<h1 class="text-2xl font-semibold">{cleanText(post.title)}</h1>
 
-		{#if post.is_video}
-			<div class="mx-auto w-full" onclick={(e) => e.preventDefault()}>
+		<div onclick={(e) => e.preventDefault()}>
+			{#if post.is_video}
 				<Video url={post.url} />
-			</div>
-		{:else if post.post_hint == 'image' || (expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/))}
-			<div class="mx-auto w-fit" onclick={(e) => e.preventDefault()}>
+			{:else if post.post_hint == 'image' || (expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/))}
 				<Image url={post.url} />
-			</div>
-		{:else if post.is_gallery}
-			<div class="mx-auto w-fit" onclick={(e) => e.preventDefault()}>
+			{:else if post.is_gallery}
 				<Gallery {post} />
-			</div>
-		{:else if post.post_hint == 'rich:video'}
-			<div class="mx-auto w-fit" onclick={(e) => e.preventDefault()}>
+			{:else if post.post_hint == 'rich:video'}
 				<IFrame {post} />
-			</div>
-		{:else if post.selftext?.length > 0 && !expand}
+			{/if}
+		</div>
+
+		{#if post.selftext?.length > 0 && !expand}
 			<div class="hidden lg:block">
 				<Text text={post.selftext} clamp />
 			</div>
 
 			<!-- !BUGFIX: 	Provided fixed width to prevent the markdown from overflowing on mobile -->
 			<!-- ! 			89lvw was chosen manually as the most natural width -->
-			<div class="block w-[89lvw] bg-red-500 lg:hidden">
+			<div class="block w-[89lvw] lg:hidden">
 				<Text text={post.selftext} clamp />
 			</div>
 		{/if}
