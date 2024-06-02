@@ -45,7 +45,7 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		}
 	}
 
-	return `${value} ${value > 1 && !short ? unit + 's' : unit} ago`;
+	return `${value}${value > 1 && !short ? unit + 's' : unit} ago`;
 };
 
 export const cleanText = (text: string, nowhitespace: boolean = false) => {
