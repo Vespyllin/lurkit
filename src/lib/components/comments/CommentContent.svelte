@@ -20,14 +20,6 @@
 			{comment.author}
 		</div>
 
-		{#if comment.stickied}
-			<span>•</span>
-			<div class="flex items-center gap-1 text-zinc-400">
-				<DrawingPin />
-				<span class="hidden text-zinc-400 lg:inline">stickied</span>
-			</div>
-		{/if}
-
 		<span>•</span>
 
 		<div class="flex items-center text-zinc-400">
@@ -40,6 +32,14 @@
 			<div class="flex items-center gap-1 text-zinc-400">
 				<ChatBubble />
 				{comment.totalChildren.toLocaleString()}
+			</div>
+		{/if}
+
+		{#if comment.stickied}
+			<span>•</span>
+			<div class="flex items-center gap-1 text-zinc-400">
+				<DrawingPin />
+				<span class="hidden text-zinc-400 lg:inline">stickied</span>
 			</div>
 		{/if}
 

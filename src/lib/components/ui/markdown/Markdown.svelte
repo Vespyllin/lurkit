@@ -25,10 +25,13 @@
 		[&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 [&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”']
 		[&_blockquote]:flex [&_blockquote]:gap-1 [&_blockquote]:p-2
 		[&_blockquote]:text-zinc-400 [&_h1]:text-3xl [&_h1]:font-semibold
-		[&_h2]:text-2xl [&_h2]:font-semibold [&_h3]:text-xl
-		[&_h3]:font-semibold 
+		[&_h2]:text-2xl [&_h2]:font-semibold 
+		[&_h3]:text-xl [&_h3]:font-semibold 
 		[&_img]:h-64 
-		[&_ol]:flex-col`,
+		[&_li]:flex [&_li]:text-zinc-400 
+		[&_ol>li]:before:pr-2 [&_ol>li]:before:content-['-'] [&_ol]:flex 
+		[&_ol]:flex-col [&_ol]:gap-1 
+		[&_ul]:flex [&_ul]:flex-col [&_ul]:gap-1`,
 		className
 	)}
 >
