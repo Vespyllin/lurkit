@@ -19,8 +19,9 @@
 			await audio.play();
 		});
 
-		video.onmousedown = async () => {
+		video.onmousedown = async (e) => {
 			if (!video) return;
+			e.preventDefault();
 			video.paused ? await video.play() : video.pause();
 		};
 	});
