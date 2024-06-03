@@ -37,21 +37,13 @@
 				<Gallery {post} />
 			{:else if post.post_hint == 'rich:video'}
 				<div class="flex w-full items-center justify-center">
-					<!-- <IFrame {post} /> -->
+					<IFrame {post} />
 				</div>
 			{/if}
 		</div>
 
 		{#if post.selftext?.length > 0 && !expand && post.post_hint !== 'rich:video' && !post.is_gallery && post.post_hint !== 'image' && !expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/) && !post.is_video}
-			<!-- <div class="hidden lg:block"> -->
 			<Text text={post.selftext} clamp />
-			<!-- </div> -->
-
-			<!-- !BUGFIX: 	Provided fixed width to prevent the markdown from overflowing on mobile -->
-			<!-- ! 			89lvw was chosen manually as the most natural width -->
-			<!-- <div class="block w-[89lvw] lg:hidden">
-				<Text text={post.selftext} clamp />
-			</div> -->
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}

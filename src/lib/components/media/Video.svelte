@@ -19,10 +19,6 @@
 		const video = e.currentTarget;
 		video.paused ? await video.play() : video.pause();
 	}}
-	ontouchstart={async (e) => {
-		const video = e.currentTarget;
-		video.paused ? await video.play() : video.pause();
-	}}
 	bind:this={video}
 	class="max-h-[600px] w-full rounded-2xl bg-black object-contain"
 	controls
