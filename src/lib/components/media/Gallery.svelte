@@ -54,7 +54,6 @@
 		`https://i.redd.it/${media_id}.${getMediaType(post, media_id)}`;
 </script>
 
-gallery
 <div class="relative flex justify-center rounded-md">
 	<Carousel.Root
 		opts={{ duration: 20 }}
