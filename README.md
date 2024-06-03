@@ -1,6 +1,5 @@
 # lurkit - TODOs:
 
-mobile layout - figure out x overflow
 comment datetime/figure out mobile overflow
 image overlay for galleries  
 clamp expanded unzoomed image size to like (clamp top), give more zoom to smaller objects (clamp bottom)
