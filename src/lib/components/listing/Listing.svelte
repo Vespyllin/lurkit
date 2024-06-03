@@ -36,7 +36,9 @@
 			{:else if post.is_gallery}
 				<Gallery {post} />
 			{:else if post.post_hint == 'rich:video'}
-				<IFrame {post} />
+				<div class="flex w-full items-center justify-center">
+					<IFrame {post} />
+				</div>
 			{/if}
 		</div>
 
