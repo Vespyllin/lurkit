@@ -19,10 +19,10 @@
 			await audio.play();
 		});
 
-		// video.onclick = async () => {
-		// 	if (!video) return;
-		// 	video.paused ? await video.play() : video.pause();
-		// };
+		video.onmousedown = async () => {
+			if (!video) return;
+			video.paused ? await video.play() : video.pause();
+		};
 	});
 </script>
 
