@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import { ArrowUp, ChatBubble, DrawingPin, PlusCircled } from 'radix-icons-svelte';
 	import Markdown from '../ui/markdown/Markdown.svelte';
@@ -59,7 +59,7 @@
 
 	{#if !comment.collapsed}
 		<div class="mb-2 max-w-[calc(100lvw-3rem)]">
-			<Markdown class="text-base text-zinc-200" text={comment.text} />
+			<Markdown class="text-base text-zinc-200" text={cleanText(comment.text)} />
 		</div>
 
 		{#if !comment.shelve && comment.children?.length}
