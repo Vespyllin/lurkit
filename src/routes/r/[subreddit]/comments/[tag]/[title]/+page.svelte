@@ -51,7 +51,7 @@
 		<Listing {post} expand />
 
 		{#key comments}
-			<Comments class="mt-4" bind:sort {comments} {error} {fetching} />
+			<Comments class="mt-2" bind:sort {comments} {error} {fetching} />
 		{/key}
 	</div>
 {/if}

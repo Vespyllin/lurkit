@@ -61,9 +61,8 @@
 	<FetchStatus {fetching} {error} />
 {:else}
 	{#each feed as post}
-		<a href={post.permalink}>
-			<Listing {post} />
-		</a>
+		<Listing {post} />
+
 		<Separator class="my-4" />
 	{/each}
 
