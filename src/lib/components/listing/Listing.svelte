@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
-	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
-	import { ArrowDown, ArrowUp, ChatBubble } from 'radix-icons-svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import ListingHeader from './ListingHeader.svelte';
 	import { cn } from '$lib/utils';
+	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
+	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
 
 	let { post, expand }: { post: ListingData; expand?: boolean } = $props();
@@ -12,7 +10,7 @@
 
 <div
 	class={cn(
-		'flex cursor-default flex-col rounded-md p-2',
+		'flex cursor-default flex-col rounded-md p-2 [&_a]:cursor-pointer',
 		!expand && 'hover:bg-[hsl(220,14.3,7.1)]'
 	)}
 >
@@ -26,7 +24,13 @@
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
 
-		<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+		{#if !expand}
+			<a href={post.permalink} draggable="false">
+				<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+			</a>
+		{:else}
+			<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+		{/if}
 	{:else}
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
