@@ -67,7 +67,7 @@
 						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 						<img
 							onclick={handleExpand}
-							class="h-full max-h-[600px] w-full object-contain"
+							class="h-full max-h-[600px] w-fit max-w-full cursor-pointer object-contain"
 							src={mediaIdToURL(galleryItem.media_id)}
 						/>
 					</div>

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
-	import Markdown from 'svelte-exmarkdown';
+	// import Markdown from 'svelte-exmarkdown';
+	import Markdown from 'svelte-markdown';
 
 	let { text, class: className }: { text: string; class?: string } = $props();
 
@@ -18,7 +19,7 @@
 	const embedMedia = (text: string) => embedRedditImage(embedGiphy(text));
 </script>
 
-<div
+<!-- <div
 	class={cn(
 		`flex flex-col gap-2 whitespace-pre text-wrap text-zinc-100
 		[&_a]:inline-block [&_a]:text-blue-600
@@ -36,4 +37,15 @@
 	)}
 >
 	<Markdown md={embedMedia(cleanText(text))} />
+</div> -->
+<div
+	class={cn(
+		`	space-y-2 
+			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 
+			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2
+			[&_ul]:text-red-500`,
+		className
+	)}
+>
+	<Markdown source={text} />
 </div>

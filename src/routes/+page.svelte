@@ -35,9 +35,7 @@
 {:else}
 	{#each FeedStore.data as post, idx}
 		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
-			<a href={post.permalink} draggable="false">
-				<Listing {post} />
-			</a>
+			<Listing {post} />
 			<Separator class="my-2" />
 		</div>
 	{/each}
