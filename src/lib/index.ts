@@ -68,8 +68,6 @@ export const cleanText = (text: string, nowhitespace: boolean = false) => {
 		text = text.replaceAll('  ', ' ');
 	}
 
-	text = text.replaceAll('&nbsp;', '');
-
 	return text;
 };
 
