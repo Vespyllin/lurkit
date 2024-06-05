@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
-	import type { ClassValue } from 'clsx';
 	import { Markdown } from '../ui/markdown';
 
 	let {
