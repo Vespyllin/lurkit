@@ -14,12 +14,23 @@
 		!expand && 'hover:bg-[hsl(220,14.3,7.1)]'
 	)}
 >
-	<ListingHeader
-		author={post.author}
-		created_utc={post.created_utc}
-		over_18={post.over_18}
-		subreddit={post.subreddit}
-	/>
+	{#if !expand}
+		<a href={post.permalink} draggable="false">
+			<ListingHeader
+				author={post.author}
+				created_utc={post.created_utc}
+				over_18={post.over_18}
+				subreddit={post.subreddit}
+			/>
+		</a>
+	{:else}
+		<ListingHeader
+			author={post.author}
+			created_utc={post.created_utc}
+			over_18={post.over_18}
+			subreddit={post.subreddit}
+		/>
+	{/if}
 
 	{#if post.post_hint == 'link'}
 		{@const { thumbnail, title, url } = post}
@@ -51,7 +62,13 @@
 				<IFrame {post} />
 			</div>
 		{:else if post.selftext?.length > 0 && !expand}
-			<Text text={post.selftext} clamp />
+			{#if !expand}
+				<a href={post.permalink} draggable="false">
+					<Text text={post.selftext} clamp />
+				</a>
+			{:else}
+				<Text text={post.selftext} clamp />
+			{/if}
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}
@@ -59,5 +76,11 @@
 		{/if}
 	{/if}
 
-	<ListingFooter class="mt-2" {post} />
+	{#if !expand}
+		<a href={post.permalink} draggable="false">
+			<ListingFooter class="mt-2" {post} />
+		</a>
+	{:else}
+		<ListingFooter class="mt-2" {post} />
+	{/if}
 </div>
