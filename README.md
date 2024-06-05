@@ -1,6 +1,6 @@
 # lurkit - TODOs:
 
-fix markdown
+fix markdown/text  
 comment datetime/figure out mobile overflow
 image overlay for galleries  
 clamp expanded unzoomed image size to like (clamp top), give more zoom to smaller objects (clamp bottom)
