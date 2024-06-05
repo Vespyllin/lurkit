@@ -50,7 +50,7 @@
 			<div class="flex w-full items-center justify-center">
 				<IFrame {post} />
 			</div>
-		{:else if post.selftext?.length > 0}
+		{:else if post.selftext?.length > 0 && !expand}
 			<Text text={post.selftext} clamp />
 		{/if}
 

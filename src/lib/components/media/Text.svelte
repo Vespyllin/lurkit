@@ -8,15 +8,10 @@
 		text,
 		clamp,
 		class: className
-	}: { text: string; clamp?: boolean; class?: ClassValue } = $props();
+	}: { text: string; clamp?: boolean; class?: string } = $props();
 </script>
 
-<div
-	class={cn(
-		'flex flex-col gap-5 whitespace-pre text-wrap text-base [&_*]:text-zinc-200',
-		clamp && '[&>div>*:not(:first-child)]:hidden [&_p]:line-clamp-6',
-		className
-	)}
->
-	<Markdown text={cleanText(text, !!clamp)} />
-</div>
+<Markdown
+	class={cn(clamp && '[&>div>*:not(:first-child)]:hidden [&_p]:line-clamp-6', className)}
+	text={cleanText(text, !!clamp)}
+/>

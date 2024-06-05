@@ -1,5 +1,6 @@
 # lurkit - TODOs:
 
+href on listing footer  
 fix markdown/text  
 comment datetime/figure out mobile overflow
 image overlay for galleries  
