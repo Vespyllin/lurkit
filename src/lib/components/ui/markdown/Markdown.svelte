@@ -43,10 +43,10 @@
 	class={cn(
 		`	space-y-2 
 			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 
-			[&_blockquote]:p-2 [&_blockquote]:text-zinc-400 [&_blockquote]:before:content-['“'] [&_blockquote]:after:content-['”']
+			[&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”'] [&_blockquote]:p-2 [&_blockquote]:text-zinc-400
 			[&_img]:my-0.5 [&_img]:max-h-64 [&_img]:max-w-96
 			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2
-			[&_ul]:text-red-500 `,
+			[&_ul]:list-inside [&_ul]:list-disc [&_ul]:pl-2`,
 		className
 	)}
 >
