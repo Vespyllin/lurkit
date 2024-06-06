@@ -40,7 +40,6 @@
 			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
 
 			if (fetchedFeed.status === 'OK') {
-				const x = fetchedFeed.data;
 				feed = feed.concat(fetchedFeed.data);
 				lastPostId = fetchedFeed.data.at(-1)?.name;
 			} else {
@@ -63,7 +62,7 @@
 	{#each feed as post}
 		<Listing {post} />
 
-		<Separator class="my-4" />
+		<Separator class="my-2" />
 	{/each}
 
 	{#if error || fetching}

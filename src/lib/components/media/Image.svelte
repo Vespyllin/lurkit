@@ -23,6 +23,7 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div class={cn('flex items-center justify-center', className)}>
 	<img
+		loading="lazy"
 		src={url}
 		class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
 		onclick={handleExpand}

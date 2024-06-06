@@ -51,6 +51,10 @@
 			<h1 class="mt-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
 		{/if}
 
+		{#if post.selftext?.length > 0 && expand}
+			<Text class="mt-2" text={post.selftext} />
+		{/if}
+
 		{#if post.is_video}
 			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image' || (expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/))}
@@ -69,10 +73,6 @@
 			{:else}
 				<Text class="mt-2" text={post.selftext} clamp />
 			{/if}
-		{/if}
-
-		{#if post.selftext?.length > 0 && expand}
-			<Text text={post.selftext} />
 		{/if}
 	{/if}
 
