@@ -58,7 +58,7 @@
 	</div>
 
 	{#if !comment.collapsed}
-		<div class="mb-2 max-w-[calc(100lvw-3rem)]">
+		<div class="mb-4 max-w-[calc(100lvw-3rem)]">
 			<Markdown class="text-base text-zinc-200" text={comment.text} />
 		</div>
 
