@@ -11,6 +11,6 @@
 </script>
 
 <Markdown
-	class={cn(clamp && '[&>div>*:not(:first-child)]:hidden [&_p]:line-clamp-6', className)}
+	class={cn(clamp && '[&>*:not(:first-child)]:hidden [&>*]:line-clamp-6', className)}
 	text={cleanText(text, !!clamp)}
 />
