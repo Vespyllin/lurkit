@@ -37,37 +37,37 @@
 
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+				<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
 			</a>
 		{:else}
-			<Link {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
 		{/if}
 	{:else}
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<h1 class="my-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
+				<h1 class="mt-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
 			</a>
 		{:else}
-			<h1 class="my-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
+			<h1 class="mt-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
 		{/if}
 
 		{#if post.is_video}
-			<Video url={post.url} />
+			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image' || (expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/))}
-			<Image url={post.url} />
+			<Image class="mt-2" url={post.url} />
 		{:else if post.is_gallery}
-			<Gallery {post} />
+			<Gallery class="mt-2" {post} />
 		{:else if post.post_hint == 'rich:video'}
-			<div class="flex w-full items-center justify-center">
+			<div class="mt-2 flex w-full items-center justify-center">
 				<IFrame {post} />
 			</div>
 		{:else if post.selftext?.length > 0 && !expand}
 			{#if !expand}
 				<a href={post.permalink} draggable="false">
-					<Text text={post.selftext} clamp />
+					<Text class="mt-2" text={post.selftext} clamp />
 				</a>
 			{:else}
-				<Text text={post.selftext} clamp />
+				<Text class="mt-2" text={post.selftext} clamp />
 			{/if}
 		{/if}
 

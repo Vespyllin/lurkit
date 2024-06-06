@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import ExpandedImage from './ExpandedImage.svelte';
 
-	let { post }: { post: ListingData } = $props();
+	let { post, class: className }: { post: ListingData; class?: string } = $props();
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
@@ -54,7 +54,7 @@
 		`https://i.redd.it/${media_id}.${getMediaType(post, media_id)}`;
 </script>
 
-<div class="relative flex justify-center rounded-md">
+<div class={cn('relative flex justify-center rounded-md', className)}>
 	<Carousel.Root
 		opts={{ duration: 20 }}
 		bind:api

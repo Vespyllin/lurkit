@@ -1,5 +1,7 @@
 <script lang="ts">
-	let { url }: { url: string; mobile?: boolean } = $props();
+	import { cn } from '$lib/utils';
+
+	let { url, class: className }: { url: string; class?: string } = $props();
 
 	let video: HTMLVideoElement | undefined = $state();
 
@@ -16,7 +18,7 @@
 		await audio.play();
 	}}
 	bind:this={video}
-	class="max-h-[600px] w-full rounded-2xl bg-black object-contain"
+	class={cn('max-h-[600px] w-full rounded-2xl bg-black object-contain', className)}
 	controls
 >
 	<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />

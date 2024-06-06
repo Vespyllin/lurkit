@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
+	import { ExternalLink } from 'radix-icons-svelte';
 
 	let {
 		title,
@@ -26,6 +27,16 @@
 	</div>
 
 	{#if hasThumbnail}
-		<img src={thumbnail} class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover" />
+		<a
+			class="inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+			href={url}
+		>
+			<div class="relative">
+				<img src={thumbnail} class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover" />
+				<div class="absolute bottom-0 right-0 p-1">
+					<ExternalLink size={20} color="#000" />
+				</div>
+			</div>
+		</a>
 	{/if}
 </div>
