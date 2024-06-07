@@ -10,7 +10,7 @@
 </script>
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
-	<div class="mb-1 flex cursor-pointer gap-2 text-lg leading-tight" onclick={toggleCollapse}>
+	<div class="flex cursor-pointer gap-2 text-lg leading-tight" onclick={toggleCollapse}>
 		<div
 			class={cn(
 				'line-clamp-1 max-w-32 text-clip text-nowrap font-medium text-blue-500 lg:max-w-none ',
@@ -58,19 +58,19 @@
 	</div>
 
 	{#if !comment.collapsed}
-		<div class="mb-4 max-w-[calc(100lvw-3rem)]">
+		<div class="mt-2 max-w-[calc(100lvw-3rem)]">
 			<Markdown class="text-base text-zinc-200" text={comment.text} />
 		</div>
 
 		{#if !comment.shelve && comment.children?.length}
-			<div class="space-y-4 lg:pl-3">
+			<div class="mt-3 space-y-4 lg:pl-3">
 				{#each comment.children ?? [] as _, idx}
 					<svelte:self bind:comment={comment.children![idx]} />
 				{/each}
 			</div>
 		{:else if comment.shelve && comment.children?.length}
 			<div
-				class="flex w-full cursor-pointer items-center gap-2 pl-3 text-zinc-400 hover:underline lg:w-fit"
+				class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-3 text-zinc-400 hover:underline lg:w-fit"
 				onclick={showMoreComments}
 			>
 				<PlusCircled size={18} />
