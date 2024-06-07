@@ -32,7 +32,13 @@
 			href={url}
 		>
 			<div class="relative">
-				<img src={thumbnail} class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover" />
+				<img
+					src={thumbnail}
+					class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover"
+					onerror={(e) => {
+						if (e.currentTarget.parentElement) e.currentTarget.parentElement.style.display = 'none';
+					}}
+				/>
 				<div class="absolute bottom-0 right-0 p-1 mix-blend-difference">
 					<ExternalLink size={20} color="#FFF" />
 				</div>
