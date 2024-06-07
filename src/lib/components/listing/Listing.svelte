@@ -10,8 +10,8 @@
 
 <div
 	class={cn(
-		'flex cursor-default flex-col rounded-md p-2 [&_a]:cursor-pointer',
-		!expand && 'hover:bg-[hsl(220,14.3,7.1)]'
+		'flex cursor-default flex-col rounded-md [&_a]:cursor-pointer',
+		!expand && 'p-2 hover:bg-[hsl(220,14.3,7.1)]'
 	)}
 >
 	{#if !expand}
@@ -45,10 +45,10 @@
 	{:else}
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<h1 class="mt-2 text-3xl">{cleanText(post.title)}</h1>
+				<h1 class="mt-2 text-2xl">{cleanText(post.title)}</h1>
 			</a>
 		{:else}
-			<h1 class="mt-2 text-3xl">{cleanText(post.title)}</h1>
+			<h1 class="mt-2 text-2xl">{cleanText(post.title)}</h1>
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}
