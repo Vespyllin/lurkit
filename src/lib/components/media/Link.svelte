@@ -14,7 +14,7 @@
 
 <div class={cn('flex gap-2', className)}>
 	<div class="mr-auto">
-		<h1 class={cn('text-wrap break-words text-2xl', clamp && 'line-clamp-2')}>
+		<h1 class={cn('text-wrap break-words text-2xl font-medium', clamp && 'line-clamp-2')}>
 			{title}
 		</h1>
 
