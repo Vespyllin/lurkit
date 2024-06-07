@@ -22,7 +22,7 @@
 
 <div
 	class={cn(
-		`	space-y-4
+		`	cursor-auto space-y-4
 			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 
 			[&_blockquote>*]:before:content-['“'] [&_blockquote>*]:after:content-['”'] [&_blockquote]:p-2 [&_blockquote]:text-zinc-400 
 			[&_h1]:text-lg [&_h1]:font-semibold

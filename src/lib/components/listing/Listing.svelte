@@ -45,7 +45,7 @@
 	{:else}
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<h1 class="mt-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
+				<h1 class="mt-2 text-3xl font-semibold">{cleanText(post.title)}</h1>
 			</a>
 		{:else}
 			<h1 class="mt-2 text-2xl font-semibold">{cleanText(post.title)}</h1>
@@ -68,7 +68,7 @@
 		{:else if post.selftext?.length > 0 && !expand}
 			{#if !expand}
 				<a href={post.permalink} draggable="false">
-					<Text class="mt-2" text={post.selftext} clamp />
+					<Text class="mt-2 cursor-pointer" text={post.selftext} clamp />
 				</a>
 			{:else}
 				<Text class="mt-2" text={post.selftext} clamp />
