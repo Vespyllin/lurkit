@@ -13,7 +13,7 @@
 	<div class="flex cursor-pointer gap-2 text-lg leading-tight" onclick={toggleCollapse}>
 		<div
 			class={cn(
-				'line-clamp-1 max-w-32 text-clip text-nowrap font-medium text-blue-500 lg:max-w-none ',
+				'max-w-32 text-clip text-nowrap text-blue-500 lg:max-w-none ',
 				comment.is_submitter && 'underline'
 			)}
 		>

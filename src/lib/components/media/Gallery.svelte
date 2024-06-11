@@ -54,11 +54,17 @@
 		`https://i.redd.it/${media_id}.${getMediaType(post, media_id)}`;
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.code == 'Escape' && expanded) handleExpand();
+	}}
+/>
+
 <div class={cn('relative flex justify-center rounded-md', className)}>
 	<Carousel.Root
-		opts={{ duration: 20 }}
 		bind:api
-		class="flex h-[600px] items-center justify-center"
+		opts={{ duration: 20 }}
+		class="flex max-h-[600px] items-center justify-center"
 	>
 		<Carousel.Content>
 			{#each galleryItems as galleryItem}
