@@ -10,7 +10,7 @@ type ListingData = {
 	thumbnail: string;
 	over_18: boolean;
 
-	post_hint: string;
+	post_hint?: string;
 	is_video: boolean;
 	is_gallery: boolean;
 

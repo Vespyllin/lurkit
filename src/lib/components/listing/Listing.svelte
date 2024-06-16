@@ -32,15 +32,15 @@
 		/>
 	{/if}
 
-	{#if post.post_hint == 'link'}
+	{#if post.post_hint == 'link' || (post.selftext?.length == 0 && expand && !post.url.includes('redd.it'))}
 		{@const { thumbnail, title, url } = post}
 
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+				<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp />
 			</a>
 		{:else}
-			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp={!expand} />
+			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} />
 		{/if}
 	{:else}
 		{#if !expand}

@@ -10,51 +10,45 @@
 </script>
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
-	<div class="flex cursor-pointer gap-2 text-lg leading-tight" onclick={toggleCollapse}>
-		<div
-			class={cn(
-				'max-w-32 text-clip text-nowrap text-blue-500 lg:max-w-none ',
-				comment.is_submitter && 'underline'
-			)}
-		>
+	<div class="cursor-pointer gap-2 text-lg leading-tight lg:flex" onclick={toggleCollapse}>
+		<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</div>
 
-		<span>•</span>
+		<span class="hidden lg:inline">•</span>
 
-		<div class="flex items-center text-zinc-400">
-			<ArrowUp />
-			{comment.score.toLocaleString()}
-		</div>
-
-		{#if comment.totalChildren}
-			<span>•</span>
-			<div class="flex items-center gap-1 text-zinc-400">
-				<ChatBubble />
-				{comment.totalChildren.toLocaleString()}
+		<div class="flex gap-2">
+			<div class="flex items-center text-zinc-400">
+				<ArrowUp />
+				{comment.score.toLocaleString()}
 			</div>
-		{/if}
 
-		{#if comment.stickied}
+			{#if comment.totalChildren}
+				<span>•</span>
+				<div class="flex items-center gap-1 text-zinc-400">
+					<ChatBubble />
+					{comment.totalChildren.toLocaleString()}
+				</div>
+			{/if}
+
+			{#if comment.stickied}
+				<span>•</span>
+				<div class="flex items-center gap-1 text-zinc-400">
+					<DrawingPin />
+					<span class="hidden text-zinc-400 lg:inline">stickied</span>
+				</div>
+			{/if}
+
 			<span>•</span>
-			<div class="flex items-center gap-1 text-zinc-400">
-				<DrawingPin />
-				<span class="hidden text-zinc-400 lg:inline">stickied</span>
+			<div>
+				<span class="text-zinc-400">{getTimeAgo(comment.created_utc, true)}</span>
 			</div>
-		{/if}
 
-		<span>•</span>
-		<div class="inline">
-			<span class="text-zinc-400">{getTimeAgo(comment.created_utc, true)}</span>
 			{#if typeof comment.edited == 'number'}
-				<span class="text-zinc-400 lg:hidden">*</span>
+				<span class="hidden lg:inline">•</span>
+				<span class="hidden text-zinc-400 lg:inline">*{getTimeAgo(comment.edited, true)}</span>
 			{/if}
 		</div>
-
-		{#if typeof comment.edited == 'number'}
-			<span class="hidden lg:inline">•</span>
-			<span class="hidden text-zinc-400 lg:inline">*{getTimeAgo(comment.edited, true)}</span>
-		{/if}
 	</div>
 
 	{#if !comment.collapsed}

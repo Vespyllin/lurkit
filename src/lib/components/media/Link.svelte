@@ -19,7 +19,10 @@
 		</h1>
 
 		<a
-			class="inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+			class={cn(
+				'inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800',
+				clamp && 'line-clamp-1'
+			)}
 			href={url}
 		>
 			{url}
