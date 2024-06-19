@@ -32,7 +32,7 @@
 		/>
 	{/if}
 
-	{#if post.post_hint == 'link' || (post.selftext?.length == 0 && expand && !post.url.includes('redd.it'))}
+	{#if post.post_hint == 'link' || (expand && (post.selftext?.length ?? 0) == 0 && !post.url.includes('redd.it') && !post.url.includes('reddit'))}
 		{@const { thumbnail, title, url } = post}
 
 		{#if !expand}
@@ -48,7 +48,7 @@
 				<h1 class="mt-2 text-2xl font-medium">{cleanText(post.title)}</h1>
 			</a>
 		{:else}
-			<h1 class="mt-2 text-2xl font-medium">{cleanText(post.title)}</h1>
+			<h1 class="mt-2 cursor-text text-2xl font-medium">{cleanText(post.title)}</h1>
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}
