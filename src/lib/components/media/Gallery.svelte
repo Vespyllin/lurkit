@@ -83,13 +83,16 @@
 		<Carousel.Previous class="translate-x-12 " />
 		<Carousel.Next class="-translate-x-12" />
 	</Carousel.Root>
-	<div
-		class={cn(
-			'absolute bottom-0 mb-1 flex h-fit w-fit  items-center justify-center rounded-3xl bg-black bg-opacity-45 px-4 py-1 ',
-			!!hideCounter && 'select-none opacity-0 transition-all duration-500'
-		)}
-	>
-		<span class="text-white opacity-85">{current} ∕ {count}</span>
+	<div class="absolute bottom-0 mb-1 flex items-center justify-center">
+		{#each { length: count } as _, idx}
+			<div
+				class={cn(
+					'mx-[1px] h-1.5 w-1.5 rounded-full bg-zinc-400 bg-opacity-45 transition-all duration-200',
+					!!hideCounter && 'select-none opacity-0 duration-1000',
+					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+				)}
+			></div>
+		{/each}
 	</div>
 </div>
 

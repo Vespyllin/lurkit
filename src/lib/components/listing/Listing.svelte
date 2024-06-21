@@ -81,6 +81,6 @@
 			<ListingFooter class="mt-2" {post} />
 		</a>
 	{:else}
-		<ListingFooter class="mt-2" {post} />
+		<ListingFooter class="mt-2 [&_span]:cursor-text" {post} />
 	{/if}
 </div>

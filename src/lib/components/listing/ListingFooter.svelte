@@ -9,9 +9,7 @@
 <div class={cn('flex gap-10 text-lg font-medium text-zinc-200', className)}>
 	<div class="inline-flex items-center gap-1">
 		<ArrowUp size={20} />
-		<span class="cursor-text">
-			{post.score.toLocaleString()}
-		</span>
+		<span>{post.score.toLocaleString()}</span>
 	</div>
 
 	<div class="inline-flex items-center gap-1">
@@ -22,12 +20,12 @@
 			</div>
 		</div>
 
-		<span class="cursor-text">{Math.round(post.upvote_ratio * 100).toLocaleString()}%</span>
+		<span>{Math.round(post.upvote_ratio * 100).toLocaleString()}%</span>
 	</div>
 
 	<div class="inline-flex items-center gap-1">
 		<ChatBubble size={20} />
-		<span class="ml-1 cursor-text">{post.num_comments.toLocaleString()}</span>
+		<span class="ml-1">{post.num_comments.toLocaleString()}</span>
 	</div>
 
 	<div class="hidden w-full items-center lg:flex">
