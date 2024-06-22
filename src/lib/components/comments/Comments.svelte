@@ -26,7 +26,7 @@
 		originalComments: PostComment[],
 		depth: number = 0
 	): CommentContentProps[] => {
-		return originalComments.map((originalComment) => {
+		return originalComments.map((originalComment, idx) => {
 			const childrenWithState = originalComment.children?.length
 				? assignCommentState(originalComment.children, depth + 1)
 				: undefined;
@@ -38,10 +38,11 @@
 			return {
 				...originalComment,
 				depth: depth,
-				collapsed: originalComment.stickied,
+				collapsed:
+					originalComment.stickied || (depth != 0 && idx > 2 && originalComment.score < 10),
 				children: childrenWithState,
 				totalChildren: subCommentCount,
-				shelve: depth >= shelveDepth
+				shelved: depth >= shelveDepth
 			} as CommentContentProps;
 		});
 	};

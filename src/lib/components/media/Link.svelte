@@ -13,7 +13,7 @@
 </script>
 
 <div class={cn('flex gap-2', className)}>
-	<div class="mr-auto">
+	<div>
 		<h1 class={cn('text-wrap break-words text-2xl font-medium', clamp && 'line-clamp-2')}>
 			{title}
 		</h1>
@@ -37,13 +37,13 @@
 			<div class="relative">
 				<img
 					src={thumbnail}
-					class="h-24 min-h-24 w-32 min-w-32 rounded-xl object-cover"
+					class="h-24 min-h-24 w-32 min-w-32 rounded-md object-cover"
 					onerror={(e) => {
 						if (e.currentTarget.parentElement) e.currentTarget.parentElement.style.display = 'none';
 					}}
 				/>
-				<div class="absolute bottom-0 right-0 p-1 mix-blend-difference">
-					<ExternalLink size={20} color="#FFF" />
+				<div class="absolute bottom-0 right-0 m-1 rounded-sm bg-black p-0.5 opacity-85">
+					<ExternalLink size={15} color="#FFF" />
 				</div>
 			</div>
 		</a>

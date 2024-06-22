@@ -6,7 +6,7 @@
 
 	const { comment = $bindable() }: { comment: CommentContentProps } = $props();
 	const toggleCollapse = () => (comment.collapsed = !comment.collapsed);
-	const showMoreComments = () => (comment.shelve = false);
+	const showMoreComments = () => (comment.shelved = false);
 </script>
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
@@ -56,13 +56,13 @@
 			<Markdown class="text-base text-zinc-200" text={comment.text} />
 		</div>
 
-		{#if !comment.shelve && comment.children?.length}
+		{#if !comment.shelved && comment.children?.length}
 			<div class="mt-3 space-y-4 lg:pl-3">
 				{#each comment.children ?? [] as _, idx}
 					<svelte:self bind:comment={comment.children![idx]} />
 				{/each}
 			</div>
-		{:else if comment.shelve && comment.children?.length}
+		{:else if comment.shelved && comment.children?.length}
 			<div
 				class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-3 text-zinc-400 hover:underline lg:w-fit"
 				onclick={showMoreComments}
