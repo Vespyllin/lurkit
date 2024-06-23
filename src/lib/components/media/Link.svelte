@@ -31,7 +31,7 @@
 
 	{#if hasThumbnail}
 		<a
-			class="inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+			class="ml-auto inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
 			href={url}
 		>
 			<div class="relative">
