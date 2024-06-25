@@ -17,6 +17,7 @@
 	{#if !expand}
 		<a href={post.permalink} draggable="false">
 			<ListingHeader
+				flairs={post.link_flair_richtext}
 				author={post.author}
 				created_utc={post.created_utc}
 				over_18={post.over_18}
@@ -25,6 +26,7 @@
 		</a>
 	{:else}
 		<ListingHeader
+			flairs={post.link_flair_richtext}
 			author={post.author}
 			created_utc={post.created_utc}
 			over_18={post.over_18}

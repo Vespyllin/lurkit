@@ -22,6 +22,8 @@ type ListingData = {
 	secure_media?: null;
 	score: number;
 
+	link_flair_richtext: RedditLinkFlairRichText[];
+
 	edited: boolean;
 	is_self: boolean;
 

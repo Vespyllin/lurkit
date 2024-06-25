@@ -7,12 +7,14 @@
 		subreddit,
 		author,
 		created_utc,
-		over_18
+		over_18,
+		flairs
 	}: {
 		subreddit?: SubredditDetails;
 		author: string;
 		created_utc: number;
 		over_18: boolean;
+		flairs?: RedditLinkFlairRichText[];
 	} = $props();
 </script>
 
@@ -44,4 +46,8 @@
 			<span class="text-zinc-400"> 18+ </span>
 		</div>
 	{/if}
+
+	{#each (flairs ?? []).filter((x) => x.e === 'text' && !!x.t) as flair}
+		<div class="h-fit w-fit rounded-2xl bg-blue-400 px-2 text-sm">{flair.t}</div>
+	{/each}
 </div>

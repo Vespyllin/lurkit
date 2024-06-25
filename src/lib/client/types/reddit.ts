@@ -155,6 +155,7 @@ type RedditLinkFlairRichText = {
 	a?: string;
 	e: 'emoji' | 'text';
 	u?: string;
+	t?: string;
 };
 
 type RedditAuthorFlairRichText = RedditLinkFlairRichText;
