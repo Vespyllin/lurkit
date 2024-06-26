@@ -10,13 +10,25 @@ export function createFeedState() {
 	let lastPostId: string | undefined;
 
 	const subFilter = [
+		'r/blackpeopletwitter',
+		'r/ukrainewarvideoreport',
+		'r/clevercomebacks',
+		'r/worldnews',
+		'r/prequelmemes',
+		'r/india',
+		'r/twoxchromosomes',
+		'r/fluentinfinance',
 		'r/nba',
-		'r/WhitePeopleTwitter',
+		'r/superstonk',
+		'r/whitepeopletwitter',
 		'r/funny',
 		'r/cats',
 		'r/politicalhumor',
 		'r/goldenretrievers',
-		'r/OneOrangeBraincell',
+		'r/oneorangebraincell',
+		'r/news',
+		'r/blackcats',
+		'r/hockey',
 		'r/pics',
 		'r/politics'
 	].map((x) => x.toLowerCase());

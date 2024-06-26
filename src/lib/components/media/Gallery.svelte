@@ -87,7 +87,7 @@
 		{#each { length: count } as _, idx}
 			<div
 				class={cn(
-					'mx-[1px] h-1.5 w-1.5 rounded-full bg-white bg-opacity-45 mix-blend-difference transition-all duration-200',
+					'mx-[1px] h-1.5 w-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
 					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105',
 					!!hideCounter && 'select-none opacity-0 duration-1000'
 				)}
