@@ -18,6 +18,37 @@
 		);
 
 	const embedMedia = (text: string) => embedRedditImage(embedRedditPreview(embedGiphy(text)));
+
+	function formatTable(text: string) {
+		const lines = text.split('\n');
+
+		const rowPattern = /^\|.*\|$/; // |{nothing or anything, also includes whitespace}|
+		const separatorPattern = /\|\s*:?-{2,}:?\s*\|/; // | {:}(2+ '-'){:} |
+
+		// inTable allows more than 1 table to be parsed as it will stop matching after a header
+		// is found and start matching again once a row pattern is not detected in the line at hand
+		let inTable = false;
+		for (let i = 0; i < lines.length; i++) {
+			const isRowMatch = rowPattern.test(lines[i]);
+
+			if (!inTable && isRowMatch) {
+				inTable = true;
+
+				// If a separator already exists, skip this table
+				if (i + 1 < lines.length && separatorPattern.test(lines[i + 1])) continue;
+
+				const columnCount = lines[i].split('|').length - 1;
+				const separator = new Array(columnCount - 1).fill('|------------').join('') + '|';
+				lines.splice(i + 1, 0, separator);
+			} else if (inTable && !isRowMatch) {
+				inTable = false;
+			}
+		}
+
+		return lines.join('\n');
+	}
+
+	const formattedText = embedMedia(formatTable(cleanText(text)));
 </script>
 
 <div
@@ -30,9 +61,10 @@
 			[&_h3]:font-medium
 			[&_img]:mb-1 [&_img]:mt-0.5 [&_img]:max-h-64 [&_img]:max-w-96
 			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2
+			[&_td]:w-fit [&_th]:px-2 [&_thead]:border-b-2 
 			[&_ul]:list-inside [&_ul]:list-disc [&_ul]:pl-2`,
 		className
 	)}
 >
-	<Markdown source={embedMedia(cleanText(text))} />
+	<Markdown source={formattedText} />
 </div>
