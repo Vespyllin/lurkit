@@ -1,5 +1,6 @@
 # lurkit - TODOs:
 
+post is locked  
 repost recursion  
 make browser zooming work for images (prob min/max-h)  
 auth and blacklist
