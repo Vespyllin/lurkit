@@ -1,5 +1,7 @@
 # lurkit - TODOs:
 
+spoiler tag and expanded image in markdown  
+make the sort by menu a lil nicer  
 post is locked  
 repost recursion  
 make browser zooming work for images (prob min/max-h)  

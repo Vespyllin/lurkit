@@ -14,16 +14,16 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 	let value;
 
 	if (differenceInSeconds < minuteThreshold) {
-		unit = short ? 's' : 'sec';
+		unit = 'sec';
 		value = differenceInSeconds;
 	} else if (differenceInSeconds < hourThreshold) {
-		unit = short ? 'm' : 'min';
+		unit = 'min';
 		value = Math.floor(differenceInSeconds / minuteThreshold);
 	} else if (differenceInSeconds < dayThreshold) {
-		unit = short ? 'h' : 'hr';
+		unit = 'hr';
 		value = Math.floor(differenceInSeconds / hourThreshold);
 	} else if (differenceInSeconds < weekThreshold) {
-		unit = short ? 'd' : 'day';
+		unit = 'day';
 		value = Math.floor(differenceInSeconds / dayThreshold);
 	} else {
 		const givenMonth = givenDate.getMonth();
@@ -34,18 +34,18 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		const todayYear = today.getFullYear();
 
 		if (todayYear - givenYear > 0) {
-			unit = short ? 'y' : 'yr';
+			unit = 'yr';
 			value = todayYear - givenYear;
 		} else if (todayMonth - givenMonth > 0) {
-			unit = short ? 'm' : 'mnth';
+			unit = 'mnth';
 			value = todayMonth - givenMonth;
 		} else {
-			unit = short ? 'w' : 'week';
+			unit = 'week';
 			value = Math.floor(differenceInSeconds / weekThreshold);
 		}
 	}
 
-	return `${value}${value > 1 && !short ? unit + 's' : unit} ago`;
+	return `${value}${value > 1 && !short ? unit + 's ago' : unit.charAt(0)}`;
 };
 
 export const cleanText = (text: string, nowhitespace: boolean = false) => {

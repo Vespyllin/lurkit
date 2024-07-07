@@ -19,7 +19,7 @@
 
 	const embedMedia = (text: string) => embedRedditImage(embedRedditPreview(embedGiphy(text)));
 
-	function formatTable(text: string) {
+	const formatTable = (text: string) => {
 		const lines = text.split('\n');
 
 		const rowPattern = /^\|.*\|$/; // |{nothing or anything, also includes whitespace}|
@@ -46,7 +46,7 @@
 		}
 
 		return lines.join('\n');
-	}
+	};
 
 	const formattedText = embedMedia(formatTable(cleanText(text)));
 </script>
