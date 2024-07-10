@@ -5,57 +5,6 @@
 	let { url, onClick }: { url: string; onClick?: () => void } = $props();
 
 	let zoomed = $state(false);
-
-	let imageState: HTMLImageElement | undefined = $state(undefined);
-	let originalHeight = 0;
-	let originalWidth = 0;
-
-	$effect(() => {
-		if (originalHeight * originalWidth !== 0) return;
-
-		if (!imageState) return;
-
-		const { height, width } = imageState;
-		originalHeight = height;
-		originalWidth = width;
-	});
-
-	$effect(() => {
-		if (!imageState || originalHeight * originalWidth === 0) return;
-
-		const { height, width } = getAdjustedImageDimensions(originalHeight, originalWidth, zoomed);
-		imageState.height = height;
-		imageState.width = width;
-	});
-
-	const clamp = (v: number, l: number, h: number) => (v < l ? l : v > h ? h : v);
-
-	const getAdjustedImageDimensions = (height: number, width: number, zoomed: boolean) => {
-		const screenHeight = document.documentElement.clientHeight;
-		const screenWidth = document.documentElement.clientWidth;
-
-		const ZOOM_RATIO = zoomed ? 1.5 : 1;
-		const ZOOM_SCREEN_RATIO = 0.8;
-
-		const imageClamp = (dimension: number, clampValue: number) =>
-			zoomed ? clamp(dimension, clampValue, dimension) : clamp(dimension, dimension, clampValue);
-
-		if (height >= width) {
-			const clampedHeight = imageClamp(height * ZOOM_RATIO, screenHeight * ZOOM_SCREEN_RATIO);
-			const adjustedWidth = (clampedHeight / height) * width;
-			if (adjustedWidth > screenWidth * ZOOM_SCREEN_RATIO) {
-				return {
-					height: ((screenWidth * ZOOM_SCREEN_RATIO) / width) * height,
-					width: screenWidth * ZOOM_SCREEN_RATIO
-				};
-			}
-			return { height: clampedHeight, width: adjustedWidth };
-		} else {
-			const clampedWidth = zoomed ? screenWidth * ZOOM_SCREEN_RATIO : screenWidth * 0.6;
-
-			return { height: (clampedWidth / width) * height, width: clampedWidth };
-		}
-	};
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -69,8 +18,12 @@
 		<Cross2 size={25} />
 	</div>
 	<img
-		bind:this={imageState}
-		class={cn('m-auto', zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in')}
+		class={cn(
+			'm-auto object-contain',
+			!zoomed
+				? 'max-h-full max-w-[65%] cursor-zoom-in '
+				: 'h-fit min-h-[75%] w-fit min-w-[75%] cursor-zoom-out object-contain'
+		)}
 		src={url}
 		onclick={(e) => {
 			e.preventDefault();
