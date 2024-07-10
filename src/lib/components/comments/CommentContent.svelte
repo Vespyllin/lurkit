@@ -55,7 +55,6 @@
 			</div>
 
 			{#if comment.stickied}
-				<span>•</span>
 				<div class="flex items-center gap-1 text-zinc-400">
 					<DrawingPin />
 				</div>
@@ -75,13 +74,12 @@
 			<Markdown class="text-base text-zinc-200" text={comment.text} />
 
 			<!-- Mobile -->
-			<div class="mt-1 flex gap-2 lg:hidden">
+			<div class="mt-1 flex gap-4 lg:hidden">
 				<div class="flex items-center text-zinc-400">
 					<ArrowUp />
 					{comment.score.toLocaleString()}
 				</div>
 
-				<span>•</span>
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
 					{comment.totalChildren.toLocaleString()}

@@ -2,6 +2,7 @@
 	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
 	import Markdown from 'svelte-markdown';
+	import ImageRenderer from './ImageRenderer.svelte';
 
 	let { text, class: className }: { text: string; class?: string } = $props();
 
@@ -48,7 +49,7 @@
 		return lines.join('\n');
 	};
 
-	const formattedText = embedMedia(formatTable(cleanText(text)));
+	const formattedText = embedMedia(cleanText(text));
 </script>
 
 <div
@@ -66,5 +67,5 @@
 		className
 	)}
 >
-	<Markdown source={formattedText} />
+	<Markdown renderers={{ image: ImageRenderer }} source={formattedText} />
 </div>
