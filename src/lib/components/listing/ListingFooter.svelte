@@ -6,7 +6,7 @@
 	let { post, class: className }: { post: ListingData; class?: string } = $props();
 </script>
 
-<div class={cn('flex gap-10 text-lg font-medium text-zinc-200', className)}>
+<div class={cn('flex gap-10 text-base font-medium text-zinc-200', className)}>
 	<div class="inline-flex items-center gap-1">
 		<ArrowUp size={20} />
 		<span>{post.score.toLocaleString()}</span>

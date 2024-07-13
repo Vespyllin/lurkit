@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ExclamationTriangle } from 'radix-icons-svelte';
+	import { ExclamationTriangle, LockClosed } from 'radix-icons-svelte';
 	import { cleanText, getTimeAgo } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 
@@ -8,12 +8,14 @@
 		author,
 		created_utc,
 		over_18,
+		locked,
 		flairs
 	}: {
 		subreddit?: SubredditDetails;
 		author: string;
 		created_utc: number;
 		over_18: boolean;
+		locked: boolean;
 		flairs?: RedditLinkFlairRichText[];
 	} = $props();
 </script>
@@ -44,6 +46,15 @@
 				<ExclamationTriangle />
 			</div>
 			<span class="text-zinc-400"> 18+ </span>
+		</div>
+	{/if}
+
+	{#if locked}
+		•
+		<div class="flex h-5 items-center">
+			<div class="mt-0.5 h-fit w-fit text-zinc-400">
+				<LockClosed />
+			</div>
 		</div>
 	{/if}
 

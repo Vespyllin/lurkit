@@ -40,12 +40,11 @@
 			{/if}
 
 			<span>•</span>
-			<span class="text-zinc-400">{getTimeAgo(comment.created_utc)}</span>
-
-			{#if typeof comment.edited == 'number'}
-				<span>•</span>
-				<span class="text-zinc-400">*{getTimeAgo(comment.edited)}</span>
-			{/if}
+			<span class="text-zinc-400"
+				>{getTimeAgo(comment.created_utc)}{#if comment.edited}
+					*
+				{/if}</span
+			>
 		</div>
 
 		<!-- Mobile -->

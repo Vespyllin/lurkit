@@ -1,7 +1,14 @@
 <script lang="ts">
-	import Image from '$lib/components/media/Image.svelte';
+	import { cn } from '$lib/utils';
 
 	let { href }: { href: string } = $props();
+
+	let zoomed = $state(false);
 </script>
 
-<Image url={href} class="w-fit" />
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<img
+	src={href}
+	onclick={() => (zoomed = !zoomed)}
+	class={cn('mt-0.5', zoomed ? 'max-w-full cursor-zoom-out' : 'max-h-64 max-w-96 cursor-zoom-in')}
+/>

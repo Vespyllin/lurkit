@@ -26,6 +26,7 @@ type ListingData = {
 
 	edited: boolean;
 	is_self: boolean;
+	locked: boolean;
 
 	secure_media_embed: {
 		content: string;

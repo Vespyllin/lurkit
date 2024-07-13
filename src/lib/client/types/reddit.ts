@@ -10,46 +10,6 @@ type RedditListing = {
 		children: RedditListingChild[];
 		enabled: boolean;
 	};
-	all_awardings?: RedditAward[];
-	awarders?: string[];
-	media_only: boolean;
-	link_flair_template_id: string;
-	can_gild: boolean;
-	spoiler: boolean;
-	locked: boolean;
-	author_flair_text: string;
-	treatment_tags?: string[];
-	visited: boolean;
-	removed_by?: string;
-	mod_note?: string;
-	distinguished?: null;
-	subreddit_id: string;
-	author_is_blocked: boolean;
-	mod_reason_by?: string;
-	num_reports?: number;
-	removal_reason?: string;
-	link_flair_background_color: string;
-	id: string;
-	is_robot_indexable: boolean;
-	report_reasons?: string[];
-	author: string;
-	discussion_type?: null;
-	num_comments: number;
-	send_replies: boolean;
-	whitelist_status: string;
-	contest_mode: boolean;
-	mod_reports?: string[];
-	author_patreon_flair: boolean;
-	author_flair_text_color: string;
-	permalink: string;
-	parent_whitelist_status: string;
-	stickied: boolean;
-	url: string;
-	subreddit_subscribers: number;
-	created_utc: number;
-	num_crossposts: number;
-	media?: any;
-	is_video: boolean;
 };
 
 type RedditAward = {
@@ -58,10 +18,12 @@ type RedditAward = {
 
 type RedditListingChild = {
 	kind: 't3';
-	data: RedditListingData & { sr_detail: RedditSrDetail };
+	data: RedditListingChildData;
 };
 
-type RedditListingData = {
+type RedditListingChildData = {
+	locked: boolean;
+	sr_detail?: RedditSrDetail;
 	is_video: boolean;
 	is_gallery: boolean;
 	permalink: string;
@@ -107,7 +69,13 @@ type RedditListingData = {
 	is_reddit_media_domain: boolean;
 	is_meta: boolean;
 	category?: null;
-	secure_media_embed: {};
+	secure_media_embed: {
+		content: string;
+		width: number;
+		height: number;
+		scrolling: boolean;
+		media_domain_url: string;
+	};
 	link_flair_text: string;
 	can_mod_post: boolean;
 	score: number;

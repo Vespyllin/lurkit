@@ -1,5 +1,36 @@
 export const getTimeAgo = (timestamp: number, short: boolean = false) => {
-	if (!timestamp) return `BAD TS: ${timestamp}`;
+	if (!timestamp) return `?`;
+
+	const unitDic: { [unit: string]: { short: string; long: string } } = {
+		second: {
+			short: 's',
+			long: 'sec'
+		},
+		minute: {
+			short: 'm',
+			long: 'min'
+		},
+		hour: {
+			short: 'h',
+			long: 'hr'
+		},
+		day: {
+			short: 'd',
+			long: 'day'
+		},
+		week: {
+			short: 'w',
+			long: 'week'
+		},
+		month: {
+			short: 'mon',
+			long: 'mon'
+		},
+		year: {
+			short: 'y',
+			long: 'yr'
+		}
+	};
 
 	const givenDate = new Date(timestamp * 1000);
 	const difference = Date.now() - givenDate.getTime();
@@ -14,13 +45,13 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 	let value;
 
 	if (differenceInSeconds < minuteThreshold) {
-		unit = 'sec';
+		unit = 'second';
 		value = differenceInSeconds;
 	} else if (differenceInSeconds < hourThreshold) {
-		unit = 'min';
+		unit = 'minute';
 		value = Math.floor(differenceInSeconds / minuteThreshold);
 	} else if (differenceInSeconds < dayThreshold) {
-		unit = 'hr';
+		unit = 'hour';
 		value = Math.floor(differenceInSeconds / hourThreshold);
 	} else if (differenceInSeconds < weekThreshold) {
 		unit = 'day';
@@ -34,10 +65,10 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		const todayYear = today.getFullYear();
 
 		if (todayYear - givenYear > 0) {
-			unit = 'yr';
+			unit = 'year';
 			value = todayYear - givenYear;
 		} else if (todayMonth - givenMonth > 0) {
-			unit = 'mnth';
+			unit = 'month';
 			value = todayMonth - givenMonth;
 		} else {
 			unit = 'week';
@@ -45,7 +76,8 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		}
 	}
 
-	return `${value}${value > 1 && !short ? unit + 's ago' : unit.charAt(0)}`;
+	const displayUnit = short ? unitDic[unit].short : unitDic[unit].long;
+	return value + displayUnit + `${value > 1 && !short ? 's ago' : ' ago'}`;
 };
 
 export const cleanText = (text: string, nowhitespace: boolean = false) => {

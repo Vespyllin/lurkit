@@ -57,11 +57,10 @@
 		`	cursor-auto space-y-4
 			[&_a]:inline-block [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 
 			[&_blockquote]:px-2 [&_blockquote]:text-zinc-400 
-			[&_h1]:text-lg [&_h1]:font-semibold
-			[&_h2]:text-lg [&_h2]:font-medium
-			[&_h3]:font-medium
-			[&_img]:mb-1 [&_img]:mt-0.5 [&_img]:max-h-64 [&_img]:max-w-96
-			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2
+			[&_h1]:text-lg [&_h1]:font-semibold 
+			[&_h2]:text-lg [&_h2]:font-medium 
+			[&_h3]:font-medium 
+			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2 
 			[&_td]:w-fit [&_th]:px-2 [&_thead]:border-b-2 
 			[&_ul]:list-inside [&_ul]:list-disc [&_ul]:pl-2`,
 		className
