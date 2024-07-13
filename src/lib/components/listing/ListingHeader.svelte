@@ -50,7 +50,7 @@
 		</div>
 	{/if}
 
-	{#if !locked}
+	{#if locked}
 		•
 		<div class="flex items-center gap-1">
 			<div class="h-fit w-fit text-zinc-400">
