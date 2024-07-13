@@ -24,24 +24,25 @@
 	{#if subreddit}
 		<SubredditPopover {subreddit} />
 	{/if}
-	<div class="hidden gap-2 overflow-x-hidden lg:flex">
+
+	<div class="hidden gap-2 lg:flex">
 		•
 		<span class="text-zinc-400">
 			{author}
 		</span>
 	</div>
+
 	•
-	<div>
-		<span class="hidden text-zinc-400 lg:block">
-			{getTimeAgo(created_utc)}
-		</span>
-		<span class="text-zinc-400 lg:hidden">
-			{getTimeAgo(created_utc, true)}
-		</span>
-	</div>
+	<span class="hidden text-zinc-400 lg:inline">
+		{getTimeAgo(created_utc)}
+	</span>
+	<span class="text-zinc-400 lg:hidden">
+		{getTimeAgo(created_utc, true)}
+	</span>
+
 	{#if over_18}
 		•
-		<div class="flex h-5 items-center gap-1">
+		<div class="flex items-center gap-1">
 			<div class="mt-0.5 h-fit w-fit text-zinc-400">
 				<ExclamationTriangle />
 			</div>
@@ -49,12 +50,14 @@
 		</div>
 	{/if}
 
-	{#if locked}
+	{#if !locked}
 		•
-		<div class="flex h-5 items-center">
-			<div class="mt-0.5 h-fit w-fit text-zinc-400">
+		<div class="flex items-center gap-1">
+			<div class="h-fit w-fit text-zinc-400">
 				<LockClosed />
 			</div>
+
+			<span class="hidden text-zinc-400 lg:inline"> locked </span>
 		</div>
 	{/if}
 

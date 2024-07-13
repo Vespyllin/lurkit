@@ -20,7 +20,7 @@
 	}}
 >
 	<div
-		class="fixed left-3 top-3 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
+		class="fixed left-4 top-3 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
 		onclick={onClick}
 	>
 		<Cross2 size={25} />
