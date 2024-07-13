@@ -26,10 +26,7 @@
 		<Cross2 size={25} />
 	</div>
 	<img
-		class={cn(
-			'min-h-full object-contain',
-			!zoomed ? 'max-h-full max-w-full' : 'max-h-none max-w-none'
-		)}
+		class={cn('min-h-full max-w-full object-contain', !zoomed ? 'max-h-full' : 'max-h-none')}
 		loading="lazy"
 		src={url}
 	/>
