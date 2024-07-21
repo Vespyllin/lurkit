@@ -15,7 +15,11 @@ type ListingData = {
 	is_gallery: boolean;
 
 	media_metadata: any;
-	gallery_data?: { items: { media_id: string }[] };
+	gallery_data?: {
+		items: {
+			media_id: string;
+		}[];
+	};
 
 	name: string;
 	upvote_ratio: number;

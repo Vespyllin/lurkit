@@ -61,7 +61,7 @@
 		</div>
 	{/if}
 
-	{#each (flairs ?? []).filter((x) => x.e === 'text' && !!x.t) as flair}
+	{#each flairs?.filter((x) => x.e === 'text' && !!x.t) ?? [] as flair}
 		<div class="h-fit w-fit rounded-2xl bg-blue-400 px-2 text-sm">{cleanText(flair.t!)}</div>
 	{/each}
 </div>

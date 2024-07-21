@@ -10,7 +10,7 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
 	class={cn(
-		'fixed left-0 top-0 z-20 flex h-lvh w-lvw  justify-center overflow-auto bg-background',
+		'fixed left-0 top-0 z-20 flex h-lvh w-lvw justify-center overflow-auto bg-background p-0.5',
 		!zoomed ? 'cursor-zoom-in items-center' : 'cursor-zoom-out items-baseline'
 	)}
 	onclick={(e) => {
@@ -20,13 +20,13 @@
 	}}
 >
 	<div
-		class="fixed left-4 top-3 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
+		class="fixed left-4 top-4 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
 		onclick={onClick}
 	>
 		<Cross2 size={25} />
 	</div>
 	<img
-		class={cn('min-h-full max-w-full object-contain', !zoomed ? 'max-h-full' : 'max-h-none')}
+		class={cn('my-auto max-w-[85%] object-contain', zoomed ? 'min-h-full' : 'max-h-full')}
 		loading="lazy"
 		src={url}
 	/>

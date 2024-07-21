@@ -11,6 +11,7 @@
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
 	<div class="cursor-pointer text-lg leading-tight" onclick={toggleCollapse}>
+		<!-- Desktop -->
 		<div class="hidden gap-2 lg:flex">
 			<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 				{comment.author}
@@ -48,13 +49,13 @@
 		</div>
 
 		<!-- Mobile -->
-		<div class="flex gap-2 lg:hidden">
+		<div class="flex gap-1.5 lg:hidden">
 			<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 				{comment.author}
 			</div>
 
 			{#if comment.stickied}
-				<div class="flex items-center gap-1 text-zinc-400">
+				<div class="my-auto text-zinc-400">
 					<DrawingPin />
 				</div>
 			{/if}
