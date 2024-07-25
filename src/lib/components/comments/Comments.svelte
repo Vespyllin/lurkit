@@ -3,51 +3,24 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import CommentSortDropdown from './CommentSortDropdown.svelte';
 	import CommentContent from './CommentContent.svelte';
-	import { PUBLIC_COLLAPSE_COMMENT_DEPTH  } from '$env/static/public';
+	import { PUBLIC_COLLAPSE_COMMENT_DEPTH } from '$env/static/public';
 
 	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
 
 	let {
-		comments,
+		comments = $bindable(),
 		error,
 		fetching,
 		sort = $bindable(),
 		class: className
 	}: {
-		comments: PostComment[];
+		comments: CommentContentProps[];
 		sort: RedditSortOptions;
 		error: string | undefined;
 		fetching: boolean;
 		class?: string;
 	} = $props();
-
-	const assignCommentState = (
-		originalComments: PostComment[],
-		depth: number = 0
-	): CommentContentProps[] => {
-		return originalComments.map((originalComment, idx) => {
-			const childrenWithState = originalComment.children?.length
-				? assignCommentState(originalComment.children, depth + 1)
-				: undefined;
-
-			const subCommentCount =
-				(originalComment.children?.length ?? 0) +
-				(childrenWithState?.reduce((acc, v) => acc + v.totalChildren, 0) ?? 0);
-
-			return {
-				...originalComment,
-				depth: depth,
-				collapsed:
-					originalComment.stickied || (depth != 0 && idx > 2 && originalComment.score < 10),
-				children: childrenWithState,
-				totalChildren: subCommentCount,
-				shelved: depth >= shelveDepth
-			} as CommentContentProps;
-		});
-	};
-
-	const commentsWithState = $state(assignCommentState(comments));
 </script>
 
 <div class={className}>
@@ -59,8 +32,8 @@
 		<FetchStatus {fetching} {error} />
 	{:else}
 		<div class="mt-3 space-y-4">
-			{#each commentsWithState as _, idx}
-				<CommentContent bind:comment={commentsWithState[idx]} />
+			{#each comments as _, idx}
+				<CommentContent bind:comment={comments[idx]} />
 			{/each}
 		</div>
 	{/if}
