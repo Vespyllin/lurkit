@@ -3,9 +3,9 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import CommentSortDropdown from './CommentSortDropdown.svelte';
 	import CommentContent from './CommentContent.svelte';
-	import { PUBLIC_COLLAPSE_COMMENT_DEPTH as PUBLIC_SHELVE_COMMENT_DEPTH } from '$env/static/public';
+	import { PUBLIC_COLLAPSE_COMMENT_DEPTH  } from '$env/static/public';
 
-	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_SHELVE_COMMENT_DEPTH);
+	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
 
 	let {
