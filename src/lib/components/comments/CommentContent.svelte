@@ -6,7 +6,10 @@
 
 	const { comment = $bindable() }: { comment: CommentContentProps } = $props();
 	const toggleCollapse = () => (comment.collapsed = !comment.collapsed);
-	const showMoreComments = () => (comment.shelved = false);
+	const showMoreComments = (comment: CommentContentProps) => {
+		comment.shelved = false;
+		if (comment.children && comment.children.length == 1) showMoreComments(comment.children[0]);
+	};
 </script>
 
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
@@ -96,7 +99,7 @@
 		{:else if comment.shelved && comment.children?.length}
 			<div
 				class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-3 text-zinc-400 hover:underline lg:w-fit"
-				onclick={showMoreComments}
+				onclick={() => showMoreComments(comment)}
 			>
 				<PlusCircled size={18} />
 				<span>Expand {comment.children.length.toLocaleString()} more</span>
