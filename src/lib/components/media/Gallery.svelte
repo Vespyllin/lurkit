@@ -20,7 +20,7 @@
 		current = api.selectedScrollSnap() + 1;
 		api.on('select', () => {
 			current = api.selectedScrollSnap() + 1;
-			handleCounter();
+			// handleCounter();
 		});
 	});
 
@@ -60,7 +60,7 @@
 	}}
 />
 
-<div class={cn('relative flex justify-center rounded-md', className)}>
+<div class={cn('justify-center rounded-md', className)}>
 	<Carousel.Root
 		bind:api
 		opts={{ duration: 20 }}
@@ -80,16 +80,15 @@
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
-		<Carousel.Previous class="translate-x-12 " />
+		<Carousel.Previous class="translate-x-12" />
 		<Carousel.Next class="-translate-x-12" />
 	</Carousel.Root>
-	<div class="absolute bottom-0 mb-1 flex items-center justify-center">
+	<div class="mt-1.5 flex items-center justify-center">
 		{#each { length: count } as _, idx}
 			<div
 				class={cn(
 					'mx-[1px] h-1.5 w-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
-					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105',
-					!!hideCounter && 'select-none opacity-0 duration-1000'
+					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
 				)}
 			></div>
 		{/each}
