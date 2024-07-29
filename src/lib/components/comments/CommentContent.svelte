@@ -5,7 +5,9 @@
 	import Markdown from '../ui/markdown/Markdown.svelte';
 
 	const { comment = $bindable() }: { comment: CommentContentProps } = $props();
+
 	const toggleCollapse = () => (comment.collapsed = !comment.collapsed);
+
 	const showMoreComments = (comment: CommentContentProps) => {
 		comment.shelved = false;
 		if (comment.children && comment.children.length == 1) showMoreComments(comment.children[0]);
@@ -27,11 +29,11 @@
 				{comment.score.toLocaleString()}
 			</div>
 
-			{#if comment.totalChildren}
+			{#if comment.replyCount}
 				<span>•</span>
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
-					{comment.totalChildren.toLocaleString()}
+					{comment.replyCount.toLocaleString()}
 				</div>
 			{/if}
 
@@ -85,7 +87,7 @@
 
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
-					{comment.totalChildren.toLocaleString()}
+					{comment.replyCount.toLocaleString()}
 				</div>
 			</div>
 		</div>
