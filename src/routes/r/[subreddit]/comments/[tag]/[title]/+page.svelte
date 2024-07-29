@@ -33,25 +33,24 @@
 	};
 
 	const assignCommentState = (
-		originalComments: PostComment[],
+		comments: PostComment[],
 		depth: number = 0
 	): CommentContentProps[] => {
-		return originalComments.map((originalComment, idx) => {
-			const childrenWithState = originalComment.children?.length
-				? assignCommentState(originalComment.children, depth + 1)
+		return comments.map((comment, idx) => {
+			const childrenWithState = comment.children?.length
+				? assignCommentState(comment.children, depth + 1)
 				: undefined;
 
 			const subCommentCount =
-				(originalComment.children?.length ?? 0) +
-				(childrenWithState?.reduce((acc, v) => acc + v.totalChildren, 0) ?? 0);
+				(comment.children?.length ?? 0) +
+				(childrenWithState?.reduce((acc, v) => acc + v.replyCount, 0) ?? 0);
 
 			return {
-				...originalComment,
+				...comment,
 				depth: depth,
-				collapsed:
-					originalComment.stickied || (depth != 0 && idx > 2 && originalComment.score < 10),
+				collapsed: comment.stickied || (depth != 0 && idx > 2 && comment.score < 10),
 				children: childrenWithState,
-				totalChildren: subCommentCount,
+				replyCount: subCommentCount,
 				shelved: depth >= shelveDepth
 			} as CommentContentProps;
 		});
