@@ -48,10 +48,10 @@
 	{:else}
 		{#if !expand}
 			<a href={post.permalink} draggable="false">
-				<h1 class="mt-2 text-2xl font-medium">{cleanText(post.title)}</h1>
+				<h1 class="mt-2 break-all text-2xl font-medium">{cleanText(post.title)}</h1>
 			</a>
 		{:else}
-			<h1 class="mt-2 cursor-text text-2xl font-medium">{cleanText(post.title)}</h1>
+			<h1 class="mt-2 cursor-text break-all text-2xl font-medium">{cleanText(post.title)}</h1>
 		{/if}
 
 		{#if post.selftext?.length > 0 && expand}

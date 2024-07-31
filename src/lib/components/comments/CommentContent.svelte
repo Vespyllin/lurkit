@@ -14,7 +14,9 @@
 	};
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="border-l-2 pl-3 text-base hover:border-blue-400">
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="cursor-pointer text-lg leading-tight" onclick={toggleCollapse}>
 		<!-- Desktop -->
 		<div class="hidden gap-2 lg:flex">
@@ -76,7 +78,7 @@
 
 	{#if !comment.collapsed}
 		<div class="mt-2 max-w-[calc(100lvw-3rem)]">
-			<Markdown class="text-base text-zinc-200" text={comment.text} />
+			<Markdown class="break-all text-base text-zinc-200" text={comment.text} />
 
 			<!-- Mobile -->
 			<div class="mt-1 flex gap-4 lg:hidden">
@@ -99,6 +101,7 @@
 				{/each}
 			</div>
 		{:else if comment.shelved && comment.children?.length}
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<div
 				class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-3 text-zinc-400 hover:underline lg:w-fit"
 				onclick={() => showMoreComments(comment)}
