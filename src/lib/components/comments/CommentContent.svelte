@@ -78,7 +78,7 @@
 
 	{#if !comment.collapsed}
 		<div class="mt-2 max-w-[calc(100lvw-3rem)]">
-			<Markdown class="break-all text-base text-zinc-200" text={comment.text} />
+			<Markdown class="text-wrap break-words text-base text-zinc-200" text={comment.text} />
 
 			<!-- Mobile -->
 			<div class="mt-1 flex gap-4 lg:hidden">
