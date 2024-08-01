@@ -30,40 +30,46 @@ export function createFeedState() {
 		'r/blackcats',
 		'r/hockey',
 		'r/pics',
-		'r/politics'
+		'r/politics',
+		'r/roastme',
+		'r/kidsarefuckingstupid',
+		'r/adviceanimals',
+		'r/leopardsatemyface',
+		'r/dnd',
+		'r/dndmemes',
+		'r/fauxmoi',
+		'r/fundiesnarkuncensored',
+		'r/witchesvspatriarchy',
+		'r/egg_irl',
+		'r/egg',
+		'r/rupaulsdragrace',
+		'r/ukraine',
+		'r/memes',
+		'r/selfawarewolves',
+		'r/therewasanattempt',
+		'r/peterexplainsthejoke',
+		'r/unitedstatesofindia'
 	].map((x) => x.toLowerCase());
 
-	const init = async () => {
-		fetching = true;
-
-		const fetchRes = await fetchFeedData(undefined, 50);
-		if (fetchRes.status == 'OK') {
-			const { data } = fetchRes;
-
-			feed = data.filter((x) => !subFilter.includes(x.subreddit.display_name.toLowerCase()));
-			data.forEach((x) => uniqueIds.add(x.name));
-
-			lastPostId = data.at(-1)?.name;
-		} else {
-			error = fetchRes.reason;
-		}
-
-		fetching = false;
-	};
+	const titleFilter = ['trump', 'kamala', 'harris', 'conservative', 'democrat'].map((x) =>
+		x.toLowerCase()
+	);
 
 	const fetchMore = async () => {
-		if (!feed) return;
 		fetching = true;
 
 		const fetchRes = await fetchFeedData(undefined, 50, lastPostId);
 		if (fetchRes.status === 'OK') {
 			const newPosts = fetchRes.data
 				.filter((listing) => !uniqueIds.has(listing.name))
-				.filter((listing) => !subFilter.includes(listing.subreddit.display_name.toLowerCase()));
+				.filter((listing) => !subFilter.includes(listing.subreddit.display_name.toLowerCase()))
+				.filter((listing) =>
+					titleFilter.every((title) => !listing.title.toLowerCase().includes(title))
+				);
 
 			newPosts.forEach((listing) => uniqueIds.add(listing.name));
 
-			feed = feed.concat(newPosts);
+			feed = (feed ?? []).concat(newPosts);
 
 			lastPostId = newPosts.at(-1)?.name;
 		} else {
@@ -76,7 +82,6 @@ export function createFeedState() {
 
 	return {
 		get data() {
-			if (!feed) init();
 			return feed;
 		},
 		get fetching() {
