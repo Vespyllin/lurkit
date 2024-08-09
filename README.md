@@ -1,5 +1,6 @@
 # lurkit - TODOs:
 
+remove dropdown, make it horizontal radio thing  
 tooltip for edited
 post is locked (test)  
 rewrite zoomable image component into 1  

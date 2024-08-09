@@ -6,6 +6,11 @@
 	import { FeedStore } from '$lib/stores/FeedState.svelte';
 
 	const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
+
+	$effect(() => {
+		FeedStore.fetchMore();
+	});
+
 	$effect(() => {
 		const scrollTo = FeedStore.scrollTo;
 		if (!scrollTo) return;
@@ -34,6 +39,8 @@
 	<FetchStatus fetching={FeedStore.fetching} error={FeedStore.error} />
 {:else}
 	{#each FeedStore.data as post, idx}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
 			<Listing {post} />
 		</div>

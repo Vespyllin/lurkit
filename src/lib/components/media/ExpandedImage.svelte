@@ -7,7 +7,9 @@
 	let zoomed = $state(false);
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class={cn(
 		'fixed left-0 top-0 z-20 flex h-lvh w-lvw justify-center overflow-auto bg-background p-0.5',
@@ -25,8 +27,9 @@
 	>
 		<Cross2 size={25} />
 	</div>
+	<!-- svelte-ignore a11y_missing_attribute -->
 	<img
-		class={cn('my-auto max-w-[85%] object-contain', zoomed ? 'min-h-full' : 'max-h-full')}
+		class={cn('my-auto object-contain lg:max-w-[85%]', zoomed ? 'min-h-full' : 'max-h-full')}
 		loading="lazy"
 		src={url}
 	/>
