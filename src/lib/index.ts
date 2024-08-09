@@ -77,7 +77,12 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 	}
 
 	const displayUnit = short ? unitDic[unit].short : unitDic[unit].long;
-	return value + displayUnit + `${value > 1 && !short ? 's ago' : ' ago'}`;
+
+	return (
+		(value < 1 && displayUnit == 'second' ? '<1' : value) +
+		displayUnit +
+		`${value !== 1 && !short ? 's ago' : ' ago'}`
+	);
 };
 
 export const cleanText = (text: string, nowhitespace: boolean = false) => {
