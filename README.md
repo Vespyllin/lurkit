@@ -1,5 +1,6 @@
 # lurkit - TODOs:
 
+loading spinner in tab while loading  
 remove dropdown, make it horizontal radio thing  
 tooltip for edited
 post is locked (test)  
