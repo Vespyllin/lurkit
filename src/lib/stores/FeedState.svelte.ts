@@ -48,7 +48,8 @@ export function createFeedState() {
 		'r/selfawarewolves',
 		'r/therewasanattempt',
 		'r/peterexplainsthejoke',
-		'r/unitedstatesofindia'
+		'r/unitedstatesofindia',
+		'r/democrats'
 	].map((x) => x.toLowerCase());
 
 	const titleFilter = ['trump', 'kamala', 'harris', 'conservative', 'democrat'].map((x) =>

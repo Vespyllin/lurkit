@@ -1,7 +1,10 @@
 # lurkit - TODOs:
 
+search bar for subreddits
+make images in expanded listings bigger (sep listing component)  
+imgur  
 loading spinner in tab while loading  
-remove dropdown, make it horizontal radio thing  
+remove comment sort dropdown, make it horizontal radio thing  
 tooltip for edited
 post is locked (test)  
 rewrite zoomable image component into 1  
