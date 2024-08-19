@@ -16,7 +16,6 @@ export const fetchFeedData = async (
 	const cleanSort = sort ? `/${sort}` : '';
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
-	console.log(cleanSubreddit, cleanSort, url);
 
 	const fetchRes = await redditFetch<RedditListing>(url);
 
