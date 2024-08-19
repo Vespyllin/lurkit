@@ -1,4 +1,5 @@
 import { cleanListing } from '../common/listing';
+import { redditFetch } from '../common/request';
 
 export const fetchFeedData = async (
 	subreddit?: string,
@@ -11,31 +12,15 @@ export const fetchFeedData = async (
 	if (count !== undefined) queryParams += `&limit=${count}`;
 	if (after !== undefined) queryParams += `&after=${after}`;
 
-	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
-	const cleanSort = sort ? `/${sort}` : '';
+	const cleanSubreddit = (subreddit ?? '') || `/r/${subreddit}`;
+	const cleanSort = (sort ?? '') || `/${sort}`;
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
 
-	try {
-		const fetchRes = await fetch(url);
-		if (fetchRes.status != 200) {
-			return {
-				status: 'FAIL',
-				reason: `Status ${fetchRes.status} ${!!fetchRes.statusText ? `: ${fetchRes.statusText}` : ''}`
-			};
-		}
+	const fetchRes = await redditFetch<RedditListing>(url);
 
-		const fetchData: RedditListing = await fetchRes.json();
-
-		const feedData = cleanData(fetchData);
-
-		return { status: 'OK', data: feedData };
-	} catch (e: any) {
-		return {
-			status: 'FAIL',
-			reason: `Status 500: ${e.message}`
-		};
-	}
+	if (fetchRes.status == 'OK') return { status: 'OK', data: cleanData(fetchRes.data) };
+	return fetchRes;
 };
 
 const cleanData = (feed: RedditListing) => {

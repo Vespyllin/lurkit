@@ -1,6 +1,7 @@
 # lurkit - TODOs:
 
-search bar for subreddits
+expanded gallery  
+search bar for subreddits  
 make images in expanded listings bigger (sep listing component)  
 imgur  
 loading spinner in tab while loading  

@@ -1,4 +1,5 @@
 import { cleanListing } from '../common/listing';
+import { redditFetch } from '../common/request';
 
 export const fetchPostData = async (
 	comment_uri: string,
@@ -9,26 +10,11 @@ export const fetchPostData = async (
 	if (sort) queryParams += `&sort=${sort}`;
 
 	const url = `${baseURL}${comment_uri}.json${queryParams}`;
-	try {
-		const fetchRes = await fetch(url);
-		if (fetchRes.status != 200) {
-			return {
-				status: 'FAIL',
-				reason: `Status ${fetchRes.status} ${!!fetchRes.statusText ? ':' + fetchRes.statusText : ''}`
-			};
-		}
 
-		const fetchData: RedditListing = await fetchRes.json();
+	const fetchRes = await redditFetch<RedditListing>(url);
 
-		const subredditFeedData = cleanData(fetchData);
-
-		return { status: 'OK', data: subredditFeedData };
-	} catch (e: any) {
-		return {
-			status: 'FAIL',
-			reason: `Status 500: ${e.message}`
-		};
-	}
+	if (fetchRes.status == 'OK') return { status: 'OK', data: cleanData(fetchRes.data) };
+	return fetchRes;
 };
 
 const cleanData = (post: any) => {

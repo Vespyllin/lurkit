@@ -10,6 +10,7 @@ export function createFeedState() {
 	let lastPostId: string | undefined;
 
 	const subFilter = [
+		'r/murderedbywords',
 		'r/blackpeopletwitter',
 		'r/ukrainewarvideoreport',
 		'r/clevercomebacks',
