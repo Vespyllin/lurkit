@@ -12,10 +12,11 @@ export const fetchFeedData = async (
 	if (count !== undefined) queryParams += `&limit=${count}`;
 	if (after !== undefined) queryParams += `&after=${after}`;
 
-	const cleanSubreddit = (subreddit ?? '') || `/r/${subreddit}`;
-	const cleanSort = (sort ?? '') || `/${sort}`;
+	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
+	const cleanSort = sort ? `/${sort}` : '';
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
+	console.log(cleanSubreddit, cleanSort, url);
 
 	const fetchRes = await redditFetch<RedditListing>(url);
 
