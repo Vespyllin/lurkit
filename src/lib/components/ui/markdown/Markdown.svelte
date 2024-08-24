@@ -9,7 +9,7 @@
 	const REDDIT_IMAGE_PREVIEW_REGEX =
 		/https:\/\/preview\.redd\.it\/\w+\.(png|jpg|jpeg|gif|bmp|svg|webp)\?width=\d+&format=\w+&auto=\w+&s=\w+/g;
 	const REDDIT_IMAGE_REGEX = /https:\/\/i\.redd\.it\/\w+\.(png|jpg|jpeg|gif|bmp|svg|webp)/g;
-	const REDDIT_SUBREDDIT_REGEX = /\br\/\S+\b/g;
+	const REDDIT_SUBREDDIT_REGEX = /(?<!\S)r\/\w+/g;
 
 	const embedRedditSubreddit = (text: string) => text.replace(REDDIT_SUBREDDIT_REGEX, '[$&](/$&)');
 	const embedRedditPreview = (text: string) => text.replace(REDDIT_IMAGE_PREVIEW_REGEX, '![]($&)');
@@ -20,8 +20,10 @@
 			'![](https://media.giphy.com/media/$1/giphy.gif)'
 		);
 
+	const redirToLurkit = (text: string) => text.replace('reddit.com', 'lurkit-six.vercel.app');
+
 	const embedMedia = (text: string) =>
-		embedRedditSubreddit(embedRedditImage(embedRedditPreview(embedGiphy(text))));
+		redirToLurkit(embedRedditSubreddit(embedRedditImage(embedRedditPreview(embedGiphy(text)))));
 
 	const formatTable = (text: string) => {
 		const lines = text.split('\n');

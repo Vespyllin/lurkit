@@ -1,5 +1,7 @@
 # lurkit - TODOs:
 
+subreddit tooltip improve  
+exceptions for youtube links, namely iframe sizing (revert back to square, add video aspect when yt), and add in-listing iframe  
 expanded gallery  
 search bar for subreddits  
 make images in expanded listings bigger (sep listing component)  
