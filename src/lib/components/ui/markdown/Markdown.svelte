@@ -20,7 +20,7 @@
 			'![](https://media.giphy.com/media/$1/giphy.gif)'
 		);
 
-	const redirToLurkit = (text: string) => text.replace('reddit.com', 'lurkit-six.vercel.app');
+	const redirToLurkit = (text: string) => text.replace('www.reddit.com', 'lurkit-six.vercel.app');
 
 	const embedMedia = (text: string) =>
 		redirToLurkit(embedRedditSubreddit(embedRedditImage(embedRedditPreview(embedGiphy(text)))));
