@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cleanText } from '$lib';
 	import * as Tooltip from '../ui/tooltip';
 
 	let { subreddit }: { subreddit: SubredditDetails } = $props();
@@ -21,11 +22,13 @@
 		</a>
 	</Tooltip.Trigger>
 	<Tooltip.Content>
-		<div class="flex h-28 max-w-96 gap-3 py-1.5">
+		<div class="flex h-28 gap-3 py-1.5">
 			<img src={icon_url} class="my-auto mr-1 h-full" />
-			<div class="-mt-1">
+			<div class="-mt-1 w-fit max-w-64">
 				<h2 class="text-xl font-semibold">{subreddit.display_name}</h2>
-				<p class="line-clamp-4 break-words text-zinc-400">{subreddit.public_description}</p>
+				<div class="line-clamp-4 text-zinc-400">
+					{cleanText(subreddit.public_description)}
+				</div>
 			</div>
 		</div>
 	</Tooltip.Content>
