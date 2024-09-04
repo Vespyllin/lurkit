@@ -16,19 +16,19 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		},
 		day: {
 			short: 'd',
-			long: 'day'
+			long: ' day'
 		},
 		week: {
 			short: 'w',
-			long: 'week'
+			long: ' week'
 		},
 		month: {
 			short: 'mon',
-			long: 'mon'
+			long: ' month'
 		},
 		year: {
 			short: 'y',
-			long: 'yr'
+			long: ' year'
 		}
 	};
 

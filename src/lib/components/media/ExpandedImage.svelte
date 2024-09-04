@@ -29,7 +29,7 @@
 	</div>
 	<!-- svelte-ignore a11y_missing_attribute -->
 	<img
-		class={cn('my-auto object-contain lg:max-w-[85%]', zoomed ? 'min-h-full' : 'max-h-full')}
+		class={cn('my-auto object-contain', zoomed ? 'min-h-full' : 'lg:max-w-[85%] max-h-full')}
 		loading="lazy"
 		src={url}
 	/>
