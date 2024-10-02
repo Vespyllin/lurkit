@@ -5,7 +5,7 @@ export function createFeedState() {
 	let feed: ListingData[] | undefined = $state();
 	let error: string | undefined = $state();
 
-	let uniqueIds: Set<string> = new Set<string>();
+	const uniqueIds: Set<string> = new Set<string>();
 	let scrollTo: string | undefined = undefined;
 	let lastPostId: string | undefined;
 
@@ -50,12 +50,31 @@ export function createFeedState() {
 		'r/therewasanattempt',
 		'r/peterexplainsthejoke',
 		'r/unitedstatesofindia',
-		'r/democrats'
+		'r/democrats',
+		'r/mindblowingthings',
+		'r/the_everything_bubble',
+		'r/wallstreetbets',
+		'r/lotrmemes',
+		'r/facepalm',
+		'r/indiasocial',
+		'r/npr',
+		'r/lotr',
+		'r/anime',
+		'r/dankmemes',
+		'r/funnymemes',
+		'r/publicfreakout',
+		'r/genshin_impact_leaks'
 	].map((x) => x.toLowerCase());
 
-	const titleFilter = ['trump', 'kamala', 'harris', 'conservative', 'democrat'].map((x) =>
-		x.toLowerCase()
-	);
+	const titleFilter = [
+		'trump',
+		'kamala',
+		'harris',
+		'conservative',
+		'democrat',
+		'taylor swift',
+		'conspiracy'
+	].map((x) => x.toLowerCase());
 
 	const fetchMore = async () => {
 		fetching = true;

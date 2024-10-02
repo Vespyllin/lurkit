@@ -12,7 +12,24 @@
 	const hasThumbnail = thumbnail && thumbnail.indexOf('.') > -1;
 </script>
 
-<div class={cn('flex gap-2', className)}>
+<div class={className}>
+	{#if hasThumbnail}
+		<a href={url} class="float-right pb-2 pl-2">
+			<div class="relative">
+				<img
+					src={thumbnail}
+					class="h-20 w-32 rounded-md object-cover"
+					onerror={(e) => {
+						if (e.currentTarget.parentElement) e.currentTarget.parentElement.style.display = 'none';
+					}}
+				/>
+				<div class="absolute bottom-0 right-0 m-1 rounded-sm bg-black p-0.5 opacity-85">
+					<ExternalLink size={15} color="#FFF" />
+				</div>
+			</div>
+		</a>
+	{/if}
+
 	<div>
 		<h1 class={cn('text-wrap break-words text-2xl font-medium', clamp && 'line-clamp-2')}>
 			{title}
@@ -28,24 +45,4 @@
 			{url}
 		</a>
 	</div>
-
-	{#if hasThumbnail}
-		<a
-			class="ml-auto inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
-			href={url}
-		>
-			<div class="relative">
-				<img
-					src={thumbnail}
-					class="h-24 min-h-24 w-32 min-w-32 rounded-md object-cover"
-					onerror={(e) => {
-						if (e.currentTarget.parentElement) e.currentTarget.parentElement.style.display = 'none';
-					}}
-				/>
-				<div class="absolute bottom-0 right-0 m-1 rounded-sm bg-black p-0.5 opacity-85">
-					<ExternalLink size={15} color="#FFF" />
-				</div>
-			</div>
-		</a>
-	{/if}
 </div>

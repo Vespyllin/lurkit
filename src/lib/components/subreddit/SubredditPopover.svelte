@@ -21,12 +21,15 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content>
-		<div class="flex h-28 gap-3 py-1.5">
-			<img src={icon_url} class="my-auto mr-1 h-full" />
-			<div class="-mt-1 w-fit max-w-64">
-				<h2 class="text-xl font-semibold">{subreddit.display_name}</h2>
-				<div class="line-clamp-4 text-zinc-400">
+	<Tooltip.Content class="pt-1">
+		<div class="w-96">
+			<div class="float-left mr-2 mt-[5px] flex h-[6.25rem] max-w-32">
+				<img src={icon_url} class="my-auto h-full" />
+			</div>
+
+			<div>
+				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name}</h2>
+				<div class="text-zinc-400">
 					{cleanText(subreddit.public_description)}
 				</div>
 			</div>
