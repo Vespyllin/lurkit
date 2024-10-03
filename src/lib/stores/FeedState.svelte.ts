@@ -67,6 +67,10 @@ export function createFeedState() {
 	].map((x) => x.toLowerCase());
 
 	const titleFilter = [
+		'cat',
+		'cats',
+		'dog',
+		'dogs',
 		'trump',
 		'kamala',
 		'harris',
