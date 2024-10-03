@@ -1,16 +1,18 @@
 # lurkit - TODOs:
 
-exceptions for youtube links, namely iframe sizing (revert back to square, add video aspect when yt), and add in-listing iframe  
-expanded gallery  
-search bar for subreddits  
-make images in expanded listings bigger (sep listing component)  
-loading spinner in tab while loading  
-tooltip for edited
-post is locked (test)  
-rewrite zoomable image component into 1  
-spoiler tag in markdown
-repost recursion
 auth and blacklist
 svelte query, rewrite store to just store (no fetching)  
 video overlay
+
+search bar for subreddits  
 subreddit banner, sort, sticky, etc.
+
+expanded gallery  
+make images in expanded listings bigger (sep listing component)  
+rewrite zoomable image component into 1
+
+loading spinner in tab while loading
+tooltip for edited
+post is locked (test)  
+spoiler tag in markdown
+repost recursion
