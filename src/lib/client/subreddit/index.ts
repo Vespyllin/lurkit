@@ -17,12 +17,11 @@ export const fetchFeedData = async (
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
 
-	const fetchRes = await redditFetch<RedditListing>(url);
+	const fetchRes = await redditFetch<RedditListing<RedditT3DataWrapper>>(url);
 
-	if (fetchRes.status == 'OK') return { status: 'OK', data: cleanData(fetchRes.data) };
-	return fetchRes;
-};
-
-const cleanData = (feed: RedditListing) => {
-	return feed.data.children.map((post) => cleanListing(post.data)) as ListingData[];
+	if (fetchRes.status != 'OK') return fetchRes;
+	return {
+		status: 'OK',
+		data: fetchRes.data?.data?.children?.map((post) => cleanListing(post.data)) ?? []
+	};
 };

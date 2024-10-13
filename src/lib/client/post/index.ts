@@ -11,20 +11,22 @@ export const fetchPostData = async (
 
 	const url = `${baseURL}${comment_uri}.json${queryParams}`;
 
-	const fetchRes = await redditFetch<RedditListing>(url);
+	const fetchRes = await redditFetch<RedditPostData>(url);
 
-	if (fetchRes.status == 'OK') return { status: 'OK', data: cleanData(fetchRes.data) };
-	return fetchRes;
+	if (fetchRes.status != 'OK') return fetchRes;
+	return { status: 'OK', data: cleanData(fetchRes.data) };
 };
 
-const cleanData = (post: any) => {
-	const postParent = post[0].data.children[0].data as any;
-	const postComments = post[1];
-	const cleanedComments = cleanAllComments(postComments) ?? [];
+const cleanData = (post: RedditPostData) => {
+	const [listing, comments] = post;
+
+	const listingData = listing.data!.children![0].data; // Should always return data from the Reddit API
+
+	const cleanedListing = cleanListing(listingData);
+
+	const cleanedComments = unwrapComments(comments) ?? [];
 	if (cleanedComments.length > 0 && !cleanedComments.at(-1)?.text)
 		cleanedComments.splice(cleanedComments.length - 1, 1);
-
-	const cleanedListing = cleanListing(postParent);
 
 	const postData: PostData = {
 		listing: cleanedListing,
@@ -34,23 +36,23 @@ const cleanData = (post: any) => {
 	return postData;
 };
 
-const cleanAllComments = (init: any) => {
-	if (!init?.data?.children || init.data.children.length == 0) return undefined;
+const unwrapComments = (comments: RedditT1Data['replies']): PostComment[] => {
+	if (!comments.data?.children) return [];
 
-	const res = init.data.children.map((x: any) => {
-		const commentData: PostComment = {
-			text: x.data.body,
-			score: x.data.score,
-			author: x.data.author,
-			edited: x.data.edited,
-			is_submitter: x.data.is_submitter,
-			created_utc: x.data.created_utc,
-			stickied: x.data.stickied,
-			children: cleanAllComments(x.data.replies)?.filter((x) => !!x?.text)
-		};
+	return comments.data.children
+		.filter((x) => x.kind == 't1')
+		.map((x) => {
+			const { body, score, author, edited, is_submitter, created_utc, stickied, replies } = x.data;
 
-		return commentData;
-	}) as PostComment[];
-
-	return res;
+			return {
+				text: body,
+				score: score,
+				author: author,
+				edited: edited,
+				is_submitter: is_submitter,
+				created_utc: created_utc,
+				stickied: stickied,
+				children: unwrapComments(replies)?.filter((x) => !!x?.text)
+			};
+		});
 };

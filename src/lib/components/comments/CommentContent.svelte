@@ -2,6 +2,7 @@
 	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import { ArrowUp, ChatBubble, DrawingPin, PlusCircled } from 'radix-icons-svelte';
+	import Self from './CommentContent.svelte';
 	import Markdown from '../ui/markdown/Markdown.svelte';
 
 	const { comment = $bindable() }: { comment: CommentContentProps } = $props();
@@ -97,7 +98,7 @@
 		{#if !comment.shelved && comment.children?.length}
 			<div class="mt-3 space-y-4 lg:pl-3">
 				{#each comment.children ?? [] as _, idx}
-					<svelte:self bind:comment={comment.children![idx]} />
+					<Self bind:comment={comment.children![idx]} />
 				{/each}
 			</div>
 		{:else if comment.shelved && comment.children?.length}

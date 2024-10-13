@@ -1,68 +1,38 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
-	import { cn } from '$lib/utils';
 	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
 
-	let { post, expand }: { post: ListingData; expand?: boolean } = $props();
+	let { post }: { post: ListingData } = $props();
 </script>
 
-<div
-	class={cn(
-		'flex cursor-default flex-col rounded-md [&_a]:cursor-pointer',
-		!expand && 'p-2 hover:bg-[hsl(220,14.3,7.1)]'
-	)}
->
-	{#if !expand}
-		<a href={post.permalink} draggable="false">
-			<ListingHeader
-				locked={post.locked}
-				author={post.author}
-				created_utc={post.created_utc}
-				over_18={post.over_18}
-				subreddit={post.subreddit}
-			/>
-		</a>
-	{:else}
-		<ListingHeader
-			locked={post.locked}
-			flairs={post.link_flair_richtext}
-			author={post.author}
-			created_utc={post.created_utc}
-			over_18={post.over_18}
-			subreddit={post.subreddit}
-		/>
-	{/if}
+<div class="flex cursor-default flex-col rounded-md">
+	<ListingHeader
+		locked={post.locked}
+		flairs={post.link_flair_richtext}
+		author={post.author}
+		created_utc={post.created_utc}
+		over_18={post.over_18}
+		subreddit={post.subreddit}
+	/>
 
-	{#if post.post_hint == 'link' || (expand && (post.selftext?.length ?? 0) == 0 && !post.url.includes('redd.it') && !post.url.includes('reddit'))}
+	{#if post.post_hint == 'link' || ((post.selftext?.length ?? 0) == 0 && !post.url.includes('redd.it') && !post.url.includes('reddit'))}
 		{@const { thumbnail, title, url } = post}
-
-		{#if !expand}
-			<a href={post.permalink} draggable="false">
-				<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp />
-			</a>
-		{:else}
-			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} />
-		{/if}
+		<!-- TODO: vreddit thing -->
+		<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} />
 	{:else}
-		{#if !expand}
-			<a href={post.permalink} draggable="false">
-				<h1 class="mt-2 text-wrap break-words text-2xl font-medium">{cleanText(post.title)}</h1>
-			</a>
-		{:else}
-			<h1 class="mt-2 cursor-text text-wrap break-words text-2xl font-medium">
-				{cleanText(post.title)}
-			</h1>
-		{/if}
+		<h1 class="mt-2 cursor-text text-wrap break-words text-2xl font-medium">
+			{cleanText(post.title)}
+		</h1>
 
-		{#if post.selftext?.length > 0 && expand}
+		{#if post.selftext?.length > 0}
 			<Text class="mt-2" text={post.selftext} />
 		{/if}
 
 		{#if post.is_video}
 			<Video class="mt-2" url={post.url} />
-		{:else if post.post_hint == 'image' || (expand && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/))}
+		{:else if post.post_hint == 'image' && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
 			<Image class="mt-2" url={post.url} />
 		{:else if post.is_gallery}
 			<Gallery class="mt-2" {post} />
@@ -70,22 +40,8 @@
 			<div class="mt-2 flex items-center justify-center">
 				<IFrame {post} />
 			</div>
-		{:else if post.selftext?.length > 0 && !expand}
-			{#if !expand}
-				<a href={post.permalink} draggable="false">
-					<Text class="mt-2 cursor-pointer" text={post.selftext} clamp />
-				</a>
-			{:else}
-				<Text class="mt-2" text={post.selftext} clamp />
-			{/if}
 		{/if}
 	{/if}
 
-	{#if !expand}
-		<a href={post.permalink} draggable="false">
-			<ListingFooter class="mt-2" {post} />
-		</a>
-	{:else}
-		<ListingFooter class="mt-2 [&_span]:cursor-text" {post} />
-	{/if}
+	<ListingFooter class="mt-2 [&_span]:cursor-text" {post} />
 </div>

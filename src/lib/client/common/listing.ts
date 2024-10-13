@@ -1,4 +1,4 @@
-export const cleanListing = (post: RedditListingChildData): ListingData => {
+export const cleanListing = (post: RedditT3Data): ListingData => {
 	return {
 		author: post.author,
 		created_utc: post.created_utc,

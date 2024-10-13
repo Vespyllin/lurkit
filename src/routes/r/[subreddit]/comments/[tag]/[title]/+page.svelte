@@ -75,7 +75,7 @@
 	<FetchStatus {fetching} {error} />
 {:else}
 	<div class="flex flex-col px-2">
-		<Listing post={listing} expand />
+		<Listing post={listing} />
 
 		<Comments class="mt-2" bind:sort bind:comments {error} {fetching} />
 	</div>

@@ -1,123 +1,18 @@
 type RedditSortOptions = 'new' | 'controversial' | 'top' | 'hot' | 'random';
 
-type RedditListing = {
+type RedditListing<InnerData> = {
 	kind: 'Listing';
-	data: {
+	data?: {
 		after?: string;
 		dist: number;
 		modhash?: string;
 		geo_filter?: null;
-		children: RedditListingChild[];
+		children?: InnerData[];
 		enabled: boolean;
 	};
 };
 
-type RedditAward = {
-	// Award object structure can be added here if needed
-};
-
-type RedditListingChild = {
-	kind: 't3';
-	data: RedditListingChildData;
-};
-
-type RedditListingChildData = {
-	locked: boolean;
-	sr_detail?: RedditSrDetail;
-	is_video: boolean;
-	is_gallery: boolean;
-	permalink: string;
-	url: string;
-	num_comments: number;
-	media_metadata: any;
-	gallery_data?: {
-		items: {
-			media_id: string;
-		}[];
-	};
-	approved_at_utc?: null;
-	subreddit: string;
-	selftext: string;
-	author_fullname: string;
-	saved: boolean;
-	mod_reason_title?: null;
-	gilded: number;
-	clicked: boolean;
-	title: string;
-	link_flair_richtext: RedditLinkFlairRichText[];
-	subreddit_name_prefixed: string;
-	hidden: boolean;
-	pwls: number;
-	link_flair_css_class: string;
-	downs: number;
-	thumbnail_height: number;
-	top_awarded_type?: null;
-	hide_score: boolean;
-	name: string;
-	quarantine: boolean;
-	link_flair_text_color: string;
-	upvote_ratio: number;
-	author_flair_background_color?: null;
-	ups: number;
-	total_awards_received: number;
-	media_embed: {};
-	thumbnail_width: number;
-	author_flair_template_id: string;
-	is_original_content: boolean;
-	user_reports?: string[];
-	secure_media?: null;
-	is_reddit_media_domain: boolean;
-	is_meta: boolean;
-	category?: null;
-	secure_media_embed: {
-		content: string;
-		width: number;
-		height: number;
-		scrolling: boolean;
-		media_domain_url: string;
-	};
-	link_flair_text: string;
-	can_mod_post: boolean;
-	score: number;
-	approved_by?: null;
-	is_created_from_ads_ui: boolean;
-	author: string;
-	created_utc: number;
-	author_premium: boolean;
-	thumbnail: string;
-	edited: boolean;
-	author_flair_css_class?: null;
-	author_flair_richtext: RedditAuthorFlairRichText[];
-	gildings: {};
-	post_hint: string;
-	content_categories?: null;
-	is_self: boolean;
-	subreddit_type: string;
-	created: number;
-	link_flair_type: string;
-	wls: number;
-	removed_by_category?: null;
-	banned_by?: null;
-	author_flair_type: string;
-	domain: string;
-	allow_live_comments: boolean;
-	selftext_html?: null;
-	likes?: null;
-	suggested_sort?: null;
-	banned_at_utc?: null;
-	url_overridden_by_dest: string;
-	view_count?: null;
-	archived: boolean;
-	no_follow: boolean;
-	is_crosspostable: boolean;
-	pinned: boolean;
-	over_18: boolean;
-	preview?: {
-		images: RedditPreviewImage[];
-		variants: {};
-		id: string;
-	};
-};
+type RedditAward = never;
 
 type RedditLinkFlairRichText = {
 	a?: string;
@@ -148,7 +43,7 @@ type RedditPreviewImageResolution = {
 type RedditSrDetail = {
 	default_set: boolean;
 	banner_img: string;
-	allowed_media_in_comments: any[]; // Depending on the actual content, you might want to specify a type Reddithere
+	allowed_media_in_comments: any[];
 	user_is_banned: null | boolean;
 	free_form_reports: boolean;
 	community_icon: string;
@@ -158,7 +53,7 @@ type RedditSrDetail = {
 	display_name: string;
 	header_img: string | null;
 	title: string;
-	previous_names: any[]; // Depending on the actual content, you might want to specify a type Reddithere
+	previous_names: any[];
 	user_is_moderator: null | boolean;
 	over_18: boolean;
 	icon_size: number[];
