@@ -83,3 +83,25 @@ type RedditSrDetail = {
 	subreddit_type: string;
 	user_is_subscriber: null | boolean;
 };
+
+type RedditListingBaseData = {
+	subreddit: string;
+	author_fullname: string;
+	saved: boolean;
+	gilded: number;
+	name: string;
+	permalink: string;
+	locked: boolean;
+	ups: number;
+	total_awards_received: number;
+	can_mod_post: boolean;
+	score: number;
+	created_utc: number;
+	author: string;
+	author_premium: boolean;
+	edited: boolean;
+	subreddit_name_prefixed: string;
+	archived: boolean;
+	no_follow: boolean;
+	subreddit_type: string;
+};

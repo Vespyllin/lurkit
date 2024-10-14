@@ -75,6 +75,7 @@ export function createFeedState() {
 		'kamala',
 		'harris',
 		'conservative',
+		'republican',
 		'democrat',
 		'taylor swift',
 		'conspiracy'
@@ -94,12 +95,15 @@ export function createFeedState() {
 
 			newPosts.forEach((listing) => uniqueIds.add(listing.name));
 
-			feed = (feed ?? []).concat(newPosts);
+			if (!feed) feed = [];
+			feed.push(...newPosts);
 
 			lastPostId = newPosts.at(-1)?.name;
 		} else {
 			error = fetchRes.reason;
-			console.log(`Failed to fetch next listings.\nLast post ID: ${lastPostId}\nReason: ${error}`);
+			console.error(
+				`Failed to fetch next listings inside store.\nReason: ${error}\nLast post ID: ${lastPostId}`
+			);
 		}
 
 		fetching = false;

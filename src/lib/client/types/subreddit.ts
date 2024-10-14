@@ -70,4 +70,7 @@ type RedditT3Data = RedditListingBaseData & {
 		variants: {};
 		id: string;
 	};
+
+	crosspost_parent?: string;
+	crosspost_parent_list?: RedditT3Data[];
 };

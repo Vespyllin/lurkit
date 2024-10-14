@@ -5,6 +5,7 @@
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Comments from '$lib/components/comments/';
 	import { PUBLIC_COLLAPSE_COMMENT_DEPTH } from '$env/static/public';
+	import { cleanText } from '$lib';
 
 	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
@@ -24,8 +25,8 @@
 		const fetchRes = await fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort);
 
 		if (fetchRes.status == 'OK') {
-			listing = fetchRes.data.listing;
-			comments = assignCommentState(fetchRes.data.comments); // Only update the comments if the listing is already populated (changing comment sort options)
+			if (!listing) listing = fetchRes.data.listing;
+			comments = assignCommentState(fetchRes.data.comments);
 		} else {
 			error = fetchRes.reason;
 		}
@@ -64,7 +65,7 @@
 <svelte:head>
 	<title>
 		{listing
-			? `${listing.title} - ${listing.subreddit.display_name}`
+			? cleanText(`${listing.title} - ${listing.subreddit.display_name}`)
 			: error
 				? error
 				: 'Loading...'}

@@ -28,10 +28,20 @@
 		</a>
 	{:else}
 		<a href={post.permalink} draggable="false">
-			<h1 class="mt-2 text-wrap break-words text-2xl font-medium">{cleanText(post.title)}</h1>
+			<h1 class="mt-2 text-wrap break-words text-2xl font-medium">
+				{cleanText(post.title)}
+				{#if post.is_crosspost}
+					<span class="text-base font-normal text-zinc-400">
+						Crosspost from {post.crosspost_parent?.subreddit.display_name}
+					</span>
+				{/if}
+			</h1>
 		</a>
 
 		{#if post.is_video}
+			<Video class="mt-2" url={post.url} />
+		{:else if post.post_hint == 'link'}
+			<!-- Reddit crossposts -->
 			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image'}
 			<Image class="mt-2" url={post.url} />

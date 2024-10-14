@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+
 	import { fetchFeedData } from '$lib/client/subreddit';
+
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import FeedListing from '$lib/components/listing/FeedListing.svelte';
@@ -13,9 +16,9 @@
 	let fetching = $state(true);
 	let feed: ListingData[] | undefined = $state();
 	let error: string | undefined = $state();
-
 	let lastPostId: string | undefined;
-	$effect(() => {
+
+	onMount(() => {
 		fetchFeedData(subreddit, 50).then((res) => {
 			if (res.status == 'OK') {
 				feed = res.data;
@@ -62,7 +65,7 @@
 	{#each feed as post}
 		<FeedListing {post} />
 
-		<Separator class="my-2" />
+		<Separator class="my-4" />
 	{/each}
 
 	{#if error || fetching}

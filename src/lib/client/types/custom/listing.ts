@@ -39,6 +39,9 @@ type ListingData = {
 		scrolling: boolean;
 		media_domain_url: string;
 	};
+
+	is_crosspost: boolean;
+	crosspost_parent?: ListingData;
 };
 
 type SubredditDetails = {

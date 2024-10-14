@@ -17,31 +17,42 @@
 		subreddit={post.subreddit}
 	/>
 
-	{#if post.post_hint == 'link' || ((post.selftext?.length ?? 0) == 0 && !post.url.includes('redd.it') && !post.url.includes('reddit'))}
-		{@const { thumbnail, title, url } = post}
-		<!-- TODO: vreddit thing -->
-		<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} />
-	{:else}
-		<h1 class="mt-2 cursor-text text-wrap break-words text-2xl font-medium">
-			{cleanText(post.title)}
-		</h1>
+	<div class="mt-2">
+		{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
+			{@const { thumbnail, title, url } = post}
+			<Link {thumbnail} title={cleanText(title)} {url} />
+		{:else}
+			<h1 class="mb-2 cursor-text text-wrap break-words text-2xl font-medium">
+				{cleanText(post.title)}
+				{#if post.is_crosspost}
+					<span class="text-base font-normal text-zinc-400">
+						Crosspost from {post.crosspost_parent?.subreddit.display_name}
+					</span>
+				{/if}
+			</h1>
 
-		{#if post.selftext?.length > 0}
-			<Text class="mt-2" text={post.selftext} />
-		{/if}
+			{#if post.selftext?.length > 0}
+				<Text text={post.selftext} />
+			{/if}
 
-		{#if post.is_video}
-			<Video class="mt-2" url={post.url} />
-		{:else if post.post_hint == 'image' && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
-			<Image class="mt-2" url={post.url} />
-		{:else if post.is_gallery}
-			<Gallery class="mt-2" {post} />
-		{:else if post.post_hint == 'rich:video'}
-			<div class="mt-2 flex items-center justify-center">
-				<IFrame {post} />
-			</div>
+			{#if post.is_video}
+				<Video url={post.url} />
+			{:else if post.is_crosspost}
+				<!-- Reddit crossposts -->
+				<Video url={post.url} />
+			{:else if post.post_hint == 'image' && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
+				<Image url={post.url} />
+			{:else if post.is_gallery}
+				<Gallery {post} />
+			{:else if post.post_hint == 'rich:video'}
+				<div class="flex items-center justify-center">
+					<IFrame {post} />
+				</div>
+			{/if}
 		{/if}
-	{/if}
+	</div>
+
+	<!-- {#if post.post_hint == 'link' || ((post.selftext?.length ?? 0) == 0 && !post.url.includes('redd.it') && !post.url.includes('reddit'))} -->
 
 	<ListingFooter class="mt-2 [&_span]:cursor-text" {post} />
 </div>

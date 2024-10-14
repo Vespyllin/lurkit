@@ -1,4 +1,6 @@
 export const cleanListing = (post: RedditT3Data): ListingData => {
+	const crosspost = post.crosspost_parent_list?.find((x) => x.name == post.crosspost_parent);
+
 	return {
 		author: post.author,
 		created_utc: post.created_utc,
@@ -31,6 +33,8 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		url: post.url,
 		gallery_data: post.gallery_data,
 		secure_media: post.secure_media,
-		locked: post.locked
+		locked: post.locked,
+		is_crosspost: !!post.crosspost_parent,
+		crosspost_parent: crosspost ? cleanListing(crosspost) : undefined
 	};
 };

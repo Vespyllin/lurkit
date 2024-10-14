@@ -4,21 +4,16 @@
 	import FeedListing from '$lib/components/listing/FeedListing.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { FeedStore } from '$lib/stores/FeedState.svelte';
+	import { onMount } from 'svelte';
 
-	const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
+	onMount(async () => {
+		if (!FeedStore.data || FeedStore.data.length == 0) await FeedStore.fetchMore();
 
-	$effect(() => {
-		FeedStore.fetchMore();
-	});
-
-	$effect(() => {
 		const scrollTo = FeedStore.scrollTo;
 		if (!scrollTo) return;
 
-		sleep(30).then(() => {
-			document.getElementById(scrollTo)?.scrollIntoView(true);
-			window.scrollBy({ top: -80 });
-		});
+		document.getElementById(scrollTo)?.scrollIntoView(true);
+		window.scrollBy({ top: -80 });
 	});
 </script>
 
