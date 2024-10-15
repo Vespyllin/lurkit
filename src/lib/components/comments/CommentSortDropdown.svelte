@@ -2,7 +2,6 @@
 	import { CaretDown, Star, Target, Update, Rocket, LightningBolt } from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { ComponentType } from 'svelte';
-	import { cn } from '$lib/utils';
 
 	let { sort = $bindable(), class: className }: { sort: RedditSortOptions; class?: string } =
 		$props();
@@ -33,7 +32,7 @@
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
 					onclick={() => (sort = sortOption.option)}
 				>
-					<svelte:component this={sortOption.icon} class="mr-1" />
+					<sortOption.icon class="mr-1" />
 					<span>{sortOption.option}</span>
 				</DropdownMenu.Item>
 			{/each}
