@@ -8,10 +8,11 @@
 </script>
 
 <div
-	class="flex cursor-default flex-col rounded-md px-2 hover:bg-[hsl(220,14.3,7.1)] [&_a]:cursor-pointer"
+	class="flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(220,14.3,7.1)] [&_a]:cursor-pointer"
 >
 	<a href={post.permalink} draggable="false">
 		<ListingHeader
+			crossposted_from={post.crosspost_parent?.subreddit.display_name}
 			locked={post.locked}
 			author={post.author}
 			created_utc={post.created_utc}
@@ -30,18 +31,10 @@
 		<a href={post.permalink} draggable="false">
 			<h1 class="mt-2 text-wrap break-words text-2xl font-medium">
 				{cleanText(post.title)}
-				{#if post.is_crosspost}
-					<span class="text-base font-normal text-zinc-400">
-						Crosspost from {post.crosspost_parent?.subreddit.display_name}
-					</span>
-				{/if}
 			</h1>
 		</a>
 
 		{#if post.is_video}
-			<Video class="mt-2" url={post.url} />
-		{:else if post.post_hint == 'link'}
-			<!-- Reddit crossposts -->
 			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image'}
 			<Image class="mt-2" url={post.url} />

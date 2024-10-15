@@ -6,7 +6,7 @@
 
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import FeedListing from '$lib/components/listing/FeedListing.svelte';
+	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	const {
@@ -63,9 +63,9 @@
 	<FetchStatus {fetching} {error} />
 {:else}
 	{#each feed as post}
-		<FeedListing {post} />
+		<ListingPortal {post} />
 
-		<Separator class="my-4" />
+		<Separator class="my-2" />
 	{/each}
 
 	{#if error || fetching}
