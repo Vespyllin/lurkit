@@ -16,6 +16,7 @@
 	{#if hasThumbnail}
 		<a href={url} class="float-right pb-2 pl-2">
 			<div class="relative">
+				<!-- svelte-ignore a11y_missing_attribute -->
 				<img
 					src={thumbnail}
 					class="h-20 w-32 rounded-md object-cover"
@@ -37,7 +38,7 @@
 
 		<a
 			class={cn(
-				'inline-block text-ellipsis text-wrap break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800',
+				'text-ellipsis text-blue-600 underline visited:text-purple-600 hover:text-blue-800',
 				clamp && 'line-clamp-1'
 			)}
 			href={url}

@@ -3,12 +3,6 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	onwarn: (warning, handler) => {
-		// suppress warnings on `vite dev` and `vite build`; but even without this, things still work
-		if (warning.code.indexOf('a11y') > -1) return;
-
-		handler(warning);
-	},
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	preprocess: [vitePreprocess({})],
