@@ -109,8 +109,9 @@ export const cleanText = (text: string, nowhitespace: boolean = false) => {
 };
 
 const decodeHTMLText = (encodedString: string) => {
-	const translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-	const translate: any = {
+	const entityRegex = /&((nbsp|amp|quot|lt|gt|#x200B|#\d+);)+/g;
+	const namedConversions: { [namedEntity: string]: string } = {
+		'#x200B': '', // Zero width space
 		nbsp: ' ',
 		amp: '&',
 		quot: '"',
@@ -118,11 +119,10 @@ const decodeHTMLText = (encodedString: string) => {
 		gt: '>'
 	};
 	return encodedString
-		.replace(translate_re, (match, entity: any) => {
-			return translate[entity];
+		.replace(entityRegex, (_match, entity: string) => {
+			const convertedString = namedConversions[entity.slice(0, -1)];
+			if (convertedString !== undefined) return convertedString;
+			return entity;
 		})
-		.replace(/&#(\d+);/gi, (match, numStr: any) => {
-			var num = parseInt(numStr, 10);
-			return String.fromCharCode(num);
-		});
+		.replace(/&#(\d+);/gi, (_match, numStr: string) => String.fromCharCode(parseInt(numStr, 10)));
 };
