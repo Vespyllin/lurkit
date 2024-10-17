@@ -67,7 +67,7 @@
 	class={cn(
 		`	cursor-auto space-y-4
 			[&_a]:inline-block [&_a]:break-all [&_a]:text-blue-600 [&_a]:underline [&_a]:visited:text-purple-600 hover:[&_a]:text-blue-800 
-			[&_blockquote]:px-1 [&_blockquote]:text-zinc-400 
+			[&_blockquote]:pl-2 [&_blockquote]:text-zinc-400 [&_blockquote]:border-l-4 
 			[&_h1]:text-lg [&_h1]:font-semibold 
 			[&_h2]:text-lg [&_h2]:font-medium 
 			[&_h3]:font-medium 
