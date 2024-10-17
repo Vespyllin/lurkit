@@ -27,62 +27,44 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={cn('border-l-2 pl-3 text-base hover:border-blue-400', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<div class="cursor-pointer text-lg leading-tight" onclick={toggleCollapse}>
-		<!-- Desktop -->
-		<div class="hidden gap-2 lg:flex">
-			<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
-				{comment.author}
-			</div>
-
-			<span class="hidden lg:inline">•</span>
-
-			<div class="flex items-center text-zinc-400">
-				<ArrowUp />
-				{comment.score.toLocaleString()}
-			</div>
-
-			{#if comment.replyCount}
-				<span>•</span>
-				<div class="flex items-center gap-1 text-zinc-400">
-					<ChatBubble />
-					{comment.replyCount.toLocaleString()}
-				</div>
-			{/if}
-
-			{#if comment.stickied}
-				<span>•</span>
-				<div class="flex items-center gap-1 text-zinc-400">
-					<DrawingPin />
-					<span class="text-zinc-400">stickied</span>
-				</div>
-			{/if}
-
-			<span>•</span>
-			<span class="text-zinc-400"
-				>{getTimeAgo(comment.created_utc)}{#if comment.edited}
-					*
-				{/if}</span
-			>
+	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
+		<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
+			{comment.author}
 		</div>
 
-		<!-- Mobile -->
-		<div class="flex gap-1.5 lg:hidden">
-			<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
-				{comment.author}
+		<span class="hidden lg:inline">•</span>
+		<div class="hidden items-center text-zinc-400 lg:flex">
+			<ArrowUp />
+			{comment.score.toLocaleString()}
+		</div>
+
+		{#if comment.replyCount}
+			<span class="hidden lg:inline">•</span>
+			<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
+				<ChatBubble />
+				{comment.replyCount.toLocaleString()}
 			</div>
+		{/if}
 
-			{#if comment.stickied}
-				<div class="my-auto text-zinc-400">
-					<DrawingPin />
-				</div>
-			{/if}
+		{#if comment.stickied}
+			<span class="hidden lg:inline">•</span>
+			<div class="flex items-center gap-1 text-zinc-400">
+				<DrawingPin />
+				<span class="hidden text-zinc-400 lg:inline">stickied</span>
+			</div>
+		{/if}
 
-			<span>•</span>
-			<span class="text-zinc-400"
-				>{getTimeAgo(comment.created_utc, true)}{#if comment.edited}
-					*
-				{/if}
+		<span>•</span>
+		<div class="text-zinc-400">
+			<span class="hidden lg:inline">
+				{getTimeAgo(comment.created_utc)}
 			</span>
+			<span class="inline lg:hidden">
+				{getTimeAgo(comment.created_utc, true)}
+			</span>
+			{#if comment.edited}
+				<span>*</span>
+			{/if}
 		</div>
 	</div>
 
