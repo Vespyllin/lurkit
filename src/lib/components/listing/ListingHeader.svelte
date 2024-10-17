@@ -5,6 +5,7 @@
 
 	let {
 		subreddit,
+		edited,
 		author,
 		created_utc,
 		crossposted_from,
@@ -13,6 +14,7 @@
 		flairs
 	}: {
 		subreddit?: SubredditDetails;
+		edited?: boolean | number;
 		author: string;
 		created_utc: number;
 		over_18: boolean;
@@ -36,10 +38,14 @@
 
 	•
 	<span class="hidden text-zinc-400 lg:inline">
-		{getTimeAgo(created_utc)}
+		{getTimeAgo(created_utc)}{#if edited}
+			*
+		{/if}
 	</span>
 	<span class="text-zinc-400 lg:hidden">
-		{getTimeAgo(created_utc, true)}
+		{getTimeAgo(created_utc, true)}{#if edited}
+			*
+		{/if}
 	</span>
 
 	{#if over_18}

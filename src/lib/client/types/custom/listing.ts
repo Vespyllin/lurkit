@@ -28,7 +28,7 @@ type ListingData = {
 
 	link_flair_richtext: RedditLinkFlairRichText[];
 
-	edited: boolean;
+	edited: boolean | number;
 	is_self: boolean;
 	locked: boolean;
 

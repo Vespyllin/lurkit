@@ -9,6 +9,7 @@
 
 <div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md">
 	<ListingHeader
+		edited={post.edited}
 		crossposted_from={post.crosspost_parent?.subreddit.display_name}
 		locked={post.locked}
 		flairs={post.link_flair_richtext}

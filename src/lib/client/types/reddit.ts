@@ -99,7 +99,7 @@ type RedditListingBaseData = {
 	created_utc: number;
 	author: string;
 	author_premium: boolean;
-	edited: boolean;
+	edited: boolean | number;
 	subreddit_name_prefixed: string;
 	archived: boolean;
 	no_follow: boolean;
