@@ -1,12 +1,12 @@
 # lurkit - TODOs:
 
-v.reddit fix by fetching and then using the next url
 auth and blacklist
 svelte query, rewrite store to just store (no fetching)  
 video overlay
 
 search bar for subreddits  
 subreddit banner, sort, sticky, etc.
+subreddits have featured posts that appear as the first listings when fetching, look into it
 
 expanded gallery  
 make images in expanded listings bigger (sep listing component)  
