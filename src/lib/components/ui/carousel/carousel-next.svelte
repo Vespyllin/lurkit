@@ -7,7 +7,7 @@
 	type $$Props = Props;
 
 	let className: $$Props['class'] = undefined;
-	export { className as class, customClick };
+	export { className as class };
 
 	const { canScrollNext, scrollNext, handleKeyDown } = getEmblaContext('<Carousel.Next/>');
 </script>

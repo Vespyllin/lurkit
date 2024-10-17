@@ -57,6 +57,7 @@
 		});
 	};
 
+	// Refetch data whenever the comment sort key is changed
 	$effect(() => {
 		getData(sort);
 	});
