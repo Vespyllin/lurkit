@@ -5,6 +5,7 @@
 	let { url, class: className }: { url: string; class?: string } = $props();
 
 	let expanded = $state(false);
+	let error = $state(false);
 
 	const handleExpand = () => {
 		expanded = !expanded;
@@ -25,11 +26,23 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_missing_attribute -->
 	<img
+		class={cn('max-h-fit cursor-pointer object-contain md:max-h-[600px]')}
 		loading="lazy"
 		src={url}
-		class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
 		onclick={handleExpand}
+		onerror={() => (error = true)}
 	/>
+	<div class={cn('flex h-20 items-center text-xl', !error && 'hidden')}>
+		<span class="p-1.5 text-zinc-300">Error loading image</span>
+		<button
+			class="rounded-md p-1 text-zinc-400 hover:bg-accent"
+			onclick={() => {
+				const img = new Image();
+				img.src = url;
+				error = false;
+			}}>Retry</button
+		>
+	</div>
 </div>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->

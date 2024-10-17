@@ -6,14 +6,17 @@
 	import { FeedStore } from '$lib/stores/FeedState.svelte';
 	import { onMount } from 'svelte';
 
+	const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
 	onMount(async () => {
 		if (!FeedStore.data || FeedStore.data.length == 0) await FeedStore.fetchMore();
 
 		const scrollTo = FeedStore.scrollTo;
 		if (!scrollTo) return;
 
-		document.getElementById(scrollTo)?.scrollIntoView(true);
-		window.scrollBy({ top: -80 });
+		sleep(30).then(() => {
+			document.getElementById(scrollTo)?.scrollIntoView(true);
+			window.scrollBy({ top: -70 });
+		});
 	});
 </script>
 
@@ -22,7 +25,9 @@
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
 		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
 
-		if (!!FeedStore.data && !FeedStore.fetching && scrolledPercentage > 95) FeedStore.fetchMore();
+		if (!FeedStore.error && !!FeedStore.data && !FeedStore.fetching && scrolledPercentage > 95) {
+			FeedStore.fetchMore();
+		}
 	}}
 />
 
@@ -43,6 +48,10 @@
 	{/each}
 
 	{#if FeedStore.error || FeedStore.fetching}
-		<FetchMoreStatus fetching={FeedStore.fetching} error={FeedStore.error} />
+		<FetchMoreStatus
+			fetching={FeedStore.fetching}
+			error={FeedStore.error}
+			retryFn={FeedStore.fetchMore}
+		/>
 	{/if}
 {/if}
