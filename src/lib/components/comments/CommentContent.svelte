@@ -28,21 +28,21 @@
 <div class={cn('border-l-2 pl-3 text-base hover:border-blue-400', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
-		<div class={cn('text-blue-500', comment.is_submitter && 'underline')}>
+		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
 			{comment.author}
-		</div>
+		</span>
 
 		<span class="hidden lg:inline">•</span>
 		<div class="hidden items-center text-zinc-400 lg:flex">
 			<ArrowUp />
-			{comment.score.toLocaleString()}
+			<span>{comment.score.toLocaleString()}</span>
 		</div>
 
 		{#if comment.replyCount}
 			<span class="hidden lg:inline">•</span>
 			<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
 				<ChatBubble />
-				{comment.replyCount.toLocaleString()}
+				<span>{comment.replyCount.toLocaleString()}</span>
 			</div>
 		{/if}
 
@@ -76,12 +76,12 @@
 			<div class="mt-1 flex gap-4 lg:hidden">
 				<div class="flex items-center text-zinc-400">
 					<ArrowUp />
-					{comment.score.toLocaleString()}
+					<span>{comment.score.toLocaleString()}</span>
 				</div>
 
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
-					{comment.replyCount.toLocaleString()}
+					<span>{comment.replyCount.toLocaleString()}</span>
 				</div>
 			</div>
 		</div>
@@ -99,7 +99,7 @@
 						onclick={() => (truncated = false)}
 					>
 						<PlusCircled size={18} />
-						<span>Expand {(comment.children.length - truncatedLength).toLocaleString()} more</span>
+						<span> Expand {(comment.children.length - truncatedLength).toLocaleString()} more</span>
 					</button>
 				{/if}
 			</div>
