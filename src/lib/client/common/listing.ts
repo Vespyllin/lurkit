@@ -34,7 +34,6 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		gallery_data: post.gallery_data,
 		secure_media: post.secure_media,
 		locked: post.locked,
-		is_crosspost: !!post.crosspost_parent,
-		crosspost_parent: crosspost ? cleanListing(crosspost) : undefined
+		crosspost: crosspost ? cleanListing(crosspost) : undefined
 	};
 };

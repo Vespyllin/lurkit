@@ -3,16 +3,21 @@
 	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
+	import Self from './ListingPortal.svelte';
+	import { cn } from '$lib/utils';
 
-	let { post }: { post: ListingData } = $props();
+	let { post, class: classList }: { post: ListingData; class?: string } = $props();
 </script>
 
 <div
-	class="flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(220,14.3,7.1)] [&_a]:cursor-pointer"
+	class={cn(
+		'flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(220,14.3,7.1)] [&_a]:cursor-pointer',
+		classList
+	)}
 >
 	<a href={post.permalink} draggable="false">
 		<ListingHeader
-			crossposted_from={post.crosspost_parent?.subreddit.display_name}
+			crossposted_from={post.crosspost?.subreddit.display_name}
 			locked={post.locked}
 			author={post.author}
 			created_utc={post.created_utc}
@@ -21,7 +26,7 @@
 		/>
 	</a>
 
-	{#if post.post_hint == 'link'}
+	{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
 		{@const { thumbnail, title, url } = post}
 
 		<a href={post.permalink} draggable="false">
@@ -34,7 +39,11 @@
 			</h1>
 		</a>
 
-		{#if post.is_video}
+		{#if post.crosspost}
+			<div class="mt-2 rounded-lg border-2 p-2">
+				<Self post={post.crosspost} />
+			</div>
+		{:else if post.is_video}
 			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image'}
 			<Image class="mt-2" url={post.url} />

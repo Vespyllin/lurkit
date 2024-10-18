@@ -24,7 +24,7 @@ const cleanData = (post: RedditPostData) => {
 
 	const cleanedListing = cleanListing(listingData);
 
-	const cleanedComments = unwrapComments(comments) ?? [];
+	const cleanedComments = cleanComments(comments) ?? [];
 	if (cleanedComments.length > 0 && !cleanedComments.at(-1)?.text)
 		cleanedComments.splice(cleanedComments.length - 1, 1);
 
@@ -36,23 +36,34 @@ const cleanData = (post: RedditPostData) => {
 	return postData;
 };
 
-const unwrapComments = (comments: RedditT1Data['replies']): PostComment[] => {
+const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 	if (!comments.data?.children) return [];
 
 	return comments.data.children
 		.filter((x) => x.kind == 't1')
 		.map((x) => {
-			const { body, score, author, edited, is_submitter, created_utc, stickied, replies } = x.data;
+			const {
+				body,
+				score,
+				author,
+				edited,
+				is_submitter,
+				distinguished,
+				created_utc,
+				stickied,
+				replies
+			} = x.data;
 
 			return {
 				text: body,
-				score: score,
-				author: author,
-				edited: edited,
-				is_submitter: is_submitter,
-				created_utc: created_utc,
-				stickied: stickied,
-				children: unwrapComments(replies)?.filter((x) => !!x?.text)
+				children: cleanComments(replies)?.filter((x) => !!x?.text),
+				score,
+				author,
+				edited,
+				is_submitter,
+				distinguished,
+				created_utc,
+				stickied
 			};
 		});
 };

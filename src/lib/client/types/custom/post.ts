@@ -11,5 +11,6 @@ type PostComment = {
 	created_utc: number;
 	edited: boolean | number;
 	stickied: boolean;
+	distinguished?: 'moderator' | string;
 	children?: PostComment[];
 };

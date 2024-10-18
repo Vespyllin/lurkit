@@ -43,7 +43,7 @@ type RedditT1Data = RedditListingBaseData & {
 	body_html: string;
 	removal_reason: null;
 	collapsed_reason: null;
-	distinguished: null;
+	distinguished?: 'moderator' | string;
 	associated_award: null;
 	stickied: boolean;
 	gildings: Record<string, any>;

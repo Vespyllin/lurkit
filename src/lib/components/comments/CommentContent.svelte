@@ -58,13 +58,9 @@
 		<div class="text-zinc-400">
 			<span class="hidden lg:inline">
 				{getTimeAgo(comment.created_utc)}
-			</span>
-			<span class="inline lg:hidden">
+			</span><span class="inline lg:hidden">
 				{getTimeAgo(comment.created_utc, true)}
-			</span>
-			{#if comment.edited}
-				<span>*</span>
-			{/if}
+			</span>{#if comment.edited}<span>*</span>{/if}
 		</div>
 	</div>
 

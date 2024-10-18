@@ -3,6 +3,7 @@
 	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
+	import ListingPortal from './ListingPortal.svelte';
 
 	let { post }: { post: ListingData } = $props();
 </script>
@@ -10,7 +11,7 @@
 <div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md">
 	<ListingHeader
 		edited={post.edited}
-		crossposted_from={post.crosspost_parent?.subreddit.display_name}
+		crossposted_from={post.crosspost?.subreddit.display_name}
 		locked={post.locked}
 		flairs={post.link_flair_richtext}
 		author={post.author}
@@ -31,7 +32,11 @@
 			<Text text={post.selftext} />
 		{/if}
 
-		{#if post.is_video}
+		{#if post.crosspost}
+			<div class="rounded-lg border-2">
+				<ListingPortal class="p-4" post={post.crosspost} />
+			</div>
+		{:else if post.is_video}
 			<Video url={post.url} />
 		{:else if post.post_hint == 'image' && post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/)}
 			<Image url={post.url} />

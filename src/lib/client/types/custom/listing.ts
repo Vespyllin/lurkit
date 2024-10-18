@@ -40,8 +40,7 @@ type ListingData = {
 		media_domain_url: string;
 	};
 
-	is_crosspost: boolean;
-	crosspost_parent?: ListingData;
+	crosspost?: ListingData;
 };
 
 type SubredditDetails = {
