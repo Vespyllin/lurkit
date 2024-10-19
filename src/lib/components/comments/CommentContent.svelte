@@ -25,10 +25,10 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class={cn('border-l-2 pl-3 text-base hover:border-blue-400', className)}>
+<div class={cn('border-l-2 pl-3 text-base hover:border-accent', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
-		<span class={cn('text-blue-500', comment.is_submitter && 'underline')}>
+		<span class={cn('text-primary', comment.is_submitter && 'underline')}>
 			{comment.author}
 		</span>
 

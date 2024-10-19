@@ -15,7 +15,7 @@
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name}`}>
-			<img src={icon_url} class="h-5 rounded-full object-contain" />
+			<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />
 			<span class="text-zinc-200">
 				{subreddit.display_name}
 			</span>
@@ -24,7 +24,7 @@
 	<Tooltip.Content class="pt-1">
 		<div class="w-96">
 			<div class="float-left mr-2 mt-[5px] flex h-[6.25rem] max-w-32">
-				<img src={icon_url} class="my-auto h-full" />
+				<img alt="" src={icon_url} class="my-auto h-full" />
 			</div>
 
 			<div>

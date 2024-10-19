@@ -16,8 +16,8 @@
 	{#if hasThumbnail}
 		<a href={url} class="float-right pb-2 pl-2">
 			<div class="relative">
-				<!-- svelte-ignore a11y_missing_attribute -->
 				<img
+					alt=""
 					src={thumbnail}
 					class="h-20 w-32 rounded-md object-cover"
 					onerror={(e) => {

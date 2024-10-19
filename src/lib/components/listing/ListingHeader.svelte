@@ -79,7 +79,13 @@
 		</div>
 	{/if}
 
-	{#each flairs?.filter((x) => x.e === 'text' && !!x.t) ?? [] as flair}
-		<div class="h-fit w-fit rounded-2xl bg-blue-400 px-2 text-sm">{cleanText(flair.t!)}</div>
-	{/each}
+	<div class="flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm">
+		{#each flairs ?? [] as flair}
+			{#if flair.e == 'text'}
+				{cleanText(flair.t!)}
+			{:else if flair.e == 'emoji'}
+				<img alt="" src={flair.u} class="h-4 px-0.5" />
+			{/if}
+		{/each}
+	</div>
 </div>

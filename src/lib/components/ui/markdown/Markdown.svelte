@@ -71,7 +71,7 @@
 			[&_h1]:text-lg [&_h1]:font-semibold 
 			[&_h2]:text-lg [&_h2]:font-medium 
 			[&_h3]:font-medium 
-			[&_img]:mt-0.5 [&_img]:max-h-64 [&_img]:max-w-96 
+			[&_img alt=""]:mt-0.5 [&_img alt=""]:max-h-64 [&_img alt=""]:max-w-96 
 			[&_ol]:list-inside [&_ol]:list-decimal [&_ol]:pl-2 
 			[&_td]:w-fit [&_th]:px-2 [&_thead]:border-b-2
 			[&_ul]:list-inside [&_ul]:list-disc [&_ul]:pl-2`,

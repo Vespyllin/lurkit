@@ -32,7 +32,9 @@
 />
 
 <svelte:head>
-	<title>{FeedStore.data ? 'Lurkit' : FeedStore.error}</title>
+	<title>
+		{FeedStore.fetching && !FeedStore.data ? 'Loading...' : (FeedStore.error ?? 'Lurkit')}
+	</title>
 </svelte:head>
 
 {#if !FeedStore.data}

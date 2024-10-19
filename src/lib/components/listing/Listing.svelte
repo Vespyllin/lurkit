@@ -20,7 +20,7 @@
 		subreddit={post.subreddit}
 	/>
 
-	{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
+	{#if post.post_hint == 'link' || (!post.url.includes('redd.it') && !post.url.includes('reddit'))}
 		{@const { thumbnail, title, url } = post}
 		<Link {thumbnail} title={cleanText(title)} {url} />
 	{:else}

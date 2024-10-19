@@ -27,9 +27,10 @@
 	>
 		<Cross2 size={25} />
 	</div>
-	<!-- svelte-ignore a11y_missing_attribute -->
+
 	<img
-		class={cn('my-auto object-contain', zoomed ? 'min-h-full' : 'lg:max-w-[85%] max-h-full')}
+		alt=""
+		class={cn('my-auto object-contain', zoomed ? 'min-h-full' : 'max-h-full lg:max-w-[85%]')}
 		loading="lazy"
 		src={url}
 	/>

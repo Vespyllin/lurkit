@@ -69,11 +69,11 @@
 		<Carousel.Content>
 			{#each galleryItems as galleryItem}
 				<Carousel.Item>
-					<!-- svelte-ignore a11y_missing_attribute -->
 					<div class="mx-auto flex h-full items-center justify-center">
 						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<img
+							alt=""
 							onclick={handleExpand}
 							class="h-full max-h-[600px] w-fit max-w-full cursor-pointer object-contain"
 							src={mediaIdToURL(galleryItem.media_id)}

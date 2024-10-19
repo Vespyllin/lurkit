@@ -1,4 +1,5 @@
 import { fetchFeedData } from '$lib/client/subreddit';
+import { titleFilter } from './titleFilter';
 
 export function createFeedState() {
 	let fetching = $state(true);
@@ -30,6 +31,7 @@ export function createFeedState() {
 		'r/news',
 		'r/blackcats',
 		'r/hockey',
+		'r/aww',
 		'r/pics',
 		'r/politics',
 		'r/roastme',
@@ -66,25 +68,10 @@ export function createFeedState() {
 		'r/genshin_impact_leaks'
 	].map((x) => x.toLowerCase());
 
-	const titleFilter = [
-		'cat',
-		'cats',
-		'dog',
-		'dogs',
-		'trump',
-		'kamala',
-		'harris',
-		'conservative',
-		'republican',
-		'democrat',
-		'taylor swift',
-		'conspiracy'
-	].map((x) => x.toLowerCase());
-
 	const fetchMore = async () => {
 		fetching = true;
 
-		const fetchRes = await fetchFeedData(undefined, 50, lastPostId);
+		const fetchRes = await fetchFeedData(undefined, 50, lastPostId, undefined, true);
 		if (fetchRes.status === 'OK') {
 			const newPosts = fetchRes.data
 				.filter((listing) => !uniqueIds.has(listing.name))

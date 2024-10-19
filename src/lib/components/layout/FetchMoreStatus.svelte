@@ -1,14 +1,21 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import Spinner from './Spinner.svelte';
 
 	let {
+		class: className,
 		fetching,
 		error,
 		retryFn
-	}: { fetching: boolean; error: string | undefined; retryFn?: () => void } = $props();
+	}: {
+		class?: string;
+		fetching: boolean;
+		error: string | undefined;
+		retryFn?: () => void;
+	} = $props();
 </script>
 
-<div class="mx-auto justify-center px-8 text-center lg:max-w-5xl">
+<div class={cn('mx-auto justify-center p-8 text-center lg:max-w-5xl', className)}>
 	{#if fetching}
 		<div class="flex items-center justify-center gap-4">
 			<Spinner class="h-8 w-8" />
