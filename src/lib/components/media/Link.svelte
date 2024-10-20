@@ -14,12 +14,12 @@
 
 <div class={className}>
 	{#if hasThumbnail}
-		<a href={url} class="float-right pb-2 pl-2">
+		<a href={url} class="float-right pl-2">
 			<div class="relative">
 				<img
 					alt=""
 					src={thumbnail}
-					class="h-20 w-32 rounded-md object-cover"
+					class="h-[5.5rem] w-32 rounded-md object-cover"
 					onerror={(e) => {
 						if (e.currentTarget.parentElement) e.currentTarget.parentElement.style.display = 'none';
 					}}
