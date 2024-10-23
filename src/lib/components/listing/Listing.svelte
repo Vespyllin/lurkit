@@ -37,7 +37,11 @@
 			<Text text={post.selftext} />
 		{/if}
 
-		{#if post.crosspost}
+		{#if post.removed_by}
+			<p class="text-zinc-300">
+				[Removed by {post.removed_by}]
+			</p>
+		{:else if post.crosspost}
 			<div class="rounded-lg border-2">
 				<ListingPortal class="p-4" post={post.crosspost} />
 			</div>

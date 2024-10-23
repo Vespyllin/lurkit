@@ -52,7 +52,8 @@ type RedditT3Data = RedditListingBaseData & {
 	is_self: boolean;
 	link_flair_type: string;
 	wls: number;
-	removed_by_category?: null;
+	removed_by_category?: string;
+	removed_by?: string;
 	banned_by?: null;
 	domain: string;
 	allow_live_comments: boolean;

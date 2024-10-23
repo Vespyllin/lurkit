@@ -21,6 +21,8 @@ type ListingData = {
 		}[];
 	};
 
+	removed_by?: string;
+
 	name: string;
 	upvote_ratio: number;
 	secure_media?: null;

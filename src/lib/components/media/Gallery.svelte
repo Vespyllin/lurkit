@@ -7,8 +7,6 @@
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
-	let hideCounter = $state(true);
-	let hideTimer: number | undefined = undefined;
 
 	let api: any = $state(0);
 	let count = $state(0);
@@ -20,22 +18,8 @@
 		current = api.selectedScrollSnap() + 1;
 		api.on('select', () => {
 			current = api.selectedScrollSnap() + 1;
-			// handleCounter();
 		});
 	});
-
-	const handleCounter = () => {
-		hideCounter = false;
-
-		if (hideTimer) {
-			clearTimeout(hideTimer);
-			hideTimer = undefined;
-		}
-
-		hideTimer = setTimeout(() => {
-			hideCounter = true;
-		}, 1500);
-	};
 
 	const getMediaType = (post: ListingData, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
