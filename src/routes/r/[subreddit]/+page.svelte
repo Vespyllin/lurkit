@@ -51,7 +51,7 @@
 		if (!!feed && !fetching && scrolledPercentage > 95) {
 			fetching = true;
 
-			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId);
+			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId, undefined, true);
 
 			if (fetchedFeed.status === 'OK') {
 				feed = feed.concat(fetchedFeed.data);

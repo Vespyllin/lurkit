@@ -2,7 +2,7 @@
 	import { cn } from '$lib/utils';
 	import type { ClassValue } from 'clsx';
 
-	let { class: className }: { class: ClassValue } = $props();
+	let { class: className }: { class?: ClassValue } = $props();
 </script>
 
 <svg

@@ -23,6 +23,10 @@
 	{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
 		{@const { thumbnail, title, url } = post}
 
+		{#if post.selftext?.length > 0}
+			<Text text={post.selftext} />
+		{/if}
+
 		<Link {thumbnail} title={cleanText(title)} {url} />
 	{:else}
 		<h1 class="cursor-text text-wrap break-words text-2xl font-medium">

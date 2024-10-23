@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cleanText } from '$lib';
+	import Markdown from '../ui/markdown/Markdown.svelte';
 	import Separator from '../ui/separator/separator.svelte';
 
 	const { subredditData }: { subredditData: SubredditData } = $props();
@@ -40,7 +40,7 @@
 		<div class="grid grid-cols-2">
 			<div>
 				<h1 class="text-3xl font-bold">r/{subredditData.display_name}</h1>
-				<div class="text-zinc-300">{cleanText(subredditData.public_description)}</div>
+				<Markdown class="text-zinc-300" text={subredditData.public_description} />
 			</div>
 
 			<div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
+	import { Markdown } from '../ui/markdown';
 	import * as Tooltip from '../ui/tooltip';
 
 	let { subreddit }: { subreddit: SubredditDetails } = $props();
@@ -29,9 +30,7 @@
 
 			<div>
 				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name}</h2>
-				<div class="text-zinc-400">
-					{cleanText(subreddit.public_description)}
-				</div>
+				<Markdown class="text-zinc-400" text={subreddit.public_description} />
 			</div>
 		</div>
 	</Tooltip.Content>
