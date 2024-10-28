@@ -23,9 +23,9 @@
 <svelte:window
 	on:scroll={async () => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
-		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
+		const remainingPx = feedHeight - window.scrollY;
 
-		if (!FeedStore.error && !!FeedStore.data && !FeedStore.fetching && scrolledPercentage > 95) {
+		if (remainingPx < 1000 && !!FeedStore.data && !FeedStore.fetching && !FeedStore.error) {
 			FeedStore.fetchMore();
 		}
 	}}

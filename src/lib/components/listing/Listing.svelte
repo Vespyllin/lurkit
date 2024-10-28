@@ -23,11 +23,11 @@
 	{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
 		{@const { thumbnail, title, url } = post}
 
+		<Link {thumbnail} title={cleanText(title)} {url} />
+
 		{#if post.selftext?.length > 0}
 			<Text text={post.selftext} />
 		{/if}
-
-		<Link {thumbnail} title={cleanText(title)} {url} />
 	{:else}
 		<h1 class="cursor-text text-wrap break-words text-2xl font-medium">
 			{cleanText(post.title)}
@@ -43,7 +43,7 @@
 			</p>
 		{:else if post.crosspost}
 			<div class="rounded-lg border-2">
-				<ListingPortal class="p-4" post={post.crosspost} />
+				<ListingPortal class="px-4 pt-3" post={post.crosspost} />
 			</div>
 		{:else if post.is_video}
 			<Video url={post.url} />

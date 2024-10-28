@@ -40,7 +40,7 @@
 		</a>
 
 		{#if post.crosspost}
-			<div class="mt-2 rounded-lg border-2 p-2">
+			<div class="mt-2 rounded-lg border-2 px-2 pt-1">
 				<Self post={post.crosspost} />
 			</div>
 		{:else if post.is_video}
