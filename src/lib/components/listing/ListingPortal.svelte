@@ -7,6 +7,8 @@
 	import { cn } from '$lib/utils';
 
 	let { post, class: classList }: { post: ListingData; class?: string } = $props();
+
+	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/);
 </script>
 
 <div
@@ -26,7 +28,7 @@
 		/>
 	</a>
 
-	{#if post.post_hint == 'link' && !post.url.includes('redd.it') && !post.url.includes('reddit')}
+	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage}
 		{@const { thumbnail, title, url } = post}
 
 		<a href={post.permalink} draggable="false">
@@ -47,6 +49,8 @@
 			<Video class="mt-2" url={post.url} />
 		{:else if post.post_hint == 'image'}
 			<Image class="mt-2" url={post.url} />
+		{:else if urlIsImage}
+			<Image class="mt-2 border-b-2 border-primary" url={post.url} />
 		{:else if post.is_gallery}
 			<Gallery class="mt-2" {post} />
 		{:else if post.post_hint == 'rich:video'}
