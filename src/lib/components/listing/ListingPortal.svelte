@@ -28,7 +28,7 @@
 		/>
 	</a>
 
-	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage}
+	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = post}
 
 		<a href={post.permalink} draggable="false">
@@ -47,10 +47,10 @@
 			</div>
 		{:else if post.is_video}
 			<Video class="mt-2" url={post.url} />
-		{:else if post.post_hint == 'image'}
+		{:else if post.url.includes('.gifv')}
+			<Video class="mt-2" url={post.url.replace('.gifv', '.mp4')} />
+		{:else if post.post_hint == 'image' || urlIsImage}
 			<Image class="mt-2" url={post.url} />
-		{:else if urlIsImage}
-			<Image class="mt-2 border-b-2 border-primary" url={post.url} />
 		{:else if post.is_gallery}
 			<Gallery class="mt-2" {post} />
 		{:else if post.post_hint == 'rich:video'}

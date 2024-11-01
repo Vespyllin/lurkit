@@ -6,7 +6,7 @@
 	import ListingPortal from './ListingPortal.svelte';
 
 	let { post }: { post: ListingData } = $props();
-	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/);
+	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
 </script>
 
 <div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md">
@@ -21,7 +21,7 @@
 		subreddit={post.subreddit}
 	/>
 
-	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage}
+	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = post}
 
 		<Link {thumbnail} title={cleanText(title)} {url} />
@@ -48,10 +48,10 @@
 			</div>
 		{:else if post.is_video}
 			<Video url={post.url} />
-		{:else if post.post_hint == 'image'}
+		{:else if post.url.includes('.gifv')}
+			<Video url={post.url.replace('.gifv', '.mp4')} />
+		{:else if post.post_hint == 'image' || urlIsImage}
 			<Image url={post.url} />
-		{:else if urlIsImage}
-			<Image class="border-b-2 border-primary" url={post.url} />
 		{:else if post.is_gallery}
 			<Gallery {post} />
 		{:else if post.post_hint == 'rich:video'}
