@@ -8,7 +8,7 @@
 
 	let { post, class: classList }: { post: ListingData; class?: string } = $props();
 
-	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)/);
+	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
 </script>
 
 <div
