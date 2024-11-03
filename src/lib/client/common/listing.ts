@@ -26,7 +26,8 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		secure_media,
 		secure_media_embed,
 		sr_detail,
-		removed_by_category
+		removed_by_category,
+		stickied
 	} = post;
 
 	const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
@@ -40,6 +41,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		upvote_ratio: upvote_ratio,
 		score: score,
 		over_18: over_18,
+		stickied: stickied,
 		num_comments: num_comments,
 		removed_by: removed_by_category,
 

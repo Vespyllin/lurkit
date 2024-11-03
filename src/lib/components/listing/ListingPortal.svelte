@@ -25,6 +25,7 @@
 			created_utc={post.created_utc}
 			over_18={post.over_18}
 			subreddit={post.subreddit}
+			stickied={post.stickied}
 		/>
 	</a>
 

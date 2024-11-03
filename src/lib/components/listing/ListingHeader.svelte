@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ExclamationTriangle, LockClosed, Reload } from 'radix-icons-svelte';
+	import { ExclamationTriangle, LockClosed, Reload, DrawingPin } from 'radix-icons-svelte';
 	import { cleanText, getTimeAgo } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 
@@ -11,6 +11,7 @@
 		crossposted_from,
 		over_18,
 		locked,
+		stickied,
 		flairs
 	}: {
 		subreddit?: SubredditDetails;
@@ -20,6 +21,7 @@
 		over_18: boolean;
 		crossposted_from: string | undefined;
 		locked: boolean;
+		stickied: boolean;
 		flairs?: RedditLinkFlairRichText[];
 	} = $props();
 </script>
@@ -64,7 +66,7 @@
 			<div class="h-fit w-fit text-zinc-400">
 				<Reload />
 			</div>
-			<span class="text-zinc-400"> {crossposted_from} </span>
+			<span class="text-zinc-400"> crosspost </span>
 		</div>
 	{/if}
 
@@ -76,6 +78,17 @@
 			</div>
 
 			<span class="hidden text-zinc-400 lg:inline"> locked </span>
+		</div>
+	{/if}
+
+	{#if stickied}
+		•
+		<div class="flex items-center gap-1">
+			<div class="h-fit w-fit text-zinc-400">
+				<DrawingPin />
+			</div>
+
+			<span class="hidden text-zinc-400 lg:inline"> pinned </span>
 		</div>
 	{/if}
 

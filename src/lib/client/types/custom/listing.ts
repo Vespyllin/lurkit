@@ -33,6 +33,7 @@ type ListingData = {
 	edited: boolean | number;
 	is_self: boolean;
 	locked: boolean;
+	stickied: boolean;
 
 	secure_media_embed: {
 		content: string;

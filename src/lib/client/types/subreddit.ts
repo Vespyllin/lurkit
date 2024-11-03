@@ -15,6 +15,7 @@ type RedditT3Data = RedditListingBaseData & {
 	selftext: string;
 	mod_reason_title?: null;
 	clicked: boolean;
+	stickied: boolean;
 	title: string;
 	link_flair_richtext: RedditLinkFlairRichText[];
 	hidden: boolean;
