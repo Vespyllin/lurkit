@@ -39,7 +39,7 @@
 			<Text text={post.selftext} />
 		{/if}
 
-		{#if post.removed_by}
+		{#if post.removed_by && post.removed_by != 'deleted'}
 			<p class="text-zinc-300">
 				[Removed by {post.removed_by}]
 			</p>
