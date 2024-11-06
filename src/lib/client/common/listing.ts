@@ -19,7 +19,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		thumbnail,
 		url,
 		gallery_data,
-		selftext,
+		selftext_html,
 		name,
 		media_metadata,
 		link_flair_richtext,
@@ -54,7 +54,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		thumbnail: thumbnail,
 		url: url,
 		gallery_data: gallery_data,
-		selftext: selftext,
+		selftext: selftext_html,
 
 		name: name,
 		media_metadata: media_metadata,

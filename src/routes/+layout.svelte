@@ -17,4 +17,6 @@
 			<slot />
 		</div>
 	</div>
+	<!-- This hidden <div> is here to prevent the "md" class from being discarded by Tailwind treeshaking -->
+	<div class="md hidden"></div>
 </main>

@@ -58,7 +58,7 @@ type RedditT3Data = RedditListingBaseData & {
 	banned_by?: null;
 	domain: string;
 	allow_live_comments: boolean;
-	selftext_html?: null;
+	selftext_html: string;
 	likes?: null;
 	suggested_sort?: null;
 	banned_at_utc?: null;

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cleanText } from '$lib';
 	import { Markdown } from '../ui/markdown';
 	import * as Tooltip from '../ui/tooltip';
 
@@ -30,7 +29,9 @@
 
 			<div>
 				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name}</h2>
-				<Markdown class="text-zinc-400" text={subreddit.public_description} />
+				<div class="text-zinc-400">
+					<Markdown text={subreddit.public_description} />
+				</div>
 			</div>
 		</div>
 	</Tooltip.Content>

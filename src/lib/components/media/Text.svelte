@@ -10,7 +10,6 @@
 	}: { text: string; clamp?: boolean; class?: string } = $props();
 </script>
 
-<Markdown
-	class={cn(clamp && '[&>*:not(:first-child)]:hidden [&>*]:line-clamp-6', className)}
-	text={cleanText(text, !!clamp)}
-/>
+<div class={cn(clamp && '[&>*:not(:first-child)]:hidden [&>*]:line-clamp-6', className)}>
+	<Markdown text={cleanText(text, !!clamp)} />
+</div>

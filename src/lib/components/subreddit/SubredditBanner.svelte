@@ -66,7 +66,9 @@
 
 	<!-- <Separator class="mb-2 mt-4 h-0.5" /> -->
 
-	<Markdown class="mt-2 border-l-4 pl-2 text-zinc-300" text={subredditData.public_description} />
+	<div class="mt-2 border-l-4 pl-2 text-zinc-300">
+		<Markdown text={subredditData.public_description} />
+	</div>
 </div>
 
 {#if subredditData.subreddit_type !== 'public'}

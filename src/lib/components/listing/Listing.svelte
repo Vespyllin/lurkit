@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cleanText } from '$lib';
+	import { cleanText, decodeHTMLText } from '$lib';
 	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
@@ -9,7 +9,7 @@
 	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
 </script>
 
-<div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md">
+<div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md [&_p]:cursor-auto">
 	<ListingHeader
 		edited={post.edited}
 		crossposted_from={post.crosspost?.subreddit.display_name}

@@ -108,10 +108,11 @@ export const cleanText = (text: string, nowhitespace: boolean = false) => {
 	return text;
 };
 
-const decodeHTMLText = (encodedString: string) => {
+export const decodeHTMLText = (encodedString: string) => {
 	const entityRegex = /&((nbsp|amp|quot|lt|gt|#x200B|#\d+);)+/g;
 	const namedConversions: { [namedEntity: string]: string } = {
 		'#x200B': '', // Zero width space
+		'#39': "'",
 		nbsp: ' ',
 		amp: '&',
 		quot: '"',

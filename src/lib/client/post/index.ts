@@ -43,7 +43,7 @@ const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 		.filter((x) => x.kind == 't1')
 		.map((x) => {
 			const {
-				body,
+				body_html,
 				score,
 				author,
 				edited,
@@ -55,7 +55,7 @@ const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 			} = x.data;
 
 			return {
-				text: body,
+				text: body_html,
 				children: cleanComments(replies)?.filter((x) => !!x?.text),
 				score,
 				author,
