@@ -101,15 +101,21 @@
 	}
 
 	.md ol {
-		@apply list-inside;
+		@apply list-outside;
 		@apply list-decimal;
-		@apply pl-2;
+		@apply pl-4;
 	}
+
 	.md ul {
-		@apply list-inside;
+		@apply list-outside;
 		@apply list-disc;
+		@apply pl-4;
+	}
+
+	.md li {
 		@apply pl-2;
 	}
+
 	.md thead {
 		@apply border-b-2;
 	}
