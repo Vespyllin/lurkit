@@ -43,7 +43,7 @@
 </script>
 
 <svelte:window
-	on:scroll={async () => {
+	onscroll={async () => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
 
 		const scrolledPercentage = (window.scrollY / feedHeight) * 100;

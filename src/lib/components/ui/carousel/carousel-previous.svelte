@@ -6,8 +6,12 @@
 
 	type $$Props = Props;
 
-	let className: $$Props['class'] = undefined;
-	export { className as class };
+	interface Props_1 {
+		class?: $$Props['class'];
+		[key: string]: any;
+	}
+
+	let { class: className = undefined, ...rest }: Props_1 = $props();
 
 	const { canScrollPrev, scrollPrev, handleKeyDown } = getEmblaContext('<Carousel.Previous/>');
 </script>
@@ -22,7 +26,7 @@
 	disabled={!$canScrollPrev}
 	on:click={scrollPrev}
 	on:keydown={handleKeyDown}
-	{...$$restProps}
+	{...rest}
 >
 	<CaretLeft class="h-12 w-12" />
 	<span class="sr-only">Previous slide</span>

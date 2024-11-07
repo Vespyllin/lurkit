@@ -39,7 +39,7 @@
 </script>
 
 <svelte:window
-	on:keydown={(e) => {
+	onkeydown={(e) => {
 		if (e.code == 'Escape' && expanded) handleExpand();
 	}}
 />

@@ -1,6 +1,9 @@
-<script>
-	import Header from '$lib/components/layout/Header.svelte';
+<script lang="ts">
 	import '../app.pcss';
+	import type { Snippet } from 'svelte';
+	import Header from '$lib/components/layout/Header.svelte';
+
+	let { children }: { children?: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -14,7 +17,7 @@
 	<Header />
 	<div class="flex pt-16">
 		<div class="mx-auto max-w-full grow px-4 py-2 lg:max-w-4xl lg:px-8">
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 	<!-- This hidden <div> is here to prevent the "md" class from being discarded by Tailwind treeshaking -->

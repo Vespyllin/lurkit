@@ -21,7 +21,7 @@
 </script>
 
 <svelte:window
-	on:scroll={async () => {
+	onscroll={async () => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
 		const remainingPx = feedHeight - window.scrollY;
 
