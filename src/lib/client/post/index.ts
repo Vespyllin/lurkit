@@ -49,6 +49,7 @@ const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 				edited,
 				is_submitter,
 				distinguished,
+				score_hidden,
 				created_utc,
 				stickied,
 				replies
@@ -57,7 +58,7 @@ const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 			return {
 				text: body_html,
 				children: cleanComments(replies)?.filter((x) => !!x?.text),
-				score,
+				score: !score_hidden ? score : undefined,
 				author,
 				edited,
 				is_submitter,

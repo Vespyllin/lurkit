@@ -32,19 +32,19 @@
 			{comment.author}
 		</span>
 
-		<span class="hidden lg:inline">•</span>
-		<div class="hidden items-center text-zinc-400 lg:flex">
-			<ArrowUp />
-			<span>{comment.score.toLocaleString()}</span>
-		</div>
-
-		{#if comment.replyCount}
+		{#if comment.score}
 			<span class="hidden lg:inline">•</span>
-			<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
-				<ChatBubble />
-				<span>{comment.replyCount.toLocaleString()}</span>
+			<div class="hidden items-center text-zinc-400 lg:flex">
+				<ArrowUp />
+				<span>{comment.score.toLocaleString()}</span>
 			</div>
 		{/if}
+
+		<span class="hidden lg:inline">•</span>
+		<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
+			<ChatBubble />
+			<span>{comment.replyCount.toLocaleString()}</span>
+		</div>
 
 		{#if comment.stickied}
 			<span class="hidden lg:inline">•</span>
@@ -72,10 +72,12 @@
 
 			<!-- Mobile -->
 			<div class="mt-1 flex gap-4 lg:hidden">
-				<div class="flex items-center text-zinc-400">
-					<ArrowUp />
-					<span>{comment.score.toLocaleString()}</span>
-				</div>
+				{#if comment.score}
+					<div class="flex items-center text-zinc-400">
+						<ArrowUp />
+						<span>{comment.score.toLocaleString()}</span>
+					</div>
+				{/if}
 
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />

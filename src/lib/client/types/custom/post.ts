@@ -5,7 +5,7 @@ type PostData = {
 
 type PostComment = {
 	text: string;
-	score: number;
+	score?: number;
 	author: string;
 	is_submitter: boolean;
 	created_utc: number;
