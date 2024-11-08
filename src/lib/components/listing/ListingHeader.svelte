@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { ExclamationTriangle, LockClosed, Reload, DrawingPin } from 'radix-icons-svelte';
-	import { cleanText, getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
+	import { cn } from '$lib/utils';
 
 	let {
 		subreddit,
@@ -12,7 +13,8 @@
 		over_18,
 		locked,
 		stickied,
-		flairs
+		flairs,
+		flairColor
 	}: {
 		subreddit?: SubredditDetails;
 		edited?: boolean | number;
@@ -23,6 +25,7 @@
 		locked: boolean;
 		stickied: boolean;
 		flairs?: RedditLinkFlairRichText[];
+		flairColor?: string;
 	} = $props();
 </script>
 
@@ -92,7 +95,13 @@
 		</div>
 	{/if}
 
-	<div class="flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm">
+	<div
+		class={cn(
+			'flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm',
+			flairColor && (isDarkHex(flairColor) ? 'text-white' : 'text-zinc-900')
+		)}
+		style="background-color: {flairColor};"
+	>
 		{#each flairs ?? [] as flair}
 			{#if flair.e == 'text'}
 				{cleanText(flair.t!)}

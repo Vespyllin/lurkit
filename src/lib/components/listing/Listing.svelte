@@ -15,6 +15,7 @@
 		crossposted_from={post.crosspost?.subreddit.display_name}
 		locked={post.locked}
 		flairs={post.link_flair_richtext}
+		flairColor={post.link_flair_background_color}
 		author={post.author}
 		created_utc={post.created_utc}
 		over_18={post.over_18}

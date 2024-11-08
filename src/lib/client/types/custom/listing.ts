@@ -29,6 +29,7 @@ type ListingData = {
 	score: number;
 
 	link_flair_richtext: RedditLinkFlairRichText[];
+	link_flair_background_color?: string;
 
 	edited: boolean | number;
 	is_self: boolean;

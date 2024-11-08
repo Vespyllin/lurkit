@@ -23,6 +23,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		name,
 		media_metadata,
 		link_flair_richtext,
+		link_flair_background_color,
 		secure_media,
 		secure_media_embed,
 		sr_detail,
@@ -59,6 +60,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		name: name,
 		media_metadata: media_metadata,
 		link_flair_richtext: link_flair_richtext,
+		link_flair_background_color: link_flair_background_color,
 		secure_media: secure_media,
 		secure_media_embed: secure_media_embed,
 

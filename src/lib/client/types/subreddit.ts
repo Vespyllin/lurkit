@@ -18,6 +18,7 @@ type RedditT3Data = RedditListingBaseData & {
 	stickied: boolean;
 	title: string;
 	link_flair_richtext: RedditLinkFlairRichText[];
+	link_flair_background_color?: string;
 	hidden: boolean;
 	pwls: number;
 	link_flair_css_class: string;
