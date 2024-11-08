@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { ArrowUp, ChatBubble, DrawingPin, PlusCircled } from 'radix-icons-svelte';
 	import Self from './CommentContent.svelte';
-	import Markdown from '../ui/markdown/Markdown.svelte';
+	import Markdown from '../media/Markdown.svelte';
 	import { PUBLIC_TRUNCATED_COMMENT_LENGTH } from '$env/static/public';
 
 	const {

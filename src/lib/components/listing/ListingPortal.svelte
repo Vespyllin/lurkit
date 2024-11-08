@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
-	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
+	import { Link, Gallery, Image, Markdown, Video, IFrame } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
 	import Self from './ListingPortal.svelte';
@@ -59,8 +59,8 @@
 				<IFrame {post} />
 			</div>
 		{:else if post.selftext?.length > 0}
-			<a href={post.permalink} draggable="false">
-				<Text class="mt-2 cursor-pointer" text={post.selftext} clamp />
+			<a href={post.permalink} class="max-h-64 overflow-hidden" draggable="false">
+				<Markdown text={post.selftext} />
 			</a>
 		{/if}
 	{/if}

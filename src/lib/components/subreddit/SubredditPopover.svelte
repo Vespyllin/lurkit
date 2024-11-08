@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Markdown } from '../ui/markdown';
+	import { Markdown } from '../media';
 	import * as Tooltip from '../ui/tooltip';
 
 	let { subreddit }: { subreddit: SubredditDetails } = $props();

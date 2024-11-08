@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Markdown from '../ui/markdown/Markdown.svelte';
+	import Markdown from '../media/Markdown.svelte';
 	import Separator from '../ui/separator/separator.svelte';
 
 	const { subredditData }: { subredditData: SubredditData } = $props();

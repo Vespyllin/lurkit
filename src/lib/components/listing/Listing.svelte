@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cleanText, decodeHTMLText } from '$lib';
-	import { Link, Gallery, Image, Text, Video, IFrame } from '$lib/components/media';
+	import { cleanText } from '$lib';
+	import { Link, Gallery, Image, Video, IFrame, Markdown } from '$lib/components/media';
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
 	import ListingPortal from './ListingPortal.svelte';
@@ -28,7 +28,7 @@
 		<Link {thumbnail} title={cleanText(title)} {url} />
 
 		{#if post.selftext?.length > 0}
-			<Text text={post.selftext} />
+			<Markdown text={post.selftext} />
 		{/if}
 	{:else}
 		<h1 class="cursor-text text-wrap break-words text-2xl font-medium">
@@ -36,7 +36,7 @@
 		</h1>
 
 		{#if post.selftext?.length > 0}
-			<Text text={post.selftext} />
+			<Markdown text={post.selftext} />
 		{/if}
 
 		{#if post.removed_by && post.removed_by != 'deleted'}
