@@ -8,10 +8,8 @@ const log = async (reqIp: string) => {
 	let geoLocData: GeolocationData | undefined;
 	try {
 		geoLocData = await getGeoLocationData(reqIp);
-		console.log(geoLocData);
 	} catch (error) {
-		console.log(`Could not retrieve IP data. ${reqIp}`);
-		return;
+		geoLocData = { message: 'Could not retrieve geolocation data' };
 	}
 
 	try {
