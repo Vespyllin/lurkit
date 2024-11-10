@@ -7,7 +7,7 @@
 
 <svg
 	aria-hidden="true"
-	class={cn('h-8 w-8 animate-spin fill-primary text-muted', className)}
+	class={cn('size-8 animate-spin fill-primary text-muted', className)}
 	viewBox="0 0 100 101"
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"

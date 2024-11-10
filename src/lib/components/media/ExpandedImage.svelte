@@ -13,13 +13,8 @@
 <div
 	class={cn(
 		'fixed left-0 top-0 z-20 flex h-lvh w-lvw justify-center overflow-auto bg-background p-0.5',
-		!zoomed ? 'cursor-zoom-in items-center' : 'cursor-zoom-out items-baseline'
+		!zoomed ? 'items-center' : 'items-baseline'
 	)}
-	onclick={(e) => {
-		e.preventDefault();
-		e.stopPropagation();
-		zoomed = !zoomed;
-	}}
 >
 	<div
 		class="fixed left-4 top-4 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
@@ -29,8 +24,16 @@
 	</div>
 
 	<img
+		onclick={(e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			zoomed = !zoomed;
+		}}
 		alt=""
-		class={cn('my-auto object-contain', zoomed ? 'min-h-full' : 'max-h-full lg:max-w-[85%]')}
+		class={cn(
+			'my-auto object-contain',
+			zoomed ? 'min-h-full cursor-zoom-out' : 'max-h-full cursor-zoom-in lg:max-w-[85%]'
+		)}
 		loading="lazy"
 		src={url}
 	/>

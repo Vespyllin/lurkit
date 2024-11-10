@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { run, createBubbler } from 'svelte/legacy';
+	import { run } from 'svelte/legacy';
 
-	const bubble = createBubbler();
 	import { writable } from 'svelte/store';
 	import { onDestroy } from 'svelte';
 	import { type CarouselAPI, type CarouselProps, setEmblaContex } from './context.js';
@@ -36,30 +35,29 @@
 	const optionsStore = writable(opts);
 	const pluginStore = writable(plugins);
 
-	run(() => {
-		orientationStore.set(orientation);
-	});
-	run(() => {
-		pluginStore.set(plugins);
-	});
-	run(() => {
-		optionsStore.set(opts);
-	});
-
-	function scrollPrev() {
+	const scrollPrev = () => {
 		api?.scrollPrev();
-	}
-	function scrollNext() {
+	};
+	const scrollNext = () => {
 		api?.scrollNext();
-	}
+	};
 
-	function onSelect(api: CarouselAPI) {
+	const onInit = (event: CustomEvent<CarouselAPI>) => {
+		api = event.detail;
+		apiStore.set(api);
+	};
+
+	const onSelect = (api: CarouselAPI) => {
 		if (!api) return;
 		canScrollPrev.set(api.canScrollPrev());
 		canScrollNext.set(api.canScrollNext());
-	}
+	};
 
-	run(() => {
+	$effect(() => {
+		orientationStore.set(orientation);
+		pluginStore.set(plugins);
+		optionsStore.set(opts);
+
 		if (api) {
 			onSelect(api);
 			api.on('select', onSelect);
@@ -67,7 +65,7 @@
 		}
 	});
 
-	function handleKeyDown(e: KeyboardEvent) {
+	const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key === 'ArrowLeft') {
 			e.preventDefault();
 			scrollPrev();
@@ -75,7 +73,7 @@
 			e.preventDefault();
 			scrollNext();
 		}
-	}
+	};
 
 	setEmblaContex({
 		api: apiStore,
@@ -90,23 +88,11 @@
 		onInit
 	});
 
-	function onInit(event: CustomEvent<CarouselAPI>) {
-		api = event.detail;
-		apiStore.set(api);
-	}
-
 	onDestroy(() => {
 		api?.off('select', onSelect);
 	});
 </script>
 
-<div
-	class={cn('relative', className)}
-	onmouseenter={bubble('mouseenter')}
-	onmouseleave={bubble('mouseleave')}
-	role="region"
-	aria-roledescription="carousel"
-	{...rest}
->
+<div class={cn('relative', className)} role="region" aria-roledescription="carousel" {...rest}>
 	{@render children?.()}
 </div>
