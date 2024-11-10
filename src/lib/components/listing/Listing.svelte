@@ -26,7 +26,7 @@
 	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = post}
 
-		<Link {thumbnail} title={cleanText(title)} {url} />
+		<Link {thumbnail} {title} {url} />
 
 		{#if post.selftext?.length > 0}
 			<Markdown text={post.selftext} />

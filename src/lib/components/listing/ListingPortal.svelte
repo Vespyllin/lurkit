@@ -59,7 +59,11 @@
 				<IFrame {post} />
 			</div>
 		{:else if post.selftext?.length > 0}
-			<a href={post.permalink} class="max-h-64 overflow-hidden" draggable="false">
+			<a
+				href={post.permalink}
+				class="max-h-64 overflow-hidden [&_*]:pointer-events-none"
+				draggable="false"
+			>
 				<Markdown text={post.selftext} />
 			</a>
 		{/if}

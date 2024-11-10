@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cleanText } from '$lib';
 	import { cn } from '$lib/utils';
 	import { ExternalLink } from 'radix-icons-svelte';
 
@@ -33,7 +34,7 @@
 
 	<div>
 		<h1 class={cn('text-wrap break-words text-2xl font-medium', clamp && 'line-clamp-2')}>
-			{title}
+			{cleanText(title)}
 		</h1>
 
 		<a
