@@ -3,10 +3,10 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { ComponentType } from 'svelte';
 
-	let { sort = $bindable(), class: className }: { sort: RedditSortOptions; class?: string } =
+	let { sort = $bindable(), class: className }: { sort: RedditCommentSortOptions; class?: string } =
 		$props();
 
-	const sortOptions: { option: RedditSortOptions; icon: ComponentType | undefined }[] = [
+	const sortOptions: { option: RedditCommentSortOptions; icon: ComponentType | undefined }[] = [
 		{ option: 'top', icon: Star },
 		{ option: 'controversial', icon: Target },
 		{ option: 'new', icon: LightningBolt },

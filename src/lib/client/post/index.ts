@@ -3,7 +3,7 @@ import { redditFetch } from '../common/request';
 
 export const fetchPostData = async (
 	comment_uri: string,
-	sort?: RedditSortOptions
+	sort?: RedditCommentSortOptions
 ): Promise<ResultWrapper<PostData>> => {
 	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?sr_detail=1';

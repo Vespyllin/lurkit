@@ -31,6 +31,12 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		stickied
 	} = post;
 
+	const convertImgur = (url: string) => {
+		const match = url.match(/i\.imgur\.com\/.*-([^-]+)\.\w+/);
+		if (!match) return url;
+		return `https://i.imgur.com/${match[1]}.jpeg`;
+	};
+
 	const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
 
 	return {
@@ -53,7 +59,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		is_video: is_video,
 		crosspost: crosspost ? cleanListing(crosspost) : undefined,
 		thumbnail: thumbnail,
-		url: url,
+		url: convertImgur(url),
 		gallery_data: gallery_data,
 		selftext: selftext_html,
 

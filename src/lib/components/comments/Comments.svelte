@@ -12,7 +12,7 @@
 		class: className
 	}: {
 		comments: CommentContentProps[];
-		sort: RedditSortOptions;
+		sort: RedditCommentSortOptions;
 		error: string | undefined;
 		fetching: boolean;
 		class?: string;
@@ -27,10 +27,13 @@
 	{#if fetching}
 		<FetchStatus {fetching} {error} />
 	{:else}
-		<div class="mt-3 space-y-4">
+		<div class="mt-3 space-y-4 pb-3">
 			{#each comments as _, idx}
 				<CommentContent bind:comment={comments[idx]} />
 			{/each}
+			{#if comments.length == 0}
+				<span class="text-2xl text-zinc-400">No comments to display...</span>
+			{/if}
 		</div>
 	{/if}
 </div>

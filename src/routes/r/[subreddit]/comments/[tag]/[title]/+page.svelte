@@ -16,11 +16,11 @@
 
 	let fetching = $state(true);
 	let error: string | undefined = $state();
-	let sort: RedditSortOptions = $state('top');
+	let sort: RedditCommentSortOptions = $state('top');
 	let listing: ListingData | undefined = $state();
 	let comments: CommentContentProps[] = $state([]);
 
-	const getData = async (sort: RedditSortOptions) => {
+	const getData = async (sort: RedditCommentSortOptions) => {
 		fetching = true;
 		const fetchRes = await fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort);
 

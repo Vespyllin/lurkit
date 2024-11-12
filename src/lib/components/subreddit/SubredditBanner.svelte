@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Markdown from '../media/Markdown.svelte';
-	import Separator from '../ui/separator/separator.svelte';
 
-	const { subredditData }: { subredditData: SubredditData } = $props();
+	const { subredditData, class: classList }: { subredditData: SubredditData; class?: string } =
+		$props();
 
 	const icon_url =
 		(subredditData.community_icon?.split('?')[0] ?? '').length > 0
@@ -12,7 +12,7 @@
 				: '/favicon.png';
 </script>
 
-<div>
+<div class={classList}>
 	<div class="relative">
 		{#if subredditData.banner_background_image}
 			<img
@@ -74,5 +74,3 @@
 {#if subredditData.subreddit_type !== 'public'}
 	<h1 class="text-4xl font-semibold">-- Private Subreddit --</h1>
 {/if}
-
-<Separator class="mb-2 mt-4 h-0.5" />

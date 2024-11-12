@@ -18,7 +18,7 @@
 <div class={cn('mx-auto justify-center p-8 text-center lg:max-w-5xl', className)}>
 	{#if fetching}
 		<div class="flex items-center justify-center gap-4">
-			<Spinner class="h-8 w-8" />
+			<Spinner class="size-8" />
 			<h1 class="text-3xl">More? ok...</h1>
 		</div>
 	{:else if error}

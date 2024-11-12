@@ -1,4 +1,5 @@
-type RedditSortOptions = 'new' | 'controversial' | 'top' | 'hot' | 'random';
+type RedditCommentSortOptions = 'new' | 'controversial' | 'top' | 'hot' | 'random';
+type RedditSubredditSortOptions = 'new' | 'top' | 'hot' | 'rising';
 
 type RedditListing<InnerData> = {
 	kind: 'Listing';

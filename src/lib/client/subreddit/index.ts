@@ -5,7 +5,7 @@ export const fetchFeedData = async (
 	subreddit?: string,
 	count?: number,
 	after?: string,
-	sort?: RedditSortOptions,
+	sort?: RedditSubredditSortOptions,
 	sr_detail?: boolean
 ): Promise<ResultWrapper<ListingData[]>> => {
 	const baseURL = 'https://www.reddit.com';

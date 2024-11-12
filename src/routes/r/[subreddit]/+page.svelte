@@ -9,35 +9,55 @@
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import SubredditBanner from '$lib/components/subreddit/SubredditBanner.svelte';
+	import SubredditSortDropdown from '$lib/components/subreddit/SubredditSortDropdown.svelte';
 
 	const {
 		params: { subreddit }
 	} = $page;
 
-	let fetching = $state(true);
+	let subredditFetching = $state(true);
+	let subredditError: string | undefined = $state();
+
+	let listingFetching = $state(true);
+	let listingError: string | undefined = $state();
+
+	let fetching = $state(false);
+	let error: string | undefined = $state();
+
+	let sort: RedditSubredditSortOptions = $state('top');
 	let subredditData: SubredditData | undefined = $state();
 	let feed: ListingData[] | undefined = $state();
-	let error: string | undefined = $state();
 	let lastPostId: string | undefined;
 
-	onMount(() => {
-		fetchSubredditData(subreddit).then((res) => {
-			if (res.status == 'OK') {
-				subredditData = res.data;
-			} else {
-				error = res.reason;
-			}
-			fetching = false;
-		});
+	onMount(async () => {
+		const subredditRes = await fetchSubredditData(subreddit);
+		if (subredditRes.status == 'OK') {
+			subredditData = subredditRes.data;
+		} else {
+			subredditError = subredditRes.reason;
+		}
+		subredditFetching = false;
 
-		fetchFeedData(subreddit, 50, undefined, undefined, true).then((res) => {
+		const feedRes = await fetchFeedData(subreddit, 50, undefined, sort, true);
+		if (feedRes.status == 'OK') {
+			feed = feedRes.data;
+			lastPostId = feedRes.data.at(-1)?.name;
+		} else {
+			listingError = feedRes.reason;
+		}
+		listingFetching = false;
+	});
+
+	$effect(() => {
+		listingFetching = true;
+		fetchFeedData(subreddit, 50, undefined, sort, true).then((res) => {
 			if (res.status == 'OK') {
 				feed = res.data;
 				lastPostId = res.data.at(-1)?.name;
 			} else {
-				error = res.reason;
+				listingError = res.reason;
 			}
-			fetching = false;
+			listingFetching = false;
 		});
 	});
 </script>
@@ -48,7 +68,7 @@
 
 		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
 
-		if (!!feed && !fetching && scrolledPercentage > 95) {
+		if (!!feed && !listingFetching && !subredditFetching && scrolledPercentage > 95) {
 			fetching = true;
 
 			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId, undefined, true);
@@ -67,23 +87,33 @@
 
 <svelte:head>
 	<title>
-		{!!feed && !!subredditData ? `r/${subredditData?.display_name}` : error ? error : 'Loading...'}
+		{!!feed && !!subredditData
+			? `r/${subredditData?.display_name}`
+			: subredditError
+				? subredditError
+				: 'Loading...'}
 	</title>
 </svelte:head>
 
-{#if error}
-	<FetchStatus {fetching} {error} />
+{#if subredditError || subredditFetching}
+	<FetchStatus fetching={subredditFetching} error={subredditError} />
 {:else}
-	{#if subredditData}
-		<SubredditBanner {subredditData} />
+	<SubredditBanner class="mb-2" subredditData={subredditData!} />
+
+	<SubredditSortDropdown bind:sort />
+	<Separator class="my-2 h-0.5" />
+
+	{#if listingFetching || listingError}
+		<FetchStatus fetching={listingFetching} error={listingError} />
+	{:else}
+		{#each feed ?? [] as post}
+			<ListingPortal {post} />
+
+			<Separator class="my-2" />
+		{/each}
 	{/if}
-	{#each feed ?? [] as post}
-		<ListingPortal {post} />
 
-		<Separator class="my-2" />
-	{/each}
-
-	{#if error || fetching}
+	{#if fetching || error}
 		<FetchMoreStatus {fetching} {error} />
 	{/if}
 {/if}
