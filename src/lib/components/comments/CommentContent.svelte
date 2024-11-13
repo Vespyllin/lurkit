@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
-	import { ArrowUp, ChatBubble, DrawingPin, PlusCircled } from 'radix-icons-svelte';
+	import {
+		ArrowUp,
+		ChatBubble,
+		DrawingPin,
+		PlusCircled,
+		MagicWand,
+		LockClosed
+	} from 'radix-icons-svelte';
 	import Self from './CommentContent.svelte';
 	import Markdown from '../media/Markdown.svelte';
 	import { PUBLIC_TRUNCATED_COMMENT_LENGTH } from '$env/static/public';
@@ -28,8 +35,17 @@
 <div class={cn('border-l-2 pl-3 text-base hover:border-accent', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
-		<span class={cn('text-primary', comment.is_submitter && 'underline')}>
+		<span class={cn('flex items-center gap-1 text-primary', comment.is_submitter && 'underline')}>
 			{comment.author}
+			{#if comment.distinguished}
+				{#if comment.distinguished == 'moderator'}
+					<MagicWand />
+				{:else}
+					<span class="capitalize">
+						({comment.distinguished})
+					</span>
+				{/if}
+			{/if}
 		</span>
 
 		{#if comment.score}
@@ -43,7 +59,12 @@
 		<span class="hidden lg:inline">•</span>
 		<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
 			<ChatBubble />
-			<span>{comment.replyCount.toLocaleString()}</span>
+			{#if comment.replyCount > 0 || !comment.locked}
+				<span>{comment.replyCount.toLocaleString()}</span>
+			{/if}
+			{#if comment.locked}
+				<LockClosed />
+			{/if}
 		</div>
 
 		{#if comment.stickied}
@@ -81,7 +102,12 @@
 
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
-					<span>{comment.replyCount.toLocaleString()}</span>
+					{#if comment.replyCount > 0 || !comment.locked}
+						<span>{comment.replyCount.toLocaleString()}</span>
+					{/if}
+					{#if comment.locked}
+						<LockClosed />
+					{/if}
 				</div>
 			</div>
 		</div>
