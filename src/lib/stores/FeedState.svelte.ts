@@ -75,7 +75,8 @@ export function createFeedState() {
 		'r/dankmemes',
 		'r/funnymemes',
 		'r/publicfreakout',
-		'r/genshin_impact_leaks'
+		'r/genshin_impact_leaks',
+		'r/houstonwade'
 	].map((x) => x.toLowerCase());
 
 	const fetchMore = async () => {
