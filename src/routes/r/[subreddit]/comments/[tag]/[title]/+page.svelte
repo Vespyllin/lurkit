@@ -50,6 +50,7 @@
 				...comment,
 				depth: depth,
 				collapsed: comment.stickied || (depth != 0 && idx > 2 && (comment.score ?? 10) < 10),
+				author_flairs: comment.author_flairs,
 				children: childrenWithState,
 				replyCount: subCommentCount,
 				shelved: depth >= shelveDepth

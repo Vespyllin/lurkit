@@ -53,13 +53,15 @@ const cleanComments = (comments: RedditT1Data['replies']): PostComment[] => {
 				score_hidden,
 				created_utc,
 				stickied,
-				replies
+				replies,
+				author_flair_richtext
 			} = x.data;
 
 			return {
 				text: body_html,
 				children: cleanComments(replies)?.filter((x) => !!x?.text),
 				score: !score_hidden ? score : undefined,
+				author_flairs: author_flair_richtext,
 				locked,
 				author,
 				edited,

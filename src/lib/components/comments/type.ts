@@ -3,4 +3,5 @@ type CommentContentProps = Omit<PostComment, 'children'> & {
 	replyCount: number;
 	collapsed: boolean;
 	shelved: boolean;
+	author_flairs?: RedditLinkFlairRichText[];
 };

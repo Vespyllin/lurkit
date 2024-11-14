@@ -14,4 +14,5 @@ type PostComment = {
 	stickied: boolean;
 	distinguished?: 'moderator' | string;
 	children?: PostComment[];
+	author_flairs?: RedditLinkFlairRichText[];
 };

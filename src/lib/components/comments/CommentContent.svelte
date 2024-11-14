@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo } from '$lib';
 	import { cn } from '$lib/utils';
 	import {
 		ArrowUp,
@@ -33,11 +33,12 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- {JSON.stringify(comment.author_flairs)} -->
 <div class={cn('border-l-2 pl-3 text-base hover:border-accent', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
 		<span class={cn('flex items-center gap-1 text-primary', comment.is_submitter && 'underline')}>
-			{comment.author}
+			<span>{comment.author}</span>
 			{#if comment.distinguished}
 				{#if comment.distinguished == 'moderator'}
 					<MagicWand />
@@ -85,6 +86,16 @@
 			</span><span class="inline lg:hidden">
 				{getTimeAgo(comment.created_utc, true)}
 			</span>{#if comment.edited}<span>*</span>{/if}
+		</div>
+
+		<div class={cn('flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm')}>
+			{#each comment.author_flairs ?? [] as flair}
+				{#if flair.e == 'text'}
+					{cleanText(flair.t!)}
+				{:else if flair.e == 'emoji'}
+					<img alt="" src={flair.u} class="h-4 px-0.5" />
+				{/if}
+			{/each}
 		</div>
 	</div>
 
