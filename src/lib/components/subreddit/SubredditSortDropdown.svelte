@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { CaretDown, Star, Rocket, LightningBolt, DoubleArrowUp } from 'radix-icons-svelte';
+	import { CaretDown, Star, Rocket, LightningBolt, DoubleArrowUp, Gear } from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { ComponentType } from 'svelte';
 
 	let {
 		sort = $bindable(),
 		class: className
-	}: { sort: RedditSubredditSortOptions; class?: string } = $props();
+	}: { sort: RedditSubredditSortOptions | undefined; class?: string } = $props();
 
-	const sortOptions: { option: RedditSubredditSortOptions; icon: ComponentType | undefined }[] = [
+	const sortOptions: {
+		option: RedditSubredditSortOptions | 'default';
+		icon: ComponentType | undefined;
+	}[] = [
+		{ option: 'default', icon: Gear },
 		{ option: 'top', icon: Star },
 		{ option: 'rising', icon: DoubleArrowUp },
 		{ option: 'new', icon: LightningBolt },
@@ -22,7 +26,7 @@
 			<span class="mr-2 text-lg">Sort by:</span>
 			<DropdownMenu.Trigger>
 				<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-					<span class="ml-2 text-lg">{sort}</span>
+					<span class="ml-2 text-lg">{sort ?? 'default'}</span>
 					<CaretDown size={18} />
 				</div>
 			</DropdownMenu.Trigger>
@@ -31,7 +35,7 @@
 			{#each sortOptions as sortOption}
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
-					onclick={() => (sort = sortOption.option)}
+					onclick={() => (sort = sortOption.option !== 'default' ? sortOption.option : undefined)}
 				>
 					<sortOption.icon class="mr-1" />
 					<span>{sortOption.option}</span>

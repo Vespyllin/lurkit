@@ -24,7 +24,7 @@
 	let fetching = $state(false);
 	let error: string | undefined = $state();
 
-	let sort: RedditSubredditSortOptions = $state('top');
+	let sort: RedditSubredditSortOptions | undefined = $state();
 	let subredditData: SubredditData | undefined = $state();
 	let feed: ListingData[] | undefined = $state();
 	let lastPostId: string | undefined;
@@ -41,6 +41,7 @@
 		const feedRes = await fetchFeedData(subreddit, 50, undefined, sort, true);
 		if (feedRes.status == 'OK') {
 			feed = feedRes.data;
+			console.log(feedRes.data);
 			lastPostId = feedRes.data.at(-1)?.name;
 		} else {
 			listingError = feedRes.reason;

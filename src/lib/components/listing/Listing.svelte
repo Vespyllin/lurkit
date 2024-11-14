@@ -21,6 +21,7 @@
 		over_18={post.over_18}
 		subreddit={post.subreddit}
 		stickied={post.stickied}
+		distinguished={post.distinguished}
 	/>
 
 	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
