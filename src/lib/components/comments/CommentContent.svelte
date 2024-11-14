@@ -7,7 +7,8 @@
 		DrawingPin,
 		PlusCircled,
 		MagicWand,
-		LockClosed
+		LockClosed,
+		VercelLogo
 	} from 'radix-icons-svelte';
 	import Self from './CommentContent.svelte';
 	import Markdown from '../media/Markdown.svelte';
@@ -40,6 +41,8 @@
 			{#if comment.distinguished}
 				{#if comment.distinguished == 'moderator'}
 					<MagicWand />
+				{:else if comment.distinguished == 'admin'}
+					<VercelLogo />
 				{:else}
 					<span class="capitalize">
 						({comment.distinguished})

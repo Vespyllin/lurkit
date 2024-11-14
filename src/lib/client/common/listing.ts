@@ -4,6 +4,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		author,
 		created_utc,
 		edited,
+		distinguished,
 		locked,
 		upvote_ratio,
 		score,
@@ -63,6 +64,7 @@ export const cleanListing = (post: RedditT3Data): ListingData => {
 		gallery_data: gallery_data,
 		selftext: selftext_html,
 
+		distinguished: distinguished,
 		name: name,
 		media_metadata: media_metadata,
 		link_flair_richtext: link_flair_richtext,

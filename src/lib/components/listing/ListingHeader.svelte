@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { ExclamationTriangle, LockClosed, Reload, DrawingPin } from 'radix-icons-svelte';
+	import {
+		ExclamationTriangle,
+		LockClosed,
+		Reload,
+		DrawingPin,
+		MagicWand,
+		VercelLogo
+	} from 'radix-icons-svelte';
 	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import { cn } from '$lib/utils';
@@ -14,7 +21,8 @@
 		locked,
 		stickied,
 		flairs,
-		flairColor
+		flairColor,
+		distinguished
 	}: {
 		subreddit?: SubredditDetails;
 		edited?: boolean | number;
@@ -26,6 +34,7 @@
 		stickied: boolean;
 		flairs?: RedditLinkFlairRichText[];
 		flairColor?: string;
+		distinguished?: string;
 	} = $props();
 </script>
 
@@ -36,9 +45,22 @@
 
 	<div class="hidden gap-2 lg:flex">
 		•
-		<span class="text-zinc-400">
-			{author}
-		</span>
+		<div class="flex items-center gap-1 text-zinc-400">
+			<span>
+				{author}
+			</span>
+			{#if distinguished}
+				{#if distinguished == 'moderator'}
+					<MagicWand />
+				{:else if distinguished == 'admin'}
+					<VercelLogo />
+				{:else}
+					<span class="capitalize">
+						({distinguished})
+					</span>
+				{/if}
+			{/if}
+		</div>
 	</div>
 
 	•

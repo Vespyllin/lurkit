@@ -5,6 +5,7 @@ type RedditT3DataWrapper = {
 
 type RedditT3Data = RedditListingBaseData & {
 	sr_detail?: RedditSrDetail;
+	distinguished?: string;
 	is_video: boolean;
 	is_gallery: boolean;
 	url: string;

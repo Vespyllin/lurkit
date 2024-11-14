@@ -43,7 +43,7 @@ type ListingData = {
 		scrolling: boolean;
 		media_domain_url: string;
 	};
-
+	distinguished?: string;
 	crosspost?: ListingData;
 };
 

@@ -11,7 +11,7 @@ export const fetchFeedData = async (
 	const baseURL = 'https://www.reddit.com';
 	const queryParams =
 		'?' +
-		Object.entries({ count, after, sort, sr_detail })
+		Object.entries({ count, after, sr_detail })
 			.map((x) => {
 				const [k, v] = x;
 				if (!v) return undefined;
