@@ -51,7 +51,7 @@
 			{/if}
 		</span>
 
-		{#if comment.score}
+		{#if comment.score !== undefined}
 			<span class="hidden lg:inline">•</span>
 			<div class="hidden items-center text-zinc-400 lg:flex">
 				<ArrowUp />
