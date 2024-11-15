@@ -64,8 +64,6 @@
 		</div>
 	</div>
 
-	<!-- <Separator class="mb-2 mt-4 h-0.5" /> -->
-
 	<div class="mt-2 border-l-4 pl-2 text-zinc-300">
 		<Markdown text={subredditData.public_description} />
 	</div>

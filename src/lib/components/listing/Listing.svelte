@@ -54,7 +54,7 @@
 		{:else if post.url.includes('.gifv')}
 			<Video url={post.url.replace('.gifv', '.mp4')} />
 		{:else if post.post_hint == 'image' || urlIsImage}
-			<Image url={post.url} />
+			<Image url={post.url} blur={post.spoiler} />
 		{:else if post.is_gallery}
 			<Gallery {post} />
 		{:else if post.post_hint == 'rich:video'}

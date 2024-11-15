@@ -8,6 +8,7 @@ type RedditT3Data = RedditListingBaseData & {
 	distinguished?: string;
 	is_video: boolean;
 	is_gallery: boolean;
+	spoiler: boolean;
 	url: string;
 	num_comments: number;
 	media_metadata: any;

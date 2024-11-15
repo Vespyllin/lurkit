@@ -3,13 +3,18 @@
 	import Spinner from '../layout/Spinner.svelte';
 	import ExpandedImage from './ExpandedImage.svelte';
 
-	let { url, class: className }: { url: string; class?: string } = $props();
+	let {
+		url,
+		blur: _blur,
+		class: className
+	}: { url: string; blur?: boolean; class?: string } = $props();
 
+	let blur = $state(_blur ?? false);
 	let expanded = $state(false);
 	let error = $state(false);
 	let loading = $state(false);
 
-	const handleExpand = () => {
+	const handleClick = () => {
 		expanded = !expanded;
 
 		const body = document.querySelector('body');
@@ -19,11 +24,13 @@
 
 <svelte:window
 	onkeydown={(e) => {
-		if (e.code == 'Escape' && expanded) handleExpand();
+		if (e.code == 'Escape' && expanded) handleClick();
 	}}
 />
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={cn('flex items-center justify-center', className)}>
 	{#if error}
 		<div class="flex h-20 flex-col items-center text-xl">
@@ -43,13 +50,26 @@
 	{:else if loading}
 		<Spinner class="h-20" />
 	{:else}
+		{#if blur}
+			<button
+				class="absolute z-10 h-fit rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
+				onclick={() => {
+					blur = false;
+				}}
+			>
+				Unblur Image
+			</button>
+		{/if}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
-			class="max-h-fit cursor-pointer object-contain md:max-h-[600px]"
+			class={cn(
+				'max-h-fit cursor-pointer object-contain md:max-h-[600px]',
+				blur && 'pointer-events-none scale-90 blur-lg'
+			)}
 			loading="lazy"
 			src={url}
-			onclick={handleExpand}
+			onclick={handleClick}
 			onerror={() => (error = true)}
 			onload={() => (loading = false)}
 		/>
@@ -58,5 +78,5 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 {#if expanded}
-	<ExpandedImage {url} onClick={handleExpand} />
+	<ExpandedImage {url} onClick={handleClick} />
 {/if}

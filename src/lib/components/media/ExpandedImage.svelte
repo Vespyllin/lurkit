@@ -2,7 +2,7 @@
 	import { Cross2 } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 
-	let { url, onClick }: { url: string; onClick?: () => void } = $props();
+	let { url, onClick }: { url: string; onClick: () => void } = $props();
 
 	let zoomed = $state(false);
 </script>
@@ -15,6 +15,7 @@
 		'fixed left-0 top-0 z-20 flex h-lvh w-lvw justify-center overflow-auto bg-background p-0.5',
 		!zoomed ? 'items-center' : 'items-baseline'
 	)}
+	onclick={onClick}
 >
 	<div
 		class="fixed left-4 top-4 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"

@@ -35,6 +35,7 @@ type ListingData = {
 	is_self: boolean;
 	locked: boolean;
 	stickied: boolean;
+	spoiler: boolean;
 
 	secure_media_embed: {
 		content: string;

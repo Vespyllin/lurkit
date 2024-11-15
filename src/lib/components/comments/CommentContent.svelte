@@ -33,11 +33,10 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- {JSON.stringify(comment.author_flairs)} -->
 <div class={cn('border-l-2 pl-3 text-base hover:border-accent', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div
-		class="flex h-6 cursor-pointer items-center gap-1.5 text-lg leading-tight lg:gap-2"
+		class="flex h-fit cursor-pointer items-center gap-1.5 text-lg leading-tight lg:gap-2"
 		onclick={toggleCollapse}
 	>
 		<span class={cn('flex items-center gap-1 text-primary', comment.is_submitter && 'underline')}>
