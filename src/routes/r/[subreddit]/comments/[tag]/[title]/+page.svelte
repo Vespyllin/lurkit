@@ -6,6 +6,9 @@
 	import Comments from '$lib/components/comments/';
 	import { PUBLIC_COLLAPSE_COMMENT_DEPTH } from '$env/static/public';
 	import { cleanText } from '$lib';
+	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import CommentContent from '$lib/components/comments/Comments.svelte';
 
 	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
@@ -80,6 +83,21 @@
 	<div class="flex flex-col px-2">
 		<Listing post={listing} />
 
-		<Comments class="mt-2" bind:sort bind:comments {error} {fetching} />
+		<CommentSortDropdown class="mt-2" bind:sort />
+
+		<Separator class="my-2" />
+
+		{#if fetching}
+			<FetchStatus {fetching} {error} />
+		{:else}
+			<div class="mt-3 space-y-4 pb-3">
+				{#each comments as _, idx}
+					<Comments bind:comment={comments[idx]} />
+				{/each}
+				{#if comments.length == 0}
+					<span class="text-2xl text-zinc-400">No comments to display...</span>
+				{/if}
+			</div>
+		{/if}
 	</div>
 {/if}
