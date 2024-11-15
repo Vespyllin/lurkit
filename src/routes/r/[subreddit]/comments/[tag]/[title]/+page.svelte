@@ -85,7 +85,7 @@
 
 		<CommentSortDropdown class="mt-2" bind:sort />
 
-		<Separator class="my-2" />
+		<Separator class="mt-2" />
 
 		{#if fetching}
 			<FetchStatus {fetching} {error} />
