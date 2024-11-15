@@ -36,7 +36,10 @@
 <!-- {JSON.stringify(comment.author_flairs)} -->
 <div class={cn('border-l-2 pl-3 text-base hover:border-accent', className)}>
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<div class="flex cursor-pointer gap-1.5 text-lg leading-tight lg:gap-2" onclick={toggleCollapse}>
+	<div
+		class="flex h-6 cursor-pointer items-center gap-1.5 text-lg leading-tight lg:gap-2"
+		onclick={toggleCollapse}
+	>
 		<span class={cn('flex items-center gap-1 text-primary', comment.is_submitter && 'underline')}>
 			<span>{comment.author}</span>
 			{#if comment.distinguished}
@@ -88,15 +91,17 @@
 			</span>{#if comment.edited}<span>*</span>{/if}
 		</div>
 
-		<div class={cn('flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm')}>
-			{#each comment.author_flairs ?? [] as flair}
-				{#if flair.e == 'text'}
-					{cleanText(flair.t!)}
-				{:else if flair.e == 'emoji'}
-					<img alt="" src={flair.u} class="h-4 px-0.5" />
-				{/if}
-			{/each}
-		</div>
+		{#if comment.author_flairs && comment.author_flairs.length > 0}
+			<div class="flex h-full w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm">
+				{#each comment.author_flairs as flair}
+					{#if flair.e == 'text'}
+						{cleanText(flair.t!)}
+					{:else if flair.e == 'emoji'}
+						<img alt="" src={flair.u} class="h-4 px-0.5" />
+					{/if}
+				{/each}
+			</div>
+		{/if}
 	</div>
 
 	{#if !comment.collapsed}
