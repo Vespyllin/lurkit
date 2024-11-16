@@ -3,7 +3,6 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Comments from '$lib/components/comments/';
-	import { PUBLIC_COLLAPSE_COMMENT_DEPTH } from '$env/static/public';
 	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';

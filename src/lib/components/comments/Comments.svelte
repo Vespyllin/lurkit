@@ -12,32 +12,23 @@
 	} from 'radix-icons-svelte';
 	import Self from './Comments.svelte';
 	import Markdown from '../media/Markdown.svelte';
-	import { PUBLIC_TRUNCATED_COMMENT_LENGTH } from '$env/static/public';
+	import { PUBLIC_FOLD_COMMENT_DEPTH, PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
 
 	const {
 		comment = $bindable(),
 		class: className
 	}: { comment: RedditT1DataWrapper; class?: string } = $props();
 
-	const TRUNCATED_COMMENT_LENGTH = parseInt(PUBLIC_TRUNCATED_COMMENT_LENGTH);
-	const truncatedLength = 2;
-	// !isNaN(TRUNCATED_COMMENT_LENGTH) ? TRUNCATED_COMMENT_LENGTH : 1;
+	const FOLDED_COMMENT_DEPTH = parseInt(PUBLIC_FOLD_COMMENT_DEPTH);
+	const foldedDepth = !isNaN(FOLDED_COMMENT_DEPTH) ? FOLDED_COMMENT_DEPTH : 1;
+
+	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
+	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
+
 	let shelved = $state(true);
-	// shelved: depth >= shelveDepth
-	comment.data.collapsed = comment.data.depth >= 2;
+	let folded = $state(comment.data.depth >= foldedDepth);
 
-	const toggleCollapse = () => (comment.data.collapsed = !comment.data.collapsed);
-
-	// const showMoreComments = (comment: RedditT1DataWrapper) => {
-	// 	shelved = false;
-	// 	// Display nested comments for 1 reply threads
-	// 	if (
-	// 		comment.data.replies?.data?.children &&
-	// 		comment.data.replies.data.children.length == 1 &&
-	// 		comment.data.replies.data.children[0].kind == 't1'
-	// 	)
-	// 		showMoreComments(comment.data.replies.data.children[0]);
-	// };
+	const toggleFolded = () => (folded = !folded);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -45,7 +36,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div
 		class="flex h-fit cursor-pointer items-center gap-1.5 text-lg leading-tight lg:gap-2"
-		onclick={toggleCollapse}
+		onclick={toggleFolded}
 	>
 		<span
 			class={cn('flex items-center gap-1 text-primary', comment.data.is_submitter && 'underline')}
@@ -116,7 +107,7 @@
 		{/if}
 	</div>
 
-	{#if !comment.data.collapsed}
+	{#if !folded}
 		<div class="mt-2 min-h-4 max-w-[calc(100lvw-3rem)]">
 			<div class="text-wrap break-words text-base text-zinc-200">
 				<Markdown text={comment.data.body_html} />
@@ -148,18 +139,18 @@
 			<div class="mt-3 space-y-4">
 				{#each children as _, idx}
 					{#if comment.data.replies.data.children[idx].kind !== 'more'}
-						{#if idx < truncatedLength || !shelved}
+						{#if idx < shelfDepth || !shelved}
 							<Self class="lg:ml-2" bind:comment={comment.data.replies.data.children[idx]} />
 						{/if}
 					{/if}
 				{/each}
-				{#if children.length > truncatedLength + 1 && shelved}
+				{#if children.length > shelfDepth + 1 && shelved}
 					<button
 						class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
 						onclick={() => (shelved = false)}
 					>
 						<PlusCircled size={18} />
-						<span> Expand {(children.length - truncatedLength - 1).toLocaleString()} more</span>
+						<span> Expand {(children.length - shelfDepth - 1).toLocaleString()} more</span>
 					</button>
 				{/if}
 			</div>
