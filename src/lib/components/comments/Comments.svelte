@@ -91,7 +91,9 @@
 		</div>
 
 		{#if comment.author_flairs && comment.author_flairs.length > 0}
-			<div class="flex h-full w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm">
+			<div
+				class="flex h-full w-fit items-center gap-1 rounded-2xl bg-secondary px-2 py-0.5 text-sm"
+			>
 				{#each comment.author_flairs as flair}
 					{#if flair.e == 'text'}
 						{cleanText(flair.t!)}
