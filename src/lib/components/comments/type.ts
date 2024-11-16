@@ -1,4 +1,4 @@
-type CommentContentProps = Omit<PostComment, 'children'> & {
+type CommentContentProps = {
 	children: CommentContentProps[] | undefined;
 	replyCount: number;
 	collapsed: boolean;

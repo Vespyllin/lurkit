@@ -5,66 +5,67 @@
 	import ListingFooter from './ListingFooter.svelte';
 	import ListingPortal from './ListingPortal.svelte';
 
-	let { post }: { post: ListingData } = $props();
-	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	let { listing }: { listing: RedditT3Data } = $props();
+	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
 <div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md [&_p]:cursor-auto">
 	<ListingHeader
-		edited={post.edited}
-		crossposted_from={post.crosspost?.subreddit.display_name}
-		locked={post.locked}
-		flairs={post.link_flair_richtext}
-		flairColor={post.link_flair_background_color}
-		author={post.author}
-		created_utc={post.created_utc}
-		over_18={post.over_18}
-		subreddit={post.subreddit}
-		stickied={post.stickied}
-		distinguished={post.distinguished}
+		edited={listing.edited}
+		crossposted_from={crosspost?.subreddit_name_prefixed}
+		locked={listing.locked}
+		flairs={listing.link_flair_richtext}
+		flairColor={listing.link_flair_background_color}
+		author={listing.author}
+		created_utc={listing.created_utc}
+		over_18={listing.over_18}
+		subreddit={listing.sr_detail}
+		stickied={listing.stickied}
+		distinguished={listing.distinguished}
 	/>
 
-	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
-		{@const { thumbnail, title, url } = post}
+	{#if listing.post_hint == 'link' && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
+		{@const { thumbnail, title, url } = listing}
 
 		<Link {thumbnail} {title} {url} />
 
-		{#if post.selftext?.length > 0}
-			<Markdown text={post.selftext} />
+		{#if listing.selftext?.length > 0}
+			<Markdown text={listing.selftext} />
 		{/if}
 	{:else}
 		<h1 class="cursor-text text-wrap break-words text-2xl font-medium">
-			{cleanText(post.title)}
+			{cleanText(listing.title)}
 		</h1>
 
-		{#if post.selftext?.length > 0}
-			<Markdown text={post.selftext} />
+		{#if listing.selftext?.length > 0}
+			<Markdown text={listing.selftext} />
 		{/if}
 
-		{#if post.removed_by && post.removed_by != 'deleted'}
+		{#if listing.removed_by && listing.removed_by != 'deleted'}
 			<p class="text-zinc-300">
-				[Removed by {post.removed_by}]
+				[Removed by {listing.removed_by}]
 			</p>
-		{:else if post.crosspost}
+		{:else if crosspost}
 			<div class="rounded-lg border-2">
-				<ListingPortal class="px-4 pt-3" post={post.crosspost} />
+				<ListingPortal class="px-4 pt-3" listing={crosspost} />
 			</div>
-		{:else if post.is_video}
+		{:else if listing.is_video}
 			<div>
-				<Video url={post.url} />
+				<Video url={listing.url} />
 			</div>
-		{:else if post.url.includes('.gifv')}
-			<Video url={post.url.replace('.gifv', '.mp4')} />
-		{:else if post.post_hint == 'image' || urlIsImage}
-			<Image url={post.url} blur={post.spoiler} />
-		{:else if post.is_gallery}
-			<Gallery {post} />
-		{:else if post.post_hint == 'rich:video'}
+		{:else if listing.url.includes('.gifv')}
+			<Video url={listing.url.replace('.gifv', '.mp4')} />
+		{:else if listing.post_hint == 'image' || urlIsImage}
+			<Image url={listing.url} blur={listing.spoiler} />
+		{:else if listing.is_gallery}
+			<Gallery post={listing} />
+		{:else if listing.post_hint == 'rich:video'}
 			<div class="flex items-center justify-center">
-				<IFrame {post} />
+				<IFrame post={listing} />
 			</div>
 		{/if}
 	{/if}
 
-	<ListingFooter class="mt-2 [&_span]:cursor-text" {post} />
+	<ListingFooter class="mt-2 [&_span]:cursor-text" {listing} />
 </div>

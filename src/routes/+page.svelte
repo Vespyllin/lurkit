@@ -1,59 +1,80 @@
 <script lang="ts">
+	import { fetchListings } from '$lib/client';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { FeedStore } from '$lib/stores/FeedState.svelte';
-	import { onMount } from 'svelte';
+	import { subredditFilter, titleFilter } from '$lib/stores/filters';
+	import { useInfiniteQuery } from '@sveltestack/svelte-query';
 
-	const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
-	onMount(async () => {
-		if (!FeedStore.data || FeedStore.data.length == 0) await FeedStore.fetchMore();
+	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
+		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
 
-		const scrollTo = FeedStore.scrollTo;
-		if (!scrollTo) return;
+		if (!data || !data.data) return undefined;
 
-		sleep(30).then(() => {
-			document.getElementById(scrollTo)?.scrollIntoView(true);
-			window.scrollBy({ top: -70 });
-		});
+		const filteredChildren = data.data.children
+			?.filter((listing) => {
+				const subredditDisplayName = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
+				return subredditDisplayName ? !subredditFilter.includes(subredditDisplayName) : true;
+			})
+			.filter((listing) => {
+				return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
+			});
+
+		const filteredData: RedditListing<RedditT3DataWrapper> = {
+			kind: data.kind,
+			data: {
+				...data.data,
+				children: filteredChildren
+			}
+		};
+
+		return filteredData;
+	};
+
+	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
+		getNextPageParam: (lastGroup) => lastGroup?.data?.children?.at(-1)?.data.name
 	});
 </script>
 
+<svelte:head>
+	<title>
+		{$listingsQuery.isFetching && !$listingsQuery.data
+			? 'Loading...'
+			: ($listingsQuery.error ?? 'Lurkit')}
+	</title>
+</svelte:head>
+
 <svelte:window
-	onscroll={async () => {
+	onscroll={() => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
 		const remainingPx = feedHeight - window.scrollY;
 
-		if (remainingPx < 1000 && !!FeedStore.data && !FeedStore.fetching && !FeedStore.error) {
-			FeedStore.fetchMore();
+		const { hasNextPage, isFetching, isError } = $listingsQuery;
+		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
+			$listingsQuery.fetchNextPage();
 		}
 	}}
 />
 
-<svelte:head>
-	<title>
-		{FeedStore.fetching && !FeedStore.data ? 'Loading...' : (FeedStore.error ?? 'Lurkit')}
-	</title>
-</svelte:head>
-
-{#if !FeedStore.data}
-	<FetchStatus fetching={FeedStore.fetching} error={FeedStore.error} />
+{#if !$listingsQuery.data}
+	<FetchStatus
+		fetching={$listingsQuery.isFetching}
+		error={$listingsQuery.error as string | undefined}
+	/>
 {:else}
-	{#each FeedStore.data as post, idx}
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div id={`${idx}`} onclick={() => FeedStore.setScroll(idx.toString())}>
-			<ListingPortal {post} />
-		</div>
-		<Separator class="my-2" />
-	{/each}
-
-	{#if FeedStore.error || FeedStore.fetching}
-		<FetchMoreStatus
-			fetching={FeedStore.fetching}
-			error={FeedStore.error}
-			retryFn={FeedStore.fetchMore}
-		/>
-	{/if}
+	<div class="space-y-2">
+		{#each $listingsQuery.data?.pages ?? [] as page}
+			{#each page?.data?.children ?? [] as listing}
+				<ListingPortal listing={listing.data} />
+				<Separator />
+			{/each}
+		{/each}
+		{#if $listingsQuery.isError || $listingsQuery.isFetching}
+			<FetchMoreStatus
+				fetching={$listingsQuery.isFetching}
+				error={$listingsQuery.error as string | undefined}
+			/>
+		{/if}
+	</div>
 {/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
 
-	let { post }: { post: ListingData } = $props();
+	let { post }: { post: RedditT3Data } = $props();
 </script>
 
 <div class="aspect-video w-full [&_iframe]:h-full [&_iframe]:w-full">

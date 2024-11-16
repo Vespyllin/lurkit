@@ -41,6 +41,7 @@
 
 	const onSeek = () => {
 		if (!video) return;
+		if (isNaN(video.currentTime)) return;
 		video.currentTime = video.duration * (seek / 100);
 		audio.currentTime = audio.duration * (seek / 100);
 	};
@@ -81,7 +82,7 @@
 			class="video-track h-1.5 w-full rounded-md"
 		/>
 
-		<HoverCard.Root openDelay={250} closeDelay={250}>
+		<HoverCard.Root openDelay={100} closeDelay={250}>
 			<HoverCard.Trigger class="flex items-center">
 				<button onclick={toggleAudioMute}>
 					{#if !muted}
@@ -111,9 +112,7 @@
 			if (!video) return;
 			if (video.readyState < 2) console.log('waiting on network');
 		}}
-		oncanplay={() => {
-			console.log('can play');
-		}}
+		oncanplay={() => {}}
 		onclick={onPlayChange}
 		ontimeupdate={() => {
 			if (!video) return;

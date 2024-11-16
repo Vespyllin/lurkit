@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fetchPostData } from '$lib/client/post';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Comments from '$lib/components/comments/';
@@ -8,94 +7,73 @@
 	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-
-	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
-	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
+	import { fetchListingComments } from '$lib/client';
+	import { untrack } from 'svelte';
+	import { useQuery } from '@sveltestack/svelte-query';
 
 	const {
 		params: { subreddit, tag, title }
 	} = $page;
 
-	let fetching = $state(true);
-	let error: string | undefined = $state();
 	let sort: RedditCommentSortOptions = $state('top');
-	let listing: ListingData | undefined = $state();
-	let comments: CommentContentProps[] = $state([]);
 
-	const getData = async (sort: RedditCommentSortOptions) => {
-		fetching = true;
-		const fetchRes = await fetchPostData(`/r/${subreddit}/comments/${tag}/${title}/`, sort);
+	let listing: RedditT3Data | undefined = $state();
+	let comments: RedditListing<RedditT1DataWrapper> | undefined = $state();
 
-		if (fetchRes.status == 'OK') {
-			if (!listing) listing = fetchRes.data.listing;
-			comments = assignCommentState(fetchRes.data.comments);
-			error = undefined;
-		} else {
-			error = fetchRes.reason;
-		}
-		fetching = false;
-	};
+	const queryUrl = `/r/${subreddit}/comments/${tag}/${title}/`;
+	const listingQuery = useQuery(queryUrl, async () => {
+		const data = await fetchListingComments(queryUrl, sort);
+		if (!listing) listing = data?.[0].data?.children?.[0].data;
+		comments = data[1];
+		comments?.data?.children?.pop();
 
-	const assignCommentState = (
-		comments: PostComment[],
-		depth: number = 0
-	): CommentContentProps[] => {
-		return comments.map((comment, idx) => {
-			const childrenWithState = comment.children?.length
-				? assignCommentState(comment.children, depth + 1)
-				: undefined;
+		return data;
+	});
 
-			const subCommentCount =
-				(comment.children?.length ?? 0) +
-				(childrenWithState?.reduce((acc, v) => acc + v.replyCount, 0) ?? 0);
-
-			return {
-				...comment,
-				depth: depth,
-				collapsed: comment.stickied || (depth != 0 && idx > 2 && (comment.score ?? 10) < 10),
-				author_flairs: comment.author_flairs,
-				children: childrenWithState,
-				replyCount: subCommentCount,
-				shelved: depth >= shelveDepth
-			} as CommentContentProps;
-		});
-	};
-
-	// Refetch data whenever the comment sort key is changed
 	$effect(() => {
-		getData(sort);
+		void sort;
+
+		untrack(() => {
+			$listingQuery.refetch();
+		});
 	});
 </script>
 
 <svelte:head>
 	<title>
-		{listing
-			? cleanText(`${listing.title} - ${listing.subreddit.display_name}`)
-			: error
-				? error
-				: 'Loading...'}
+		{$listingQuery.isFetching && !listing
+			? 'Loading...'
+			: ($listingQuery.error ??
+				cleanText(`${listing?.title} - ${listing?.subreddit_name_prefixed}`))}
 	</title>
 </svelte:head>
 
-{#if error || !listing}
-	<FetchStatus {fetching} {error} />
+{#if !listing}
+	<FetchStatus
+		fetching={$listingQuery.isFetching}
+		error={$listingQuery.error as string | undefined}
+	/>
 {:else}
 	<div class="flex flex-col px-2">
-		<Listing post={listing} />
+		<Listing {listing} />
 
 		<CommentSortDropdown class="mt-2" bind:sort />
 
 		<Separator class="mt-2" />
 
-		{#if fetching}
-			<FetchStatus {fetching} {error} />
+		{#if $listingQuery.isFetching}
+			<FetchStatus
+				fetching={$listingQuery.isFetching}
+				error={$listingQuery.error as string | undefined}
+			/>
 		{:else}
 			<div class="mt-3 space-y-4 pb-3">
-				{#each comments as _, idx}
-					<Comments bind:comment={comments[idx]} />
-				{/each}
-				{#if comments.length == 0}
+				{#if !comments?.data?.children || comments.data.children.length == 0}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
+				{:else}
+					{#each comments.data.children as _, idx}
+						<Comments bind:comment={comments.data.children[idx]} />
+					{/each}
 				{/if}
 			</div>
 		{/if}

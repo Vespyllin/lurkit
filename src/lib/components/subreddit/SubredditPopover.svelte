@@ -2,7 +2,7 @@
 	import { Markdown } from '../media';
 	import * as Tooltip from '../ui/tooltip';
 
-	let { subreddit }: { subreddit: SubredditDetails } = $props();
+	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 
 	const icon_url =
 		(subreddit?.community_icon?.split('?')[0] ?? '').length > 0
@@ -14,10 +14,10 @@
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
-		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name}`}>
+		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name_prefixed}`}>
 			<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />
 			<span class="text-zinc-200">
-				{subreddit.display_name}
+				{subreddit.display_name_prefixed}
 			</span>
 		</a>
 	</Tooltip.Trigger>

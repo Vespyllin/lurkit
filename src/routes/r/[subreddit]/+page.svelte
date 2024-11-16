@@ -1,121 +1,112 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 
-	import { fetchFeedData, fetchSubredditData } from '$lib/client/subreddit';
+	import { fetchListings, fetchSubreddit } from '$lib/client';
+	import { subredditFilter, titleFilter } from '$lib/stores/filters';
 
+	import { useInfiniteQuery, useQuery, useQueryClient } from '@sveltestack/svelte-query';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import SubredditBanner from '$lib/components/subreddit/SubredditBanner.svelte';
 	import SubredditSortDropdown from '$lib/components/subreddit/SubredditSortDropdown.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	const {
 		params: { subreddit }
 	} = $page;
 
-	let subredditFetching = $state(true);
-	let subredditError: string | undefined = $state();
-
-	let listingFetching = $state(true);
-	let listingError: string | undefined = $state();
-
-	let fetching = $state(false);
-	let error: string | undefined = $state();
-
 	let sort: RedditSubredditSortOptions | undefined = $state();
-	let subredditData: SubredditData | undefined = $state();
-	let feed: ListingData[] | undefined = $state();
-	let lastPostId: string | undefined;
 
-	onMount(async () => {
-		const subredditRes = await fetchSubredditData(subreddit);
-		if (subredditRes.status == 'OK') {
-			subredditData = subredditRes.data;
-		} else {
-			subredditError = subredditRes.reason;
-		}
-		subredditFetching = false;
+	const subredditQuery = useQuery(`r/${subreddit}`, () => fetchSubreddit(subreddit));
 
-		const feedRes = await fetchFeedData(subreddit, 50, undefined, sort, true);
-		if (feedRes.status == 'OK') {
-			feed = feedRes.data;
-			lastPostId = feedRes.data.at(-1)?.name;
-			error = undefined;
-		} else {
-			listingError = feedRes.reason;
-		}
-		listingFetching = false;
+	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
+		const data = await fetchListings(subreddit, 50, pageParam, sort, true);
+
+		if (!data || !data.data) return undefined;
+
+		const filteredChildren = data.data.children
+			?.filter((listing) => {
+				const subredditDisplayName = listing.data.sr_detail?.display_name?.toLowerCase();
+				return subredditDisplayName ? !subredditFilter.includes(subredditDisplayName) : true;
+			})
+			.filter((listing) => {
+				return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
+			});
+
+		const filteredData: RedditListing<RedditT3DataWrapper> = {
+			kind: data.kind,
+			data: {
+				...data.data,
+				children: filteredChildren
+			}
+		};
+
+		return filteredData;
+	};
+
+	const listingsQuery = useInfiniteQuery(`r/${subreddit}/listings`, fetchNextListings, {
+		getNextPageParam: (lastGroup) => lastGroup?.data?.children?.at(-1)?.data.name
 	});
 
 	$effect(() => {
-		listingFetching = true;
-		fetchFeedData(subreddit, 50, undefined, sort, true).then((res) => {
-			if (res.status == 'OK') {
-				feed = res.data;
-				lastPostId = res.data.at(-1)?.name;
-				error = undefined;
-			} else {
-				listingError = res.reason;
-			}
-			listingFetching = false;
+		void sort;
+
+		untrack(() => {
+			useQueryClient().setQueryData(`r/${subreddit}/listings`, (data) => {
+				return { pages: undefined, pageParams: undefined };
+			});
+			$listingsQuery.fetchNextPage();
 		});
 	});
 </script>
 
+<svelte:head>
+	<title>
+		{$listingsQuery.isFetching || $subredditQuery.isFetching
+			? 'Loading...'
+			: ($subredditQuery.error ??
+				$listingsQuery.error ??
+				'r/' + $subredditQuery?.data?.data.display_name_prefixed)}
+	</title>
+</svelte:head>
+
 <svelte:window
-	onscroll={async () => {
+	onscroll={() => {
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
+		const remainingPx = feedHeight - window.scrollY;
 
-		const scrolledPercentage = (window.scrollY / feedHeight) * 100;
-
-		if (!!feed && !listingFetching && !subredditFetching && scrolledPercentage > 95) {
-			fetching = true;
-
-			const fetchedFeed = await fetchFeedData(subreddit, 100, lastPostId, undefined, true);
-
-			if (fetchedFeed.status === 'OK') {
-				feed = feed.concat(fetchedFeed.data);
-				lastPostId = fetchedFeed.data.at(-1)?.name;
-			} else {
-				error = fetchedFeed.reason;
-			}
-
-			fetching = false;
+		const { hasNextPage, isFetching, isError } = $listingsQuery;
+		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
+			$listingsQuery.fetchNextPage();
 		}
 	}}
 />
 
-<svelte:head>
-	<title>
-		{!!feed && !!subredditData
-			? `r/${subredditData?.display_name}`
-			: subredditError
-				? subredditError
-				: 'Loading...'}
-	</title>
-</svelte:head>
-
-{#if subredditError || subredditFetching}
-	<FetchStatus fetching={subredditFetching} error={subredditError} />
+{#if !$subredditQuery.data || !$listingsQuery.data}
+	<FetchStatus
+		fetching={$listingsQuery.isFetching || $subredditQuery.isFetching}
+		error={($subredditQuery.error ?? $listingsQuery.error) as string | undefined}
+	/>
 {:else}
-	<SubredditBanner class="mb-2" subredditData={subredditData!} />
+	<div class="space-y-2">
+		<SubredditBanner data={$subredditQuery.data.data} />
 
-	<SubredditSortDropdown bind:sort />
-	<Separator class="my-2 h-0.5" />
+		<SubredditSortDropdown bind:sort />
+		<Separator class="h-0.5" />
 
-	{#if listingFetching || listingError}
-		<FetchStatus fetching={listingFetching} error={listingError} />
-	{:else}
-		{#each feed ?? [] as post}
-			<ListingPortal {post} />
-
-			<Separator class="my-2" />
+		{#each $listingsQuery.data?.pages ?? [] as page}
+			{#each page?.data?.children ?? [] as listing}
+				<ListingPortal listing={listing.data} />
+				<Separator />
+			{/each}
 		{/each}
-	{/if}
-
-	{#if fetching || error}
-		<FetchMoreStatus {fetching} {error} />
-	{/if}
+		{#if $listingsQuery.isError || $listingsQuery.isFetching}
+			<FetchMoreStatus
+				fetching={$listingsQuery.isFetching}
+				error={$listingsQuery.error as string | undefined}
+			/>
+		{/if}
+	</div>
 {/if}

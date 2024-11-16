@@ -39,7 +39,6 @@
 			'my-auto object-contain',
 			zoomed ? 'min-h-full cursor-zoom-out' : 'max-h-full cursor-zoom-in lg:max-w-[85%]'
 		)}
-		loading="lazy"
 		src={url}
 	/>
 </div>

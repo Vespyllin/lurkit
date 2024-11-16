@@ -24,7 +24,7 @@
 		flairColor,
 		distinguished
 	}: {
-		subreddit?: SubredditDetails;
+		subreddit?: RedditSrDetail;
 		edited?: boolean | number;
 		author: string;
 		created_utc: number;

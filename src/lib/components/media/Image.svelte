@@ -67,7 +67,6 @@
 				'max-h-fit cursor-pointer object-contain md:max-h-[600px]',
 				blur && 'pointer-events-none scale-90 blur-lg'
 			)}
-			loading="lazy"
 			src={url}
 			onclick={handleClick}
 			onerror={() => (error = true)}

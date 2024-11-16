@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import ExpandedImage from './ExpandedImage.svelte';
 
-	let { post, class: className }: { post: ListingData; class?: string } = $props();
+	let { post, class: className }: { post: RedditT3Data; class?: string } = $props();
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
@@ -21,7 +21,7 @@
 		});
 	});
 
-	const getMediaType = (post: ListingData, media_id: string) => {
+	const getMediaType = (post: RedditT3Data, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';

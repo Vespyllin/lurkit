@@ -6,9 +6,10 @@
 	import Self from './ListingPortal.svelte';
 	import { cn } from '$lib/utils';
 
-	let { post, class: classList }: { post: ListingData; class?: string } = $props();
+	let { listing, class: classList }: { listing: RedditT3Data; class?: string } = $props();
 
-	const urlIsImage = post.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
 <div
@@ -17,59 +18,60 @@
 		classList
 	)}
 >
-	<a href={post.permalink} draggable="false">
+	<a href={listing.permalink} draggable="false">
 		<ListingHeader
-			crossposted_from={post.crosspost?.subreddit.display_name}
-			locked={post.locked}
-			author={post.author}
-			created_utc={post.created_utc}
-			over_18={post.over_18}
-			subreddit={post.subreddit}
-			stickied={post.stickied}
+			crossposted_from={crosspost?.subreddit_name_prefixed}
+			locked={listing.locked}
+			author={listing.author}
+			created_utc={listing.created_utc}
+			over_18={listing.over_18}
+			subreddit={listing.sr_detail}
+			stickied={listing.stickied}
 		/>
 	</a>
 
-	{#if post.post_hint == 'link' && !post.crosspost && !urlIsImage && !post.url.includes('.gifv')}
-		{@const { thumbnail, title, url } = post}
+	{#if listing.post_hint == 'link' && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
+		{@const { thumbnail, title, url } = listing}
 
-		<a href={post.permalink} draggable="false">
+		<a href={listing.permalink} draggable="false">
 			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp />
 		</a>
 	{:else}
-		<a href={post.permalink} draggable="false">
+		<a href={listing.permalink} draggable="false">
 			<h1 class="mt-2 text-wrap break-words text-2xl font-medium">
-				{cleanText(post.title)}
+				{cleanText(listing.title)}
 			</h1>
 		</a>
 
-		{#if post.crosspost}
+		{#if crosspost}
 			<div class="mt-2 rounded-lg border-2 px-2 pt-1">
-				<Self post={post.crosspost} />
+				<Self listing={crosspost} />
 			</div>
-		{:else if post.is_video}
-			<Video class="mt-2" url={post.url} />
-		{:else if post.url.includes('.gifv')}
-			<Video class="mt-2" url={post.url.replace('.gifv', '.mp4')} />
-		{:else if post.post_hint == 'image' || urlIsImage}
-			<Image class="mt-2" url={post.url} blur={post.spoiler} />
-		{:else if post.is_gallery}
-			<Gallery class="mt-2" {post} />
-		{:else if post.post_hint == 'rich:video'}
+		{:else if listing.is_video}
+			<Video class="mt-2" url={listing.url} />
+		{:else if listing.url.includes('.gifv')}
+			<Video class="mt-2" url={listing.url.replace('.gifv', '.mp4')} />
+		{:else if listing.post_hint == 'image' || urlIsImage}
+			<Image class="mt-2" url={listing.url} blur={listing.spoiler} />
+		{:else if listing.is_gallery}
+			<Gallery class="mt-2" post={listing} />
+		{:else if listing.post_hint == 'rich:video'}
 			<div class="mt-2 flex items-center justify-center">
-				<IFrame {post} />
+				<IFrame post={listing} />
 			</div>
-		{:else if post.selftext?.length > 0}
+		{:else if listing.selftext?.length > 0}
 			<a
-				href={post.permalink}
-				class="max-h-64 overflow-hidden [&_*]:pointer-events-none"
+				href={listing.permalink}
+				class="max-h-48 overflow-hidden [&_*]:pointer-events-none"
+				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown text={post.selftext} />
+				<Markdown text={listing.selftext} />
 			</a>
 		{/if}
 	{/if}
 
-	<a href={post.permalink} draggable="false">
-		<ListingFooter class="mt-2" {post} />
+	<a href={listing.permalink} draggable="false">
+		<ListingFooter class="mt-2" {listing} />
 	</a>
 </div>

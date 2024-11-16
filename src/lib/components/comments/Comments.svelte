@@ -17,19 +17,27 @@
 	const {
 		comment = $bindable(),
 		class: className
-	}: { comment: CommentContentProps; class?: string } = $props();
+	}: { comment: RedditT1DataWrapper; class?: string } = $props();
 
 	const TRUNCATED_COMMENT_LENGTH = parseInt(PUBLIC_TRUNCATED_COMMENT_LENGTH);
-	const truncatedLength = !isNaN(TRUNCATED_COMMENT_LENGTH) ? TRUNCATED_COMMENT_LENGTH : 1;
-	let truncated = $state(true);
+	const truncatedLength = 2;
+	// !isNaN(TRUNCATED_COMMENT_LENGTH) ? TRUNCATED_COMMENT_LENGTH : 1;
+	let shelved = $state(true);
+	// shelved: depth >= shelveDepth
+	comment.data.collapsed = comment.data.depth >= 2;
 
-	const toggleCollapse = () => (comment.collapsed = !comment.collapsed);
+	const toggleCollapse = () => (comment.data.collapsed = !comment.data.collapsed);
 
-	const showMoreComments = (comment: CommentContentProps) => {
-		comment.shelved = false;
-		// Display nested comments for 1 reply threads
-		if (comment.children && comment.children.length == 1) showMoreComments(comment.children[0]);
-	};
+	// const showMoreComments = (comment: RedditT1DataWrapper) => {
+	// 	shelved = false;
+	// 	// Display nested comments for 1 reply threads
+	// 	if (
+	// 		comment.data.replies?.data?.children &&
+	// 		comment.data.replies.data.children.length == 1 &&
+	// 		comment.data.replies.data.children[0].kind == 't1'
+	// 	)
+	// 		showMoreComments(comment.data.replies.data.children[0]);
+	// };
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -39,41 +47,44 @@
 		class="flex h-fit cursor-pointer items-center gap-1.5 text-lg leading-tight lg:gap-2"
 		onclick={toggleCollapse}
 	>
-		<span class={cn('flex items-center gap-1 text-primary', comment.is_submitter && 'underline')}>
-			<span>{comment.author}</span>
-			{#if comment.distinguished}
-				{#if comment.distinguished == 'moderator'}
+		<span
+			class={cn('flex items-center gap-1 text-primary', comment.data.is_submitter && 'underline')}
+		>
+			<span>{comment.data.author}</span>
+			{#if comment.data.distinguished}
+				{#if comment.data.distinguished == 'moderator'}
 					<MagicWand />
-				{:else if comment.distinguished == 'admin'}
+				{:else if comment.data.distinguished == 'admin'}
 					<VercelLogo />
 				{:else}
 					<span class="capitalize">
-						({comment.distinguished})
+						({comment.data.distinguished})
 					</span>
 				{/if}
 			{/if}
 		</span>
 
-		{#if comment.score !== undefined}
+		{#if !comment.data.score_hidden}
 			<span class="hidden lg:inline">•</span>
 			<div class="hidden items-center text-zinc-400 lg:flex">
 				<ArrowUp />
-				<span>{comment.score.toLocaleString()}</span>
+				<span>{comment.data.score.toLocaleString()}</span>
 			</div>
 		{/if}
 
 		<span class="hidden lg:inline">•</span>
 		<div class="hidden items-center gap-1 text-zinc-400 lg:flex">
 			<ChatBubble />
-			{#if comment.replyCount > 0 || !comment.locked}
-				<span>{comment.replyCount.toLocaleString()}</span>
+
+			{#if comment.data.replies?.data?.children || !comment.data.locked}
+				<span>{(comment.data.replies?.data?.children?.length ?? 0).toLocaleString()}</span>
 			{/if}
-			{#if comment.locked}
+			{#if comment.data.locked}
 				<LockClosed />
 			{/if}
 		</div>
 
-		{#if comment.stickied}
+		{#if comment.data.stickied}
 			<span class="hidden lg:inline">•</span>
 			<div class="flex items-center gap-1 text-zinc-400">
 				<DrawingPin />
@@ -84,17 +95,17 @@
 		<span>•</span>
 		<div class="text-zinc-400">
 			<span class="hidden lg:inline">
-				{getTimeAgo(comment.created_utc)}
+				{getTimeAgo(comment.data.created_utc)}
 			</span><span class="inline lg:hidden">
-				{getTimeAgo(comment.created_utc, true)}
-			</span>{#if comment.edited}<span>*</span>{/if}
+				{getTimeAgo(comment.data.created_utc, true)}
+			</span>{#if comment.data.edited}<span>*</span>{/if}
 		</div>
 
-		{#if comment.author_flairs && comment.author_flairs.length > 0}
+		{#if comment.data.author_flair_richtext && comment.data.author_flair_richtext.length > 0}
 			<div
 				class="flex h-full w-fit items-center gap-1 rounded-2xl bg-secondary px-2 py-0.5 text-sm"
 			>
-				{#each comment.author_flairs as flair}
+				{#each comment.data.author_flair_richtext as flair}
 					{#if flair.e == 'text'}
 						{cleanText(flair.t!)}
 					{:else if flair.e == 'emoji'}
@@ -105,58 +116,53 @@
 		{/if}
 	</div>
 
-	{#if !comment.collapsed}
+	{#if !comment.data.collapsed}
 		<div class="mt-2 min-h-4 max-w-[calc(100lvw-3rem)]">
 			<div class="text-wrap break-words text-base text-zinc-200">
-				<Markdown text={comment.text} />
+				<Markdown text={comment.data.body_html} />
 			</div>
 
 			<!-- Mobile -->
 			<div class="mt-1 flex gap-4 lg:hidden">
-				{#if comment.score}
+				{#if comment.data.score}
 					<div class="flex items-center text-zinc-400">
 						<ArrowUp />
-						<span>{comment.score.toLocaleString()}</span>
+						<span>{comment.data.score.toLocaleString()}</span>
 					</div>
 				{/if}
 
 				<div class="flex items-center gap-1 text-zinc-400">
 					<ChatBubble />
-					{#if comment.replyCount > 0 || !comment.locked}
-						<span>{comment.replyCount.toLocaleString()}</span>
+					{#if !comment.data.replies?.data?.children?.length || !comment.data.locked}
+						<span>{(comment.data.replies?.data?.children?.length ?? 0).toLocaleString()}</span>
 					{/if}
-					{#if comment.locked}
+					{#if comment.data.locked}
 						<LockClosed />
 					{/if}
 				</div>
 			</div>
 		</div>
 
-		{#if !comment.shelved && !!comment.children && comment.children.length > 0}
+		{#if comment.data.replies?.data?.children?.length}
+			{@const children = comment.data.replies.data.children}
 			<div class="mt-3 space-y-4">
-				{#each comment.children as _, idx}
-					{#if !truncated || idx < truncatedLength}
-						<Self class="lg:ml-2" bind:comment={comment.children![idx]} />
+				{#each children as _, idx}
+					{#if comment.data.replies.data.children[idx].kind !== 'more'}
+						{#if idx < truncatedLength || !shelved}
+							<Self class="lg:ml-2" bind:comment={comment.data.replies.data.children[idx]} />
+						{/if}
 					{/if}
 				{/each}
-				{#if truncated && comment.children.length > truncatedLength}
+				{#if children.length > truncatedLength + 1 && shelved}
 					<button
 						class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
-						onclick={() => (truncated = false)}
+						onclick={() => (shelved = false)}
 					>
 						<PlusCircled size={18} />
-						<span> Expand {(comment.children.length - truncatedLength).toLocaleString()} more</span>
+						<span> Expand {(children.length - truncatedLength - 1).toLocaleString()} more</span>
 					</button>
 				{/if}
 			</div>
-		{:else if comment.shelved && comment.children?.length}
-			<button
-				class="mt-2 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
-				onclick={() => showMoreComments(comment)}
-			>
-				<PlusCircled size={18} />
-				<span>Expand {comment.children.length.toLocaleString()} more</span>
-			</button>
 		{/if}
 	{/if}
 </div>

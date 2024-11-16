@@ -1,4 +1,7 @@
-type RedditPostData = [RedditListing<RedditT3DataWrapper>, RedditListing<RedditT1DataWrapper>];
+type RedditListingCommentsDataWrapper = [
+	RedditListing<RedditT3DataWrapper>,
+	RedditListing<RedditT1DataWrapper>
+];
 
 type RedditT1DataWrapper = {
 	kind: 't1';
@@ -21,7 +24,7 @@ type RedditT1Data = RedditListingBaseData & {
 	author_flair_type: string;
 	author_flair_template_id: null;
 	likes: null;
-	replies: RedditListing<RedditT1DataWrapper | RedditMoreDataWrapper>;
+	replies?: RedditListing<RedditT1DataWrapper | RedditMoreDataWrapper>;
 	user_reports: any[];
 	id: string;
 	banned_at_utc: null;

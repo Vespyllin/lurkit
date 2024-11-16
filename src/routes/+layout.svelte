@@ -3,6 +3,19 @@
 	import type { Snippet } from 'svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 
+	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+				refetchOnMount: false,
+				refetchOnReconnect: false,
+				retry: 3,
+				retryDelay: (failureCount) => 3 ** failureCount * 1000
+			}
+		}
+	});
+
 	let { children }: { children?: Snippet } = $props();
 </script>
 
@@ -14,12 +27,15 @@
 </svelte:head>
 
 <main style="font-family: 'Ubuntu'" class="min-h-screen overflow-auto bg-background">
-	<Header />
-	<div class="flex pt-16">
-		<div class="mx-auto max-w-full grow px-4 py-2 lg:max-w-4xl lg:px-8">
+	<QueryClientProvider client={queryClient}>
+		<Header />
+		<div
+			data-sveltekit-preload-data="off"
+			class="mx-auto mt-16 max-w-full px-4 py-2 lg:max-w-4xl lg:px-8"
+		>
 			{@render children?.()}
 		</div>
-	</div>
+	</QueryClientProvider>
 	<!-- This hidden <div> is here to prevent the "md" class from being discarded by Tailwind treeshaking -->
 	<div class="md hidden"></div>
 </main>

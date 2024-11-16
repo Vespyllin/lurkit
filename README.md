@@ -1,6 +1,9 @@
 # lurkit - TODOs:
 
 auth and blacklist
+
+SKELETON LOADING STATE
+
 svelte query, rewrite store to just store (no fetching)
 
 fullscreen to the right
