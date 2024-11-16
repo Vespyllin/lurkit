@@ -26,7 +26,6 @@
 			over_18={post.over_18}
 			subreddit={post.subreddit}
 			stickied={post.stickied}
-			distinguished={post.distinguished}
 		/>
 	</a>
 
@@ -50,7 +49,7 @@
 		{:else if post.is_video}
 			<Video class="mt-2" url={post.url} />
 		{:else if post.url.includes('.gifv')}
-			<!-- <Video class="mt-2" url={post.url.replace('.gifv', '.mp4')} /> -->
+			<Video class="mt-2" url={post.url.replace('.gifv', '.mp4')} />
 		{:else if post.post_hint == 'image' || urlIsImage}
 			<Image class="mt-2" url={post.url} blur={post.spoiler} />
 		{:else if post.is_gallery}

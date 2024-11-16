@@ -49,13 +49,16 @@
 		audio.volume = volume / 100;
 	};
 
-	// Set sliders right
 	onMount(() => {
-		seek = 0;
-		volume = volume;
+		const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
+		sleep(50).then(() => {
+			volume = volume;
+			seek = 0;
+		});
 	});
 
 	onDestroy(() => {
+		video?.pause();
 		audio.pause();
 	});
 </script>
@@ -104,9 +107,6 @@
 	</div>
 	<video
 		onclick={onPlayChange}
-		oncanplay={() => {
-			// console.log('can play');
-		}}
 		ontimeupdate={() => {
 			if (!video) return;
 			seek = (video.currentTime / video.duration) * 100;
