@@ -50,7 +50,9 @@
 				<ListingPortal class="px-4 pt-3" post={post.crosspost} />
 			</div>
 		{:else if post.is_video}
-			<Video url={post.url} />
+			<div>
+				<Video url={post.url} />
+			</div>
 		{:else if post.url.includes('.gifv')}
 			<Video url={post.url.replace('.gifv', '.mp4')} />
 		{:else if post.post_hint == 'image' || urlIsImage}
