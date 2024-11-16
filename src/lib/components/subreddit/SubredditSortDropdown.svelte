@@ -4,10 +4,14 @@
 	import type { ComponentType } from 'svelte';
 
 	let {
-		sort = $bindable(),
+		onChange,
 		class: className
-	}: { sort: RedditSubredditSortOptions | undefined; class?: string } = $props();
+	}: {
+		class?: string;
+		onChange?: (v: any) => void;
+	} = $props();
 
+	let sort: string | undefined = $state();
 	const sortOptions: {
 		option: RedditSubredditSortOptions | 'default';
 		icon: ComponentType | undefined;
@@ -35,7 +39,10 @@
 			{#each sortOptions as sortOption}
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
-					onclick={() => (sort = sortOption.option !== 'default' ? sortOption.option : undefined)}
+					onclick={() => {
+						sort = sortOption.option !== 'default' ? sortOption.option : undefined;
+						onChange?.(sort);
+					}}
 				>
 					<sortOption.icon class="mr-1" />
 					<span>{sortOption.option}</span>
