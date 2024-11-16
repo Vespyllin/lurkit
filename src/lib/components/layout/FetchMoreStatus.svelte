@@ -27,7 +27,7 @@
 			<span class="py-1 text-xl">{error}</span>
 			{#if retryFn}
 				<button
-					class="rounded-md px-2 py-1 text-lg text-zinc-400 hover:bg-accent"
+					class="rounded-md px-2 py-1 text-lg text-zinc-400 hover:bg-secondary"
 					onclick={retryFn}
 				>
 					Retry

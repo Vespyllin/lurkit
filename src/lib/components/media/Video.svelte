@@ -76,7 +76,7 @@
 
 		<input
 			type="range"
-			onclick={onSeek}
+			oninput={onSeek}
 			bind:value={seek}
 			class="video-track h-1.5 w-full rounded-md"
 		/>
@@ -106,6 +106,14 @@
 		</HoverCard.Root>
 	</div>
 	<video
+		onended={() => (playing = false)}
+		onwaiting={() => {
+			if (!video) return;
+			if (video.readyState < 2) console.log('waiting on network');
+		}}
+		oncanplay={() => {
+			console.log('can play');
+		}}
 		onclick={onPlayChange}
 		ontimeupdate={() => {
 			if (!video) return;

@@ -41,8 +41,8 @@
 		const feedRes = await fetchFeedData(subreddit, 50, undefined, sort, true);
 		if (feedRes.status == 'OK') {
 			feed = feedRes.data;
-			console.log(feedRes.data);
 			lastPostId = feedRes.data.at(-1)?.name;
+			error = undefined;
 		} else {
 			listingError = feedRes.reason;
 		}
@@ -55,6 +55,7 @@
 			if (res.status == 'OK') {
 				feed = res.data;
 				lastPostId = res.data.at(-1)?.name;
+				error = undefined;
 			} else {
 				listingError = res.reason;
 			}

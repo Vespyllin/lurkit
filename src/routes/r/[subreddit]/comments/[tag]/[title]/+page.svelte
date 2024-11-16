@@ -8,7 +8,6 @@
 	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import CommentContent from '$lib/components/comments/Comments.svelte';
 
 	const SHELVE_COMMENT_DEPTH = parseInt(PUBLIC_COLLAPSE_COMMENT_DEPTH);
 	const shelveDepth = !isNaN(SHELVE_COMMENT_DEPTH) ? SHELVE_COMMENT_DEPTH : 1;
@@ -30,6 +29,7 @@
 		if (fetchRes.status == 'OK') {
 			if (!listing) listing = fetchRes.data.listing;
 			comments = assignCommentState(fetchRes.data.comments);
+			error = undefined;
 		} else {
 			error = fetchRes.reason;
 		}

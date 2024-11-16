@@ -33,7 +33,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={cn('flex items-center justify-center', className)}>
 	{#if error}
-		<div class="flex h-20 flex-col items-center text-xl">
+		<div class="flex h-20 items-center gap-2 text-xl">
 			<p class="p-1.5 text-zinc-300">Error loading image</p>
 			<button
 				class="rounded-md p-1 text-zinc-400 hover:bg-secondary"
