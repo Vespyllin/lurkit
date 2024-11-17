@@ -66,7 +66,7 @@
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown text={listing.selftext} />
+				<Markdown text={listing.selftext_html} />
 			</a>
 		{/if}
 	{/if}

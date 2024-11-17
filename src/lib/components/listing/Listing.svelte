@@ -39,7 +39,7 @@
 		</h1>
 
 		{#if listing.selftext?.length > 0}
-			<Markdown text={listing.selftext} />
+			<Markdown text={listing.selftext_html} />
 		{/if}
 
 		{#if listing.removed_by && listing.removed_by != 'deleted'}
