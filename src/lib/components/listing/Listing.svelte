@@ -59,7 +59,7 @@
 		{:else if listing.post_hint == 'image' || urlIsImage}
 			<Image url={listing.url} blur={listing.spoiler} />
 		{:else if listing.is_gallery}
-			<Gallery post={listing} />
+			<Gallery post={listing} blur={listing.spoiler} />
 		{:else if listing.post_hint == 'rich:video'}
 			<div class="flex items-center justify-center">
 				<IFrame post={listing} />

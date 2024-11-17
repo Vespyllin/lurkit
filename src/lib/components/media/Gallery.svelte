@@ -3,7 +3,11 @@
 	import { cn } from '$lib/utils';
 	import ExpandedImage from './ExpandedImage.svelte';
 
-	let { post, class: className }: { post: RedditT3Data; class?: string } = $props();
+	let {
+		post,
+		blur: _blur,
+		class: className
+	}: { post: RedditT3Data; blur?: boolean; class?: string } = $props();
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
@@ -11,6 +15,8 @@
 	let api: any = $state(0);
 	let count = $state(0);
 	let current = $state(0);
+
+	let blur = $state(_blur ?? false);
 
 	$effect(() => {
 		if (!api) return;
@@ -50,6 +56,16 @@
 		opts={{ duration: 20 }}
 		class="flex max-h-[600px] items-center justify-center"
 	>
+		{#if blur}
+			<button
+				class="absolute z-10 h-fit w-36 rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
+				onclick={() => {
+					blur = false;
+				}}
+			>
+				Unblur Images
+			</button>
+		{/if}
 		<Carousel.Content>
 			{#each galleryItems as galleryItem}
 				<Carousel.Item>
@@ -59,7 +75,10 @@
 						<img
 							alt=""
 							onclick={handleExpand}
-							class="h-full max-h-[600px] w-fit max-w-full cursor-pointer object-contain"
+							class={cn(
+								'h-full max-h-[600px] w-fit max-w-full cursor-pointer object-contain',
+								blur && 'pointer-events-none scale-90 blur-lg'
+							)}
 							src={mediaIdToURL(galleryItem.media_id)}
 						/>
 					</div>
@@ -69,7 +88,7 @@
 		<Carousel.Previous class="translate-x-12" />
 		<Carousel.Next class="-translate-x-12" />
 	</Carousel.Root>
-	<div class="mt-1.5 flex items-center justify-center">
+	<div class={'mt-1.5 flex items-center justify-center'}>
 		{#each { length: count } as _, idx}
 			<div
 				class={cn(

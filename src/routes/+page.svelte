@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { fetchListings } from '$lib/client';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+
 	import { subredditFilter, titleFilter } from '$lib/stores/filters';
+	import { fetchListings } from '$lib/client';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
@@ -12,14 +13,25 @@
 
 		if (!data || !data.data) return undefined;
 
-		const filteredChildren = data.data.children
-			?.filter((listing) => {
-				const subredditDisplayName = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
-				return subredditDisplayName ? !subredditFilter.includes(subredditDisplayName) : true;
-			})
-			.filter((listing) => {
-				return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
-			});
+		const filteredChildren = data.data.children?.filter((listing) => {
+			const listingTitle = listing.data.title.toLowerCase();
+			const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
+
+			if (subreddit && subredditFilter.includes(subreddit)) return false;
+			if (!titleFilter.every((title) => !title.toLowerCase().includes(listingTitle))) return false;
+
+			const { crosspost_parent, crosspost_parent_list } = listing.data;
+			const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
+			if (!crosspost) return true;
+
+			const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLocaleLowerCase();
+			const crossTitle = crosspost.title.toLowerCase();
+
+			if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
+			if (!titleFilter.every((title) => !title.toLowerCase().includes(crossTitle))) return false;
+
+			return true;
+		});
 
 		const filteredData: RedditListing<RedditT3DataWrapper> = {
 			kind: data.kind,

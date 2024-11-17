@@ -54,7 +54,7 @@
 		{:else if listing.post_hint == 'image' || urlIsImage}
 			<Image class="mt-2" url={listing.url} blur={listing.spoiler} />
 		{:else if listing.is_gallery}
-			<Gallery class="mt-2" post={listing} />
+			<Gallery class="mt-2" post={listing} blur={listing.spoiler} />
 		{:else if listing.post_hint == 'rich:video'}
 			<div class="mt-2 flex items-center justify-center">
 				<IFrame post={listing} />

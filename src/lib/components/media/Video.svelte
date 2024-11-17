@@ -46,6 +46,12 @@
 		audio.currentTime = audio.duration * (seek / 100);
 	};
 
+	const onFullscreen = async () => {
+		if (!video) return;
+
+		await video.requestFullscreen();
+	};
+
 	const onVolumeSeek = () => {
 		audio.volume = volume / 100;
 	};
@@ -65,8 +71,10 @@
 </script>
 
 <!-- svelte-ignore a11y_media_has_caption -->
-<div class={cn('relative max-h-[600px]', className)}>
-	<div class="absolute bottom-0 z-10 flex h-6 w-full items-center gap-2 px-2 py-4">
+<div class={cn('group relative max-h-[600px]', className)}>
+	<div
+		class="absolute bottom-0 z-10 flex h-6 w-full items-center gap-2 px-2 py-4 opacity-0 transition-all duration-500 ease-out group-hover:opacity-100"
+	>
 		<button onclick={onPlayChange}>
 			{#if !playing}
 				<Play size={20} />
@@ -74,13 +82,6 @@
 				<Pause size={20} />
 			{/if}
 		</button>
-
-		<input
-			type="range"
-			oninput={onSeek}
-			bind:value={seek}
-			class="video-track h-1.5 w-full rounded-md"
-		/>
 
 		<HoverCard.Root openDelay={100} closeDelay={250}>
 			<HoverCard.Trigger class="flex items-center">
@@ -105,6 +106,13 @@
 				/>
 			</HoverCard.Content>
 		</HoverCard.Root>
+
+		<input
+			type="range"
+			oninput={onSeek}
+			bind:value={seek}
+			class="video-track h-1.5 w-full rounded-md"
+		/>
 	</div>
 	<video
 		onended={() => (playing = false)}

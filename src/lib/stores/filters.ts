@@ -27,6 +27,7 @@ export const titleFilter = [
 ].map((x) => x.toLowerCase());
 
 export const subredditFilter = [
+	'r/USNewsHub',
 	'r/murderedbywords',
 	'r/blackpeopletwitter',
 	'r/ukrainewarvideoreport',
@@ -73,6 +74,10 @@ export const subredditFilter = [
 	'r/egg',
 	'r/rupaulsdragrace',
 	'r/ukraine',
+	'r/ufo',
+	'r/baseball',
+	'r/hasan_piker',
+	'r/meme',
 	'r/memes',
 	'r/selfawarewolves',
 	'r/therewasanattempt',
