@@ -36,7 +36,7 @@
 	{#each comments as _, idx}
 		{#if shelved && idx - 1 == shelfDepth}
 			<button
-				class="mt-1 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
+				class="mt-1.5 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
 				onclick={() => (shelved = false)}
 			>
 				<PlusCircled size={18} />
@@ -163,11 +163,7 @@
 							</div>
 						</div>
 
-						{#if comments[idx].replies.length}
-							<div class="mt-3 space-y-4">
-								<Self class="md:ml-2" bind:comments={comments[idx].replies} />
-							</div>
-						{/if}
+						<Self class="md:ml-2" bind:comments={comments[idx].replies} />
 					{/if}
 				</div>
 			{/if}
