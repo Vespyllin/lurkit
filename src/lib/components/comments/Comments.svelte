@@ -24,7 +24,7 @@
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
 
-	let shelved = $state(true);
+	let shelved = $state(!comments[0]?.depth);
 
 	const {
 		params: { subreddit, tag }
