@@ -31,7 +31,7 @@
 		<Header />
 		<div
 			data-sveltekit-preload-data="off"
-			class="mx-auto mt-16 max-w-full px-4 py-2 lg:max-w-4xl lg:px-8"
+			class="mx-auto mt-16 max-w-full px-4 py-2 md:max-w-4xl md:px-8"
 		>
 			{@render children?.()}
 		</div>

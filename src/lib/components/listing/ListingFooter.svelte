@@ -6,7 +6,7 @@
 	let { listing, class: className }: { listing: RedditT3Data; class?: string } = $props();
 </script>
 
-<div class={cn('flex gap-4 text-base font-medium text-zinc-200 lg:gap-10', className)}>
+<div class={cn('flex gap-4 text-base font-medium text-zinc-200 md:gap-10', className)}>
 	<div class="inline-flex items-center gap-1">
 		<ArrowUp size={20} />
 		<span>{listing.score.toLocaleString()}</span>
@@ -28,7 +28,7 @@
 		<span class="ml-1">{listing.num_comments.toLocaleString()}</span>
 	</div>
 
-	<div class="hidden w-full items-center lg:flex">
+	<div class="hidden w-full items-center md:flex">
 		<Separator class="h-0.5 bg-zinc-600" />
 	</div>
 </div>

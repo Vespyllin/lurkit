@@ -4,7 +4,7 @@
 	let { fetching, error }: { fetching: boolean; error: string | undefined } = $props();
 </script>
 
-<div class="mx-auto items-center py-24 text-center lg:max-w-5xl">
+<div class="mx-auto items-center py-24 text-center md:max-w-5xl">
 	{#if fetching}
 		<div class="mb-4 h-fit w-full">
 			<Spinner class="mx-auto size-24" />

@@ -43,7 +43,7 @@
 		<SubredditPopover {subreddit} />
 	{/if}
 
-	<div class="hidden gap-2 lg:flex">
+	<div class="hidden gap-2 md:flex">
 		•
 		<div class="flex items-center gap-1 text-zinc-400">
 			<span>
@@ -64,12 +64,12 @@
 	</div>
 
 	•
-	<span class="hidden text-zinc-400 lg:inline">
+	<span class="hidden text-zinc-400 md:inline">
 		{getTimeAgo(created_utc)}{#if edited}
 			*
 		{/if}
 	</span>
-	<span class="text-zinc-400 lg:hidden">
+	<span class="text-zinc-400 md:hidden">
 		{getTimeAgo(created_utc, true)}{#if edited}
 			*
 		{/if}
@@ -102,7 +102,7 @@
 				<LockClosed />
 			</div>
 
-			<span class="hidden text-zinc-400 lg:inline"> locked </span>
+			<span class="hidden text-zinc-400 md:inline"> locked </span>
 		</div>
 	{/if}
 
@@ -113,7 +113,7 @@
 				<DrawingPin />
 			</div>
 
-			<span class="hidden text-zinc-400 lg:inline"> pinned </span>
+			<span class="hidden text-zinc-400 md:inline"> pinned </span>
 		</div>
 	{/if}
 

@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
-	import Comments from '$lib/components/comments/';
+	import Comments, { assignCommentState } from '$lib/components/comments/';
 	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
@@ -17,14 +17,13 @@
 	let sort: RedditCommentSortOptions = $state('top');
 
 	let listing: RedditT3Data | undefined = $state();
-	let comments: RedditListing<RedditT1DataWrapper> | undefined = $state();
+	let comments: CommentsProps[] = $state([]);
 
-	const queryUrl = `/r/${subreddit}/comments/${tag}/${title}/`;
+	const queryUrl = `${subreddit}${tag}${title}`;
 	const listingQuery = useQuery(queryUrl, async () => {
-		const data = await fetchListingComments(queryUrl, sort);
+		const data = await fetchListingComments(subreddit, tag, title, sort);
 		if (!listing) listing = data?.[0].data?.children?.[0].data;
-		comments = data[1];
-		comments?.data?.children?.pop();
+		comments = assignCommentState(data[1]);
 
 		return data;
 	});
@@ -67,12 +66,10 @@
 			/>
 		{:else}
 			<div class="mt-3 space-y-4 pb-3">
-				{#if !comments?.data?.children || comments.data.children.length == 0}
+				{#if !comments.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					{#each comments.data.children as _, idx}
-						<Comments bind:comment={comments.data.children[idx]} />
-					{/each}
+					<Comments bind:comments />
 				{/if}
 			</div>
 		{/if}

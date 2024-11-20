@@ -8,12 +8,16 @@
 	import { fetchListings } from '$lib/client';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
 
+	const lastFetchedListingIds = new Set<string>();
+
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
 
 		if (!data || !data.data) return undefined;
 
 		const filteredChildren = data.data.children?.filter((listing) => {
+			if (lastFetchedListingIds.has(listing.data.name)) return false;
+
 			const listingTitle = listing.data.title.toLowerCase();
 			const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
@@ -32,6 +36,9 @@
 
 			return true;
 		});
+
+		lastFetchedListingIds.clear();
+		filteredChildren?.forEach((x) => lastFetchedListingIds.add(x.data.name));
 
 		const filteredData: RedditListing<RedditT3DataWrapper> = {
 			kind: data.kind,

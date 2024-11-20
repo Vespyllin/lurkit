@@ -1,3 +1,5 @@
+import { comment } from 'postcss';
+
 export const fetchListings = async (
 	subreddit?: string,
 	count?: number,
@@ -27,14 +29,16 @@ export const fetchListings = async (
 };
 
 export const fetchListingComments = async (
-	comment_uri: string,
+	subreddit: string,
+	tag: string,
+	title: string,
 	sort?: RedditCommentSortOptions
 ): Promise<RedditListingCommentsDataWrapper> => {
 	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;
 
-	const url = `${baseURL}${comment_uri}.json${queryParams}`;
+	const url = `${baseURL}/r/${subreddit}/comments/${tag}/${title}/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);
 	return await fetchRes.json();
@@ -48,4 +52,22 @@ export const fetchSubreddit = async (
 
 	const fetchRes = await fetch(url);
 	return await fetchRes.json();
+};
+
+export const fetchComment = async (
+	subreddit: string,
+	tag: string,
+	comment_id: string,
+	sort?: RedditCommentSortOptions
+): Promise<RedditListingCommentsDataWrapper> => {
+	const baseURL = 'https://www.reddit.com';
+	let queryParams = '?sr_detail=1';
+	if (sort) queryParams += `&sort=${sort}`;
+
+	const url = `${baseURL}/r/${subreddit}/comments/${tag}/comment/${comment_id}/.json${queryParams}`;
+
+	const fetchRes = await fetch(url);
+	const x = await fetchRes.json();
+	console.log(x);
+	return x;
 };

@@ -37,7 +37,7 @@
 		alt=""
 		class={cn(
 			'my-auto object-contain',
-			zoomed ? 'min-h-full cursor-zoom-out' : 'max-h-full cursor-zoom-in lg:max-w-[85%]'
+			zoomed ? 'min-h-full cursor-zoom-out' : 'max-h-full cursor-zoom-in md:max-w-[85%]'
 		)}
 		src={url}
 	/>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import Markdown from '../media/Markdown.svelte';
 
 	const { data, class: classList }: { data: RedditT5Data; class?: string } = $props();
@@ -69,5 +70,12 @@
 </div>
 
 {#if data.subreddit_type !== 'public'}
-	<h1 class="text-4xl font-semibold">-- Private Subreddit --</h1>
+	<h1
+		class={cn(
+			'text-4xl font-semibold capitalize',
+			data.subreddit_type !== 'private' && 'text-red-600'
+		)}
+	>
+		-- {data.subreddit_type} Subreddit --
+	</h1>
 {/if}
