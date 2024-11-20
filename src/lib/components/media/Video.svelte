@@ -12,6 +12,21 @@
 	let volume = $state(50);
 	let seek = $state(0);
 
+	const NaNtoZero = (x: number | undefined) => {
+		if (!x) return 0;
+		if (isNaN(x)) return 0;
+		else return x;
+	};
+
+	const formatPlaytime = (seconds: number) => {
+		const hours = Math.floor(seconds / 3600);
+		const minutes = Math.floor((seconds % 3600) / 60);
+		const secs = Math.floor(seconds % 60);
+		return hours > 0
+			? `${String(hours).padStart(1, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+			: `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+	};
+
 	const audio = new Audio(`${url}/DASH_AUDIO_64.mp4`);
 
 	const onPlayChange = async () => {
@@ -72,6 +87,20 @@
 
 <!-- svelte-ignore a11y_media_has_caption -->
 <div class={cn('group relative max-h-[600px]', className)}>
+	{#if !playing}
+		<!-- <button class="absolute z-10 h-full w-full content-center opacity-75" onclick={onPlayChange}> -->
+		<!-- onclick={onPlayChange} -->
+
+		<button
+			class="absolute z-10 flex h-full w-full items-center gap-2 px-2 py-4 opacity-75 hover:opacity-0"
+			onclick={onPlayChange}
+		>
+			<div class="translate-x-[calc(100%+30px)]">
+				<Play size={250} />
+			</div>
+		</button>
+	{/if}
+
 	<div
 		class="absolute bottom-0 z-10 flex h-6 w-full items-center gap-2 px-2 py-4 opacity-0 transition-all duration-500 ease-out group-hover:opacity-100"
 	>
@@ -94,8 +123,10 @@
 				</button>
 			</HoverCard.Trigger>
 			<HoverCard.Content
-				class="h-fit w-fit border-none bg-transparent p-1"
+				class="z-0 h-fit w-fit border-none bg-transparent p-1"
 				side="top"
+				avoidCollisions={false}
+				collisionPadding={0}
 				sideOffset={20}
 			>
 				<input
@@ -107,6 +138,14 @@
 			</HoverCard.Content>
 		</HoverCard.Root>
 
+		{#if seek && !isNaN(video?.duration ?? NaN)}
+			<span>
+				{formatPlaytime((NaNtoZero(video?.duration) * seek) / 100)}/{formatPlaytime(
+					NaNtoZero(video?.duration) * NaNtoZero(seek / seek)
+				)}
+			</span>
+		{/if}
+
 		<input
 			type="range"
 			oninput={onSeek}
@@ -114,6 +153,7 @@
 			class="video-track h-1.5 w-full rounded-md"
 		/>
 	</div>
+
 	<video
 		onended={() => (playing = false)}
 		onwaiting={() => {

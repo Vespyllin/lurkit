@@ -2,10 +2,10 @@
 
 Skeleton comments & posts (for listings, put an image, article and textpost placeholder)
 
-rewrite flex items-center to content-center
+add duration to video from json
 
-fullscreen to the right  
-audio next to the play button  
+fullscreen to the right
+
 keydown handler  
 search bar  
 custom subreddit colors (use global store)
