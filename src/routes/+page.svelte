@@ -18,17 +18,17 @@
 			const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
 			if (subreddit && subredditFilter.includes(subreddit)) return false;
-			if (!titleFilter.every((title) => !title.toLowerCase().includes(listingTitle))) return false;
+			if (!titleFilter.every((title) => !listingTitle.toLowerCase().includes(title))) return false;
 
 			const { crosspost_parent, crosspost_parent_list } = listing.data;
 			const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
 			if (!crosspost) return true;
 
-			const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLocaleLowerCase();
+			const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
 			const crossTitle = crosspost.title.toLowerCase();
 
 			if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
-			if (!titleFilter.every((title) => !title.toLowerCase().includes(crossTitle))) return false;
+			if (!titleFilter.every((title) => !crossTitle.toLowerCase().includes(title))) return false;
 
 			return true;
 		});

@@ -1,23 +1,15 @@
 # lurkit - TODOs:
 
-auth and blacklist
+Skeleton comments & posts (for listings, put an image, article and textpost placeholder)
 
-SKELETON LOADING STATE
+rewrite flex items-center to content-center
 
-svelte query, rewrite store to just store (no fetching)
-
-fullscreen to the right
-audio next to the play button
-keydown handler
-
-filter crossposts from banned subreddits or containing bad titles
-
-search bar for subreddits  
-remove subreddit from listing header if in subreddit
+fullscreen to the right  
+audio next to the play button  
+keydown handler  
+search bar  
 custom subreddit colors (use global store)
 
-fix clamped portal content clipping
 expanded gallery  
-rewrite zoomable image component
-
-tooltip for edited
+rewrite zoomable image component  
+tooltip showing date for edited entries
