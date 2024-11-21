@@ -1,4 +1,4 @@
-<div class="fixed z-50 flex h-14 w-full border-b-2 bg-background p-8">
+<div class="fixed z-20 flex h-14 w-full border-b-2 bg-background p-8">
 	<div class="mx-auto flex w-full items-center gap-4">
 		<a class="flex items-center gap-4" href="/" data-sveltekit-reload>
 			<img alt="" src="/favicon.png" class="size-10" />

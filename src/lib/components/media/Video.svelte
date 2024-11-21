@@ -69,6 +69,7 @@
 
 	const onVolumeSeek = () => {
 		audio.volume = volume / 100;
+		muted = false;
 	};
 
 	onMount(() => {
@@ -88,15 +89,12 @@
 <!-- svelte-ignore a11y_media_has_caption -->
 <div class={cn('group relative max-h-[600px]', className)}>
 	{#if !playing}
-		<!-- <button class="absolute z-10 h-full w-full content-center opacity-75" onclick={onPlayChange}> -->
-		<!-- onclick={onPlayChange} -->
-
 		<button
-			class="absolute z-10 flex h-full w-full items-center gap-2 px-2 py-4 opacity-75 hover:opacity-0"
+			class="absolute z-10 flex h-full w-full items-center gap-2 px-2 py-4 opacity-60 hover:opacity-0"
 			onclick={onPlayChange}
 		>
-			<div class="translate-x-[calc(100%+30px)]">
-				<Play size={250} />
+			<div class="mx-auto">
+				<Play size={150} />
 			</div>
 		</button>
 	{/if}
@@ -123,7 +121,7 @@
 				</button>
 			</HoverCard.Trigger>
 			<HoverCard.Content
-				class="z-0 h-fit w-fit border-none bg-transparent p-1"
+				class="z-10 h-fit  w-fit border-none bg-transparent p-1"
 				side="top"
 				avoidCollisions={false}
 				collisionPadding={0}

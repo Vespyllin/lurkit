@@ -12,7 +12,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class={cn(
-		'fixed left-0 top-0 z-20 flex h-lvh w-lvw justify-center overflow-auto bg-background',
+		'fixed left-0 top-0 z-30 flex h-lvh w-lvw justify-center overflow-auto bg-background',
 		!zoomed ? 'items-center' : 'items-baseline'
 	)}
 	onclick={() => {
