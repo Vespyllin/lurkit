@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	import { fetchListings, fetchSubreddit } from '$lib/client';
-	import { subredditFilter, titleFilter } from '$lib/stores/filters';
+	import { subredditFilter, titleFilter } from '$lib/filters';
 
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
@@ -10,7 +10,6 @@
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import SubredditBanner from '$lib/components/subreddit/SubredditBanner.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { goto } from '$app/navigation';
 	import { CaretDown, Star, Rocket, LightningBolt, DoubleArrowUp, Gear } from 'radix-icons-svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';

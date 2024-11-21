@@ -4,7 +4,5 @@
 			<img alt="" src="/favicon.png" class="size-10" />
 			<h1 class="text-3xl font-semibold tracking-tight">Lurkit</h1>
 		</a>
-
-		<div class="ml-auto rounded-md bg-primary px-2.5 py-1.5 font-semibold">Sign in</div>
 	</div>
 </div>

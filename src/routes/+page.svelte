@@ -4,7 +4,7 @@
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
-	import { subredditFilter, titleFilter } from '$lib/stores/filters';
+	import { subredditFilter, titleFilter } from '$lib/filters';
 	import { fetchListings } from '$lib/client';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
 

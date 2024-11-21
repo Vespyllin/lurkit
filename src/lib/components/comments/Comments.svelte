@@ -54,9 +54,9 @@
 					<span>View {comments[idx].count} more comment{comments[idx].count == 1 ? '' : 's'}</span>
 				</a>
 			{:else if comments[idx].kind == 't1'}
-				<div class={cn('mt-2 border-l-2 pl-3 text-base hover:border-accent', className)}>
+				<div class={cn('mt-2.5 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
-						class="flex h-fit cursor-pointer gap-1.5 text-lg leading-tight md:gap-2"
+						class="flex h-full w-full cursor-pointer gap-1.5 text-lg leading-tight md:gap-2"
 						onclick={() => {
 							(comments[idx] as T1CommentProp).folded = !(comments[idx] as T1CommentProp).folded;
 						}}
@@ -121,11 +121,13 @@
 
 						{#if comments[idx].author_flair_richtext && comments[idx].author_flair_richtext.length > 0}
 							<div
-								class="flex h-full w-fit items-center rounded-2xl bg-secondary px-2 py-0.5 text-sm"
+								class="flex h-full w-fit max-w-72 items-center rounded-2xl bg-secondary px-2 py-0.5 text-sm"
 							>
 								{#each comments[idx].author_flair_richtext as flair}
 									{#if flair.e == 'text'}
-										<span class="[&:not(:first-child)]:ml-1">
+										<span
+											class="overflow-hidden text-ellipsis whitespace-nowrap break-all [&:not(:first-child)]:ml-1.5"
+										>
 											{cleanText(flair.t!)}
 										</span>
 									{:else if flair.e == 'emoji'}
