@@ -44,13 +44,13 @@
 		playing = !playing;
 	};
 
-	const toggleAudioMute = async () => {
+	const toggleMute = async () => {
 		if (muted) {
 			audio.currentTime = audio.duration * (seek / 100);
-			if (playing) {
-				await audio.play();
-			}
-		} else audio.pause();
+			if (playing) await audio.play();
+		} else {
+			audio.pause();
+		}
 		muted = !muted;
 	};
 
@@ -61,15 +61,15 @@
 		audio.currentTime = audio.duration * (seek / 100);
 	};
 
-	const onFullscreen = async () => {
-		if (!video) return;
+	// const onFullscreen = async () => {
+	// 	if (!video) return;
 
-		await video.requestFullscreen();
-	};
+	// 	await video.requestFullscreen();
+	// };
 
 	const onVolumeSeek = () => {
 		audio.volume = volume / 100;
-		muted = false;
+		if (muted) toggleMute();
 	};
 
 	onMount(() => {
@@ -112,7 +112,7 @@
 
 		<HoverCard.Root openDelay={100} closeDelay={250}>
 			<HoverCard.Trigger class="flex items-center">
-				<button onclick={toggleAudioMute}>
+				<button onclick={toggleMute}>
 					{#if !muted}
 						<SpeakerLoud size={20} />
 					{:else}
