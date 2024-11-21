@@ -32,24 +32,28 @@
 <div>
 	{#each comments as _, idx}
 		{#if shelved && idx - 1 == shelfDepth && comments[idx].depth != 0}
+			{@const hasMore = !!comments.find((x) => x.kind == 'more')}
 			<button
 				class="mt-1.5 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
 				onclick={() => (shelved = false)}
 			>
 				<PlusCircled size={18} />
-				<span> Expand {(comments.length - shelfDepth - 1).toLocaleString()} more</span>
+				<span>
+					Expand {(comments.length - shelfDepth - 1).toLocaleString()}{hasMore ? '+' : ''} more</span
+				>
 			</button>
 		{:else if !shelved || idx < shelfDepth || comments[idx].depth == 0}
-			{#if comments[idx].kind == 'more'}
+			<!-- ^ Hidden for base listing of comments as the "view more" functionality does not currently work -->
+			{#if comments[idx].kind == 'more' && idx != 0}
 				{@const parent_id = comments[idx].parent_id.split('_')[1]}
 				<a
 					href={`/r/${subreddit}/comments/${tag}/comment/${parent_id}`}
 					class="mt-1 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline md:w-fit"
 				>
 					<ArrowRight size={18} />
-					<span>View {comments[idx].count} more comments</span>
+					<span>View {comments[idx].count} more comment{comments[idx].count == 1 ? '' : 's'}</span>
 				</a>
-			{:else}
+			{:else if comments[idx].kind == 't1'}
 				<div class={cn('mt-2 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
 						class="flex h-fit cursor-pointer gap-1.5 text-lg leading-tight md:gap-2"

@@ -10,7 +10,7 @@ export const assignCommentState = (
 	if (!parent.data?.children) return [];
 	const comments = parent.data.children;
 
-	return comments.map((comment) => {
+	return comments.map((comment, idx) => {
 		if (comment.kind == 'more') {
 			const { id, parent_id, depth, children, count } = comment.data;
 			return { kind: comment.kind, id, parent_id, depth, children, count };
@@ -58,7 +58,7 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
-			folded: depth >= foldedDepth,
+			folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
 			replies: replies ? assignCommentState(replies) : []
 		};
 	});
