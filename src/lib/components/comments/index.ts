@@ -6,7 +6,7 @@ const foldedDepth = !isNaN(FOLDED_COMMENT_DEPTH) ? FOLDED_COMMENT_DEPTH : 1;
 
 export const assignCommentState = (
 	parent: RedditListing<RedditT1DataWrapper | RedditMoreDataWrapper>
-): CommentsProps[] => {
+): CommentsProp[] => {
 	if (!parent.data?.children) return [];
 	const comments = parent.data.children;
 

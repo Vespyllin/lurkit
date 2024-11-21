@@ -17,7 +17,7 @@
 	let sort: RedditCommentSortOptions = $state('top');
 
 	let listing: RedditT3Data | undefined = $state();
-	let comments: CommentsProps[] = $state([]);
+	let comments: CommentsProp[] = $state([]);
 
 	const queryUrl = `${subreddit}${tag}${title}`;
 	const listingQuery = useQuery(queryUrl, async () => {

@@ -16,10 +16,8 @@
 	import { PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
 	import { page } from '$app/stores';
 
-	const {
-		comments = $bindable(),
-		class: className
-	}: { comments: CommentsProps[]; class?: string } = $props();
+	const { comments = $bindable(), class: className }: { comments: CommentsProp[]; class?: string } =
+		$props();
 
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
@@ -31,10 +29,9 @@
 	} = $page;
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div>
 	{#each comments as _, idx}
-		{#if shelved && idx - 1 == shelfDepth}
+		{#if shelved && idx - 1 == shelfDepth && comments[idx].depth != 0}
 			<button
 				class="mt-1.5 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline lg:w-fit"
 				onclick={() => (shelved = false)}
@@ -44,8 +41,9 @@
 			</button>
 		{:else if !shelved || idx < shelfDepth || comments[idx].depth == 0}
 			{#if comments[idx].kind == 'more'}
+				{@const parent_id = comments[idx].parent_id.split('_')[1]}
 				<a
-					href={`/r/${subreddit}/comments/${tag}/comment/${comments[idx].parent_id.split('_')[1]}`}
+					href={`/r/${subreddit}/comments/${tag}/comment/${parent_id}`}
 					class="mt-1 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline md:w-fit"
 				>
 					<ArrowRight size={18} />
@@ -53,13 +51,10 @@
 				</a>
 			{:else}
 				<div class={cn('mt-2 border-l-2 pl-3 text-base hover:border-accent', className)}>
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<div
+					<button
 						class="flex h-fit cursor-pointer gap-1.5 text-lg leading-tight md:gap-2"
 						onclick={() => {
-							if (comments[idx].kind == 't1') {
-								comments[idx].folded = !comments[idx].folded;
-							}
+							(comments[idx] as T1CommentProp).folded = !(comments[idx] as T1CommentProp).folded;
 						}}
 					>
 						<span
@@ -69,15 +64,14 @@
 							)}
 						>
 							<span>{comments[idx].author}</span>
+
 							{#if comments[idx].distinguished}
 								{#if comments[idx].distinguished == 'moderator'}
 									<MagicWand />
 								{:else if comments[idx].distinguished == 'admin'}
 									<VercelLogo />
 								{:else}
-									<span class="capitalize">
-										({comments[idx].distinguished})
-									</span>
+									<span class="capitalize">({comments[idx].distinguished})</span>
 								{/if}
 							{/if}
 						</span>
@@ -114,9 +108,11 @@
 						<div class="text-zinc-400">
 							<span class="hidden md:inline">
 								{getTimeAgo(comments[idx].created_utc)}
-							</span><span class="inline md:hidden">
+							</span>
+							<span class="inline md:hidden">
 								{getTimeAgo(comments[idx].created_utc, true)}
-							</span>{#if comments[idx].edited}<span>*</span>{/if}
+							</span>
+							{#if comments[idx].edited}<span>*</span>{/if}
 						</div>
 
 						{#if comments[idx].author_flair_richtext && comments[idx].author_flair_richtext.length > 0}
@@ -134,7 +130,7 @@
 								{/each}
 							</div>
 						{/if}
-					</div>
+					</button>
 
 					{#if !comments[idx].folded}
 						<div class="mt-2 min-h-4 max-w-[calc(100lvw-3rem)]">
