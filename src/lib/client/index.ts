@@ -1,5 +1,3 @@
-import { comment } from 'postcss';
-
 export const fetchListings = async (
 	subreddit?: string,
 	count?: number,

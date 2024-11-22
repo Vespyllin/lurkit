@@ -60,8 +60,7 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
-			// folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
-			folded: false,
+			folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
 			replies: replies ? assignCommentState(replies) : []
 		};
 	});
