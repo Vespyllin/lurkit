@@ -67,7 +67,5 @@ export const fetchComment = async (
 	const url = `${baseURL}/r/${subreddit}/comments/${tag}/comment/${comment_id}/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);
-	const x = await fetchRes.json();
-	console.log(x);
-	return x;
+	return await fetchRes.json();
 };

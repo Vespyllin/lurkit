@@ -19,6 +19,7 @@ export const assignCommentState = (
 		const {
 			author,
 			author_flair_richtext,
+			author_flair_background_color,
 			archived,
 			body_html,
 			created_utc,
@@ -42,6 +43,7 @@ export const assignCommentState = (
 			kind: comment.kind,
 			author,
 			author_flair_richtext,
+			author_flair_background_color,
 			archived,
 			body_html,
 			created_utc,
@@ -58,7 +60,8 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
-			folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
+			// folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
+			folded: false,
 			replies: replies ? assignCommentState(replies) : []
 		};
 	});

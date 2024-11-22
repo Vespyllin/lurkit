@@ -46,12 +46,12 @@ type RedditT1Data = RedditListingBaseData & {
 	body_html: string;
 	removal_reason: null;
 	collapsed_reason: null;
-	distinguished?: 'moderator' | string;
+	distinguished: 'moderator' | string | undefined;
 	associated_award: null;
 	stickied: boolean;
 	gildings: Record<string, any>;
 	unrepliable_reason: null;
-	author_flair_text_color: null;
+	author_flair_text_color: string | undefined;
 	score_hidden: boolean;
 	report_reasons: null;
 	created: number;
@@ -60,7 +60,7 @@ type RedditT1Data = RedditListingBaseData & {
 	link_id: string;
 	controversiality: number;
 	depth: number;
-	author_flair_background_color: null;
+	author_flair_background_color: string | undefined;
 	collapsed_because_crowd_control: null;
 	mod_reports: any[];
 	num_reports: null;

@@ -11,6 +11,7 @@ type T1CommentProp = {
 	kind: 't1';
 	author: string;
 	author_flair_richtext: any[];
+	author_flair_background_color: string | undefined;
 	archived: boolean;
 	body_html: string;
 	created_utc: number;

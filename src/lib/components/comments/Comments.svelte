@@ -122,6 +122,7 @@
 						{#if comments[idx].author_flair_richtext && comments[idx].author_flair_richtext.length > 0}
 							<div
 								class="flex h-full w-fit max-w-72 items-center rounded-2xl bg-secondary px-2 py-0.5 text-sm"
+								style="background-color: {comments[idx].author_flair_background_color};"
 							>
 								{#each comments[idx].author_flair_richtext as flair}
 									{#if flair.e == 'text'}
