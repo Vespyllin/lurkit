@@ -112,11 +112,9 @@
 						<div class="text-zinc-400">
 							<span class="hidden md:inline">
 								{getTimeAgo(comments[idx].created_utc)}
-							</span>
-							<span class="inline md:hidden">
+							</span><span class="inline md:hidden">
 								{getTimeAgo(comments[idx].created_utc, true)}
-							</span>
-							{#if comments[idx].edited}<span>*</span>{/if}
+							</span>{#if comments[idx].edited}<span>*</span>{/if}
 						</div>
 
 						{#if comments[idx].author_flair_richtext && comments[idx].author_flair_richtext.length > 0}
@@ -145,7 +143,8 @@
 					</button>
 
 					{#if !comments[idx].folded}
-						<div class="mt-2 min-h-4 max-w-[calc(100lvw-3rem)]">
+						<!-- max-w-[calc(100lvw-3rem)] -->
+						<div class="mt-1.5 min-h-4">
 							<div class="text-wrap break-words text-base text-zinc-200">
 								<Markdown text={comments[idx].body_html} />
 							</div>

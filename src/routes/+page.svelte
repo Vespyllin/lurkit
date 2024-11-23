@@ -37,7 +37,6 @@
 			return true;
 		});
 
-		lastFetchedListingIds.clear();
 		filteredChildren?.forEach((x) => lastFetchedListingIds.add(x.data.name));
 
 		const filteredData: RedditListing<RedditT3DataWrapper> = {

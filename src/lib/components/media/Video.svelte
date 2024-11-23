@@ -46,9 +46,14 @@
 
 	const toggleMute = async () => {
 		if (muted) {
+			console.log('IN UNMUTING');
 			audio.currentTime = audio.duration * (seek / 100);
-			if (playing) await audio.play();
+			if (playing) {
+				console.log('UNMUTING');
+				await audio.play();
+			}
 		} else {
+			console.log('MUTING');
 			audio.pause();
 		}
 		muted = !muted;
@@ -62,29 +67,12 @@
 	};
 
 	const handleNetworkStop = () => {
-		if (!video) return;
-
-		if (video.readyState < 2) {
-			audio.pause();
-			video.pause();
-		} else if (audio.readyState < 2) {
-			audio.pause();
-			video.pause();
-		}
+		if (audio.currentTime < audio.duration * (seek / 100))
+			audio.currentTime = audio.duration * (seek / 100);
 	};
 	const handleNetworkStart = () => {
-		if (!video) return;
-		if (!playing) return;
-
-		if (video.readyState > 2) {
-			console.log('video caught up, resuming audio');
-			audio.play();
-			video.play();
-		} else if (audio.readyState > 2) {
-			console.log('audio caught up, resuming video');
-			audio.play();
-			video.play();
-		}
+		if (audio.currentTime < audio.duration * (seek / 100))
+			audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	audio.onwaiting = handleNetworkStop;

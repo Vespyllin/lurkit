@@ -29,7 +29,7 @@
 			</div>
 
 			<div>
-				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name}</h2>
+				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name_prefixed}</h2>
 				<div class="text-zinc-400">
 					{#if !subreddit.public_description}
 						none
