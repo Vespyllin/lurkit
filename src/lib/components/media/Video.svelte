@@ -61,11 +61,40 @@
 		audio.currentTime = audio.duration * (seek / 100);
 	};
 
-	// const onFullscreen = async () => {
-	// 	if (!video) return;
+	const handleNetworkStop = () => {
+		if (!video) return;
 
-	// 	await video.requestFullscreen();
-	// };
+		if (video.readyState < 2) {
+			audio.pause();
+			video.pause();
+		} else if (audio.readyState < 2) {
+			audio.pause();
+			video.pause();
+		}
+	};
+	const handleNetworkStart = () => {
+		if (!video) return;
+		if (!playing) return;
+
+		if (video.readyState > 2) {
+			console.log('video caught up, resuming audio');
+			audio.play();
+			video.play();
+		} else if (audio.readyState > 2) {
+			console.log('audio caught up, resuming video');
+			audio.play();
+			video.play();
+		}
+	};
+
+	audio.onwaiting = handleNetworkStop;
+	audio.oncanplay = handleNetworkStart;
+
+	// document.addEventListener('keydown', (e) => {
+	// 	if (e.key == 'f') {
+	// 		video?.requestFullscreen();
+	// 	}
+	// });
 
 	const onVolumeSeek = () => {
 		audio.volume = volume / 100;
@@ -154,11 +183,8 @@
 
 	<video
 		onended={() => (playing = false)}
-		onwaiting={() => {
-			if (!video) return;
-			if (video.readyState < 2) console.log('waiting on network');
-		}}
-		oncanplay={() => {}}
+		onwaiting={handleNetworkStop}
+		oncanplay={handleNetworkStart}
 		onclick={onPlayChange}
 		ontimeupdate={() => {
 			if (!video) return;
