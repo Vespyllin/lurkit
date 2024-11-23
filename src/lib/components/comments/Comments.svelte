@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cleanText, getTimeAgo } from '$lib';
+	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
 	import { cn } from '$lib/utils';
 	import {
 		ArrowUp,
@@ -127,7 +127,12 @@
 								{#each comments[idx].author_flair_richtext as flair}
 									{#if flair.e == 'text'}
 										<span
-											class="overflow-hidden text-ellipsis whitespace-nowrap break-all [&:not(:first-child)]:ml-1.5"
+											class={cn(
+												'overflow-hidden text-ellipsis whitespace-nowrap break-all [&:not(:first-child)]:ml-1.5',
+												comments[idx].author_flair_background_color &&
+													!isDarkHex(comments[idx].author_flair_background_color) &&
+													'text-zinc-900'
+											)}
 										>
 											{cleanText(flair.t!)}
 										</span>

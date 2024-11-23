@@ -65,7 +65,7 @@
 				error={$listingQuery.error as string | undefined}
 			/>
 		{:else}
-			<div class="mt-3 space-y-4 pb-3">
+			<div class="mt-1 space-y-4 pb-3">
 				{#if !comments.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
