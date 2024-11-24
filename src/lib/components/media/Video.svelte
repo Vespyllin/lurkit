@@ -127,32 +127,33 @@
 			{/if}
 		</button>
 
-		<HoverCard.Root openDelay={100} closeDelay={250}>
-			<HoverCard.Trigger class="flex items-center">
-				<button onclick={toggleMute}>
-					{#if !muted}
-						<SpeakerLoud size={20} />
-					{:else}
-						<SpeakerOff size={20} />
-					{/if}
-				</button>
-			</HoverCard.Trigger>
-			<HoverCard.Content
-				class="z-10 h-fit  w-fit border-none bg-transparent p-1"
-				side="top"
-				avoidCollisions={false}
-				collisionPadding={0}
-				sideOffset={20}
-			>
-				<input
-					oninput={onVolumeSeek}
-					bind:value={volume}
-					class="vertical-slider h-[100px]"
-					type="range"
-				/>
-			</HoverCard.Content>
-		</HoverCard.Root>
-
+		{#if audio.readyState !== 0}
+			<HoverCard.Root openDelay={100} closeDelay={250}>
+				<HoverCard.Trigger class="flex items-center">
+					<button onclick={toggleMute}>
+						{#if !muted}
+							<SpeakerLoud size={20} />
+						{:else}
+							<SpeakerOff size={20} />
+						{/if}
+					</button>
+				</HoverCard.Trigger>
+				<HoverCard.Content
+					class="z-10 h-fit  w-fit border-none bg-transparent p-1"
+					side="top"
+					avoidCollisions={false}
+					collisionPadding={0}
+					sideOffset={20}
+				>
+					<input
+						oninput={onVolumeSeek}
+						bind:value={volume}
+						class="vertical-slider h-[100px]"
+						type="range"
+					/>
+				</HoverCard.Content>
+			</HoverCard.Root>
+		{/if}
 		{#if seek && !isNaN(video?.duration ?? NaN)}
 			<span>
 				{formatPlaytime((NaNtoZero(video?.duration) * seek) / 100)}/{formatPlaytime(

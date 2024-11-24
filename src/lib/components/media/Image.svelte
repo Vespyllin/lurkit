@@ -31,7 +31,12 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class={cn('flex items-center justify-center', className)}>
+<div
+	class={cn(
+		'mx-auto flex h-[600px] max-h-fit items-center justify-center overflow-hidden',
+		className
+	)}
+>
 	{#if error}
 		<div class="flex h-20 items-center gap-2 text-xl">
 			<p class="p-1.5 text-zinc-300">Error loading image</p>
@@ -52,7 +57,7 @@
 	{:else}
 		{#if blur}
 			<button
-				class="absolute z-10 h-fit rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
+				class="absolute z-10 mx-auto h-fit rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
 				onclick={() => {
 					blur = false;
 				}}
@@ -63,10 +68,7 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
-			class={cn(
-				'max-h-fit cursor-pointer object-contain md:max-h-[600px]',
-				blur && 'pointer-events-none scale-90 blur-lg'
-			)}
+			class={cn('h-full cursor-pointer', blur && 'pointer-events-none blur-xl')}
 			src={url}
 			onclick={handleClick}
 			onerror={() => (error = true)}
