@@ -2,13 +2,18 @@
 	import { cn } from '$lib/utils';
 	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import * as HoverCard from '../ui/hover-card';
+	// import * as HoverCard from '../ui/hover-card';
 
-	let { url, class: className }: { url: string; class?: string } = $props();
+	let {
+		url,
+		mediaData,
+		class: className
+	}: { url: string; mediaData?: any | undefined; class?: string } = $props();
 
 	let video: HTMLVideoElement | undefined = $state();
 	let playing = $state(false);
-	let muted = $state(true);
+	let hasAudio = $state(true);
+	let muted = $state(false);
 	let volume = $state(50);
 	let seek = $state(0);
 
@@ -37,23 +42,17 @@
 			audio.pause();
 		} else {
 			await video.play();
-			if (!muted) {
-				await audio.play();
-			}
+			if (!muted) await audio.play();
 		}
 		playing = !playing;
 	};
 
 	const toggleMute = async () => {
 		if (muted) {
-			console.log('IN UNMUTING');
-			audio.currentTime = audio.duration * (seek / 100);
-			if (playing) {
-				console.log('UNMUTING');
-				await audio.play();
-			}
+			audio.volume = volume / 100;
+			if (playing) await audio.play();
 		} else {
-			console.log('MUTING');
+			audio.volume = 0;
 			audio.pause();
 		}
 		muted = !muted;
@@ -70,19 +69,15 @@
 		if (audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
 	};
+
 	const handleNetworkStart = () => {
-		if (audio.currentTime < audio.duration * (seek / 100))
+		if ((video?.readyState ?? 0) > 2 && audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	audio.onwaiting = handleNetworkStop;
 	audio.oncanplay = handleNetworkStart;
-
-	// document.addEventListener('keydown', (e) => {
-	// 	if (e.key == 'f') {
-	// 		video?.requestFullscreen();
-	// 	}
-	// });
+	audio.onerror = () => (hasAudio = false);
 
 	const onVolumeSeek = () => {
 		audio.volume = volume / 100;
@@ -103,23 +98,9 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y_media_has_caption -->
-<div class={cn('group relative max-h-[600px]', className)}>
-	{#if !playing}
-		<button
-			class="absolute z-10 flex h-full w-full items-center gap-2 px-2 py-4 opacity-60 hover:opacity-0"
-			onclick={onPlayChange}
-		>
-			<div class="mx-auto">
-				<Play size={150} />
-			</div>
-		</button>
-	{/if}
-
-	<div
-		class="absolute bottom-0 z-10 flex h-6 w-full items-center gap-2 px-2 py-4 opacity-0 transition-all duration-500 ease-out group-hover:opacity-100"
-	>
-		<button onclick={onPlayChange}>
+<div class={cn('relative max-h-[600px]', className)}>
+	<div class="absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-1">
+		<button class="h-7" onclick={onPlayChange}>
 			{#if !playing}
 				<Play size={20} />
 			{:else}
@@ -127,49 +108,43 @@
 			{/if}
 		</button>
 
-		{#if audio.readyState !== 0}
-			<HoverCard.Root openDelay={100} closeDelay={250}>
-				<HoverCard.Trigger class="flex items-center">
-					<button onclick={toggleMute}>
-						{#if !muted}
-							<SpeakerLoud size={20} />
-						{:else}
-							<SpeakerOff size={20} />
-						{/if}
-					</button>
-				</HoverCard.Trigger>
-				<HoverCard.Content
-					class="z-10 h-fit  w-fit border-none bg-transparent p-1"
-					side="top"
-					avoidCollisions={false}
-					collisionPadding={0}
-					sideOffset={20}
-				>
+		{#if hasAudio}
+			<div class="group flex flex-col">
+				<div class="group-hover hidden h-32 py-1 align-middle group-hover:flex">
 					<input
 						oninput={onVolumeSeek}
 						bind:value={volume}
-						class="vertical-slider h-[100px]"
+						class="vertical-slider mx-auto h-28"
 						type="range"
 					/>
-				</HoverCard.Content>
-			</HoverCard.Root>
-		{/if}
-		{#if seek && !isNaN(video?.duration ?? NaN)}
-			<span>
-				{formatPlaytime((NaNtoZero(video?.duration) * seek) / 100)}/{formatPlaytime(
-					NaNtoZero(video?.duration) * NaNtoZero(seek / seek)
-				)}
-			</span>
+				</div>
+				<button class="h-7" onclick={toggleMute}>
+					{#if !muted}
+						<SpeakerLoud size={20} />
+					{:else}
+						<SpeakerOff size={20} />
+					{/if}
+				</button>
+			</div>
 		{/if}
 
-		<input
-			type="range"
-			oninput={onSeek}
-			bind:value={seek}
-			class="video-track h-1.5 w-full rounded-md"
-		/>
+		<span class="flex h-7 items-center">
+			{formatPlaytime((NaNtoZero(video?.duration) * seek) / 100)}/{formatPlaytime(
+				NaNtoZero(mediaData?.duration ?? video?.duration ?? 0)
+			)}
+		</span>
+
+		<div class="h-6 w-full content-center">
+			<input
+				type="range"
+				oninput={onSeek}
+				bind:value={seek}
+				class="video-track w-full rounded-md"
+			/>
+		</div>
 	</div>
 
+	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
 		onended={() => (playing = false)}
 		onwaiting={handleNetworkStop}

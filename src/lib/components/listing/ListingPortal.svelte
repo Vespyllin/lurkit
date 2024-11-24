@@ -48,7 +48,7 @@
 				<Self listing={crosspost} />
 			</div>
 		{:else if listing.is_video}
-			<Video class="mt-2" url={listing.url} />
+			<Video class="mt-2" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
 		{:else if listing.url.includes('.gifv')}
 			<Video class="mt-2" url={listing.url.replace('.gifv', '.mp4')} />
 		{:else if listing.post_hint == 'image' || urlIsImage}

@@ -52,7 +52,7 @@
 			</div>
 		{:else if listing.is_video}
 			<div>
-				<Video url={listing.url} />
+				<Video url={listing.url} mediaData={listing.secure_media?.reddit_video} />
 			</div>
 		{:else if listing.url.includes('.gifv')}
 			<Video url={listing.url.replace('.gifv', '.mp4')} />

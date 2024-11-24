@@ -37,7 +37,21 @@ type RedditT3Data = RedditListingBaseData & {
 	author_flair_template_id: string;
 	is_original_content: boolean;
 	user_reports?: string[];
-	secure_media?: null;
+	secure_media?: {
+		reddit_video?: {
+			bitrate_kbps: number;
+			fallback_url: string;
+			has_audio: true;
+			height: number;
+			width: number;
+			scrubber_media_url: string;
+			dash_url: string;
+			duration: number;
+			hls_url: string;
+			is_gif: boolean;
+			transcoding_status: string;
+		};
+	};
 	is_reddit_media_domain: boolean;
 	is_meta: boolean;
 	category?: null;
