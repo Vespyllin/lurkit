@@ -30,10 +30,10 @@
 		let innerHeight = 0;
 		let thresholdCrossed = false;
 
-		children.forEach((_child) => {
+		children.forEach((_child, idx) => {
 			const child = _child as HTMLElement;
 
-			innerHeight += child.clientHeight ?? 0;
+			innerHeight += (child.clientHeight ?? 0) + (idx == 0 ? 0 : 10); // Needed extra padding for some reason (maybe because of space-y-2)
 
 			if (thresholdCrossed || innerHeight > boundingContainer.clientHeight) {
 				thresholdCrossed = true;

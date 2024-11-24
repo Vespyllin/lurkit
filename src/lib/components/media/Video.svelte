@@ -107,9 +107,11 @@
 </script>
 
 <div class={cn('group relative max-h-[600px] ', className)}>
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
 		class={cn(
-			'absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100',
+			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
 			seek !== 0 && 'opacity-0 '
 		)}
 	>
@@ -122,9 +124,9 @@
 		</button>
 
 		{#if hasAudio}
-			<div class="flex flex-col">
+			<div class="group/overlay flex flex-col">
 				<div
-					class=" pointer-events-none flex h-32 py-1 align-middle opacity-0 hover:pointer-events-auto hover:opacity-100"
+					class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
 				>
 					<input
 						oninput={onVolumeSeek}
