@@ -106,10 +106,10 @@
 	});
 </script>
 
-<div class={cn('group/overlay relative max-h-[600px] ', className)}>
+<div class={cn('group relative max-h-[600px] ', className)}>
 	<div
 		class={cn(
-			'absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover/overlay:opacity-100',
+			'absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100',
 			seek !== 0 && 'opacity-0 '
 		)}
 	>
@@ -122,13 +122,16 @@
 		</button>
 
 		{#if hasAudio}
-			<div class="group flex flex-col">
-				<div class="group-hover hidden h-32 py-1 align-middle group-hover:flex">
+			<div class="flex flex-col">
+				<div
+					class=" pointer-events-none flex h-32 py-1 align-middle opacity-0 hover:pointer-events-auto hover:opacity-100"
+				>
 					<input
 						oninput={onVolumeSeek}
 						bind:value={$volume}
-						class="vertical-slider mx-auto h-28"
+						class="mx-auto h-28"
 						type="range"
+						style="writing-mode: vertical-lr; direction: rtl;"
 					/>
 				</div>
 				<button class="h-7" onclick={toggleMute}>
@@ -171,11 +174,3 @@
 		<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
 	</video>
 </div>
-
-<style>
-	.vertical-slider {
-		writing-mode: vertical-lr;
-		direction: rtl;
-		vertical-align: middle;
-	}
-</style>
