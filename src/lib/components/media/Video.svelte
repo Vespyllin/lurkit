@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { audioLocalStorage } from '$lib/store/localStorage';
+	import { volumeLocalStorage } from '$lib/store/localStorage';
 	import { cn } from '$lib/utils';
 	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	// import * as HoverCard from '../ui/hover-card';
 
 	let {
 		url,
@@ -18,8 +17,6 @@
 
 	let hasAudio = $state(true);
 	let muted = $state(false);
-
-	const volume = audioLocalStorage();
 
 	const toZero = (x: number | undefined) => {
 		if (!x || (typeof x !== 'number' && !isNaN(x))) return 0;
@@ -58,8 +55,8 @@
 
 	const toggleMute = async () => {
 		if (muted) {
-			if ($volume == 0) $volume = 10;
-			audio.volume = $volume / 100;
+			if ($volumeLocalStorage == 0) $volumeLocalStorage = 10;
+			audio.volume = $volumeLocalStorage / 100;
 		} else {
 			audio.volume = 0;
 		}
@@ -88,14 +85,14 @@
 	audio.onerror = () => (hasAudio = false);
 
 	const onVolumeSeek = () => {
-		audio.volume = $volume / 100;
-		if (muted || $volume == 0) toggleMute();
+		audio.volume = $volumeLocalStorage / 100;
+		if (muted || $volumeLocalStorage == 0) toggleMute();
 	};
 
 	onMount(() => {
 		const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
 		sleep(50).then(() => {
-			$volume = $volume;
+			$volumeLocalStorage = $volumeLocalStorage;
 			seek = 0;
 		});
 	});
@@ -106,9 +103,7 @@
 	});
 </script>
 
-<div class={cn('group relative max-h-[600px] ', className)}>
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class={cn('group relative max-h-[600px]', className)}>
 	<div
 		class={cn(
 			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
@@ -130,7 +125,7 @@
 				>
 					<input
 						oninput={onVolumeSeek}
-						bind:value={$volume}
+						bind:value={$volumeLocalStorage}
 						class="mx-auto h-28"
 						type="range"
 						style="writing-mode: vertical-lr; direction: rtl;"
