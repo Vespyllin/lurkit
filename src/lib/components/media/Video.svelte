@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { audioLocalStorage } from '$lib/store/localStorage';
 	import { cn } from '$lib/utils';
 	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -11,15 +12,17 @@
 	}: { url: string; mediaData?: any | undefined; class?: string } = $props();
 
 	let video: HTMLVideoElement | undefined = $state();
+
 	let playing = $state(false);
-	let hasAudio = $state(true);
-	let muted = $state(false);
-	let volume = $state(50);
 	let seek = $state(0);
 
-	const NaNtoZero = (x: number | undefined) => {
-		if (!x) return 0;
-		if (isNaN(x)) return 0;
+	let hasAudio = $state(true);
+	let muted = $state(false);
+
+	const volume = audioLocalStorage();
+
+	const toZero = (x: number | undefined) => {
+		if (!x || (typeof x !== 'number' && !isNaN(x))) return 0;
 		else return x;
 	};
 
@@ -27,9 +30,15 @@
 		const hours = Math.floor(seconds / 3600);
 		const minutes = Math.floor((seconds % 3600) / 60);
 		const secs = Math.floor(seconds % 60);
-		return hours > 0
-			? `${String(hours).padStart(1, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
-			: `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+		const hrsString = `${String(hours).padStart(2, '0')}`;
+		const minString = `${String(minutes).padStart(2, '0')}`;
+		const secString = `${String(secs).padStart(2, '0')}`;
+
+		let acc = `${minString}:${secString}`;
+		if (hours > 0) acc += `${hrsString}:`;
+
+		return acc;
 	};
 
 	const audio = new Audio(`${url}/DASH_AUDIO_64.mp4`);
@@ -49,11 +58,10 @@
 
 	const toggleMute = async () => {
 		if (muted) {
-			audio.volume = volume / 100;
-			if (playing) await audio.play();
+			if ($volume == 0) $volume = 10;
+			audio.volume = $volume / 100;
 		} else {
 			audio.volume = 0;
-			audio.pause();
 		}
 		muted = !muted;
 	};
@@ -80,14 +88,14 @@
 	audio.onerror = () => (hasAudio = false);
 
 	const onVolumeSeek = () => {
-		audio.volume = volume / 100;
-		if (muted) toggleMute();
+		audio.volume = $volume / 100;
+		if (muted || $volume == 0) toggleMute();
 	};
 
 	onMount(() => {
 		const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
 		sleep(50).then(() => {
-			volume = volume;
+			$volume = $volume;
 			seek = 0;
 		});
 	});
@@ -98,8 +106,13 @@
 	});
 </script>
 
-<div class={cn('relative max-h-[600px]', className)}>
-	<div class="absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-1">
+<div class={cn('group/overlay relative max-h-[600px] ', className)}>
+	<div
+		class={cn(
+			'absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover/overlay:opacity-100',
+			seek !== 0 && 'opacity-0 '
+		)}
+	>
 		<button class="h-7" onclick={onPlayChange}>
 			{#if !playing}
 				<Play size={20} />
@@ -113,7 +126,7 @@
 				<div class="group-hover hidden h-32 py-1 align-middle group-hover:flex">
 					<input
 						oninput={onVolumeSeek}
-						bind:value={volume}
+						bind:value={$volume}
 						class="vertical-slider mx-auto h-28"
 						type="range"
 					/>
@@ -129,18 +142,13 @@
 		{/if}
 
 		<span class="flex h-7 items-center">
-			{formatPlaytime((NaNtoZero(video?.duration) * seek) / 100)}/{formatPlaytime(
-				NaNtoZero(mediaData?.duration ?? video?.duration ?? 0)
+			{formatPlaytime(toZero(((video?.duration ?? 0) * seek) / 100))}/{formatPlaytime(
+				toZero(mediaData?.duration ?? video?.duration ?? 0)
 			)}
 		</span>
 
 		<div class="h-6 w-full content-center">
-			<input
-				type="range"
-				oninput={onSeek}
-				bind:value={seek}
-				class="video-track w-full rounded-md"
-			/>
+			<input step="0.5" type="range" oninput={onSeek} bind:value={seek} class="w-full rounded-md" />
 		</div>
 	</div>
 
