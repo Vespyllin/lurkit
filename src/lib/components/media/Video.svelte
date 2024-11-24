@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { volumeLocalStorage } from '$lib/store/localStorage';
-	import { cn } from '$lib/utils';
-	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
+	import { cn } from '$lib/utils';
+	import { volumeLocalStorage } from '$lib/store/globalStores';
 
 	let {
 		url,
@@ -56,7 +56,6 @@
 	const toggleMute = async () => {
 		if (muted) {
 			if ($volumeLocalStorage == 0) $volumeLocalStorage = 10;
-			audio.volume = $volumeLocalStorage / 100;
 		} else {
 			audio.volume = 0;
 		}
@@ -85,15 +84,19 @@
 	audio.onerror = () => (hasAudio = false);
 
 	const onVolumeSeek = () => {
-		audio.volume = $volumeLocalStorage / 100;
 		if (muted || $volumeLocalStorage == 0) toggleMute();
 	};
 
+	$effect(() => {
+		audio.volume = $volumeLocalStorage / 100;
+	});
+
 	onMount(() => {
+		audio.volume = $volumeLocalStorage / 100;
 		const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
 		sleep(50).then(() => {
 			$volumeLocalStorage = $volumeLocalStorage;
-			seek = 0;
+			seek = seek;
 		});
 	});
 
@@ -148,7 +151,15 @@
 		</span>
 
 		<div class="h-6 w-full content-center">
-			<input step="0.5" type="range" oninput={onSeek} bind:value={seek} class="w-full rounded-md" />
+			<input
+				step="0.5"
+				min="0"
+				max="100"
+				type="range"
+				oninput={onSeek}
+				bind:value={seek}
+				class="w-full rounded-md"
+			/>
 		</div>
 	</div>
 

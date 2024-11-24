@@ -7,7 +7,7 @@ custom subreddit colors (use global store)
 rewrite range bars
 fullscreen to the right
 keydown handler
-move audio store to global
+implement current vid tracker store
 
 expanded gallery  
 rewrite zoomable image component  

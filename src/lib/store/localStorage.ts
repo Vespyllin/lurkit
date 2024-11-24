@@ -1,16 +1,15 @@
 import { writable } from 'svelte/store';
 
-const createVolumeLocalStorage = () => {
-	const audioKey = 'lurkit-audio';
-	const { subscribe, update } = writable(+(localStorage.getItem(audioKey) ?? '25'));
+export const localStorageNumberStore = (key: string, defaultValue?: number) => {
+	const { subscribe, update } = writable(
+		+(localStorage.getItem(key) ?? (defaultValue ? `${defaultValue}` : '0'))
+	);
 
 	return {
 		subscribe,
 		set: (v: number) => {
-			localStorage.setItem(audioKey, v.toString());
+			localStorage.setItem(key, v.toString());
 			update((_) => v);
 		}
 	};
 };
-
-export const volumeLocalStorage = createVolumeLocalStorage();

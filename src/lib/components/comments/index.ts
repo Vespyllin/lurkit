@@ -60,7 +60,7 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
-			folded: (idx >= 3 && depth != 0) || depth >= foldedDepth,
+			folded: (idx >= 4 && depth != 0) || depth >= foldedDepth || author == 'AutoModerator',
 			replies: replies ? assignCommentState(replies) : []
 		};
 	});
