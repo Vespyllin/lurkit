@@ -6,9 +6,9 @@ export function audioLocalStorage() {
 
 	return {
 		subscribe,
-		update: (v: number) => {
+		set: (v: number) => {
 			localStorage.setItem(audioKey, v.toString());
-			update(() => v);
+			update((_) => v);
 		}
 	};
 }
