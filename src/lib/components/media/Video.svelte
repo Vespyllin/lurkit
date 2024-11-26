@@ -109,8 +109,8 @@
 <div class={cn('group relative max-h-[600px]', className)}>
 	<div
 		class={cn(
-			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-			seek !== 0 && 'opacity-0 '
+			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+			playing && 'opacity-0 '
 		)}
 	>
 		<button class="h-7" onclick={onPlayChange}>
