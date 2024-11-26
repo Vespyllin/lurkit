@@ -53,9 +53,10 @@
 		playing = !playing;
 	};
 
-	const toggleMute = async () => {
+	const toggleMute = () => {
 		if (muted) {
 			if ($volumeLocalStorage == 0) $volumeLocalStorage = 10;
+			else audio.volume = $volumeLocalStorage / 100;
 		} else {
 			audio.volume = 0;
 		}
