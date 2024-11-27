@@ -8,6 +8,9 @@ rewrite range bars
 fullscreen to the right
 keydown handler
 implement current vid tracker store
+global muted store
+
+check readystate on seen before playing: make a timeout event loop to check ready state to make a loading handler
 
 expanded gallery  
 rewrite zoomable image component  

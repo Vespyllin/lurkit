@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import { volumeLocalStorage } from '$lib/store/globalStores';
@@ -11,17 +11,16 @@
 	}: { url: string; mediaData?: any | undefined; class?: string } = $props();
 
 	let video: HTMLVideoElement | undefined = $state();
+	let audio: HTMLAudioElement | undefined = $state();
+
+	let hasVideo = $state(false);
+	let hasAudio = $state(false);
 
 	let playing = $state(false);
 	let seek = $state(0);
-
-	let hasAudio = $state(true);
 	let muted = $state(false);
 
-	const toZero = (x: number | undefined) => {
-		if (!x || (typeof x !== 'number' && !isNaN(x))) return 0;
-		else return x;
-	};
+	const toZero = (x: number | undefined) => (!x || typeof x !== 'number' || isNaN(x) ? 0 : x);
 
 	const formatPlaytime = (seconds: number) => {
 		const hours = Math.floor(seconds / 3600);
@@ -38,22 +37,23 @@
 		return acc;
 	};
 
-	const audio = new Audio(`${url}/DASH_AUDIO_64.mp4`);
-
 	const onPlayChange = async () => {
-		if (!video) return console.error('Cannot play video: video not found.');
+		if (!audio || !video) return;
 
 		if (playing) {
-			video.pause();
-			audio.pause();
+			video?.pause();
+			if (hasAudio) audio.pause();
 		} else {
+			if (!video) return;
 			await video.play();
-			if (!muted) await audio.play();
+			if (hasAudio && !muted) await audio.play();
 		}
 		playing = !playing;
 	};
 
 	const toggleMute = () => {
+		if (!audio) return;
+
 		if (muted) {
 			if ($volumeLocalStorage == 0) $volumeLocalStorage = 10;
 			else audio.volume = $volumeLocalStorage / 100;
@@ -64,45 +64,41 @@
 	};
 
 	const onSeek = () => {
-		if (!video) return;
+		if (!audio || !video) return;
 		if (isNaN(video.currentTime)) return;
+
 		video.currentTime = video.duration * (seek / 100);
 		audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	const handleNetworkStop = () => {
+		if (!audio || !video) return;
+
 		if (audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	const handleNetworkStart = () => {
-		if ((video?.readyState ?? 0) > 2 && audio.currentTime < audio.duration * (seek / 100))
+		if (!audio || !video) return;
+
+		if (video.readyState > 2 && audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
 	};
-
-	audio.onwaiting = handleNetworkStop;
-	audio.oncanplay = handleNetworkStart;
-	audio.onerror = () => (hasAudio = false);
 
 	const onVolumeSeek = () => {
 		if (muted || $volumeLocalStorage == 0) toggleMute();
 	};
 
 	$effect(() => {
-		audio.volume = $volumeLocalStorage / 100;
-	});
+		if (!audio || !video) return;
 
-	onMount(() => {
 		audio.volume = $volumeLocalStorage / 100;
-		const sleep = async (ms: number) => new Promise((x) => setTimeout(x, ms));
-		sleep(50).then(() => {
-			$volumeLocalStorage = $volumeLocalStorage;
-			seek = seek;
-		});
 	});
 
 	onDestroy(() => {
-		video?.pause();
+		if (!audio || !video) return;
+
+		video.pause();
 		audio.pause();
 	});
 </script>
@@ -145,11 +141,23 @@
 			</div>
 		{/if}
 
-		<span class="flex h-7 items-center">
-			{formatPlaytime(toZero(((video?.duration ?? 0) * seek) / 100))}/{formatPlaytime(
-				toZero(mediaData?.duration ?? video?.duration ?? 0)
-			)}
-		</span>
+		{#key seek}
+			<div>
+				{#if hasAudio}
+					<span class="flex h-7 items-center">
+						{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
+							toZero(audio?.duration ?? 0)
+						)}
+					</span>
+				{/if}
+
+				<span class="flex h-7 items-center">
+					{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
+						toZero(mediaData?.duration ?? video?.duration ?? 0)
+					)}
+				</span>
+			</div>
+		{/key}
 
 		<div class="h-6 w-full content-center">
 			<input
@@ -164,8 +172,25 @@
 		</div>
 	</div>
 
+	<audio
+		bind:this={audio}
+		onwaiting={handleNetworkStop}
+		oncanplay={handleNetworkStart}
+		onloadeddata={() => (hasAudio = true)}
+		class="hidden"
+	>
+		<source src={`${url}/DASH_AUDIO_128.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_64.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_32.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_16.mp4`} type="audio/mp4" />
+	</audio>
+
 	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
+		onloadeddata={() => {
+			hasVideo = true;
+			seek = 0;
+		}}
 		onended={() => (playing = false)}
 		onwaiting={handleNetworkStop}
 		oncanplay={handleNetworkStart}
