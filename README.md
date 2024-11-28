@@ -10,7 +10,7 @@ keydown handler
 implement current vid tracker store
 global muted store
 
-handle video/audio ready state, like, at all
+handle video/audio ready state, like, at all  
 items center comment header
 
 expanded gallery  
