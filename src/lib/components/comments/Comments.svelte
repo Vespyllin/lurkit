@@ -56,7 +56,7 @@
 			{:else if comments[idx].kind == 't1'}
 				<div class={cn('mt-2.5 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
-						class="flex h-full w-full cursor-pointer gap-1.5 text-lg leading-tight md:gap-2"
+						class="flex h-full w-full cursor-pointer items-center gap-1.5 text-lg leading-tight md:gap-2"
 						onclick={() => {
 							(comments[idx] as T1CommentProp).folded = !(comments[idx] as T1CommentProp).folded;
 						}}

@@ -13,6 +13,8 @@ global muted store
 handle video/audio ready state, like, at all  
 items center comment header
 
+items center comment header
+
 expanded gallery  
 rewrite zoomable image component  
 tooltip showing date for edited entries
