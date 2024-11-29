@@ -10,7 +10,8 @@ keydown handler
 implement current vid tracker store
 global muted store
 
-check readystate on seen before playing: make a timeout event loop to check ready state to make a loading handler
+handle video/audio ready state, like, at all  
+items center comment header
 
 expanded gallery  
 rewrite zoomable image component  
