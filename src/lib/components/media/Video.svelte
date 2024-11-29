@@ -104,111 +104,106 @@
 </script>
 
 <div class={cn('group relative max-h-[600px]', className)}>
-	{#if hasVideo}
-		<div
-			class={cn(
-				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				playing && 'opacity-0 '
-			)}
-		>
-			<button class="h-7" onclick={onPlayChange}>
-				{#if !playing}
-					<Play size={20} />
-				{:else}
-					<Pause size={20} />
-				{/if}
-			</button>
-
-			{#if hasAudio}
-				<div class="group/overlay flex flex-col">
-					<div
-						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
-					>
-						<input
-							oninput={onVolumeSeek}
-							bind:value={$volumeLocalStorage}
-							class="mx-auto h-28"
-							type="range"
-							style="writing-mode: vertical-lr; direction: rtl;"
-						/>
-					</div>
-					<button class="h-7" onclick={toggleMute}>
-						{#if !muted}
-							<SpeakerLoud size={20} />
-						{:else}
-							<SpeakerOff size={20} />
-						{/if}
-					</button>
-				</div>
+	<div
+		class={cn(
+			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+			playing && 'opacity-0 '
+		)}
+	>
+		<button class="h-7" onclick={onPlayChange}>
+			{#if !playing}
+				<Play size={20} />
+			{:else}
+				<Pause size={20} />
 			{/if}
+		</button>
 
-			{#key seek}
-				<div>
-					{#if hasAudio}
-						<span class="flex h-7 items-center">
-							{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
-								toZero(audio?.duration ?? 0)
-							)}
-						</span>
+		{#if hasAudio}
+			<div class="group/overlay flex flex-col">
+				<div
+					class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
+				>
+					<input
+						oninput={onVolumeSeek}
+						bind:value={$volumeLocalStorage}
+						class="mx-auto h-28"
+						type="range"
+						style="writing-mode: vertical-lr; direction: rtl;"
+					/>
+				</div>
+				<button class="h-7" onclick={toggleMute}>
+					{#if !muted}
+						<SpeakerLoud size={20} />
+					{:else}
+						<SpeakerOff size={20} />
 					{/if}
+				</button>
+			</div>
+		{/if}
 
+		{#key seek}
+			<div>
+				{#if hasAudio}
 					<span class="flex h-7 items-center">
-						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
-							toZero(mediaData?.duration ?? video?.duration ?? 0)
+						{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
+							toZero(audio?.duration ?? 0)
 						)}
 					</span>
-				</div>
-			{/key}
+				{/if}
 
-			<div class="h-6 w-full content-center">
-				<input
-					step="0.5"
-					min="0"
-					max="100"
-					type="range"
-					oninput={onSeek}
-					bind:value={seek}
-					class="w-full rounded-md"
-				/>
+				<span class="flex h-7 items-center">
+					{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
+						toZero(mediaData?.duration ?? video?.duration ?? 0)
+					)}
+				</span>
 			</div>
+		{/key}
+
+		<div class="h-6 w-full content-center">
+			<input
+				step="0.5"
+				min="0"
+				max="100"
+				type="range"
+				oninput={onSeek}
+				bind:value={seek}
+				class="w-full rounded-md"
+			/>
 		</div>
+	</div>
 
-		<audio
-			bind:this={audio}
-			onwaiting={handleNetworkStop}
-			oncanplay={handleNetworkStart}
-			onloadeddata={() => (hasAudio = true)}
-			class="hidden"
-		>
-			<source src={`${url}/DASH_AUDIO_128.mp4`} type="audio/mp4" />
-			<source src={`${url}/DASH_AUDIO_64.mp4`} type="audio/mp4" />
-			<source src={`${url}/DASH_AUDIO_32.mp4`} type="audio/mp4" />
-			<source src={`${url}/DASH_AUDIO_16.mp4`} type="audio/mp4" />
-		</audio>
+	<audio
+		bind:this={audio}
+		onwaiting={handleNetworkStop}
+		oncanplay={handleNetworkStart}
+		onloadeddata={() => (hasAudio = true)}
+		class="hidden"
+	>
+		<source src={`${url}/DASH_AUDIO_128.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_64.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_32.mp4`} type="audio/mp4" />
+		<source src={`${url}/DASH_AUDIO_16.mp4`} type="audio/mp4" />
+	</audio>
 
-		<!-- svelte-ignore a11y_media_has_caption -->
-		<video
-			onloadeddata={() => {
-				hasVideo = true;
-				seek = 0;
-			}}
-			onended={() => (playing = false)}
-			onwaiting={handleNetworkStop}
-			oncanplay={handleNetworkStart}
-			onclick={onPlayChange}
-			ontimeupdate={() => {
-				if (!video) return;
-				seek = (video.currentTime / video.duration) * 100;
-			}}
-			bind:this={video}
-			class="max-h-[600px] w-full bg-black object-contain"
-		>
-			<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
-			<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
-			<source src={`${url}/DASH_480.mp4`} type="video/mp4" />
-			<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
-		</video>
-	{:else}
-		<div class="w-full justify-center">Video no longer available</div>
-	{/if}
+	<!-- svelte-ignore a11y_media_has_caption -->
+	<video
+		onloadeddata={() => {
+			seek = 0;
+		}}
+		onended={() => (playing = false)}
+		onwaiting={handleNetworkStop}
+		oncanplay={handleNetworkStart}
+		onclick={onPlayChange}
+		ontimeupdate={() => {
+			if (!video) return;
+			seek = (video.currentTime / video.duration) * 100;
+		}}
+		bind:this={video}
+		class="max-h-[600px] w-full bg-black object-contain"
+	>
+		<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
+		<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
+		<source src={`${url}/DASH_480.mp4`} type="video/mp4" />
+		<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
+	</video>
 </div>
