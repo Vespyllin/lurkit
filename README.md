@@ -12,6 +12,8 @@ global muted store
 
 check readystate on seen before playing: make a timeout event loop to check ready state to make a loading handler
 
+items center comment header
+
 expanded gallery  
 rewrite zoomable image component  
 tooltip showing date for edited entries
