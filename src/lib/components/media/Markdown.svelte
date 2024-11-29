@@ -24,18 +24,19 @@
 		const children = container?.childNodes[1].childNodes;
 		if (!container || !children) return;
 
-		const boundingContainer = container?.parentElement;
-		if (!boundingContainer) return;
+		const boundingContainerHeight = container?.parentElement?.clientHeight;
+		if (!boundingContainerHeight) return;
 
-		let innerHeight = 0;
 		let thresholdCrossed = false;
+		let innerHeight = 0;
 
 		children.forEach((_child, idx) => {
 			const child = _child as HTMLElement;
 
-			innerHeight += (child.clientHeight ?? 0) + (idx == 0 ? 0 : 10); // Needed extra padding for some reason (maybe because of space-y-2)
+			innerHeight += child.clientHeight ?? 0;
 
-			if (thresholdCrossed || innerHeight > boundingContainer.clientHeight) {
+			// Take into account some weird padding (32px seems to work)
+			if (idx !== 0 && (thresholdCrossed || innerHeight > boundingContainerHeight - 24)) {
 				thresholdCrossed = true;
 				child.remove();
 			}
