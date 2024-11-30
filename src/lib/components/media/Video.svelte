@@ -13,7 +13,7 @@
 	let video: HTMLVideoElement | undefined = $state();
 	let audio: HTMLAudioElement | undefined = $state();
 
-	let hasVideo = $state(false);
+	// let hasVideo = $state(false);
 	let hasAudio = $state(false);
 
 	let playing = $state(false);
@@ -85,14 +85,11 @@
 			audio.currentTime = audio.duration * (seek / 100);
 	};
 
-	const onVolumeSeek = () => {
-		if (muted || $volumeLocalStorage == 0) toggleMute();
-	};
-
 	$effect(() => {
 		if (!audio || !video) return;
 
 		audio.volume = $volumeLocalStorage / 100;
+		muted = $volumeLocalStorage == 0;
 	});
 
 	onDestroy(() => {
@@ -124,7 +121,6 @@
 					class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
 				>
 					<input
-						oninput={onVolumeSeek}
 						bind:value={$volumeLocalStorage}
 						class="mx-auto h-28"
 						type="range"
