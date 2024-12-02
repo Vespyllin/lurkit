@@ -12,7 +12,7 @@ global muted store
 
 check readystate on seen before playing: make a timeout event loop to check ready state to make a loading handler
 
-items center comment header
+list style position (for li markers)
 
 expanded gallery  
 rewrite zoomable image component  

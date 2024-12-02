@@ -74,7 +74,6 @@ export const subredditFilter = [
 	'r/egg',
 	'r/rupaulsdragrace',
 	'r/ukraine',
-	'r/ufo',
 	'r/baseball',
 	'r/hasan_piker',
 	'r/meme',
@@ -97,5 +96,8 @@ export const subredditFilter = [
 	'r/funnymemes',
 	'r/publicfreakout',
 	'r/genshin_impact_leaks',
-	'r/houstonwade'
+	'r/houstonwade',
+	'r/ufo',
+	'r/ufos',
+	'r/aliens'
 ].map((x) => x.toLowerCase());

@@ -74,7 +74,7 @@
 			? 'Loading...'
 			: ($subredditQuery.error ??
 				$listingsQuery.error ??
-				'r/' + $subredditQuery?.data?.data.display_name_prefixed)}
+				$subredditQuery?.data?.data.display_name_prefixed)}
 	</title>
 </svelte:head>
 
