@@ -13,7 +13,7 @@ global muted store
 handle video/audio ready state, like, at all  
 items center comment header
 
-items center comment header
+list style position (for li markers)
 
 expanded gallery  
 rewrite zoomable image component  

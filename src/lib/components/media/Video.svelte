@@ -16,6 +16,9 @@
 	// let hasVideo = $state(false);
 	let hasAudio = $state(false);
 
+	let audioLoading = $state(false);
+	let videoLoading = $state(false);
+
 	let playing = $state(false);
 	let seek = $state(0);
 	let muted = $state(false);
@@ -74,12 +77,33 @@
 	const handleNetworkStop = () => {
 		if (!audio || !video) return;
 
+		video.pause();
+		audio.pause();
+
 		if (audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	const handleNetworkStart = () => {
 		if (!audio || !video) return;
+
+		console.log('START');
+		for (let i = 0; i < video.buffered.length; i++) {
+			const start = video.buffered.start(i);
+			const end = video.buffered.end(i);
+
+			const currentTime = video.currentTime;
+			if (start < currentTime && currentTime < end - 3) {
+				console.log('Sufficient buffering', start, end, end - 3 - currentTime);
+
+				if (playing) {
+					if (audio.paused) audio.play();
+					else if (video.paused) video.play();
+				}
+			} else {
+				console.log(currentTime, end, end - 3 - currentTime, 'left');
+			}
+		}
 
 		if (video.readyState > 2 && audio.currentTime < audio.duration * (seek / 100))
 			audio.currentTime = audio.duration * (seek / 100);
@@ -101,6 +125,8 @@
 </script>
 
 <div class={cn('group relative max-h-[600px]', className)}>
+	{audioLoading && 'Audio Loading'}
+	{videoLoading && 'Video Loading'}
 	<div
 		class={cn(
 			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
@@ -170,8 +196,14 @@
 
 	<audio
 		bind:this={audio}
-		onwaiting={handleNetworkStop}
-		oncanplay={handleNetworkStart}
+		onwaiting={() => {
+			audioLoading = true;
+			handleNetworkStop();
+		}}
+		oncanplay={() => {
+			audioLoading = false;
+			handleNetworkStart();
+		}}
 		onloadeddata={() => (hasAudio = true)}
 		class="hidden"
 	>
@@ -187,8 +219,14 @@
 			seek = 0;
 		}}
 		onended={() => (playing = false)}
-		onwaiting={handleNetworkStop}
-		oncanplay={handleNetworkStart}
+		onwaiting={() => {
+			videoLoading = true;
+			handleNetworkStop();
+		}}
+		oncanplay={() => {
+			videoLoading = false;
+			handleNetworkStart();
+		}}
 		onclick={onPlayChange}
 		ontimeupdate={() => {
 			if (!video) return;
