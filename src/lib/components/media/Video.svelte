@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { Pause, Play, SpeakerLoud, SpeakerOff, Underline, Video } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
-	import { volumeLocalStorage } from '$lib/store/globalStores';
 	import Spinner from '../layout/Spinner.svelte';
+	import { audioLocalStorage } from '$lib/store/localStorage.svelte';
 
 	let {
 		url,
@@ -22,7 +22,6 @@
 
 	let playing = $state(false);
 	let seek = $state(0);
-	let muted = $state(false);
 
 	const toZero = (x: number | undefined) => (!x || typeof x !== 'number' || isNaN(x) ? 0 : x);
 
@@ -53,7 +52,7 @@
 
 		if (toPlaying) {
 			await video.play();
-			if (hasAudio && !muted) await audio.play();
+			if (hasAudio && !audioLocalStorage.muted) await audio.play();
 		} else {
 			video.pause();
 			if (hasAudio) audio.pause();
@@ -61,16 +60,19 @@
 		}
 	};
 
-	const toggleMute = () => {
+	const setMute = (toMuted: boolean) => {
 		if (!audio) return;
 
-		if (muted) {
-			if ($volumeLocalStorage == 0) $volumeLocalStorage = 10;
-			else audio.volume = $volumeLocalStorage / 100;
-		} else {
+		if (toMuted) {
 			audio.volume = 0;
+		} else {
+			if (audioLocalStorage.volume == 0) audioLocalStorage.volume = 10;
+			else audio.volume = audioLocalStorage.volume / 100;
 		}
-		muted = !muted;
+	};
+
+	const toggleMute = () => {
+		audioLocalStorage.muted = !audioLocalStorage.muted;
 	};
 
 	let loadingIntervalId: number | undefined = undefined;
@@ -140,8 +142,8 @@
 	$effect(() => {
 		if (!audio || !video) return;
 
-		audio.volume = $volumeLocalStorage / 100;
-		muted = $volumeLocalStorage == 0;
+		if (!audioLocalStorage.muted) audio.volume = audioLocalStorage.volume / 100;
+		setMute(audioLocalStorage.muted);
 	});
 
 	onDestroy(() => {
@@ -180,14 +182,14 @@
 						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
 					>
 						<input
-							bind:value={$volumeLocalStorage}
+							bind:value={audioLocalStorage.volume}
 							class="mx-auto h-28"
 							type="range"
 							style="writing-mode: vertical-lr; direction: rtl;"
 						/>
 					</div>
 					<button class="h-7" onclick={toggleMute}>
-						{#if !muted}
+						{#if !audioLocalStorage.muted}
 							<SpeakerLoud size={20} />
 						{:else}
 							<SpeakerOff size={20} />
