@@ -52,7 +52,7 @@
 
 		if (toPlaying) {
 			await video.play();
-			if (hasAudio && !audioLocalStorage.muted) await audio.play();
+			if (hasAudio) await audio.play();
 		} else {
 			video.pause();
 			if (hasAudio) audio.pause();
