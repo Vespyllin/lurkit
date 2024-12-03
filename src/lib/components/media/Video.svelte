@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import { Pause, Play, SpeakerLoud, SpeakerOff } from 'radix-icons-svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { Pause, Play, SpeakerLoud, SpeakerOff, Underline, Video } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import { volumeLocalStorage } from '$lib/store/globalStores';
+	import Spinner from '../layout/Spinner.svelte';
 
 	let {
 		url,
@@ -13,7 +14,7 @@
 	let video: HTMLVideoElement | undefined = $state();
 	let audio: HTMLAudioElement | undefined = $state();
 
-	// let hasVideo = $state(false);
+	let hasVideo = $state(false);
 	let hasAudio = $state(false);
 
 	let audioLoading = $state(false);
@@ -40,18 +41,24 @@
 		return acc;
 	};
 
-	const onPlayChange = async () => {
+	const syncAudio = () => {
+		if (!audio) return;
+		console.log('Before Sync', audio.currentTime);
+		audio.currentTime = audio.duration * (seek / 100);
+		console.log('After Sync', audio.currentTime);
+	};
+
+	const setPlaying = async (toPlaying: boolean) => {
 		if (!audio || !video) return;
 
-		if (playing) {
-			video?.pause();
-			if (hasAudio) audio.pause();
-		} else {
-			if (!video) return;
+		if (toPlaying) {
 			await video.play();
 			if (hasAudio && !muted) await audio.play();
+		} else {
+			video.pause();
+			if (hasAudio) audio.pause();
+			syncAudio();
 		}
-		playing = !playing;
 	};
 
 	const toggleMute = () => {
@@ -66,6 +73,57 @@
 		muted = !muted;
 	};
 
+	let loadingIntervalId: number | undefined = undefined;
+	let lastRightBound = 0;
+	const bufferPadding = 3;
+	const initLoadingLoop = () => {
+		if (!audio || !video) return;
+		if (toZero(seek * 100) < 1 || toZero(seek) > 99) return;
+		if (loadingIntervalId) return;
+
+		setPlaying(false);
+
+		loadingIntervalId = setInterval(async () => {
+			if (!audio || !video) return;
+
+			for (let i = 0; i < video.buffered.length; i++) {
+				const start = video.buffered.start(i);
+				const end = video.buffered.end(i);
+				const currentTime = video.currentTime;
+
+				if (start < currentTime && (currentTime < end || end == video.duration)) {
+					const timeDataString = `${start}-${end} : ${currentTime}/${video.duration}`;
+
+					if (lastRightBound == end || currentTime < end - bufferPadding) {
+						console.log('✔️', timeDataString);
+
+						videoLoading = false;
+						clearInterval(loadingIntervalId);
+						loadingIntervalId = undefined;
+
+						setPlaying(playing);
+					} else {
+						console.log('✖️', timeDataString);
+						videoLoading = true;
+					}
+					lastRightBound = end;
+				}
+			}
+		}, 500);
+	};
+
+	const onWaiting = () => {
+		if (!audio || !video) return;
+
+		initLoadingLoop();
+	};
+
+	const onPlayChange = () => {
+		if (!hasVideo) return;
+		playing = !playing;
+		return setPlaying(playing);
+	};
+
 	const onSeek = () => {
 		if (!audio || !video) return;
 		if (isNaN(video.currentTime)) return;
@@ -74,39 +132,9 @@
 		audio.currentTime = audio.duration * (seek / 100);
 	};
 
-	const handleNetworkStop = () => {
-		if (!audio || !video) return;
-
-		video.pause();
-		audio.pause();
-
-		if (audio.currentTime < audio.duration * (seek / 100))
-			audio.currentTime = audio.duration * (seek / 100);
-	};
-
-	const handleNetworkStart = () => {
-		if (!audio || !video) return;
-
-		console.log('START');
-		for (let i = 0; i < video.buffered.length; i++) {
-			const start = video.buffered.start(i);
-			const end = video.buffered.end(i);
-
-			const currentTime = video.currentTime;
-			if (start < currentTime && currentTime < end - 3) {
-				console.log('Sufficient buffering', start, end, end - 3 - currentTime);
-
-				if (playing) {
-					if (audio.paused) audio.play();
-					else if (video.paused) video.play();
-				}
-			} else {
-				console.log(currentTime, end, end - 3 - currentTime, 'left');
-			}
-		}
-
-		if (video.readyState > 2 && audio.currentTime < audio.duration * (seek / 100))
-			audio.currentTime = audio.duration * (seek / 100);
+	const onTimeUpdate = () => {
+		if (!video) return;
+		seek = (video.currentTime / video.duration) * 100;
 	};
 
 	$effect(() => {
@@ -124,85 +152,90 @@
 	});
 </script>
 
-<div class={cn('group relative max-h-[600px]', className)}>
-	{audioLoading && 'Audio Loading'}
-	{videoLoading && 'Video Loading'}
-	<div
-		class={cn(
-			'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-			playing && 'opacity-0 '
-		)}
-	>
-		<button class="h-7" onclick={onPlayChange}>
-			{#if !playing}
-				<Play size={20} />
-			{:else}
-				<Pause size={20} />
-			{/if}
-		</button>
+<div class={cn('group relative', className)}>
+	{#if !hasVideo || videoLoading}
+		<div class="pointer-events-none absolute bottom-0 z-10 flex h-full w-full items-center">
+			<Spinner class="mx-auto size-20" />
+		</div>
+	{/if}
 
-		{#if hasAudio}
-			<div class="group/overlay flex flex-col">
-				<div
-					class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
-				>
-					<input
-						bind:value={$volumeLocalStorage}
-						class="mx-auto h-28"
-						type="range"
-						style="writing-mode: vertical-lr; direction: rtl;"
-					/>
+	{#if hasVideo}
+		<div
+			class={cn(
+				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				(playing || !videoLoading) && 'opacity-0'
+			)}
+		>
+			<button class="h-7" onclick={onPlayChange}>
+				{#if !playing}
+					<Play size={20} />
+				{:else}
+					<Pause size={20} />
+				{/if}
+			</button>
+
+			{#if hasAudio}
+				<div class="group/overlay flex flex-col">
+					<div
+						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
+					>
+						<input
+							bind:value={$volumeLocalStorage}
+							class="mx-auto h-28"
+							type="range"
+							style="writing-mode: vertical-lr; direction: rtl;"
+						/>
+					</div>
+					<button class="h-7" onclick={toggleMute}>
+						{#if !muted}
+							<SpeakerLoud size={20} />
+						{:else}
+							<SpeakerOff size={20} />
+						{/if}
+					</button>
 				</div>
-				<button class="h-7" onclick={toggleMute}>
-					{#if !muted}
-						<SpeakerLoud size={20} />
-					{:else}
-						<SpeakerOff size={20} />
-					{/if}
-				</button>
-			</div>
-		{/if}
+			{/if}
 
-		{#key seek}
-			<div>
-				{#if hasAudio}
-					<span class="flex h-7 items-center">
-						{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
-							toZero(audio?.duration ?? 0)
+			{#key seek}
+				<div class="flex gap-2 text-sm">
+					<span class="flex h-7 items-center gap-1">
+						<Video />
+
+						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
+							toZero(mediaData?.duration ?? video?.duration ?? 0)
 						)}
 					</span>
-				{/if}
 
-				<span class="flex h-7 items-center">
-					{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
-						toZero(mediaData?.duration ?? video?.duration ?? 0)
-					)}
-				</span>
+					{#if hasAudio}
+						<span class="flex h-7 items-center gap-1">
+							<SpeakerLoud />
+							{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
+								toZero(audio?.duration ?? 0)
+							)}
+						</span>
+					{/if}
+				</div>
+			{/key}
+
+			<div class="h-6 w-full content-center">
+				<input
+					step="0.5"
+					min="0"
+					max="100"
+					type="range"
+					oninput={onSeek}
+					bind:value={seek}
+					class="w-full rounded-md"
+				/>
 			</div>
-		{/key}
-
-		<div class="h-6 w-full content-center">
-			<input
-				step="0.5"
-				min="0"
-				max="100"
-				type="range"
-				oninput={onSeek}
-				bind:value={seek}
-				class="w-full rounded-md"
-			/>
 		</div>
-	</div>
+	{/if}
 
 	<audio
 		bind:this={audio}
 		onwaiting={() => {
-			audioLoading = true;
-			handleNetworkStop();
-		}}
-		oncanplay={() => {
-			audioLoading = false;
-			handleNetworkStart();
+			console.log('Awaiting audio');
+			onWaiting();
 		}}
 		onloadeddata={() => (hasAudio = true)}
 		class="hidden"
@@ -217,21 +250,15 @@
 	<video
 		onloadeddata={() => {
 			seek = 0;
+			hasVideo = true;
+		}}
+		onwaiting={() => {
+			console.log('Awaiting video');
+			onWaiting();
 		}}
 		onended={() => (playing = false)}
-		onwaiting={() => {
-			videoLoading = true;
-			handleNetworkStop();
-		}}
-		oncanplay={() => {
-			videoLoading = false;
-			handleNetworkStart();
-		}}
 		onclick={onPlayChange}
-		ontimeupdate={() => {
-			if (!video) return;
-			seek = (video.currentTime / video.duration) * 100;
-		}}
+		ontimeupdate={onTimeUpdate}
 		bind:this={video}
 		class="max-h-[600px] w-full bg-black object-contain"
 	>
