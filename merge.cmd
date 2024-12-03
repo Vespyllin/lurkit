@@ -1,4 +1,4 @@
 git checkout main
-git merge dev 
+git merge dev --no-commit
 git push
 git checkout dev
