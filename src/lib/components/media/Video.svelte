@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import { Pause, Play, SpeakerLoud, SpeakerOff, Underline, Video } from 'radix-icons-svelte';
+	import { onDestroy, untrack } from 'svelte';
+	import { Pause, Play, SpeakerLoud, SpeakerOff, Video } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import Spinner from '../layout/Spinner.svelte';
 	import { audioLocalStorage } from '$lib/store/localStorage.svelte';
@@ -60,7 +60,7 @@
 		}
 	};
 
-	const setMute = (toMuted: boolean) => {
+	const setMuted = (toMuted: boolean) => {
 		if (!audio) return;
 
 		if (toMuted) {
@@ -142,8 +142,21 @@
 	$effect(() => {
 		if (!audio || !video) return;
 
-		if (!audioLocalStorage.muted) audio.volume = audioLocalStorage.volume / 100;
-		setMute(audioLocalStorage.muted);
+		audio.volume = audioLocalStorage.volume / 100;
+		untrack(() => {
+			if (audioLocalStorage.volume == 0) {
+				audioLocalStorage.muted = true;
+			} else {
+				if (audioLocalStorage.muted) setMuted(false);
+				audioLocalStorage.muted = false;
+			}
+		});
+	});
+
+	$effect(() => {
+		if (!audio || !video) return;
+
+		setMuted(audioLocalStorage.muted);
 	});
 
 	onDestroy(() => {
