@@ -10,7 +10,10 @@ export class AudioLocalStorage {
 		const localStorageMuted = localStorage.getItem(key + '-muted');
 
 		this.#volume = +(localStorageVolume ?? `${defaultValue}`);
-		this.#muted = localStorageMuted !== undefined ? localStorageMuted == 'true' : defaultMuted;
+		this.#muted =
+			localStorageMuted !== undefined && localStorageMuted !== null
+				? localStorageMuted == 'true'
+				: defaultMuted;
 	}
 
 	get volume() {
