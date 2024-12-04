@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cleanText } from '$lib';
+	import { cn } from '$lib/utils';
 	import { onMount } from 'svelte';
 
 	let { text, crop }: { text: string; crop?: boolean } = $props();
@@ -24,26 +25,26 @@
 		const children = container?.childNodes[1].childNodes;
 		if (!container || !children) return;
 
-		const boundingContainerHeight = container?.parentElement?.clientHeight;
-		if (!boundingContainerHeight) return;
-
 		let thresholdCrossed = false;
 		let innerHeight = 0;
 
 		children.forEach((_child, idx) => {
 			const child = _child as HTMLElement;
 
-			innerHeight += child.clientHeight ?? 0;
+			// Hardcoded for space-y-8
+			innerHeight += (child.clientHeight ?? -8) + 8;
 
-			// Take into account some weird padding (32px seems to work)
-			if (idx !== 0 && (thresholdCrossed || innerHeight > boundingContainerHeight - 24)) {
-				thresholdCrossed = true;
-				child.remove();
+			if (child.clientHeight !== undefined) {
+				// Hardcoded for h-48
+				if (idx !== 0 && (thresholdCrossed || innerHeight > 192)) {
+					thresholdCrossed = true;
+					child.remove();
+				}
 			}
 		});
 	});
 </script>
 
-<div bind:this={container}>
+<div class={cn(crop && '[&>*]:max-h-48')} bind:this={container}>
 	{@html formattedText}
 </div>
