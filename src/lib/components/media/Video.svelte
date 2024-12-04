@@ -41,7 +41,7 @@
 	};
 
 	const syncAudio = () => {
-		if (!audio) return;
+		if (!audio || !hasAudio) return;
 		console.log('Before Sync', audio.currentTime);
 		audio.currentTime = audio.duration * (seek / 100);
 		console.log('After Sync', audio.currentTime);
@@ -131,7 +131,7 @@
 		if (isNaN(video.currentTime)) return;
 
 		video.currentTime = video.duration * (seek / 100);
-		audio.currentTime = audio.duration * (seek / 100);
+		if (hasAudio) audio.currentTime = audio.duration * (seek / 100);
 	};
 
 	const onTimeUpdate = () => {
