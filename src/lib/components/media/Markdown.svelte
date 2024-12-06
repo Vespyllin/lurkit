@@ -3,8 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { onMount } from 'svelte';
 
-	let { text, crop }: { text: string; crop?: boolean } = $props();
-
+	let { text, crop, class: classList }: { text: string; crop?: boolean; class?: string } = $props();
 	const IMAGE_REGEX = /(http(s?):)([/|.|\w|\s|-])*\.(png|jpg|jpeg|gif|bmp|svg|webp).*/g;
 	const GIPHY_REGEX = /!\[gif\]\(giphy\|([\w-]+)\|?.*\)/g;
 	const REDDIT_SUBREDDIT_REGEX = /(?<!\S)r\/\w+/g;
@@ -45,6 +44,6 @@
 	});
 </script>
 
-<div class={cn(crop && '[&>*]:max-h-48')} bind:this={container}>
+<div class={cn(classList, crop && '[&>*]:max-h-48')} bind:this={container}>
 	{@html formattedText}
 </div>

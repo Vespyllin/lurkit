@@ -62,11 +62,11 @@
 		{:else if listing.selftext?.length > 0}
 			<a
 				href={listing.permalink}
-				class="mt-2 max-h-48 overflow-hidden [&_*]:pointer-events-none"
+				class="max-h-48 overflow-hidden [&_*]:pointer-events-none"
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown crop text={listing.selftext_html} />
+				<Markdown class="mt-2" crop text={listing.selftext_html} />
 			</a>
 		{/if}
 	{/if}
