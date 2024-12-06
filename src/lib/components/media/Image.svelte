@@ -38,19 +38,22 @@
 	)}
 >
 	{#if error}
-		<div class="flex h-20 items-center gap-2 text-xl">
-			<p class="p-1.5 text-zinc-300">Error loading image</p>
-			<button
-				class="rounded-md p-1 text-zinc-400 hover:bg-secondary"
-				onclick={() => {
-					const img = new Image();
-					img.onerror = () => (error = true);
-					img.onload = () => (loading = false);
-					img.src = url;
-					loading = true;
-					error = false;
-				}}>Retry</button
-			>
+		<div class="flex flex-col items-center">
+			<div class="mx-auto flex h-fit items-center gap-2 text-xl">
+				<p class="p-1.5 text-zinc-300">Error loading image</p>
+				<button
+					class="rounded-md p-1 text-zinc-400 hover:bg-secondary"
+					onclick={() => {
+						const img = new Image();
+						img.onerror = () => (error = true);
+						img.onload = () => (loading = false);
+						img.src = url;
+						loading = true;
+						error = false;
+					}}>Retry</button
+				>
+			</div>
+			<a href={url}> {url}</a>
 		</div>
 	{:else if loading}
 		<Spinner class="h-20" />

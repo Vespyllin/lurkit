@@ -25,7 +25,7 @@
 	let shelved = $state(true);
 
 	const {
-		params: { subreddit, tag }
+		params: { subreddit, title, tag }
 	} = $page;
 </script>
 
@@ -47,7 +47,7 @@
 			{#if comments[idx].kind == 'more' && idx != 0}
 				{@const parent_id = comments[idx].parent_id.split('_')[1]}
 				<a
-					href={`/r/${subreddit}/comments/${tag}/comment/${parent_id}`}
+					href={`/r/${subreddit}/comments/${tag}/${title}/${parent_id}`}
 					class="mt-1 flex w-full cursor-pointer items-center gap-2 pl-1 text-zinc-400 hover:underline md:w-fit"
 				>
 					<ArrowRight size={18} />
