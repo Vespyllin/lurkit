@@ -15,12 +15,13 @@
 	import Markdown from '../media/Markdown.svelte';
 	import { PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
 	import { page } from '$app/stores';
-
-	const { comments = $bindable(), class: className }: { comments: CommentsProp[]; class?: string } =
-		$props();
+	import UserPopover from '../users/UserPopover.svelte';
 
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
+
+	const { comments = $bindable(), class: className }: { comments: CommentsProp[]; class?: string } =
+		$props();
 
 	let shelved = $state(true);
 
@@ -67,7 +68,7 @@
 								comments[idx].is_submitter && 'underline'
 							)}
 						>
-							<span>{comments[idx].author}</span>
+							<UserPopover username={comments[idx].author} />
 
 							{#if comments[idx].distinguished}
 								{#if comments[idx].distinguished == 'moderator'}

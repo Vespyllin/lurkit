@@ -10,6 +10,7 @@
 	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import { cn } from '$lib/utils';
+	import UserPopover from '../users/UserPopover.svelte';
 
 	let {
 		subreddit,
@@ -47,7 +48,8 @@
 		•
 		<div class="flex items-center gap-1 text-zinc-400">
 			<span>
-				{author}
+				<UserPopover username={author} />
+				<!-- {author} -->
 			</span>
 			{#if distinguished}
 				{#if distinguished == 'moderator'}
@@ -77,11 +79,9 @@
 
 	{#if over_18}
 		•
-		<div class="flex items-center gap-1">
-			<div class="mt-0.5 size-fit text-zinc-400">
-				<ExclamationTriangle />
-			</div>
-			<span class="text-zinc-400"> 18+ </span>
+		<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
+			<ExclamationTriangle />
+			<span class="text-zinc-400">18+</span>
 		</div>
 	{/if}
 

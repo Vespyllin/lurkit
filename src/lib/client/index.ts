@@ -1,3 +1,5 @@
+const baseURL = 'https://www.reddit.com';
+
 export const fetchListings = async (
 	subreddit?: string,
 	count?: number,
@@ -5,7 +7,6 @@ export const fetchListings = async (
 	sort?: RedditSubredditSortOptions,
 	sr_detail?: boolean
 ): Promise<RedditListing<RedditT3DataWrapper> | undefined> => {
-	const baseURL = 'https://www.reddit.com';
 	const queryParams =
 		'?' +
 		Object.entries({ count, after, sr_detail })
@@ -32,7 +33,6 @@ export const fetchListingComments = async (
 	title: string,
 	sort?: RedditCommentSortOptions
 ): Promise<RedditListingCommentsDataWrapper> => {
-	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;
 
@@ -45,7 +45,6 @@ export const fetchListingComments = async (
 export const fetchSubreddit = async (
 	subreddit: string
 ): Promise<RedditT5DataWrapper | undefined> => {
-	const baseURL = 'https://www.reddit.com';
 	const url = `${baseURL}/r/${subreddit}/about/.json`;
 
 	const fetchRes = await fetch(url);
@@ -58,7 +57,6 @@ export const fetchComment = async (
 	comment_id: string,
 	sort?: RedditCommentSortOptions
 ): Promise<RedditListingCommentsDataWrapper> => {
-	const baseURL = 'https://www.reddit.com';
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;
 
@@ -66,4 +64,20 @@ export const fetchComment = async (
 
 	const fetchRes = await fetch(url);
 	return await fetchRes.json();
+};
+
+export const fetchUserAbout = async (username: string): Promise<RedditT2DataWrapper> => {
+	const url = `${baseURL}/user/${username}/about/.json`;
+
+	const fetchRes = await fetch(url);
+	return await fetchRes.json();
+};
+
+export const fetchUserOverview = async (username: string): Promise<RedditUserWrapper> => {
+	const url = `${baseURL}/user/${username}/submitted/.json?sr_detail=1`;
+
+	const fetchRes = await fetch(url);
+	const x = await fetchRes.json();
+	console.log(x);
+	return x;
 };
