@@ -11,7 +11,7 @@
 	const listingQuery = useQuery(username, () => fetchUserAbout(username));
 </script>
 
-<Tooltip.Root openDelay={50}>
+<Tooltip.Root openDelay={250}>
 	<Tooltip.Trigger>
 		<a class={cn('hover:underline', className)} href={`/u/${username}`}>
 			{username}

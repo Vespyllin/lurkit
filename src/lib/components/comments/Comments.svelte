@@ -68,7 +68,11 @@
 								comments[idx].is_submitter && 'underline'
 							)}
 						>
-							<UserPopover username={comments[idx].author} />
+							{#if comments[idx].author !== '[deleted]'}
+								<UserPopover username={comments[idx].author} />
+							{:else}
+								<span>{comments[idx].author}</span>
+							{/if}
 
 							{#if comments[idx].distinguished}
 								{#if comments[idx].distinguished == 'moderator'}
