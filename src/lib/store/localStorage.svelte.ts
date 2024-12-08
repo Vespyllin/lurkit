@@ -1,3 +1,5 @@
+import { untrack } from 'svelte';
+
 export class AudioLocalStorage {
 	#key: string;
 	#volume = $state(0);
@@ -10,6 +12,7 @@ export class AudioLocalStorage {
 		const localStorageMuted = localStorage.getItem(key + '-muted');
 
 		this.#volume = +(localStorageVolume ?? `${defaultValue}`);
+
 		this.#muted =
 			localStorageMuted !== undefined && localStorageMuted !== null
 				? localStorageMuted == 'true'

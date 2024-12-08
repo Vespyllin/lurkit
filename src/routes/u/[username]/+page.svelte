@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { fetchUserOverview } from '$lib/client';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import UserComment from '$lib/components/users/UserComment.svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 
@@ -19,7 +20,7 @@
 	</title>
 </svelte:head>
 
-<div class="space-y-1">
+<div class="space-y-2">
 	{#each $userQuery.data?.data.children ?? [] as child}
 		<div>
 			{#if child.kind == 't1'}
@@ -30,5 +31,6 @@
 				Unhandled submission type: {(child as any).kind}
 			{/if}
 		</div>
+		<Separator />
 	{/each}
 </div>
