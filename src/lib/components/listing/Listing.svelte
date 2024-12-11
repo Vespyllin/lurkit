@@ -25,7 +25,7 @@
 		distinguished={listing.distinguished}
 	/>
 
-	{#if listing.post_hint == 'link' && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
+	{#if (listing.post_hint == 'link' || !listing.domain.includes('redd')) && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = listing}
 
 		<Link {thumbnail} {title} {url} />

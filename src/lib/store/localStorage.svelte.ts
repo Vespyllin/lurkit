@@ -1,31 +1,18 @@
-import { untrack } from 'svelte';
-
 export class AudioLocalStorage {
 	#key: string;
-	#volume = $state(0);
 	#muted = $state(true);
 
-	constructor(key: string, defaultValue: number, defaultMuted: boolean) {
+	constructor(key: string, defaultMuted: boolean) {
 		this.#key = key;
 
-		const localStorageVolume = localStorage.getItem(key + '-volume');
 		const localStorageMuted = localStorage.getItem(key + '-muted');
 
-		this.#volume = +(localStorageVolume ?? `${defaultValue}`);
-
-		this.#muted =
-			localStorageMuted !== undefined && localStorageMuted !== null
-				? localStorageMuted == 'true'
-				: defaultMuted;
-	}
-
-	get volume() {
-		return this.#volume;
-	}
-
-	set volume(v: number) {
-		localStorage.setItem(this.#key + '-volume', v.toString());
-		this.#volume = v;
+		if (!localStorageMuted) {
+			localStorage.setItem(this.#key + '-muted', 'true');
+			this.#muted = defaultMuted;
+		} else {
+			this.#muted = localStorageMuted == 'true';
+		}
 	}
 
 	get muted() {
@@ -38,4 +25,4 @@ export class AudioLocalStorage {
 	}
 }
 
-export const audioLocalStorage = new AudioLocalStorage('lurkit-audio', 25, true);
+export const audioLocalStorage = new AudioLocalStorage('lurkit-audio', true);

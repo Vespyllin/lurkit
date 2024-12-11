@@ -22,6 +22,7 @@
 
 	let playing = $state(false);
 	let seek = $state(0);
+	let volume = $state(50);
 
 	const toZero = (x: number | undefined) => (!x || typeof x !== 'number' || isNaN(x) ? 0 : x);
 
@@ -63,16 +64,26 @@
 	const setMuted = (toMuted: boolean) => {
 		if (!audio) return;
 
+		audioLocalStorage.muted = toMuted;
 		if (toMuted) {
 			audio.volume = 0;
 		} else {
-			if (audioLocalStorage.volume == 0) audioLocalStorage.volume = 10;
-			else audio.volume = audioLocalStorage.volume / 100;
+			if (volume == 0) volume = 10;
+			else audio.volume = volume / 100;
 		}
 	};
 
 	const toggleMute = () => {
 		audioLocalStorage.muted = !audioLocalStorage.muted;
+		setMuted(audioLocalStorage.muted);
+	};
+
+	const setVolume = (toValue: number) => {
+		if (!audio || !hasAudio) return;
+		volume = toValue;
+		audio.volume = volume / 100;
+		if (volume == 0) setMuted(true);
+		else setMuted(false);
 	};
 
 	let loadingIntervalId: number | undefined = undefined;
@@ -140,23 +151,12 @@
 	};
 
 	$effect(() => {
-		if (!audio || !video) return;
-
-		audio.volume = audioLocalStorage.volume / 100;
-		untrack(() => {
-			if (audioLocalStorage.volume == 0) {
-				audioLocalStorage.muted = true;
-			} else {
-				if (audioLocalStorage.muted) setMuted(false);
-				audioLocalStorage.muted = false;
-			}
-		});
-	});
-
-	$effect(() => {
-		if (!audio || !video) return;
-
-		setMuted(audioLocalStorage.muted);
+		if (!audio) return;
+		if (audioLocalStorage.muted) {
+			audio.volume = 0;
+		} else {
+			audio.volume = volume / 100;
+		}
 	});
 
 	onDestroy(() => {
@@ -195,7 +195,8 @@
 						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
 					>
 						<input
-							bind:value={audioLocalStorage.volume}
+							oninput={(e) => setVolume(+(e.currentTarget.value ?? 0))}
+							bind:value={volume}
 							class="mx-auto h-28"
 							type="range"
 							style="writing-mode: vertical-lr; direction: rtl;"
