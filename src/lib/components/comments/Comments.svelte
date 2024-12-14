@@ -20,10 +20,13 @@
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
 
-	const { comments = $bindable(), class: className }: { comments: CommentsProp[]; class?: string } =
-		$props();
+	const {
+		comments = $bindable(),
+		class: className,
+		shelved: _shelved = true
+	}: { comments: CommentsProp[]; class?: string; shelved?: boolean } = $props();
 
-	let shelved = $state(true);
+	let shelved = $state(_shelved);
 
 	const {
 		params: { subreddit, title, tag }
@@ -171,7 +174,7 @@
 							</div>
 						</div>
 
-						<Self class="md:ml-2" bind:comments={comments[idx].replies} />
+						<Self class="md:ml-2" shelved={_shelved} bind:comments={comments[idx].replies} />
 					{/if}
 				</div>
 			{/if}

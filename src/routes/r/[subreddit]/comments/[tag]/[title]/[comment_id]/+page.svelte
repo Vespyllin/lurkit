@@ -69,7 +69,7 @@
 				{#if !comments.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					<Comments bind:comments />
+					<Comments shelved={false} bind:comments />
 				{/if}
 			</div>
 		{/if}
