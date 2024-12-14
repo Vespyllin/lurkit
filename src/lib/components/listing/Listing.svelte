@@ -10,7 +10,7 @@
 	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
-<div class="mt-2 flex cursor-default flex-col space-y-2 rounded-md [&_p]:cursor-auto">
+<div class="mt-2 flex flex-col space-y-2 rounded-md [&_p]:cursor-auto">
 	<ListingHeader
 		edited={listing.edited}
 		crossposted_from={crosspost?.subreddit_name_prefixed}
@@ -25,7 +25,7 @@
 		distinguished={listing.distinguished}
 	/>
 
-	{#if (listing.post_hint == 'link' || !listing.domain.includes('redd')) && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
+	{#if (listing.post_hint == 'link' || !(listing.domain.includes('redd') || listing.domain.includes('self.'))) && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = listing}
 
 		<Link {thumbnail} {title} {url} />
