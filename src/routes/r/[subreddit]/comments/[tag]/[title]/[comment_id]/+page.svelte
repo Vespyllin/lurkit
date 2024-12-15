@@ -16,8 +16,8 @@
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
 
-	let sort: RedditCommentSortOptions | undefined = undefined;
-	const queryUrl = `${subreddit}${tag}${comment_id}${sort ?? 'default'}`;
+	let sort: RedditCommentSortOptions | undefined = $state(undefined);
+	const queryUrl = `${subreddit}${tag}${comment_id}}`;
 	const listingQuery = useQuery(queryUrl, () => fetchComment(subreddit, tag, comment_id, sort));
 
 	$effect(() => {
@@ -66,7 +66,9 @@
 				{#if !comments.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					<Comments shelved={false} bind:comments />
+					{#key comments[0].id}
+						<Comments shelved={false} bind:comments />
+					{/key}
 				{/if}
 			</div>
 		{/if}
