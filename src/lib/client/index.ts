@@ -77,7 +77,5 @@ export const fetchUserOverview = async (username: string): Promise<RedditUserWra
 	const url = `${baseURL}/user/${username}/submitted/.json?sr_detail=1`;
 
 	const fetchRes = await fetch(url);
-	const x = await fetchRes.json();
-	console.log(x);
-	return x;
+	return await fetchRes.json();
 };

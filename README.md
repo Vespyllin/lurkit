@@ -4,6 +4,7 @@ Skeleton comments & posts (for listings, put an image, article and textpost plac
 search bar  
 custom subreddit colors (use global store)
 
+video pauses when seeked to 0  
 gallery fades blots when not used, make overlap  
 rewrite range bars
 fullscreen to the right

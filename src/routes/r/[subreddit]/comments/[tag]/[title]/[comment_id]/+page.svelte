@@ -7,33 +7,23 @@
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fetchComment } from '$lib/client';
-	import { untrack } from 'svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 
 	const {
 		params: { subreddit, tag, comment_id }
 	} = $page;
 
-	let sort: RedditCommentSortOptions = $state('top');
-
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
 
-	const queryUrl = `${subreddit}${tag}${comment_id}`;
-	const listingQuery = useQuery(queryUrl, async () => {
-		const data = await fetchComment(subreddit, tag, comment_id, sort);
-		if (!listing) listing = data?.[0].data?.children?.[0].data;
-		comments = assignCommentState(data[1]);
-
-		return data;
-	});
+	let sort: RedditCommentSortOptions | undefined = undefined;
+	const queryUrl = `${subreddit}${tag}${comment_id}${sort ?? 'default'}`;
+	const listingQuery = useQuery(queryUrl, () => fetchComment(subreddit, tag, comment_id, sort));
 
 	$effect(() => {
-		void sort;
-
-		untrack(() => {
-			$listingQuery.refetch();
-		});
+		if (!$listingQuery.data) return;
+		if (!listing) listing = $listingQuery.data?.[0].data?.children?.[0].data;
+		comments = assignCommentState($listingQuery.data[1]);
 	});
 </script>
 
@@ -55,7 +45,14 @@
 	<div class="flex flex-col px-2">
 		<Listing {listing} />
 
-		<CommentSortDropdown class="mt-2" bind:sort />
+		<CommentSortDropdown
+			onChange={(sortOption) => {
+				if (sortOption == sort) return;
+				sort = sortOption;
+				$listingQuery.refetch();
+			}}
+			class="mt-2"
+		/>
 
 		<Separator class="mt-2" />
 
