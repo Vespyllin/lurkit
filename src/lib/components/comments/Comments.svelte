@@ -43,7 +43,7 @@
 			>
 				<PlusCircled size={18} />
 				<span>
-					Expand {(comments.length - shelfDepth - 1).toLocaleString()}{hasMore ? '+' : ''} more</span
+					Expand {(comments.length - shelfDepth - +hasMore).toLocaleString()}{hasMore ? '+' : ''} more</span
 				>
 			</button>
 		{:else if !shelved || idx < shelfDepth || comments[idx].depth == 0}

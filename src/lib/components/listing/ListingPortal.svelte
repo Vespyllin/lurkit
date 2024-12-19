@@ -60,9 +60,10 @@
 				<IFrame post={listing} />
 			</div>
 		{:else if listing.selftext?.length > 0}
+			<!-- h-48 + mt-2 ==> 12.5 rem height -->
 			<a
 				href={listing.permalink}
-				class="max-h-48 overflow-hidden [&_*]:pointer-events-none"
+				class="max-h-[12.5rem] overflow-hidden [&_*]:pointer-events-none"
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
