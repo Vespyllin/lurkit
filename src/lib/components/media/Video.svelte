@@ -3,7 +3,6 @@
 	import { Pause, Play, SpeakerLoud, SpeakerOff, Video } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import Spinner from '../layout/Spinner.svelte';
-	import { audioLocalStorage } from '$lib/store/localStorage.svelte';
 
 	let {
 		url,
@@ -17,7 +16,9 @@
 	let hasVideo = $state(false);
 	let hasAudio = $state(false);
 
-	let audioLoading = $state(false);
+	let muted = $state(true);
+
+	// let audioLoading = $state(false);
 	let videoLoading = $state(false);
 
 	let playing = $state(false);
@@ -43,9 +44,9 @@
 
 	const syncAudio = () => {
 		if (!audio || !hasAudio) return;
-		console.log('Before Sync', audio.currentTime);
+		// console.log('Before Sync', audio.currentTime);
 		audio.currentTime = audio.duration * (seek / 100);
-		console.log('After Sync', audio.currentTime);
+		// console.log('After Sync', audio.currentTime);
 	};
 
 	const setPlaying = async (toPlaying: boolean) => {
@@ -64,7 +65,7 @@
 	const setMuted = (toMuted: boolean) => {
 		if (!audio) return;
 
-		audioLocalStorage.muted = toMuted;
+		muted = toMuted;
 		if (toMuted) {
 			audio.volume = 0;
 		} else {
@@ -74,8 +75,8 @@
 	};
 
 	const toggleMute = () => {
-		audioLocalStorage.muted = !audioLocalStorage.muted;
-		setMuted(audioLocalStorage.muted);
+		muted = !muted;
+		setMuted(muted);
 	};
 
 	const setVolume = (toValue: number) => {
@@ -87,40 +88,30 @@
 	};
 
 	let loadingIntervalId: number | undefined = undefined;
-	let lastRightBound = 0;
-	const bufferPadding = 3;
 	const initLoadingLoop = () => {
 		if (!audio || !video) return;
 		if (toZero(seek * 100) < 1 || toZero(seek) > 99) return;
 		if (loadingIntervalId) return;
 
-		setPlaying(false);
-
 		loadingIntervalId = setInterval(async () => {
 			if (!audio || !video) return;
-
+			let withinBuffer = false;
 			for (let i = 0; i < video.buffered.length; i++) {
 				const start = video.buffered.start(i);
 				const end = video.buffered.end(i);
 				const currentTime = video.currentTime;
 
-				if (start < currentTime && (currentTime < end || end == video.duration)) {
-					const timeDataString = `${start}-${end} : ${currentTime}/${video.duration}`;
+				if (start < currentTime && currentTime < end) withinBuffer = true;
+			}
 
-					if (lastRightBound == end || currentTime < end - bufferPadding) {
-						console.log('✔️', timeDataString);
+			if (withinBuffer) {
+				videoLoading = false;
+				setPlaying(playing);
 
-						videoLoading = false;
-						clearInterval(loadingIntervalId);
-						loadingIntervalId = undefined;
-
-						setPlaying(playing);
-					} else {
-						console.log('✖️', timeDataString);
-						videoLoading = true;
-					}
-					lastRightBound = end;
-				}
+				clearInterval(loadingIntervalId);
+			} else {
+				videoLoading = true;
+				setPlaying(false);
 			}
 		}, 500);
 	};
@@ -152,7 +143,7 @@
 
 	$effect(() => {
 		if (!audio) return;
-		if (audioLocalStorage.muted) {
+		if (muted) {
 			audio.volume = 0;
 		} else {
 			audio.volume = volume / 100;
@@ -203,7 +194,7 @@
 						/>
 					</div>
 					<button class="h-7" onclick={toggleMute}>
-						{#if !audioLocalStorage.muted}
+						{#if !muted}
 							<SpeakerLoud size={20} />
 						{:else}
 							<SpeakerOff size={20} />
@@ -250,7 +241,6 @@
 	<audio
 		bind:this={audio}
 		onwaiting={() => {
-			console.log('Awaiting audio');
 			onWaiting();
 		}}
 		onloadeddata={() => (hasAudio = true)}
@@ -269,7 +259,6 @@
 			hasVideo = true;
 		}}
 		onwaiting={() => {
-			console.log('Awaiting video');
 			onWaiting();
 		}}
 		onended={() => (playing = false)}
