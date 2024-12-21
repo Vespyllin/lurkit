@@ -1,23 +1,37 @@
 <script lang="ts">
-	import { CaretDown, Star, Target, Update, Rocket, LightningBolt, Gear } from 'radix-icons-svelte';
+	import {
+		CaretDown,
+		Star,
+		Target,
+		Update,
+		Rocket,
+		LightningBolt,
+		Gear,
+		Archive
+	} from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import type { ComponentType } from 'svelte';
+	import { type ComponentType } from 'svelte';
 
-	let sort: RedditCommentSortOptions | undefined = $state();
 	let {
 		class: className,
+		sort = $bindable(),
 		onChange
-	}: { onChange?: (v: RedditCommentSortOptions | undefined) => void; class?: string } = $props();
+	}: {
+		sort: RedditCommentSortOption;
+		onChange?: (v: RedditCommentSortOption) => void;
+		class?: string;
+	} = $props();
 
 	const sortOptions: {
-		option: RedditCommentSortOptions | 'default';
+		option: RedditCommentSortOption;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ option: 'default', icon: Gear },
 		{ option: 'top', icon: Star },
-		{ option: 'controversial', icon: Target },
+		{ option: 'best', icon: Rocket },
 		{ option: 'new', icon: LightningBolt },
-		{ option: 'hot', icon: Rocket },
+		{ option: 'controversial', icon: Target },
+		{ option: 'old', icon: Archive },
+		{ option: 'hot', icon: Gear },
 		{ option: 'random', icon: Update }
 	];
 </script>
@@ -38,7 +52,7 @@
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
 					onclick={() => {
-						sort = sortOption.option == 'default' ? undefined : sortOption.option;
+						sort = sortOption.option;
 						onChange?.(sort);
 					}}
 				>

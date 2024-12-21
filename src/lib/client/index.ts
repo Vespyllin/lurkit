@@ -31,7 +31,7 @@ export const fetchListingComments = async (
 	subreddit: string,
 	tag: string,
 	title: string,
-	sort?: RedditCommentSortOptions
+	sort?: RedditCommentSortOption
 ): Promise<RedditListingCommentsDataWrapper> => {
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;
@@ -55,7 +55,7 @@ export const fetchComment = async (
 	subreddit: string,
 	tag: string,
 	comment_id: string,
-	sort?: RedditCommentSortOptions
+	sort?: RedditCommentSortOption
 ): Promise<RedditListingCommentsDataWrapper> => {
 	let queryParams = '?sr_detail=1';
 	if (sort) queryParams += `&sort=${sort}`;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Comments, { assignCommentState } from '$lib/components/comments/';
@@ -8,15 +8,24 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fetchListingComments } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
+	import { goto } from '$app/navigation';
 
 	const {
-		params: { subreddit, tag, title }
-	} = $page;
+		params: { subreddit, tag, title },
+		url: { searchParams }
+	} = page;
 
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
 
-	let sort: RedditCommentSortOptions | undefined = $state(undefined);
+	const isValidSort = (sort: string | null): sort is RedditCommentSortOption => {
+		const validSortOptions = ['best', 'top', 'new', 'controversial', 'hot', 'random', 'old'];
+		return !(!sort || !validSortOptions.includes(sort));
+	};
+
+	const sortParam = searchParams.get('sort');
+	let sort: RedditCommentSortOption = $state(isValidSort(sortParam) ? sortParam : 'top');
+
 	const listingQuery = useQuery(`${subreddit}${tag}${title}`, () =>
 		fetchListingComments(subreddit, tag, title, sort)
 	);
@@ -47,9 +56,11 @@
 		<Listing {listing} />
 
 		<CommentSortDropdown
+			{sort}
 			onChange={(sortOption) => {
 				if (sortOption == sort) return;
 				sort = sortOption;
+				goto(`${title}?sort=${sort}`);
 				$listingQuery.refetch();
 			}}
 			class="mt-2"
@@ -67,9 +78,7 @@
 				{#if !comments.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					{#key comments[0].id}
-						<Comments bind:comments />
-					{/key}
+					<Comments bind:comments />
 				{/if}
 			</div>
 		{/if}

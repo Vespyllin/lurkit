@@ -16,7 +16,7 @@
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
 
-	let sort: RedditCommentSortOptions | undefined = $state(undefined);
+	let sort: RedditCommentSortOption | undefined = $state(undefined);
 	const queryUrl = `${subreddit}${tag}${comment_id}}`;
 	const listingQuery = useQuery(queryUrl, () => fetchComment(subreddit, tag, comment_id, sort));
 

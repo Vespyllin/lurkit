@@ -23,7 +23,7 @@
 
 	let playing = $state(false);
 	let seek = $state(0);
-	let volume = $state(35);
+	let volume = $state(25);
 
 	const toZero = (x: number | undefined) => (!x || typeof x !== 'number' || isNaN(x) ? 0 : x);
 

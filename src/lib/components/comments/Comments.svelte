@@ -14,8 +14,8 @@
 	import Self from './Comments.svelte';
 	import Markdown from '../media/Markdown.svelte';
 	import { PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
-	import { page } from '$app/stores';
 	import UserPopover from '../users/UserPopover.svelte';
+	import { page } from '$app/state';
 
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
@@ -30,7 +30,7 @@
 
 	const {
 		params: { subreddit, title, tag }
-	} = $page;
+	} = page;
 </script>
 
 <div>
@@ -150,7 +150,9 @@
 						<!-- max-w-[calc(100lvw-3rem)] -->
 						<div class="mt-1.5 min-h-4">
 							<div class="text-wrap break-words text-base text-zinc-200">
-								<Markdown text={comments[idx].body_html} />
+								{#key comments[idx].body_html}
+									<Markdown text={comments[idx].body_html} />
+								{/key}
 							</div>
 
 							<!-- Mobile -->
@@ -174,7 +176,7 @@
 							</div>
 						</div>
 
-						<Self class="md:ml-2" shelved={_shelved} bind:comments={comments[idx].replies} />
+						<Self class="md:ml-2" shelved={_shelved} comments={comments[idx].replies} />
 					{/if}
 				</div>
 			{/if}
