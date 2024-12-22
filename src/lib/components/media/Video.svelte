@@ -44,9 +44,7 @@
 
 	const syncAudio = () => {
 		if (!audio || !hasAudio) return;
-		// console.log('Before Sync', audio.currentTime);
 		audio.currentTime = audio.duration * (seek / 100);
-		// console.log('After Sync', audio.currentTime);
 	};
 
 	const setPlaying = async (toPlaying: boolean) => {
