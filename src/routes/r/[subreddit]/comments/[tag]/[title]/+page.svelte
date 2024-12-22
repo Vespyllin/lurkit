@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import { page } from '$app/stores';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import Comments, { assignCommentState } from '$lib/components/comments/';
@@ -13,7 +13,7 @@
 	const {
 		params: { subreddit, tag, title },
 		url: { searchParams }
-	} = page;
+	} = $page;
 
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
