@@ -20,11 +20,11 @@
 
 	const isValidSort = (sort: string | null): sort is RedditCommentSortOption => {
 		const validSortOptions = ['best', 'top', 'new', 'controversial', 'hot', 'random', 'old'];
-		return !(!sort || !validSortOptions.includes(sort));
+		return !!sort && validSortOptions.includes(sort);
 	};
 
 	const sortParam = searchParams.get('sort');
-	let sort: RedditCommentSortOption = $state(isValidSort(sortParam) ? sortParam : 'top');
+	let sort: RedditCommentSortOption = $state(isValidSort(sortParam) ? sortParam : 'best');
 
 	const listingQuery = useQuery(`${subreddit}${tag}${title}`, () =>
 		fetchListingComments(subreddit, tag, title, sort)

@@ -26,8 +26,8 @@
 		option: RedditCommentSortOption;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ option: 'top', icon: Star },
 		{ option: 'best', icon: Rocket },
+		{ option: 'top', icon: Star },
 		{ option: 'new', icon: LightningBolt },
 		{ option: 'controversial', icon: Target },
 		{ option: 'old', icon: Archive },
