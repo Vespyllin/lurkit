@@ -167,7 +167,7 @@
 		<div
 			class={cn(
 				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				(playing || !videoLoading) && 'opacity-0'
+				playing && !videoLoading && 'opacity-0'
 			)}
 		>
 			<button class="h-7" onclick={onPlayChange}>
