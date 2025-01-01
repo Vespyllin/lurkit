@@ -10,10 +10,15 @@
 
 	const lastFetchedListingIds = new Set<string>();
 
+	let errthing = $state('p');
+
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
 
-		if (!data || !data.data) return undefined;
+		if (!data || !data.data) {
+			errthing = 'NO DATA RETURNED';
+			return undefined;
+		}
 
 		const filteredChildren = data.data.children?.filter((listing) => {
 			if (lastFetchedListingIds.has(listing.data.name)) return false;
@@ -51,8 +56,10 @@
 	};
 
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
-		getNextPageParam: (lastGroup) => lastGroup?.data?.children?.at(-1)?.data.name
+		getNextPageParam: (lastGroup) => lastGroup?.data?.after
 	});
+
+	$inspect($listingsQuery.data?.pages);
 </script>
 
 <svelte:head>
@@ -88,10 +95,12 @@
 				<Separator />
 			{/each}
 		{/each}
-		{#if $listingsQuery.isError || $listingsQuery.isFetching}
+		{#if $listingsQuery.isError || $listingsQuery.isFetching || !$listingsQuery.hasNextPage}
 			<FetchMoreStatus
 				fetching={$listingsQuery.isFetching}
-				error={$listingsQuery.error as string | undefined}
+				error={!$listingsQuery.hasNextPage
+					? 'Could not retrieve next page param.'
+					: ($listingsQuery.error as string | undefined)}
 			/>
 		{/if}
 	</div>

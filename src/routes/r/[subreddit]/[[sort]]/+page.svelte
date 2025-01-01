@@ -53,7 +53,7 @@
 	};
 
 	const listingsQuery = useInfiniteQuery(`r/${subreddit}/listings`, fetchNextListings, {
-		getNextPageParam: (lastGroup) => lastGroup?.data?.children?.at(-1)?.data.name
+		getNextPageParam: (lastGroup) => lastGroup?.data?.after
 	});
 
 	const sortOptions: {
