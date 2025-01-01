@@ -38,13 +38,18 @@
 		</a>
 	{:else}
 		<a href={listing.permalink} draggable="false">
-			<h1 class="mt-2 text-wrap break-words text-2xl font-medium">
+			<h1
+				class={cn(
+					'mt-2 text-wrap break-words text-2xl font-medium',
+					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
+				)}
+			>
 				{cleanText(listing.title)}
 			</h1>
 		</a>
 
 		{#if crosspost}
-			<div class="mt-2 rounded-lg border-2 px-2 pt-1">
+			<div class="mt-2 rounded-lg border-2">
 				<Self listing={crosspost} />
 			</div>
 		{:else if listing.is_video}

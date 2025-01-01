@@ -162,7 +162,6 @@
 			<Spinner class="mx-auto size-20" />
 		</div>
 	{/if}
-	{!playing ? 't' : 'f'}
 	{#if hasVideo}
 		<div
 			class={cn(

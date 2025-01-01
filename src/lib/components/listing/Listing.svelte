@@ -4,6 +4,7 @@
 	import ListingHeader from './ListingHeader.svelte';
 	import ListingFooter from './ListingFooter.svelte';
 	import ListingPortal from './ListingPortal.svelte';
+	import { cn } from '$lib/utils';
 
 	let { listing }: { listing: RedditT3Data } = $props();
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
@@ -34,7 +35,12 @@
 			<Markdown text={listing.selftext} />
 		{/if}
 	{:else}
-		<h1 class="cursor-text text-wrap break-words text-2xl font-medium">
+		<h1
+			class={cn(
+				'cursor-text text-wrap break-words text-2xl font-medium',
+				crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
+			)}
+		>
 			{cleanText(listing.title)}
 		</h1>
 
@@ -48,7 +54,7 @@
 			</p>
 		{:else if crosspost}
 			<div class="rounded-lg border-2">
-				<ListingPortal class="px-4 pt-3" listing={crosspost} />
+				<ListingPortal listing={crosspost} />
 			</div>
 		{:else if listing.is_video}
 			<div>
