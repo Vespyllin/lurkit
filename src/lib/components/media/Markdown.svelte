@@ -13,7 +13,6 @@
 	const formattedText = cleanText(text)
 		.replaceAll(wrapATagRegex(IMAGE_REGEX), '<a href="$1"><img src="$1"/></a>')
 		.replaceAll(wrapATagRegex(GIPHY_REGEX), '<a href="$1"><img src="$1"/></a>')
-		.replaceAll(REDDIT_SUBREDDIT_REGEX, '[$&](/$&)')
 		.replaceAll(/(www|new).reddit.com/g, 'lurkit-six.vercel.app');
 
 	let container: HTMLDivElement | undefined = $state();

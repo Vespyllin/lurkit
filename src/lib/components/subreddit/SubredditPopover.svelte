@@ -17,15 +17,17 @@
 
 		let charsInLine = 0;
 		let linesIdx = 0;
+
+		const max = Math.max(Math.floor(text.length / 4) - 1, 32);
 		words.forEach((word) => {
-			if (charsInLine > Math.max(text.length / 5, 32) && linesIdx < 3) {
+			if (charsInLine > max && linesIdx < 3) {
 				linesIdx += 1;
 				charsInLine = 0;
 				lines.push([]);
 			}
 
 			lines[linesIdx].push(word);
-			charsInLine += word.length;
+			charsInLine += word.length + 1;
 		});
 
 		return lines.map((x) => x.join(' '));
