@@ -9,6 +9,7 @@
 	import { fetchListingComments } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { goto } from '$app/navigation';
+	import { untrack } from 'svelte';
 
 	const {
 		params: { subreddit, tag, title },
@@ -26,14 +27,25 @@
 	const sortParam = searchParams.get('sort');
 	let sort: RedditCommentSortOption = $state(isValidSort(sortParam) ? sortParam : 'best');
 
-	const listingQuery = useQuery(`${subreddit}${tag}${title}`, () =>
-		fetchListingComments(subreddit, tag, title, sort)
-	);
+	const listingQuery = useQuery(`${subreddit}${tag}${title}`, async () => {
+		const data = await fetchListingComments(subreddit, tag, title, sort);
+		if (!data) return undefined;
+
+		if (!listing) listing = data?.[0].data?.children?.[0].data;
+		comments = assignCommentState(data[1]);
+	});
 
 	$effect(() => {
-		if (!$listingQuery.data) return;
-		if (!listing) listing = $listingQuery.data?.[0].data?.children?.[0].data;
-		comments = assignCommentState($listingQuery.data[1]);
+		const searchParam = $page.url.searchParams.get('sort');
+
+		untrack(() => {
+			if (sort == searchParam || (sort == 'best' && !searchParam)) return;
+
+			if (isValidSort(searchParam)) sort = searchParam as RedditCommentSortOption;
+			else sort = 'best';
+
+			$listingQuery.refetch();
+		});
 	});
 </script>
 
@@ -61,7 +73,6 @@
 				if (sortOption == sort) return;
 				sort = sortOption;
 				goto(`${title}?sort=${sort}`);
-				$listingQuery.refetch();
 			}}
 			class="mt-2"
 		/>

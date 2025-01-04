@@ -59,7 +59,7 @@
 
 				<div class="text-zinc-400">
 					{#if !subreddit.public_description}
-						No description.
+						<span class="italic"> No description. </span>
 					{:else}
 						{@const x = breakParagraph(subreddit.public_description)}
 						{#each x as line}
