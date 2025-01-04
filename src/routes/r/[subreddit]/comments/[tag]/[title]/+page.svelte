@@ -41,9 +41,7 @@
 		untrack(() => {
 			if (sort == searchParam || (sort == 'best' && !searchParam)) return;
 
-			if (isValidSort(searchParam)) sort = searchParam as RedditCommentSortOption;
-			else sort = 'best';
-
+			sort = isValidSort(searchParam) ? searchParam : ('best' as RedditCommentSortOption);
 			$listingQuery.refetch();
 		});
 	});
@@ -71,8 +69,7 @@
 			{sort}
 			onChange={(sortOption) => {
 				if (sortOption == sort) return;
-				sort = sortOption;
-				goto(`${title}?sort=${sort}`);
+				goto(`${title}?sort=${sortOption}`);
 			}}
 			class="mt-2"
 		/>
