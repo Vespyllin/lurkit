@@ -10,7 +10,7 @@
 		params: { username }
 	} = $page;
 
-	const aboutQuery = useQuery(username, () => fetchUserOverview(username));
+	// const aboutQuery = useQuery(username, () => fetchUserOverview(username));
 	const userQuery = useQuery(username + 'overview', () => fetchUserOverview(username));
 </script>
 
@@ -28,7 +28,9 @@
 			{:else if child.kind == 't3'}
 				<ListingPortal listing={child.data} />
 			{:else}
-				Unhandled submission type: {(child as any).kind}
+				<div class="rounded-md border border-red-500">
+					Unhandled submission type: {(child as any).kind}
+				</div>
 			{/if}
 		</div>
 		<Separator />

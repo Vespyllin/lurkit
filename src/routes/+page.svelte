@@ -58,8 +58,6 @@
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
 		getNextPageParam: (lastGroup) => lastGroup?.data?.after
 	});
-
-	$inspect($listingsQuery.data?.pages);
 </script>
 
 <svelte:head>

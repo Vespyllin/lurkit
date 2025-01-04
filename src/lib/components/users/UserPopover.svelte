@@ -34,9 +34,9 @@
 				{/if}
 				<div class="flex flex-col">
 					<div class="flex items-center text-xl font-semibold">
-						<span>
+						<a class={cn('hover:underline', className)} href={`/u/${username}`}>
 							{data.subreddit.display_name_prefixed}
-						</span>
+						</a>
 
 						<div class="mt-0.5">
 							{#if verifiedLevel == 0}

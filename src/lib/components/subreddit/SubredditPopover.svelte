@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import { Markdown } from '../media';
+	import Markdown from '../media/Markdown.svelte';
 	import * as Tooltip from '../ui/tooltip';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
@@ -11,6 +10,26 @@
 			: (subreddit.icon_img ?? '').length > 0
 				? subreddit.icon_img
 				: '/favicon.png';
+
+	const breakParagraph = (text: string) => {
+		const words = text.split(' ');
+		const lines: string[][] = [[]];
+
+		let charsInLine = 0;
+		let linesIdx = 0;
+		words.forEach((word) => {
+			if (charsInLine > Math.max(text.length / 5, 32) && linesIdx < 3) {
+				linesIdx += 1;
+				charsInLine = 0;
+				lines.push([]);
+			}
+
+			lines[linesIdx].push(word);
+			charsInLine += word.length;
+		});
+
+		return lines.map((x) => x.join(' '));
+	};
 </script>
 
 <Tooltip.Root openDelay={50}>
@@ -22,19 +41,30 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content class={cn('pt-1', !subreddit.public_description && 'hidden')}>
-		<div class="w-96">
-			<div class="float-left mr-2 mt-[5px] flex h-[6.25rem] max-w-32">
+	<Tooltip.Content class="pt-1">
+		<div class="flex h-fit min-w-64">
+			<div class="mr-2 mt-[5px] flex h-[6.25rem] max-w-32">
 				<img alt="" src={icon_url} class="my-auto h-full" />
 			</div>
 
 			<div>
-				<h2 class="text-xl font-semibold tracking-tighter">{subreddit.display_name_prefixed}</h2>
+				<a
+					class="text-xl font-semibold tracking-tighter hover:underline"
+					href={`/${subreddit.display_name_prefixed}`}
+				>
+					{subreddit.display_name_prefixed}
+				</a>
+
 				<div class="text-zinc-400">
 					{#if !subreddit.public_description}
-						none
+						No description.
 					{:else}
-						<Markdown text={subreddit.public_description} />
+						{@const x = breakParagraph(subreddit.public_description)}
+						{#each x as line}
+							<div>
+								<Markdown text={line} />
+							</div>
+						{/each}
 					{/if}
 				</div>
 			</div>

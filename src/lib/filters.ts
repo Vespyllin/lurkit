@@ -99,5 +99,7 @@ export const subredditFilter = [
 	'r/houstonwade',
 	'r/ufo',
 	'r/ufos',
-	'r/aliens'
+	'r/aliens',
+	'r/hololive',
+	'r/ufob'
 ].map((x) => x.toLowerCase());
