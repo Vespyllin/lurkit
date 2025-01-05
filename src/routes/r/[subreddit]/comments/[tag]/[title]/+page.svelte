@@ -12,22 +12,32 @@
 	import { untrack } from 'svelte';
 
 	const {
-		params: { subreddit, tag, title },
-		url: { searchParams }
+		params: { subreddit, tag, title }
 	} = $page;
 
 	let listing: RedditT3Data | undefined = $state();
 	let comments: CommentsProp[] = $state([]);
 
-	const isValidSort = (sort: string | null): sort is RedditCommentSortOption => {
-		const validSortOptions = ['best', 'top', 'new', 'controversial', 'hot', 'random', 'old'];
-		return !!sort && validSortOptions.includes(sort);
+	const validateSort = (sortString: string | null) => {
+		const validSortOptions = [
+			'confidence',
+			'top',
+			'new',
+			'controversial',
+			'old',
+			'random',
+			'qa',
+			'blank'
+		];
+
+		const isValid = !!sortString && validSortOptions.includes(sortString);
+
+		return isValid ? (sortString as RedditCommentSortOption) : 'blank';
 	};
 
-	const sortParam = searchParams.get('sort');
-	let sort: RedditCommentSortOption = $state(isValidSort(sortParam) ? sortParam : 'best');
+	let sort: RedditCommentSortOption = $state($page.url.searchParams.get('sort') as any);
 
-	const listingQuery = useQuery(`${subreddit}${tag}${title}`, async () => {
+	const listingQuery = useQuery([subreddit, tag, title, (() => sort)()], async () => {
 		const data = await fetchListingComments(subreddit, tag, title, sort);
 		if (!data) return undefined;
 
@@ -39,9 +49,9 @@
 		const searchParam = $page.url.searchParams.get('sort');
 
 		untrack(() => {
-			if (sort == searchParam || (sort == 'best' && !searchParam)) return;
+			if (sort == searchParam || (sort == 'blank' && !searchParam)) return;
 
-			sort = isValidSort(searchParam) ? searchParam : ('best' as RedditCommentSortOption);
+			sort = validateSort(searchParam);
 			$listingQuery.refetch();
 		});
 	});
@@ -69,7 +79,8 @@
 			{sort}
 			onChange={(sortOption) => {
 				if (sortOption == sort) return;
-				goto(`${title}?sort=${sortOption}`);
+				if (sortOption == 'blank') goto(`${title}`);
+				else goto(`${title}?sort=${sortOption}`);
 			}}
 			class="mt-2"
 		/>

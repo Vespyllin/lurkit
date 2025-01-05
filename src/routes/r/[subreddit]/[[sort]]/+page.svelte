@@ -16,9 +16,12 @@
 	import type { ComponentType } from 'svelte';
 
 	const {
-		params: { subreddit, sort }
+		params: { subreddit, sort },
+		url: { searchParams }
 	} = $page;
 
+	const timescaleParam = searchParams.get('timescale') ?? undefined;
+	let topSortTimescale: string | undefined = $state(timescaleParam);
 	const subredditQuery = useQuery(`r/${subreddit}`, () => fetchSubreddit(subreddit));
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
@@ -27,6 +30,7 @@
 			50,
 			pageParam,
 			sort as RedditSubredditSortOptions,
+			timescaleParam,
 			true
 		);
 
@@ -66,6 +70,8 @@
 		{ option: 'new', icon: LightningBolt },
 		{ option: 'hot', icon: Rocket }
 	];
+
+	const timescales: string[] = ['today', 'week', 'month', 'year', 'all'];
 </script>
 
 <svelte:head>
@@ -84,9 +90,8 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $listingsQuery;
-		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
+		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError)
 			$listingsQuery.fetchNextPage();
-		}
 	}}
 />
 
@@ -99,28 +104,65 @@
 	<div class="space-y-2">
 		<SubredditBanner data={$subredditQuery.data.data} />
 
-		<DropdownMenu.Root preventScroll={false}>
-			<div class="flex leading-8">
-				<span class="mr-2 text-lg">Sort by:</span>
-				<DropdownMenu.Trigger>
-					<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-						<span class="ml-2 text-lg">{sort ?? 'default'}</span>
-						<CaretDown size={18} />
+		<div class="flex gap-2">
+			<DropdownMenu.Root preventScroll={false}>
+				<div class="flex leading-8">
+					<span class="mr-2 text-lg">Sort by:</span>
+					<DropdownMenu.Trigger>
+						<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
+							<span class="ml-2 text-lg">{sort ?? 'default'}</span>
+							<CaretDown size={18} />
+						</div>
+					</DropdownMenu.Trigger>
+				</div>
+				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
+					{#each sortOptions as sortOption}
+						{@const route = `/r/${subreddit}/${sortOption.option !== 'default' ? sortOption.option : ''}`}
+						<a data-sveltekit-reload href={route}>
+							<DropdownMenu.Item class="cursor-pointer rounded-sm font-normal hover:bg-accent">
+								<sortOption.icon class="mr-1" />
+								<span>{sortOption.option}</span>
+							</DropdownMenu.Item>
+						</a>
+					{/each}
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+
+			{#if sort == 'top'}
+				<DropdownMenu.Root preventScroll={false}>
+					<div class="flex leading-8">
+						<span class="mr-2 text-lg">Sort by:</span>
+						<DropdownMenu.Trigger>
+							<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
+								<span class="ml-2 text-lg">{topSortTimescale ?? 'today'}</span>
+								<CaretDown size={18} />
+							</div>
+						</DropdownMenu.Trigger>
 					</div>
-				</DropdownMenu.Trigger>
-			</div>
-			<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
-				{#each sortOptions as sortOption}
-					{@const route = `/r/${subreddit}/${sortOption.option !== 'default' ? sortOption.option : ''}`}
-					<a data-sveltekit-reload href={route}>
-						<DropdownMenu.Item class="cursor-pointer rounded-sm font-normal hover:bg-accent">
-							<sortOption.icon class="mr-1" />
-							<span>{sortOption.option}</span>
-						</DropdownMenu.Item>
-					</a>
-				{/each}
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+					<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
+						{#each timescales as timescale}
+							{@const route = timescale == 'today' ? './top' : `?timescale=${timescale}`}
+							{#if topSortTimescale == timescale}
+								<DropdownMenu.Item class="cursor-pointer rounded-sm font-normal hover:bg-accent">
+									<span>{timescale}</span>
+								</DropdownMenu.Item>
+							{:else}
+								<a data-sveltekit-reload href={route}>
+									<DropdownMenu.Item
+										class="cursor-pointer rounded-sm font-normal hover:bg-accent"
+										onclick={() => {
+											topSortTimescale = timescale;
+										}}
+									>
+										<span>{timescale}</span>
+									</DropdownMenu.Item>
+								</a>
+							{/if}
+						{/each}
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			{/if}
+		</div>
 
 		<Separator class="h-0.5" />
 

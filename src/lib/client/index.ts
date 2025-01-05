@@ -5,11 +5,12 @@ export const fetchListings = async (
 	count?: number,
 	after?: string,
 	sort?: RedditSubredditSortOptions,
+	timescale?: string,
 	sr_detail?: boolean
 ): Promise<RedditListing<RedditT3DataWrapper> | undefined> => {
 	const queryParams =
 		'?' +
-		Object.entries({ count, after, sr_detail })
+		Object.entries({ count, after, sr_detail, t: timescale })
 			.map((x) => {
 				const [k, v] = x;
 				if (!v) return undefined;

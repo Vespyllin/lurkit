@@ -22,17 +22,20 @@
 		class?: string;
 	} = $props();
 
+	['confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live', 'blank'];
+
 	const sortOptions: {
 		option: RedditCommentSortOption;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ option: 'best', icon: Rocket },
+		{ option: 'blank', icon: Gear },
+		{ option: 'confidence', icon: Rocket },
 		{ option: 'top', icon: Star },
 		{ option: 'new', icon: LightningBolt },
 		{ option: 'controversial', icon: Target },
 		{ option: 'old', icon: Archive },
-		{ option: 'hot', icon: Gear },
-		{ option: 'random', icon: Update }
+		{ option: 'random', icon: Update },
+		{ option: 'qa', icon: Gear }
 	];
 </script>
 
