@@ -7,7 +7,8 @@
 		Rocket,
 		LightningBolt,
 		Gear,
-		Archive
+		Archive,
+		Keyboard
 	} from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { type ComponentType } from 'svelte';
@@ -22,8 +23,6 @@
 		class?: string;
 	} = $props();
 
-	['confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live', 'blank'];
-
 	const sortOptions: {
 		option: RedditCommentSortOption;
 		icon: ComponentType | undefined;
@@ -35,7 +34,7 @@
 		{ option: 'controversial', icon: Target },
 		{ option: 'old', icon: Archive },
 		{ option: 'random', icon: Update },
-		{ option: 'qa', icon: Gear }
+		{ option: 'qa', icon: Keyboard }
 	];
 </script>
 
@@ -45,7 +44,7 @@
 			<span class="mr-2 text-lg">Sort by:</span>
 			<DropdownMenu.Trigger>
 				<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-					<span class="ml-2 text-lg">{sort ?? 'default'}</span>
+					<span class="ml-2 text-lg">{sort ?? 'blank'}</span>
 					<CaretDown size={18} />
 				</div>
 			</DropdownMenu.Trigger>
