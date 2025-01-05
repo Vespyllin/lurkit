@@ -30,8 +30,8 @@
 			50,
 			pageParam,
 			sort as RedditSubredditSortOptions,
-			timescaleParam,
-			true
+			true,
+			timescaleParam
 		);
 
 		if (!data || !data.data) return undefined;
