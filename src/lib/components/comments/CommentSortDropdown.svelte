@@ -24,17 +24,18 @@
 	} = $props();
 
 	const sortOptions: {
-		option: RedditCommentSortOption;
+		value: RedditCommentSortOption;
+		display: string;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ option: 'blank', icon: Gear },
-		{ option: 'confidence', icon: Rocket },
-		{ option: 'top', icon: Star },
-		{ option: 'new', icon: LightningBolt },
-		{ option: 'controversial', icon: Target },
-		{ option: 'old', icon: Archive },
-		{ option: 'random', icon: Update },
-		{ option: 'qa', icon: Keyboard }
+		{ value: 'blank', display: 'default', icon: Gear },
+		{ value: 'confidence', display: 'best', icon: Rocket },
+		{ value: 'top', display: 'top', icon: Star },
+		{ value: 'new', display: 'new', icon: LightningBolt },
+		{ value: 'controversial', display: 'controversial', icon: Target },
+		{ value: 'old', display: 'old', icon: Archive },
+		{ value: 'random', display: 'random', icon: Update },
+		{ value: 'qa', display: 'q&a', icon: Keyboard }
 	];
 </script>
 
@@ -44,7 +45,9 @@
 			<span class="mr-2 text-lg">Sort by:</span>
 			<DropdownMenu.Trigger>
 				<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-					<span class="ml-2 text-lg">{sort ?? 'blank'}</span>
+					<span class="ml-2 text-lg">
+						{sortOptions.find((x) => x.value == (sort ?? 'blank'))!.display}
+					</span>
 					<CaretDown size={18} />
 				</div>
 			</DropdownMenu.Trigger>
@@ -54,12 +57,12 @@
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
 					onclick={() => {
-						sort = sortOption.option;
-						onChange?.(sort);
+						sort = sortOption.value;
+						onChange?.(sortOption.value);
 					}}
 				>
 					<sortOption.icon class="mr-1" />
-					<span>{sortOption.option}</span>
+					<span>{sortOption.display}</span>
 				</DropdownMenu.Item>
 			{/each}
 		</DropdownMenu.Content>
