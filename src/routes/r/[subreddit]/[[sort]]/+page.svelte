@@ -131,7 +131,7 @@
 			{#if sort == 'top'}
 				<DropdownMenu.Root preventScroll={false}>
 					<div class="flex leading-8">
-						<span class="mr-2 text-lg">Sort by:</span>
+						<span class="mr-2 text-lg">Time:</span>
 						<DropdownMenu.Trigger>
 							<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
 								<span class="ml-2 text-lg">{topSortTimescale ?? 'today'}</span>
