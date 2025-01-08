@@ -23,27 +23,32 @@
 
 		if (!data || !data.data || !subredditFilter) return;
 
-		const filteredChildren = data.data.children?.filter((listing) => {
-			if (lastFetchedListingIds.has(listing.data.name)) return false;
+		const filteredChildren = data.data.children
+			?.filter((listing) => {
+				if (lastFetchedListingIds.has(listing.data.name)) return false;
 
-			const listingTitle = listing.data.title.toLowerCase();
-			const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
+				const listingTitle = listing.data.title.toLowerCase();
+				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
-			if (subreddit && subredditFilter.includes(subreddit)) return false;
-			if (!titleFilter.every((title) => !listingTitle.toLowerCase().includes(title))) return false;
+				if (subreddit && subredditFilter.includes(subreddit)) return false;
+				if (!titleFilter.every((title) => !listingTitle.toLowerCase().includes(title)))
+					return false;
 
-			const { crosspost_parent, crosspost_parent_list } = listing.data;
-			const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
-			if (!crosspost) return true;
+				const { crosspost_parent, crosspost_parent_list } = listing.data;
+				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
+				if (!crosspost) return true;
 
-			const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
-			const crossTitle = crosspost.title.toLowerCase();
+				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
+				const crossTitle = crosspost.title.toLowerCase();
 
-			if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
-			if (!titleFilter.every((title) => !crossTitle.toLowerCase().includes(title))) return false;
+				if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
+				if (!titleFilter.every((title) => !crossTitle.toLowerCase().includes(title))) return false;
 
-			return true;
-		});
+				return true;
+			})
+			.map((x) => {
+				return { ...x, data: { ...x.data, pinned: false } };
+			});
 
 		filteredChildren?.forEach((x) => lastFetchedListingIds.add(x.data.name));
 
