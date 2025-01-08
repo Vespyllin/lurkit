@@ -4,21 +4,24 @@
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
-	import { subredditFilter, titleFilter } from '$lib/filters';
+	import { titleFilter } from '$lib/filters';
 	import { fetchListings } from '$lib/client';
-	import { useInfiniteQuery } from '@sveltestack/svelte-query';
+	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
+	import { untrack } from 'svelte';
 
 	const lastFetchedListingIds = new Set<string>();
 
-	let errthing = $state('p');
+	const subredditFilterQuery = useQuery('filters', async () => {
+		const fetchData = await fetch('/api/filters');
+		const filterContent = (await fetchData.json()).filter as string[];
+		return filterContent;
+	});
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
+		const subredditFilter = $subredditFilterQuery.data;
 
-		if (!data || !data.data) {
-			errthing = 'NO DATA RETURNED';
-			return undefined;
-		}
+		if (!data || !data.data || !subredditFilter) return;
 
 		const filteredChildren = data.data.children?.filter((listing) => {
 			if (lastFetchedListingIds.has(listing.data.name)) return false;
@@ -56,13 +59,25 @@
 	};
 
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
-		getNextPageParam: (lastGroup) => lastGroup?.data?.after
+		getNextPageParam: (lastGroup) => lastGroup?.data?.after,
+		enabled: $subredditFilterQuery.isFetched
+	});
+
+	$effect(() => {
+		if ($subredditFilterQuery.isFetched) {
+			untrack(() => {
+				listingsQuery.setOptions('r/all', fetchNextListings, {
+					getNextPageParam: (lastGroup) => lastGroup?.data?.after,
+					enabled: true
+				});
+			});
+		}
 	});
 </script>
 
 <svelte:head>
 	<title>
-		{$listingsQuery.isFetching && !$listingsQuery.data
+		{($listingsQuery.isFetching && !$listingsQuery.data) || $subredditFilterQuery.isFetching
 			? 'Loading...'
 			: ($listingsQuery.error ?? 'Lurkit')}
 	</title>
@@ -82,7 +97,7 @@
 
 {#if !$listingsQuery.data}
 	<FetchStatus
-		fetching={$listingsQuery.isFetching}
+		fetching={$listingsQuery.isFetching || $subredditFilterQuery.isFetching}
 		error={$listingsQuery.error as string | undefined}
 	/>
 {:else}

@@ -4,6 +4,7 @@
 	import Header from '$lib/components/layout/Header.svelte';
 
 	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
