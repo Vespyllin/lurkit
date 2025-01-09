@@ -4,24 +4,26 @@
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
-	import { titleFilter } from '$lib/filters';
 	import { fetchListings } from '$lib/client';
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 	import { untrack } from 'svelte';
+	import type { Filter } from '$lib/db/filters';
 
 	const lastFetchedListingIds = new Set<string>();
 
-	const subredditFilterQuery = useQuery('filters', async () => {
+	const filtersQuery = useQuery('filters', async () => {
 		const fetchData = await fetch('/api/filters');
-		const filterContent = (await fetchData.json()).filter as string[];
+		const filterContent = (await fetchData.json()) as Filter[];
+
 		return filterContent;
 	});
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
-		const subredditFilter = $subredditFilterQuery.data;
+		const subredditFilter = $filtersQuery.data?.[0].content;
+		const titleFilter = $filtersQuery.data?.[1].content;
 
-		if (!data || !data.data || !subredditFilter) return;
+		if (!data || !data.data || !subredditFilter || !titleFilter) return;
 
 		const filteredChildren = data.data.children
 			?.filter((listing) => {
@@ -30,9 +32,19 @@
 				const listingTitle = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
-				if (subreddit && subredditFilter.includes(subreddit)) return false;
-				if (!titleFilter.every((title) => !listingTitle.toLowerCase().includes(title)))
+				const subredditBan = subreddit && subredditFilter.includes(subreddit);
+
+				const titleBan = !titleFilter.every((title) => !listingTitle.toLowerCase().includes(title));
+				if (subredditBan || titleBan) {
+					let banReason = 'Banned ';
+
+					if (subredditBan) banReason += 'Subreddit';
+					if (subredditBan && titleBan) banReason += ' and ';
+					if (titleBan) banReason += 'Keyword';
+
+					console.log(`${banReason}:\n"${listingTitle} - ${subreddit}"`);
 					return false;
+				}
 
 				const { crosspost_parent, crosspost_parent_list } = listing.data;
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
@@ -65,11 +77,11 @@
 
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
 		getNextPageParam: (lastGroup) => lastGroup?.data?.after,
-		enabled: $subredditFilterQuery.isFetched
+		enabled: $filtersQuery.isFetched
 	});
 
 	$effect(() => {
-		if ($subredditFilterQuery.isFetched) {
+		if ($filtersQuery.isFetched) {
 			untrack(() => {
 				listingsQuery.setOptions('r/all', fetchNextListings, {
 					getNextPageParam: (lastGroup) => lastGroup?.data?.after,
@@ -82,7 +94,7 @@
 
 <svelte:head>
 	<title>
-		{($listingsQuery.isFetching && !$listingsQuery.data) || $subredditFilterQuery.isFetching
+		{($listingsQuery.isFetching && !$listingsQuery.data) || $filtersQuery.isFetching
 			? 'Loading...'
 			: ($listingsQuery.error ?? 'Lurkit')}
 	</title>
@@ -102,7 +114,7 @@
 
 {#if !$listingsQuery.data}
 	<FetchStatus
-		fetching={$listingsQuery.isFetching || $subredditFilterQuery.isFetching}
+		fetching={$listingsQuery.isFetching || $filtersQuery.isFetching}
 		error={$listingsQuery.error as string | undefined}
 	/>
 {:else}

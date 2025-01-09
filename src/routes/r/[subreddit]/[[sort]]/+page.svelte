@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 
 	import { fetchListings, fetchSubreddit } from '$lib/client';
-	import { titleFilter } from '$lib/filters';
 
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
@@ -34,21 +33,21 @@
 			timescaleParam
 		);
 
-		if (!data || !data.data) return undefined;
+		// if (!data || !data.data) return undefined;
 
-		const filteredChildren = data.data.children?.filter((listing) => {
-			return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
-		});
+		// const filteredChildren = data.data.children?.filter((listing) => {
+		// 	return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
+		// });
 
-		const filteredData: RedditListing<RedditT3DataWrapper> = {
-			kind: data.kind,
-			data: {
-				...data.data,
-				children: filteredChildren
-			}
-		};
+		// const filteredData: RedditListing<RedditT3DataWrapper> = {
+		// 	kind: data.kind,
+		// 	data: {
+		// 		...data.data,
+		// 		children: filteredChildren
+		// 	}
+		// };
 
-		return filteredData;
+		return data;
 	};
 
 	const listingsQuery = useInfiniteQuery(`r/${subreddit}/listings`, fetchNextListings, {
