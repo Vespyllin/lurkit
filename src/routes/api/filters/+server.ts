@@ -8,7 +8,7 @@ export const GET: RequestHandler = async () => {
 	subredditFilter.map((x) => {
 		return {
 			type: x.type,
-			content: x.content
+			content: x.content.map((x) => x.toLowerCase())
 		};
 	});
 	return json(subredditFilter);
