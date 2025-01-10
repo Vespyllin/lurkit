@@ -3,13 +3,13 @@ import type { RequestHandler } from './$types';
 import { getAllFilters } from '$lib/db/filters';
 
 export const GET: RequestHandler = async () => {
-	const subredditFilter = await getAllFilters();
+	const filters = await getAllFilters();
 
-	subredditFilter.map((x) => {
+	const cleanedFilters = filters.map((x) => {
 		return {
 			type: x.type,
 			content: x.content.map((x) => x.toLowerCase())
 		};
 	});
-	return json(subredditFilter);
+	return json(cleanedFilters);
 };
