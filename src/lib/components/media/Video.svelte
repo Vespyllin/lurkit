@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, untrack } from 'svelte';
-	import { Pause, Play, SpeakerLoud, SpeakerOff, Video } from 'radix-icons-svelte';
+	import { EnterFullScreen, Pause, Play, SpeakerLoud, SpeakerOff, Video } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import Spinner from '../layout/Spinner.svelte';
 
@@ -43,8 +43,8 @@
 	};
 
 	const syncAudio = () => {
-		if (!audio || !hasAudio) return;
-		audio.currentTime = audio.duration * (seek / 100);
+		if (!audio || !hasAudio || !video) return;
+		audio.currentTime = video.currentTime;
 	};
 
 	const setPlaying = async (toPlaying: boolean) => {
@@ -169,11 +169,11 @@
 				playing && 'opacity-0'
 			)}
 		>
-			<button class="h-7" onclick={onPlayChange}>
+			<button class="h-8" onclick={onPlayChange}>
 				{#if !playing}
-					<Play size={20} />
+					<Play size={22} />
 				{:else}
-					<Pause size={20} />
+					<Pause size={22} />
 				{/if}
 			</button>
 
@@ -190,11 +190,11 @@
 							style="writing-mode: vertical-lr; direction: rtl;"
 						/>
 					</div>
-					<button class="h-7" onclick={toggleMute}>
+					<button class="h-8" onclick={toggleMute}>
 						{#if !muted}
-							<SpeakerLoud size={20} />
+							<SpeakerLoud size={22} />
 						{:else}
-							<SpeakerOff size={20} />
+							<SpeakerOff size={22} />
 						{/if}
 					</button>
 				</div>
@@ -202,22 +202,22 @@
 
 			{#key seek}
 				<div class="flex gap-2 text-sm">
-					<span class="flex h-7 items-center gap-1">
-						<Video />
+					<span class="flex h-8 items-center gap-1">
+						<!-- <Video /> -->
 
 						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
 							toZero(mediaData?.duration ?? video?.duration ?? 0)
 						)}
 					</span>
 
-					{#if hasAudio}
-						<span class="flex h-7 items-center gap-1">
+					<!-- {#if hasAudio}
+						<span class="flex h-8 items-center gap-1">
 							<SpeakerLoud />
 							{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
 								toZero(audio?.duration ?? 0)
 							)}
 						</span>
-					{/if}
+					{/if} -->
 				</div>
 			{/key}
 
@@ -232,6 +232,15 @@
 					class="w-full rounded-md"
 				/>
 			</div>
+
+			<button
+				class="h-8"
+				onclick={() => {
+					video?.requestFullscreen();
+				}}
+			>
+				<EnterFullScreen size={22} />
+			</button>
 		</div>
 	{/if}
 
