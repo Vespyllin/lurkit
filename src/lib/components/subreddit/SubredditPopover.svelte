@@ -18,17 +18,21 @@
 		let charsInLine = 0;
 		let linesIdx = 0;
 
-		const max = Math.max(Math.floor(text.length / 4) - 1, 32);
-		words.forEach((word) => {
-			if (charsInLine > max && linesIdx < 3) {
+		const max = Math.max(Math.floor(text.length / 4) + 12, 48);
+		for (let wordIdx = 0; wordIdx < words.length; ) {
+			const word = words[wordIdx];
+
+			if (charsInLine + word.length > max) {
+				lines.push([]);
 				linesIdx += 1;
 				charsInLine = 0;
-				lines.push([]);
+				continue;
 			}
 
 			lines[linesIdx].push(word);
 			charsInLine += word.length + 1;
-		});
+			wordIdx++;
+		}
 
 		return lines.map((x) => x.join(' '));
 	};

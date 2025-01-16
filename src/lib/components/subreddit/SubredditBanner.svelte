@@ -64,7 +64,7 @@
 		</div>
 	</div>
 
-	<div class="mt-2 border-l-4 pl-2 text-zinc-300">
+	<div class="md mt-2 border-l-4 pl-2 text-zinc-300">
 		<Markdown text={data.public_description} />
 	</div>
 </div>
