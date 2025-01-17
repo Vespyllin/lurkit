@@ -128,9 +128,11 @@
 		{#if $listingsQuery.isError || $listingsQuery.isFetching || !$listingsQuery.hasNextPage}
 			<FetchMoreStatus
 				fetching={$listingsQuery.isFetching}
-				error={!$listingsQuery.hasNextPage
+				error={!!$listingsQuery.data.pages[0] && !$listingsQuery.hasNextPage
 					? 'Could not retrieve next page param.'
-					: ($listingsQuery.error as string | undefined)}
+					: !$listingsQuery.data.pages[0] && !$listingsQuery.error
+						? ' '
+						: ($listingsQuery.error as string)}
 			/>
 		{/if}
 	</div>
