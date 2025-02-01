@@ -58,6 +58,7 @@
 					<span>View {comments[idx].count} more comment{comments[idx].count == 1 ? '' : 's'}</span>
 				</a>
 			{:else if comments[idx].kind == 't1'}
+				{@const authorFlairTexts = comments[idx].author_flair_richtext}
 				<div class={cn('mt-2.5 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
 						class="flex h-full w-full cursor-pointer items-center gap-1.5 text-lg leading-tight md:gap-2"
@@ -121,12 +122,12 @@
 							</span>{#if comments[idx].edited}<span>*</span>{/if}
 						</div>
 
-						{#if comments[idx].author_flair_richtext && comments[idx].author_flair_richtext.length > 0}
+						{#if authorFlairTexts && authorFlairTexts.length > 0 && !(authorFlairTexts.length == 1 && authorFlairTexts[0]?.t == '​')}
 							<div
 								class="flex h-full w-fit max-w-72 items-center rounded-2xl bg-secondary px-2 py-0.5 text-sm"
 								style="background-color: {comments[idx].author_flair_background_color};"
 							>
-								{#each comments[idx].author_flair_richtext as flair}
+								{#each authorFlairTexts as flair}
 									{#if flair.e == 'text'}
 										<span
 											class={cn(
