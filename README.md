@@ -1,5 +1,7 @@
 # lurkit - TODOs:
 
+Make subreddit break thing use 'breaks'
+
 Skeleton comments & posts (for listings, put an image, article and textpost placeholder)
 search bar  
 custom subreddit colors (use global store)

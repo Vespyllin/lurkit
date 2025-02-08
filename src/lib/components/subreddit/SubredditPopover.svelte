@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import Markdown from '../media/Markdown.svelte';
 	import * as Tooltip from '../ui/tooltip';
 
@@ -10,32 +11,6 @@
 			: (subreddit.icon_img ?? '').length > 0
 				? subreddit.icon_img
 				: '/favicon.png';
-
-	const breakParagraph = (text: string) => {
-		const words = text.split(' ');
-		const lines: string[][] = [[]];
-
-		let charsInLine = 0;
-		let linesIdx = 0;
-
-		const max = Math.max(Math.floor(text.length / 4) + 12, 48);
-		for (let wordIdx = 0; wordIdx < words.length; ) {
-			const word = words[wordIdx];
-
-			if (charsInLine + word.length > max) {
-				lines.push([]);
-				linesIdx += 1;
-				charsInLine = 0;
-				continue;
-			}
-
-			lines[linesIdx].push(word);
-			charsInLine += word.length + 1;
-			wordIdx++;
-		}
-
-		return lines.map((x) => x.join(' '));
-	};
 </script>
 
 <Tooltip.Root openDelay={50}>
@@ -47,32 +22,25 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content class="pt-1">
-		<div class="flex h-fit min-w-64">
-			<div class="mr-2 mt-[5px] flex h-[6.25rem] max-w-32">
-				<img alt="" src={icon_url} class="my-auto h-full" />
-			</div>
+	<Tooltip.Content class="p-2 pt-1">
+		<div class="h-fit min-w-72 max-w-[500px]">
+			<img alt="" src={icon_url} class="float-left mr-2 mt-1 h-[100px]" />
 
-			<div>
-				<a
-					class="text-xl font-semibold tracking-tighter hover:underline"
-					href={`/${subreddit.display_name_prefixed}`}
-				>
-					{subreddit.display_name_prefixed}
-				</a>
+			<a
+				class="w-full text-xl font-semibold tracking-tighter hover:underline"
+				href={`/${subreddit.display_name_prefixed}`}
+			>
+				{subreddit.display_name_prefixed}
+			</a>
 
-				<div class="text-zinc-400">
-					{#if !subreddit.public_description}
-						<span class="italic"> No description. </span>
-					{:else}
-						{@const x = breakParagraph(subreddit.public_description)}
-						{#each x as line}
-							<div>
-								<Markdown text={line} />
-							</div>
-						{/each}
-					{/if}
-				</div>
+			<div class="text-zinc-400">
+				{#if !subreddit.public_description}
+					<span class="italic"> No description. </span>
+				{:else}
+					<span>
+						{subreddit.public_description}
+					</span>
+				{/if}
 			</div>
 		</div>
 	</Tooltip.Content>
