@@ -1,3 +1,9 @@
+type RedditError = {
+	reason: string;
+	message: string;
+	error: number;
+};
+
 type RedditT3DataWrapper = {
 	kind: 't3';
 	data: RedditT3Data;
@@ -94,10 +100,12 @@ type RedditT3Data = RedditListingBaseData & {
 	crosspost_parent_list?: RedditT3Data[];
 };
 
-type RedditT5DataWrapper = {
-	kind: 't5';
-	data: RedditT5Data;
-};
+type RedditT5DataWrapper =
+	| {
+			kind: 't5';
+			data: RedditT5Data;
+	  }
+	| RedditError;
 
 type RedditT5Data = {
 	user_flair_background_color: null;

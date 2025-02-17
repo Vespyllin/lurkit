@@ -74,7 +74,9 @@
 			? 'Loading...'
 			: ($subredditQuery.error ??
 				$listingsQuery.error ??
-				$subredditQuery?.data?.data.display_name_prefixed)}
+				('error' in $subredditQuery?.data!
+					? $subredditQuery?.data?.message
+					: $subredditQuery?.data?.data.display_name_prefixed))}
 	</title>
 </svelte:head>
 
@@ -94,6 +96,13 @@
 		fetching={$listingsQuery.isFetching || $subredditQuery.isFetching}
 		error={($subredditQuery.error ?? $listingsQuery.error) as string | undefined}
 	/>
+{:else if 'error' in $subredditQuery.data}
+	<div class="mx-auto py-24 text-center uppercase">
+		<h1 class="text-7xl text-red-600">{$subredditQuery.data.reason}</h1>
+		<span class={!!$subredditQuery.data.reason ? '' : 'text-5xl'}>
+			error {$subredditQuery.data.error}: {$subredditQuery.data.message}
+		</span>
+	</div>
 {:else}
 	<div class="space-y-2">
 		<SubredditBanner data={$subredditQuery.data.data} />
