@@ -33,7 +33,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class={cn(
-		'mx-auto flex h-[600px] max-h-fit items-center justify-center overflow-hidden',
+		'mx-auto flex h-[600px] max-h-fit w-full items-center justify-center overflow-hidden',
 		className
 	)}
 >
@@ -71,7 +71,10 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
-			class={cn('h-full cursor-pointer', blur && 'pointer-events-none blur-xl')}
+			class={cn(
+				'max-h-[600px] grow cursor-pointer object-contain',
+				blur && 'pointer-events-none blur-xl'
+			)}
 			src={url}
 			onclick={handleClick}
 			onerror={() => (error = true)}
