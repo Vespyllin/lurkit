@@ -26,7 +26,6 @@
 			created_utc={listing.created_utc}
 			over_18={listing.over_18}
 			subreddit={listing.sr_detail}
-			stickied={listing.stickied}
 		/>
 	</a>
 

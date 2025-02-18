@@ -32,7 +32,7 @@
 		over_18: boolean;
 		crossposted_from: string | undefined;
 		locked: boolean;
-		stickied: boolean;
+		stickied?: boolean;
 		flairs?: RedditLinkFlairRichText[];
 		flairColor?: string;
 		distinguished?: string;
@@ -47,10 +47,7 @@
 	<div class="hidden gap-2 md:flex">
 		•
 		<div class="flex items-center gap-1 text-zinc-400">
-			<span>
-				<UserPopover username={author} />
-				<!-- {author} -->
-			</span>
+			<UserPopover username={author} />
 			{#if distinguished}
 				{#if distinguished == 'moderator'}
 					<MagicWand />
