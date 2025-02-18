@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import Markdown from '../media/Markdown.svelte';
+	import { Check, Trash } from 'radix-icons-svelte';
 	import * as Tooltip from '../ui/tooltip';
+	import Spinner from '../layout/Spinner.svelte';
+	import { cn } from '$lib/utils';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
+	let status: 'neutral' | 'loading' | 'done' = $state('neutral');
 
 	const icon_url =
 		(subreddit?.community_icon?.split('?')[0] ?? '').length > 0
@@ -32,6 +34,36 @@
 			>
 				{subreddit.display_name_prefixed}
 			</a>
+
+			<button
+				onclick={async () => {
+					status = 'loading';
+
+					const res = await fetch('/api/filters/subreddit', {
+						method: 'POST',
+						body: JSON.stringify({ subreddit: subreddit.display_name_prefixed })
+					});
+					const resJson = await res.json();
+
+					if (!!resJson.success) {
+						status = 'done';
+					} else {
+						status = 'neutral';
+					}
+				}}
+				class={cn(
+					'hover ml-1 size-fit rounded-md p-1 transition-all duration-1000 hover:bg-zinc-700',
+					status !== 'neutral' && 'pointer-events-none opacity-0'
+				)}
+			>
+				{#if status == 'neutral'}
+					<Trash size={20} />
+				{:else if status == 'loading'}
+					<Spinner class="size-5" />
+				{:else}
+					<Check size={20} />
+				{/if}
+			</button>
 
 			<div class="text-zinc-400">
 				{#if !subreddit.public_description}
