@@ -52,8 +52,8 @@
 					}
 				}}
 				class={cn(
-					'hover ml-1 size-fit rounded-md p-1 transition-all duration-1000 hover:bg-zinc-700',
-					status !== 'neutral' && 'pointer-events-none opacity-0'
+					'hover ml-1 size-fit rounded-md p-1 transition-all  hover:bg-zinc-700',
+					status !== 'neutral' && 'pointer-events-none opacity-0 duration-1000'
 				)}
 			>
 				{#if status == 'neutral'}
