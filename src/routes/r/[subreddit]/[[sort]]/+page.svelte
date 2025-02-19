@@ -171,7 +171,7 @@
 
 		{#each $listingsQuery.data?.pages ?? [] as page}
 			{#each page?.data?.children ?? [] as listing}
-				<ListingPortal listing={listing.data} />
+				<ListingPortal inSubreddit listing={listing.data} />
 				<Separator />
 			{/each}
 		{/each}

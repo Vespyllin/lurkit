@@ -18,6 +18,7 @@
 	let container: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
+		console.log('==========================');
 		if (!crop) return;
 
 		const children = container?.childNodes[1].childNodes;
@@ -32,6 +33,7 @@
 			// Hardcoded for space-y-8
 			innerHeight += (child.clientHeight ?? -8) + 8;
 
+			let _ = innerHeight && child;
 			if (child.clientHeight !== undefined) {
 				// Hardcoded for h-48
 				if (idx !== 0 && (thresholdCrossed || innerHeight > 192)) {

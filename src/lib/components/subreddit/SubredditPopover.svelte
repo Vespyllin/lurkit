@@ -15,7 +15,7 @@
 				: '/favicon.png';
 </script>
 
-<Tooltip.Root open={true} openDelay={50}>
+<Tooltip.Root openDelay={50}>
 	<Tooltip.Trigger>
 		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name_prefixed}`}>
 			<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />

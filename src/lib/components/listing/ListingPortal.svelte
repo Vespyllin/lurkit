@@ -5,8 +5,13 @@
 	import ListingFooter from './ListingFooter.svelte';
 	import Self from './ListingPortal.svelte';
 	import { cn } from '$lib/utils';
+	import { list } from 'postcss';
 
-	let { listing, class: classList }: { listing: RedditT3Data; class?: string } = $props();
+	let {
+		listing,
+		inSubreddit,
+		class: classList
+	}: { listing: RedditT3Data; inSubreddit?: boolean; class?: string } = $props();
 
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
 	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
@@ -26,6 +31,7 @@
 			created_utc={listing.created_utc}
 			over_18={listing.over_18}
 			subreddit={listing.sr_detail}
+			stickied={!!inSubreddit && listing.stickied}
 		/>
 	</a>
 
