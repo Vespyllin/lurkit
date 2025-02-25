@@ -18,28 +18,21 @@
 	let container: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
-		console.log('==========================');
 		if (!crop) return;
 
 		const children = container?.childNodes[1].childNodes;
 		if (!container || !children) return;
 
-		let thresholdCrossed = false;
 		let innerHeight = 0;
 
 		children.forEach((_child, idx) => {
 			const child = _child as HTMLElement;
-
 			// Hardcoded for space-y-8
 			innerHeight += (child.clientHeight ?? -8) + 8;
 
-			let _ = innerHeight && child;
-			if (child.clientHeight !== undefined) {
-				// Hardcoded for h-48
-				if (idx !== 0 && (thresholdCrossed || innerHeight > 192)) {
-					thresholdCrossed = true;
-					child.remove();
-				}
+			// Hardcoded for h-48
+			if (child.clientHeight !== undefined && idx !== 0 && innerHeight > 192) {
+				child.remove();
 			}
 		});
 	});

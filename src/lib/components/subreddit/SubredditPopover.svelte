@@ -67,10 +67,10 @@
 				</button>
 
 				{#if !subreddit.public_description}
-					<span class="italic text-zinc-400"> No description. </span>
+					<div class="italic text-zinc-400">No description.</div>
 				{:else}
 					<div
-						class="line-clamp-4 h-[5rem] w-fit min-w-72 max-w-[500px] overflow-hidden text-ellipsis break-words text-zinc-400"
+						class="line-clamp-4 h-20 w-fit min-w-72 max-w-[500px] overflow-hidden text-ellipsis break-words text-zinc-400"
 					>
 						{subreddit.public_description}
 					</div>
