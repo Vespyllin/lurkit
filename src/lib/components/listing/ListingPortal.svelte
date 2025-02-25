@@ -5,7 +5,6 @@
 	import ListingFooter from './ListingFooter.svelte';
 	import Self from './ListingPortal.svelte';
 	import { cn } from '$lib/utils';
-	import { list } from 'postcss';
 
 	let {
 		listing,
