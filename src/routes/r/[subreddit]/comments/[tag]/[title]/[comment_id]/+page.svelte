@@ -2,28 +2,31 @@
 	import { page } from '$app/stores';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
-	import Comments, { assignCommentState } from '$lib/components/comments/';
+	import { validateCommentSort } from '$lib/components/comments/';
 	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fetchComment } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
+	import Comments from '$lib/components/comments/Comments.svelte';
 
 	const {
 		params: { subreddit, tag, comment_id }
 	} = $page;
 
-	let listing: RedditT3Data | undefined = $state();
-	let comments: CommentsProp[] = $state([]);
+	let sort: RedditCommentSortOption = $state($page.url.searchParams.get('sort') as any);
 
-	let sort: RedditCommentSortOption | undefined = $state(undefined);
 	const queryUrl = `${subreddit}${tag}${comment_id}}`;
 	const listingQuery = useQuery(queryUrl, () => fetchComment(subreddit, tag, comment_id, sort));
 
+	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
+	let comments = $derived($listingQuery.data?.[1]);
+
 	$effect(() => {
-		if (!$listingQuery.data) return;
-		if (!listing) listing = $listingQuery.data?.[0].data?.children?.[0].data;
-		comments = assignCommentState($listingQuery.data[1]);
+		const newSort = validateCommentSort($page.url.searchParams.get('sort'));
+		if (sort == newSort) return;
+		sort = newSort;
+		$listingQuery.refetch();
 	});
 </script>
 
@@ -46,6 +49,7 @@
 		<Listing {listing} />
 
 		<CommentSortDropdown
+			{sort}
 			onChange={(sortOption) => {
 				if (sortOption == sort) return;
 				sort = sortOption;
@@ -63,12 +67,10 @@
 			/>
 		{:else}
 			<div class="mt-1 space-y-4 pb-3">
-				{#if !comments.length}
+				{#if !comments?.data || !comments.data?.children?.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					{#key comments[0].id}
-						<Comments shelved={false} bind:comments />
-					{/key}
+					<Comments fold={false} {comments} />
 				{/if}
 			</div>
 		{/if}

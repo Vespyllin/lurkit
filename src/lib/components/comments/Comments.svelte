@@ -2,9 +2,10 @@
 	import { assignCommentState } from '.';
 	import CommentContainer from './CommentContainer.svelte';
 
-	const { comments }: { comments: RedditListing<RedditT1DataWrapper> } = $props();
+	const { comments, fold }: { comments: RedditListing<RedditT1DataWrapper>; fold?: boolean } =
+		$props();
 
-	let commentState = $state(assignCommentState(comments));
+	let commentState = $state(assignCommentState(comments, fold));
 </script>
 
 <CommentContainer bind:comments={commentState} />

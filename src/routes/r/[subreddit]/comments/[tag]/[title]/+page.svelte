@@ -10,27 +10,11 @@
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { goto } from '$app/navigation';
 	import Comments from '$lib/components/comments/Comments.svelte';
+	import { validateCommentSort } from '$lib/components/comments';
 
 	const {
 		params: { subreddit, tag, title }
 	} = $page;
-
-	const validateSort = (sortString: string | null) => {
-		const validSortOptions = [
-			'confidence',
-			'top',
-			'new',
-			'controversial',
-			'old',
-			'random',
-			'qa',
-			'blank'
-		];
-
-		const isValid = !!sortString && validSortOptions.includes(sortString);
-
-		return isValid ? (sortString as RedditCommentSortOption) : 'blank';
-	};
 
 	let sort: RedditCommentSortOption = $state($page.url.searchParams.get('sort') as any);
 
@@ -42,7 +26,7 @@
 	let comments = $derived($listingQuery.data?.[1]);
 
 	$effect(() => {
-		const newSort = validateSort($page.url.searchParams.get('sort'));
+		const newSort = validateCommentSort($page.url.searchParams.get('sort'));
 		if (sort == newSort) return;
 		sort = newSort;
 		$listingQuery.refetch();
