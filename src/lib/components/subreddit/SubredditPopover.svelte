@@ -24,7 +24,7 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content class="w-fit p-2">
+	<Tooltip.Content class="w-fit p-2 py-1">
 		<div class="flex gap-1">
 			<img alt="" src={icon_url} class="mr-2 mt-1 h-[100px]" />
 
@@ -67,7 +67,7 @@
 				</button>
 
 				{#if !subreddit.public_description}
-					<div class="italic text-zinc-400">No description.</div>
+					<div class="w-32 italic text-zinc-400">No description.</div>
 				{:else}
 					<div
 						class="line-clamp-4 h-20 w-fit min-w-72 max-w-[500px] overflow-hidden text-ellipsis break-words text-zinc-400"

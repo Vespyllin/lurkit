@@ -1,5 +1,4 @@
 import { PUBLIC_FOLD_COMMENT_DEPTH } from '$env/static/public';
-import Comments from './Comments.svelte';
 
 const FOLDED_COMMENT_DEPTH = parseInt(PUBLIC_FOLD_COMMENT_DEPTH);
 const foldedDepth = !isNaN(FOLDED_COMMENT_DEPTH) ? FOLDED_COMMENT_DEPTH : 1;
@@ -37,7 +36,8 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
-			replies
+			replies,
+			removal_reason
 		} = comment.data;
 
 		return {
@@ -61,6 +61,8 @@ export const assignCommentState = (
 			stickied,
 			subreddit,
 			subreddit_name_prefixed,
+			deleted: !!removal_reason ? (removal_reason == 'legal' ? 'removed' : 'deleted') : undefined,
+			__reason: removal_reason,
 			folded:
 				foldingEnabled &&
 				((idx >= 4 && depth != 0) || depth >= foldedDepth || (stickied && depth == 0)),
@@ -68,5 +70,3 @@ export const assignCommentState = (
 		};
 	});
 };
-
-export default Comments;

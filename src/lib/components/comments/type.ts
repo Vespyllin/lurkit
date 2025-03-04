@@ -30,6 +30,8 @@ type T1CommentProp = {
 	subreddit_name_prefixed: string;
 	folded: boolean;
 	replies: CommentsProp[];
+	deleted: 'deleted' | 'removed' | undefined;
+	__reason: any;
 };
 
 type CommentsProp = MoreCommentProp | T1CommentProp;

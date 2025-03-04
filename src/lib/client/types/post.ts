@@ -44,7 +44,7 @@ type RedditT1Data = RedditListingBaseData & {
 	author_flair_richtext: any[];
 	author_patreon_flair: boolean;
 	body_html: string;
-	removal_reason: null;
+	removal_reason: string | undefined;
 	collapsed_reason: null;
 	distinguished: 'moderator' | string | undefined;
 	associated_award: null;

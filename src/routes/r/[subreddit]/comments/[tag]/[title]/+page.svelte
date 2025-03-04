@@ -8,8 +8,8 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fetchListingComments } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import Cw from '$lib/components/comments/CW.svelte';
 	import { goto } from '$app/navigation';
+	import Comments from '$lib/components/comments/Comments.svelte';
 
 	const {
 		params: { subreddit, tag, title }
@@ -82,7 +82,7 @@
 			/>
 		{:else}
 			<div class="mt-1 space-y-4 pb-3">
-				<Cw {comments} />
+				<Comments {comments} />
 			</div>
 		{/if}
 	</div>
