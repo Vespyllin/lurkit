@@ -11,7 +11,7 @@
 	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
-<div class="mt-2 flex flex-col space-y-2 rounded-md [&_p]:cursor-auto">
+<div class="mt-2 flex flex-col gap-y-2 rounded-md [&_p]:cursor-auto">
 	<ListingHeader
 		edited={listing.edited}
 		crossposted_from={crosspost?.subreddit_name_prefixed}
@@ -73,5 +73,5 @@
 		{/if}
 	{/if}
 
-	<ListingFooter class="mt-2 [&_span]:cursor-text" {listing} />
+	<ListingFooter class="[&_span]:cursor-text" {listing} />
 </div>
