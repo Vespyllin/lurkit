@@ -24,6 +24,7 @@
 	{#each $userQuery.data?.data.children ?? [] as child}
 		<div>
 			{#if child.kind == 't1'}
+				<div>comment</div>
 				<!-- <UserComment comment={child.data} /> -->
 			{:else if child.kind == 't3'}
 				<ListingPortal listing={child.data} />

@@ -31,6 +31,8 @@
 			over_18={listing.over_18}
 			subreddit={listing.sr_detail}
 			stickied={!!inSubreddit && listing.stickied}
+			flairs={!!inSubreddit ? listing.link_flair_richtext : undefined}
+			flairColor={!!inSubreddit ? listing.link_flair_background_color : undefined}
 		/>
 	</a>
 
