@@ -21,13 +21,15 @@
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
 
-<main style="font-family: 'Ubuntu'" class="min-h-screen overflow-auto bg-background">
+<main style="font-family: 'Montserrat'" class="min-h-screen overflow-auto bg-background">
 	<QueryClientProvider client={queryClient}>
 		<Header />
 		<div

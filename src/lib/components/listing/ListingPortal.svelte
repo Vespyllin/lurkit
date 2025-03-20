@@ -18,7 +18,7 @@
 
 <div
 	class={cn(
-		'flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(220,14.3,7.1)] [&_a]:cursor-pointer',
+		'flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer',
 		classList
 	)}
 >

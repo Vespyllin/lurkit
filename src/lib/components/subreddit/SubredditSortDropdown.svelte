@@ -35,7 +35,7 @@
 				</div>
 			</DropdownMenu.Trigger>
 		</div>
-		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
+		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 			{#each sortOptions as sortOption}
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"

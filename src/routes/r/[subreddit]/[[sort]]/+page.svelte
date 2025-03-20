@@ -118,7 +118,7 @@
 						</div>
 					</DropdownMenu.Trigger>
 				</div>
-				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
+				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 					{#each sortOptions as sortOption}
 						{@const route = `/r/${subreddit}/${sortOption.option !== 'default' ? sortOption.option : ''}`}
 						<a data-sveltekit-reload href={route}>
@@ -142,7 +142,7 @@
 							</div>
 						</DropdownMenu.Trigger>
 					</div>
-					<DropdownMenu.Content class="space-y-0.5 bg-background font-['Ubuntu']">
+					<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 						{#each timescales as timescale}
 							{@const route = timescale == 'today' ? './top' : `?timescale=${timescale}`}
 							{#if topSortTimescale == timescale}

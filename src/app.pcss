@@ -4,19 +4,19 @@
 
 @layer base {
 	:root {
-		--background: 220 14.3% 4.1%;
+		--background: 348 2% 4%;
 		--foreground: 0 0% 95%;
 		--card: 24 9.8% 10%;
 		--card-foreground: 0 0% 95%;
-		--popover: 220 14.3% 4.1%;
+		--popover: 0 0% 6%;
 		--popover-foreground: 0 0% 95%;
-		--primary: 217 91% 60%;
+		--primary: 348 100% 50%;
 		--primary-foreground: 355.7 100% 97.3%;
 		--secondary: 240 3.7% 15.9%;
 		--secondary-foreground: 0 0% 98%;
 		--muted: 0 0% 15%;
 		--muted-foreground: 240 5% 64.9%;
-		--accent: 213 94% 68%;
+		--accent: 332 100% 57%;
 		--accent-foreground: 0 0% 98%;
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 0 85.7% 97.3%;
@@ -44,17 +44,17 @@
 	}
 
 	::-webkit-scrollbar-thumb {
-		background: #3b82f6;
+		background: #ff0033;
 		border-radius: 100vh;
 		border: 3px solid #090a0c;
 	}
 
 	::-webkit-scrollbar-thumb:hover {
-		background: #3b83f6c0;
+		background: #ff0033c0;
 	}
 
 	.md {
-		@apply space-y-2;
+		@apply space-y-3;
 	}
 
 	.md a {
@@ -101,12 +101,14 @@
 	}
 
 	.md ol {
+		@apply space-y-1.5;
 		@apply list-outside;
 		@apply list-decimal;
 		@apply pl-4;
 	}
 
 	.md ul {
+		@apply space-y-1.5;
 		@apply list-outside;
 		@apply list-disc;
 		@apply pl-4;

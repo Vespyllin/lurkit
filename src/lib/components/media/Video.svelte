@@ -185,9 +185,9 @@
 						<input
 							oninput={(e) => setVolume(+(e.currentTarget.value ?? 0))}
 							bind:value={volume}
-							class="mx-auto h-28"
+							class="slider"
 							type="range"
-							style="writing-mode: vertical-lr; direction: rtl;"
+							style="writing-mode: vertical-lr; direction: rtl; height: 7rem; width: 0.5rem; margin-left: 0.5rem;"
 						/>
 					</div>
 					<button class="h-8" onclick={toggleMute}>
@@ -203,25 +203,14 @@
 			{#key seek}
 				<div class="flex gap-2 text-sm">
 					<span class="flex h-8 items-center gap-1">
-						<!-- <Video /> -->
-
 						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
 							toZero(mediaData?.duration ?? video?.duration ?? 0)
 						)}
 					</span>
-
-					<!-- {#if hasAudio}
-						<span class="flex h-8 items-center gap-1">
-							<SpeakerLoud />
-							{formatPlaytime(toZero(audio?.currentTime ?? 0))}/{formatPlaytime(
-								toZero(audio?.duration ?? 0)
-							)}
-						</span>
-					{/if} -->
 				</div>
 			{/key}
 
-			<div class="h-6 w-full content-center">
+			<div class="h-[2.1rem] w-full content-center">
 				<input
 					step="0.5"
 					min="0"
@@ -229,7 +218,7 @@
 					type="range"
 					oninput={onSeek}
 					bind:value={seek}
-					class="w-full rounded-md"
+					class="slider"
 				/>
 			</div>
 
@@ -279,3 +268,31 @@
 		<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
 	</video>
 </div>
+
+<style>
+	.slider {
+		-webkit-appearance: none;
+		border-radius: 1rem;
+		width: 100%;
+		height: 0.5rem;
+		background: #d3d3d3;
+		outline: none;
+		opacity: 0.8;
+		-webkit-transition: 0.2s;
+		transition: opacity 0.2s;
+	}
+
+	.slider:hover {
+		opacity: 1;
+	}
+
+	.slider::-webkit-slider-thumb {
+		border-radius: 100%;
+		-webkit-appearance: none;
+		appearance: none;
+		width: 1rem;
+		height: 1rem;
+		background: #ff0033;
+		cursor: pointer;
+	}
+</style>
