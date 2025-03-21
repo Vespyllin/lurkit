@@ -29,7 +29,7 @@
 	{#if (listing.post_hint == 'link' || !(listing.domain.includes('redd') || listing.domain.includes('self.'))) && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = listing}
 
-		<Link {thumbnail} {title} {url} />
+		<Link {thumbnail} title={cleanText(title)} {url} />
 
 		{#if listing.selftext?.length > 0}
 			<Markdown text={listing.selftext} />
