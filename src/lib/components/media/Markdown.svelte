@@ -23,6 +23,10 @@
 		const children = container?.childNodes[1].childNodes;
 		if (!container || !children) return;
 
+		const imgElements = container.querySelectorAll('img');
+
+		imgElements.forEach((img) => img.parentElement?.remove());
+
 		let innerHeight = 0;
 
 		children.forEach((_child, idx) => {
