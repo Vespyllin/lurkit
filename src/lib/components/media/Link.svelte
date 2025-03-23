@@ -39,7 +39,7 @@
 
 		<a
 			class={cn(
-				'text-ellipsis text-blue-600 underline visited:text-purple-600 hover:text-blue-800',
+				'text-ellipsis break-all text-blue-600 underline visited:text-purple-600 hover:text-blue-800',
 				clamp && 'line-clamp-1'
 			)}
 			href={url}

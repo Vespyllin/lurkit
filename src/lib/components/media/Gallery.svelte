@@ -50,7 +50,7 @@
 	}}
 />
 
-<div class={cn('justify-center rounded-md', className)}>
+<div class={cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)}>
 	<Carousel.Root
 		bind:api
 		opts={{ duration: 20 }}
