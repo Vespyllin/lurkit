@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Check, Trash } from 'radix-icons-svelte';
-	import * as Tooltip from '../ui/tooltip';
 	import Spinner from '../layout/Spinner.svelte';
 	import { cn } from '$lib/utils';
 
@@ -15,15 +14,15 @@
 				: '/favicon.png';
 </script>
 
-<Tooltip.Root openDelay={50}>
-	<Tooltip.Trigger>
-		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name_prefixed}`}>
-			<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />
-			<span class="text-zinc-200">
-				{subreddit.display_name_prefixed}
-			</span>
-		</a>
-	</Tooltip.Trigger>
+<!-- <Tooltip.Provider openDelay={50}> -->
+<!-- <Tooltip.Trigger> -->
+<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name_prefixed}`}>
+	<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />
+	<span class="text-zinc-200">
+		{subreddit.display_name_prefixed}
+	</span>
+</a>
+<!-- </Tooltip.Trigger>
 	<Tooltip.Content class="w-fit p-2 py-1">
 		<div class="flex gap-1">
 			<img alt="" src={icon_url} class="mr-2 mt-1 h-[100px]" />
@@ -78,4 +77,4 @@
 			</div>
 		</div>
 	</Tooltip.Content>
-</Tooltip.Root>
+</Tooltip.Provider> -->

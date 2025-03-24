@@ -12,46 +12,60 @@
 	import { CaretDown, Star, Rocket, LightningBolt, DoubleArrowUp, Gear } from 'radix-icons-svelte';
 
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import type { ComponentType } from 'svelte';
+	import { type ComponentType } from 'svelte';
+	import { afterNavigate, goto } from '$app/navigation';
 
 	const {
-		params: { subreddit, sort },
+		params: { subreddit },
 		url: { searchParams }
 	} = $page;
 
-	const timescaleParam = searchParams.get('timescale') ?? undefined;
-	let topSortTimescale: string | undefined = $state(timescaleParam);
-	const subredditQuery = useQuery(`r/${subreddit}`, () => fetchSubreddit(subreddit));
+	const initSortParam = searchParams.get('sort') ?? undefined;
+	const initTimescaleParam =
+		initSortParam == 'top' ? undefined : (searchParams.get('timescale') ?? undefined);
+
+	let sortParam: string | undefined = $state(initSortParam);
+	let timescaleParam: string | undefined = $state(initTimescaleParam);
+
+	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
-		const data = await fetchListings(
+		console.log('Fetch');
+		return await fetchListings(
 			subreddit,
 			50,
 			pageParam,
-			sort as RedditSubredditSortOptions,
+			sortParam as RedditSubredditSortOptions,
 			true,
 			timescaleParam
 		);
-
-		// if (!data || !data.data) return undefined;
-
-		// const filteredChildren = data.data.children?.filter((listing) => {
-		// 	return titleFilter.every((title) => !listing.data.title.toLowerCase().includes(title));
-		// });
-
-		// const filteredData: RedditListing<RedditT3DataWrapper> = {
-		// 	kind: data.kind,
-		// 	data: {
-		// 		...data.data,
-		// 		children: filteredChildren
-		// 	}
-		// };
-
-		return data;
 	};
 
-	const listingsQuery = useInfiniteQuery(`r/${subreddit}/listings`, fetchNextListings, {
-		getNextPageParam: (lastGroup) => lastGroup?.data?.after
+	const listingsQuery = useInfiniteQuery(
+		[subreddit, initSortParam, initTimescaleParam],
+		fetchNextListings,
+		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+	);
+
+	afterNavigate((e) => {
+		console.log('moving from', e.from?.url?.search, 'to', e.to?.url?.search);
+		if (!e.from || !e.from.url) return;
+
+		const newSort = $page.url.searchParams.get('sort') ?? undefined;
+		const newTimescale =
+			newSort == 'top' ? ($page.url.searchParams.get('timescale') ?? undefined) : undefined;
+
+		console.log(newSort, newTimescale);
+
+		sortParam = newSort;
+		timescaleParam = newTimescale;
+
+		listingsQuery.setOptions({
+			queryKey: [subreddit, newSort, newTimescale],
+			queryFn: fetchNextListings
+		});
+
+		$listingsQuery.refetch();
 	});
 
 	const sortOptions: {
@@ -91,12 +105,12 @@
 	}}
 />
 
-{#if !$subredditQuery.data || !$listingsQuery.data}
+{#if !$subredditQuery.data}
 	<FetchStatus
 		fetching={$listingsQuery.isFetching || $subredditQuery.isFetching}
 		error={($subredditQuery.error ?? $listingsQuery.error) as string | undefined}
 	/>
-{:else if 'error' in $subredditQuery.data}
+{:else if $subredditQuery.data && 'error' in $subredditQuery.data}
 	<div class="mx-auto py-24 text-center uppercase">
 		<h1 class="text-7xl text-red-600">{$subredditQuery.data.reason}</h1>
 		<span class={!!$subredditQuery.data.reason ? '' : 'text-5xl'}>
@@ -105,24 +119,29 @@
 	</div>
 {:else}
 	<div class="space-y-2">
-		<SubredditBanner data={$subredditQuery.data.data} />
-
+		<SubredditBanner data={($subredditQuery.data as any).data} />
 		<div class="flex gap-2">
-			<DropdownMenu.Root preventScroll={false}>
+			<DropdownMenu.Root>
 				<div class="flex leading-8">
 					<span class="mr-2 text-lg">Sort by:</span>
 					<DropdownMenu.Trigger>
 						<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-							<span class="ml-2 text-lg">{sort ?? 'default'}</span>
+							<span class="ml-2 text-lg">{sortParam ?? 'default'}</span>
 							<CaretDown size={18} />
 						</div>
 					</DropdownMenu.Trigger>
 				</div>
 				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 					{#each sortOptions as sortOption}
-						{@const route = `/r/${subreddit}/${sortOption.option !== 'default' ? sortOption.option : ''}`}
-						<a data-sveltekit-reload href={route}>
-							<DropdownMenu.Item class="cursor-pointer rounded-sm font-normal hover:bg-accent">
+						{@const route = `/r/${subreddit}${sortOption.option !== 'default' ? `?sort=${sortOption.option}` : ''}`}
+
+						<a href={route}>
+							<DropdownMenu.Item
+								class="cursor-pointer rounded-sm font-normal hover:bg-accent"
+								onclick={() => {
+									goto(route);
+								}}
+							>
 								<sortOption.icon class="mr-1" />
 								<span>{sortOption.option}</span>
 							</DropdownMenu.Item>
@@ -131,55 +150,54 @@
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 
-			{#if sort == 'top'}
-				<DropdownMenu.Root preventScroll={false}>
+			{#if sortParam == 'top'}
+				<DropdownMenu.Root>
 					<div class="flex leading-8">
 						<span class="mr-2 text-lg">Time:</span>
 						<DropdownMenu.Trigger>
 							<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
-								<span class="ml-2 text-lg">{topSortTimescale ?? 'today'}</span>
+								<span class="ml-2 text-lg">{timescaleParam ?? 'today'}</span>
 								<CaretDown size={18} />
 							</div>
 						</DropdownMenu.Trigger>
 					</div>
 					<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
-						{#each timescales as timescale}
-							{@const route = timescale == 'today' ? './top' : `?timescale=${timescale}`}
-							{#if topSortTimescale == timescale}
-								<DropdownMenu.Item class="cursor-pointer rounded-sm font-normal hover:bg-accent">
-									<span>{timescale}</span>
+						{#each timescales as timescaleOption}
+							{@const route =
+								`/r/${subreddit}?sort=top` +
+								(timescaleOption == 'today' ? '' : `&timescale=${timescaleOption}`)}
+
+							{#if timescaleParam !== timescaleOption}
+								<DropdownMenu.Item
+									class="cursor-pointer rounded-sm font-normal hover:bg-accent"
+									onclick={() => {
+										goto(route);
+									}}
+								>
+									<span>{timescaleOption}</span>
 								</DropdownMenu.Item>
-							{:else}
-								<a data-sveltekit-reload href={route}>
-									<DropdownMenu.Item
-										class="cursor-pointer rounded-sm font-normal hover:bg-accent"
-										onclick={() => {
-											topSortTimescale = timescale;
-										}}
-									>
-										<span>{timescale}</span>
-									</DropdownMenu.Item>
-								</a>
 							{/if}
 						{/each}
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{/if}
 		</div>
-
 		<Separator class="h-0.5" />
 
-		{#each $listingsQuery.data?.pages ?? [] as page}
-			{#each page?.data?.children ?? [] as listing}
-				<ListingPortal inSubreddit listing={listing.data} />
-				<Separator />
-			{/each}
-		{/each}
 		{#if $listingsQuery.isError || $listingsQuery.isFetching}
 			<FetchMoreStatus
 				fetching={$listingsQuery.isFetching}
 				error={$listingsQuery.error as string | undefined}
 			/>
+		{:else}
+			{#key timescaleParam}
+				{#each $listingsQuery.data?.pages ?? [] as page}
+					{#each page?.data?.children ?? [] as listing}
+						<ListingPortal inSubreddit listing={listing.data} />
+						<Separator />
+					{/each}
+				{/each}
+			{/key}
 		{/if}
 	</div>
 {/if}

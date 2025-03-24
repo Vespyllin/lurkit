@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { cn } from '$lib/utils';
+	import type { CarouselAPI } from '../ui/carousel/context';
 	import ExpandedImage from './ExpandedImage.svelte';
 
 	let {
@@ -12,20 +13,20 @@
 
 	let expanded = $state(false);
 
-	let api: any = $state(0);
-	let count = $state(0);
+	let api = $state<CarouselAPI>();
 	let current = $state(0);
-
-	let blur = $state(_blur ?? false);
+	const count = $derived(api ? api.scrollSnapList().length : 0);
 
 	$effect(() => {
 		if (!api) return;
-		count = api.scrollSnapList().length;
+
 		current = api.selectedScrollSnap() + 1;
 		api.on('select', () => {
-			current = api.selectedScrollSnap() + 1;
+			current = api!.selectedScrollSnap() + 1;
 		});
 	});
+
+	let blur = $state(_blur ?? false);
 
 	const getMediaType = (post: RedditT3Data, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
@@ -52,7 +53,7 @@
 
 <div class={cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)}>
 	<Carousel.Root
-		bind:api
+		setApi={(emblaApi) => (api = emblaApi)}
 		opts={{ duration: 20 }}
 		class="flex max-h-[600px] items-center justify-center"
 	>
@@ -88,18 +89,18 @@
 		<Carousel.Previous class="translate-x-12" />
 		<Carousel.Next class="-translate-x-12" />
 	</Carousel.Root>
-	<div class={'mt-1.5 flex items-center justify-center'}>
-		{#each { length: count } as _, idx}
-			<div
-				class={cn(
-					'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
-					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
-				)}
-			></div>
-		{/each}
-	</div>
 </div>
 
+<div class={'mt-1.5 flex items-center justify-center'}>
+	{#each { length: 5 } as _, idx}
+		<div
+			class={cn(
+				'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
+				current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+			)}
+		></div>
+	{/each}
+</div>
 {#if expanded}
 	<ExpandedImage url={mediaIdToURL(galleryItems[current - 1].media_id)} onClick={handleExpand} />
 {/if}

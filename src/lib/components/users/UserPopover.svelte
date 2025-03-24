@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import * as Tooltip from '../ui/tooltip';
 	import { fetchUserAbout } from '$lib/client';
 	import Spinner from '../layout/Spinner.svelte';
 	import { Check, Cross1, Minus, Timer } from 'radix-icons-svelte';
@@ -14,12 +13,12 @@
 {#if username === '[deleted]' || username === 'AutoModerator'}
 	<span class={className}>{username}</span>
 {:else}
-	<Tooltip.Root openDelay={250}>
-		<Tooltip.Trigger>
-			<a class={cn('hover:underline', className)} href={`/u/${username}`}>
-				{username}
-			</a>
-		</Tooltip.Trigger>
+	<!-- <Tooltip.Root openDelay={250}>
+		<Tooltip.Trigger> -->
+	<a class={cn('hover:underline', className)} href={`/u/${username}`}>
+		{username}
+	</a>
+	<!-- </Tooltip.Trigger>
 		<Tooltip.Content class="flex min-h-24 w-fit min-w-32 items-center gap-1 px-2">
 			{#if $listingQuery.isLoading}
 				<Spinner class="mx-auto" />
@@ -68,5 +67,5 @@
 				</div>
 			{/if}
 		</Tooltip.Content>
-	</Tooltip.Root>
+	</Tooltip.Root> -->
 {/if}

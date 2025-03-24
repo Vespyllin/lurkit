@@ -18,7 +18,8 @@
 
 	let muted = $state(true);
 
-	// let audioLoading = $state(false);
+	let fullscreen = $state(false);
+
 	let videoLoading = $state(false);
 
 	let playing = $state(false);
@@ -165,11 +166,11 @@
 	{#if hasVideo}
 		<div
 			class={cn(
-				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] opacity-100 transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				'pointer-events-none  absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
 				playing && 'opacity-0'
 			)}
 		>
-			<button class="h-8" onclick={onPlayChange}>
+			<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
 				{#if !playing}
 					<Play size={22} />
 				{:else}
@@ -178,7 +179,7 @@
 			</button>
 
 			{#if hasAudio}
-				<div class="group/overlay flex flex-col">
+				<div class="group/overlay flex flex-col opacity-80 hover:opacity-100">
 					<div
 						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
 					>
@@ -201,7 +202,7 @@
 			{/if}
 
 			{#key seek}
-				<div class="flex gap-2 text-sm">
+				<div class="flex gap-2 text-sm opacity-90">
 					<span class="flex h-8 items-center gap-1">
 						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
 							toZero(mediaData?.duration ?? video?.duration ?? 0)
@@ -210,7 +211,7 @@
 				</div>
 			{/key}
 
-			<div class="h-[2.1rem] w-full content-center">
+			<div class="h-[2.1rem] w-full content-center opacity-80 hover:opacity-100">
 				<input
 					step="0.5"
 					min="0"
@@ -223,7 +224,7 @@
 			</div>
 
 			<button
-				class="h-8"
+				class="h-8 opacity-80 hover:opacity-100"
 				onclick={() => {
 					video?.requestFullscreen();
 				}}
@@ -275,7 +276,7 @@
 		border-radius: 1rem;
 		width: 100%;
 		height: 0.5rem;
-		background: #d3d3d3;
+		background: #c0c0c0f0;
 		outline: none;
 		opacity: 0.8;
 		-webkit-transition: 0.2s;
