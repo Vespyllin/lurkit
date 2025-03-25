@@ -26,15 +26,6 @@ export const fetchListings = async (
 	timescale?: string
 ): Promise<RedditListing<RedditT3DataWrapper> | undefined> => {
 	const queryParams = formatQueryParams({ count, after, sr_detail, t: timescale });
-	// '?' +
-	// 	Object.entries({ count, after, sr_detail, t: timescale })
-	// 		.map((x) => {
-	// 			const [k, v] = x;
-	// 			if (!v) return undefined;
-	// 			return `${k}=${v}`;
-	// 		})
-	// 		.filter((x) => !!x)
-	// 		.join('&');
 
 	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
 	const cleanSort = sort ? `/${sort}` : '';
@@ -51,8 +42,7 @@ export const fetchListingComments = async (
 	title: string,
 	sort?: RedditCommentSortOption
 ): Promise<RedditListingCommentsDataWrapper> => {
-	let queryParams = '?sr_detail=1';
-	if (sort) queryParams += `&sort=${sort}`;
+	const queryParams = formatQueryParams({ sr_detail: 1, sort });
 
 	const url = `${baseURL}/r/${subreddit}/comments/${tag}/${title}/.json${queryParams}`;
 
@@ -96,7 +86,19 @@ export const fetchUserOverview = async (
 	after?: string
 ): Promise<RedditUserWrapper> => {
 	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+
 	const url = `${baseURL}/user/${username}/.json${queryParams}`;
+
+	const fetchRes = await fetch(url);
+	return await fetchRes.json();
+};
+
+export const fetchSearchQuery = async (
+	queryString: string,
+	type?: RedditSearchOptions
+): Promise<RedditListing<RedditT3DataWrapper>> => {
+	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1 });
+	const url = `${baseURL}/search/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);
 	return await fetchRes.json();

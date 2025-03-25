@@ -12,10 +12,8 @@
 			class="flex h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 lg:mx-auto"
 			placeholder="Search Lurkit"
 			onkeydown={(e) => {
-				if (e.key == 'Enter') {
-					console.log(e.currentTarget.value);
+				if (e.key == 'Enter' && e.currentTarget.value.length > 0)
 					goto(`/search/?q=${e.currentTarget.value}`);
-				}
 			}}
 			onsubmit={() => {
 				console.log('A');

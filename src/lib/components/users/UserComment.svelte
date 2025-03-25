@@ -7,7 +7,7 @@
 
 <div class="border-l-2 pl-3 hover:border-accent hover:bg-[hsl(0,2,7)]">
 	<div>
-		<a class="text-primary" href={`/${comment.subreddit_name_prefixed}`}>
+		<a class="text-primary hover:underline" href={`/${comment.subreddit_name_prefixed}`}>
 			{comment.subreddit_name_prefixed}
 		</a>
 		•

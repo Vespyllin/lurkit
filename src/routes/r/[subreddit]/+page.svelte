@@ -14,6 +14,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { type ComponentType } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
+	import { cn } from '$lib/utils';
 
 	const {
 		params: { subreddit },
@@ -115,8 +116,8 @@
 		<h1 class="text-7xl text-red-600">
 			{$subredditQuery.data?.reason ?? 'ERROR: Could not fetch subreddit info'}
 		</h1>
-		<span class={!!$subredditQuery.data?.reason ? '' : 'text-5xl'}>
-			error {$subredditQuery.data?.error}: {$subredditQuery.data?.message}
+		<span class={cn(!$subredditQuery.data?.reason && 'text-5xl')}>
+			ERROR: {$subredditQuery.data?.error}: {$subredditQuery.data?.message}
 		</span>
 	</div>
 {:else}

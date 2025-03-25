@@ -119,21 +119,16 @@
 	/>
 {:else}
 	<div class="space-y-2">
-		{#each $listingsQuery.data?.pages ?? [] as page}
+		{#each $listingsQuery.data.pages as page}
 			{#each page?.data?.children ?? [] as listing}
 				<ListingPortal listing={listing.data} />
 				<Separator />
 			{/each}
 		{/each}
-		{#if $listingsQuery.isError || $listingsQuery.isFetching || !$listingsQuery.hasNextPage}
-			<FetchMoreStatus
-				fetching={$listingsQuery.isFetching}
-				error={!!$listingsQuery.data.pages[0] && !$listingsQuery.hasNextPage
-					? 'Could not retrieve next page param.'
-					: !$listingsQuery.data.pages[0] && !$listingsQuery.error
-						? ' '
-						: ($listingsQuery.error as string)}
-			/>
-		{/if}
+
+		<FetchMoreStatus
+			fetching={$listingsQuery.isFetching}
+			error={$listingsQuery.error as string | undefined}
+		/>
 	</div>
 {/if}
