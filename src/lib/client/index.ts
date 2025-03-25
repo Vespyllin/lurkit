@@ -95,7 +95,7 @@ export const fetchUserOverview = async (
 
 export const fetchSearchQuery = async (
 	queryString: string,
-	type?: RedditSearchOptions
+	type?: RedditSearchCategories
 ): Promise<RedditListing<RedditT3DataWrapper>> => {
 	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1 });
 	const url = `${baseURL}/search/.json${queryParams}`;

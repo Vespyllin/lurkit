@@ -13,14 +13,14 @@
 				class="h-40 w-full rounded-md object-cover"
 				src={data.subreddit.banner_img.split('?')[0]}
 			/>
-		{:else}{/if}
+		{/if}
 		<div class="absolute inset-0 h-full bg-gradient-to-b from-transparent to-background"></div>
 	</div>
 	<div class="flex">
 		<img alt="" class="mr-4 aspect-square h-[5.5rem] rounded-full border-2" src={icon_url} />
 		<div>
 			<h1 class="text-3xl font-bold">
-				{!data.subreddit?.title.length ? data.name : data.subreddit?.title}A
+				{!data.subreddit?.title.length ? data.name : data.subreddit?.title}
 			</h1>
 			<h2 class="text-xl text-zinc-200">u/{data.name}</h2>
 			<h2 class="text-xl text-zinc-400">

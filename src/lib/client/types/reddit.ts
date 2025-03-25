@@ -10,7 +10,7 @@ type RedditCommentSortOption =
 
 type RedditSubredditSortOptions = 'new' | 'top' | 'hot' | 'rising';
 
-type RedditSearchOptions = 'posts' | 'communities' | 'comments' | 'media' | 'people';
+type RedditSearchCategories = 'posts' | 'communities' | 'comments' | 'media' | 'people';
 
 type RedditListing<InnerData> = {
 	kind: 'Listing';

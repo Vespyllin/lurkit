@@ -16,15 +16,18 @@
 		[queryParam, typeParam],
 		() => {
 			if (!queryParam) return undefined;
-			return fetchSearchQuery(queryParam, (typeParam as RedditSearchOptions | null) ?? undefined);
+			return fetchSearchQuery(
+				queryParam,
+				(typeParam as RedditSearchCategories | null) ?? undefined
+			);
 		},
 		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
 	);
 </script>
 
-<!-- <p>Add category tabs</p>
+<p>Add category tabs</p>
 <p>instead of listing portals use a reduced portal w/ a thumbnail</p>
-<p>have a short community summary (click to go to community tab)</p> -->
+<p>have a short community summary (click to go to community tab)</p>
 
 <div class="space-y-2">
 	{#each $searchQuery.data?.pages ?? [] as page}
