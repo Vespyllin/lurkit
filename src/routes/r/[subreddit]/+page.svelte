@@ -105,21 +105,24 @@
 	}}
 />
 
-{#if !$subredditQuery.data}
+{#if $subredditQuery.isFetching}
 	<FetchStatus
-		fetching={$listingsQuery.isFetching || $subredditQuery.isFetching}
-		error={($subredditQuery.error ?? $listingsQuery.error) as string | undefined}
+		fetching={$subredditQuery.isFetching}
+		error={$subredditQuery.error as string | undefined}
 	/>
-{:else if $subredditQuery.data && 'error' in $subredditQuery.data}
+{:else if !$subredditQuery.data || 'error' in $subredditQuery.data}
 	<div class="mx-auto py-24 text-center uppercase">
-		<h1 class="text-7xl text-red-600">{$subredditQuery.data.reason}</h1>
-		<span class={!!$subredditQuery.data.reason ? '' : 'text-5xl'}>
-			error {$subredditQuery.data.error}: {$subredditQuery.data.message}
+		<h1 class="text-7xl text-red-600">
+			{$subredditQuery.data?.reason ?? 'ERROR: Could not fetch subreddit info'}
+		</h1>
+		<span class={!!$subredditQuery.data?.reason ? '' : 'text-5xl'}>
+			error {$subredditQuery.data?.error}: {$subredditQuery.data?.message}
 		</span>
 	</div>
 {:else}
 	<div class="space-y-2">
-		<SubredditBanner data={($subredditQuery.data as any).data} />
+		<SubredditBanner data={$subredditQuery.data.data} />
+
 		<div class="flex gap-2">
 			<DropdownMenu.Root>
 				<div class="flex leading-8">
@@ -134,18 +137,19 @@
 				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 					{#each sortOptions as sortOption}
 						{@const route = `/r/${subreddit}${sortOption.option !== 'default' ? `?sort=${sortOption.option}` : ''}`}
-
-						<a href={route}>
-							<DropdownMenu.Item
-								class="cursor-pointer rounded-sm font-normal hover:bg-accent"
-								onclick={() => {
-									goto(route);
-								}}
-							>
-								<sortOption.icon class="mr-1" />
-								<span>{sortOption.option}</span>
-							</DropdownMenu.Item>
-						</a>
+						{#if (sortParam == undefined ? 'default' : sortParam) !== sortOption.option}
+							<a href={route}>
+								<DropdownMenu.Item
+									class="cursor-pointer rounded-sm font-normal hover:bg-accent"
+									onclick={() => {
+										goto(route);
+									}}
+								>
+									<sortOption.icon class="mr-1" />
+									<span>{sortOption.option}</span>
+								</DropdownMenu.Item>
+							</a>
+						{/if}
 					{/each}
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
@@ -167,7 +171,7 @@
 								`/r/${subreddit}?sort=top` +
 								(timescaleOption == 'today' ? '' : `&timescale=${timescaleOption}`)}
 
-							{#if timescaleParam !== timescaleOption}
+							{#if (timescaleParam == undefined ? 'today' : timescaleParam) !== timescaleOption}
 								<DropdownMenu.Item
 									class="cursor-pointer rounded-sm font-normal hover:bg-accent"
 									onclick={() => {
@@ -182,10 +186,11 @@
 				</DropdownMenu.Root>
 			{/if}
 		</div>
+
 		<Separator class="h-0.5" />
 
-		{#if $listingsQuery.isError || $listingsQuery.isFetching}
-			<FetchMoreStatus
+		{#if !$listingsQuery.data && ($listingsQuery.isError || $listingsQuery.isFetching)}
+			<FetchStatus
 				fetching={$listingsQuery.isFetching}
 				error={$listingsQuery.error as string | undefined}
 			/>
@@ -198,6 +203,11 @@
 					{/each}
 				{/each}
 			{/key}
+
+			<FetchMoreStatus
+				fetching={$listingsQuery.isFetching}
+				error={$listingsQuery.error as string | undefined}
+			/>
 		{/if}
 	</div>
 {/if}

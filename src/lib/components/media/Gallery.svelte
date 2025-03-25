@@ -2,6 +2,7 @@
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { cn } from '$lib/utils';
 	import type { CarouselAPI } from '../ui/carousel/context';
+	import ExpandedGallery from './ExpandedGallery.svelte';
 	import ExpandedImage from './ExpandedImage.svelte';
 
 	let {
@@ -92,7 +93,7 @@
 </div>
 
 <div class={'mt-1.5 flex items-center justify-center'}>
-	{#each { length: 5 } as _, idx}
+	{#each { length: count } as _, idx}
 		<div
 			class={cn(
 				'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
@@ -101,6 +102,7 @@
 		></div>
 	{/each}
 </div>
+
 {#if expanded}
-	<ExpandedImage url={mediaIdToURL(galleryItems[current - 1].media_id)} onClick={handleExpand} />
+	<ExpandedGallery url={mediaIdToURL(galleryItems[current - 1].media_id)} onClick={handleExpand} />
 {/if}

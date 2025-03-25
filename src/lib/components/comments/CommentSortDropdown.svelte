@@ -40,7 +40,7 @@
 </script>
 
 <div class={className}>
-	<DropdownMenu.Root preventScroll={false}>
+	<DropdownMenu.Root>
 		<div class="flex leading-8">
 			<span class="mr-2 text-lg">Sort by:</span>
 			<DropdownMenu.Trigger>
@@ -54,16 +54,18 @@
 		</div>
 		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 			{#each sortOptions as sortOption}
-				<DropdownMenu.Item
-					class="cursor-pointer rounded-sm font-normal hover:bg-accent"
-					onclick={() => {
-						sort = sortOption.value;
-						onChange?.(sortOption.value);
-					}}
-				>
-					<sortOption.icon class="mr-1" />
-					<span>{sortOption.display}</span>
-				</DropdownMenu.Item>
+				{#if (sort == undefined ? 'default' : sort) !== sortOption.value}
+					<DropdownMenu.Item
+						class="cursor-pointer rounded-sm font-normal hover:bg-accent"
+						onclick={() => {
+							sort = sortOption.value;
+							onChange?.(sortOption.value);
+						}}
+					>
+						<sortOption.icon class="mr-1" />
+						<span>{sortOption.display}</span>
+					</DropdownMenu.Item>
+				{/if}
 			{/each}
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>

@@ -14,6 +14,7 @@ type RedditMoreDataWrapper = {
 };
 
 type RedditT1Data = RedditListingBaseData & {
+	link_title: string;
 	subreddit_id: string;
 	approved_at_utc: null;
 	author_is_blocked: boolean;

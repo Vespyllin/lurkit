@@ -76,6 +76,6 @@
 			data.subreddit_type !== 'private' && 'text-red-600'
 		)}
 	>
-		-- {data.subreddit_type} Subreddit --
+		-- {data.subreddit_type ?? 'Untyped'} Subreddit --
 	</h1>
 {/if}

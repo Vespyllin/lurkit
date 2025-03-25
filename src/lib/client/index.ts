@@ -1,5 +1,22 @@
 const baseURL = 'https://www.reddit.com';
 
+const formatQueryParams = (paramObj: Object) => {
+	const entries = Object.entries(paramObj);
+	if (entries.length == 0) return '';
+
+	return (
+		'?' +
+		entries
+			.map((x) => {
+				const [k, v] = x;
+				if (!v) return undefined;
+				return `${k}=${v}`;
+			})
+			.filter((x) => !!x)
+			.join('&')
+	);
+};
+
 export const fetchListings = async (
 	subreddit?: string,
 	count?: number,
@@ -8,16 +25,16 @@ export const fetchListings = async (
 	sr_detail?: boolean,
 	timescale?: string
 ): Promise<RedditListing<RedditT3DataWrapper> | undefined> => {
-	const queryParams =
-		'?' +
-		Object.entries({ count, after, sr_detail, t: timescale })
-			.map((x) => {
-				const [k, v] = x;
-				if (!v) return undefined;
-				return `${k}=${v}`;
-			})
-			.filter((x) => !!x)
-			.join('&');
+	const queryParams = formatQueryParams({ count, after, sr_detail, t: timescale });
+	// '?' +
+	// 	Object.entries({ count, after, sr_detail, t: timescale })
+	// 		.map((x) => {
+	// 			const [k, v] = x;
+	// 			if (!v) return undefined;
+	// 			return `${k}=${v}`;
+	// 		})
+	// 		.filter((x) => !!x)
+	// 		.join('&');
 
 	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
 	const cleanSort = sort ? `/${sort}` : '';
@@ -58,8 +75,7 @@ export const fetchComment = async (
 	comment_id: string,
 	sort?: RedditCommentSortOption
 ): Promise<RedditListingCommentsDataWrapper> => {
-	let queryParams = '?sr_detail=1';
-	if (sort) queryParams += `&sort=${sort}`;
+	const queryParams = formatQueryParams({ sr_detail: 1, sort });
 
 	const url = `${baseURL}/r/${subreddit}/comments/${tag}/comment/${comment_id}/.json${queryParams}`;
 
@@ -74,8 +90,13 @@ export const fetchUserAbout = async (username: string): Promise<RedditT2DataWrap
 	return await fetchRes.json();
 };
 
-export const fetchUserOverview = async (username: string): Promise<RedditUserWrapper> => {
-	const url = `${baseURL}/user/${username}/submitted/.json?sr_detail=1`;
+export const fetchUserOverview = async (
+	username: string,
+	count?: number,
+	after?: string
+): Promise<RedditUserWrapper> => {
+	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+	const url = `${baseURL}/user/${username}/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);
 	return await fetchRes.json();

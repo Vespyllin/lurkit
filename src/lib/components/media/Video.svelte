@@ -166,7 +166,7 @@
 	{#if hasVideo}
 		<div
 			class={cn(
-				'pointer-events-none  absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
 				playing && 'opacity-0'
 			)}
 		>
@@ -261,7 +261,7 @@
 		onclick={onPlayChange}
 		ontimeupdate={onTimeUpdate}
 		bind:this={video}
-		class="max-h-[600px] w-full bg-black object-contain"
+		class="max-h-[600px] w-full rounded-md bg-black object-contain"
 	>
 		<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
 		<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
