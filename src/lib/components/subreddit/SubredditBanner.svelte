@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
+	import { Timer } from 'radix-icons-svelte';
 	import Markdown from '../media/Markdown.svelte';
 
 	const { data, class: classList }: { data: RedditT5Data; class?: string } = $props();
@@ -22,49 +23,55 @@
 			/>
 		{:else}
 			<div
-				class="h-28 w-full rounded-md bg-secondary"
+				class="h-20 w-full rounded-md bg-secondary"
 				style="background-color: {data.primary_color};"
 			></div>
 		{/if}
 		<div class="absolute inset-0 h-full bg-gradient-to-b from-transparent to-background"></div>
 	</div>
 
-	<div class="flex h-[5.5rem]">
+	<div class="flex">
 		<img
 			alt=""
-			class="mr-4 aspect-square h-full rounded-full border-2"
+			class="mr-4 aspect-square h-16 rounded-full border-2"
 			style="border-color: {data.key_color};"
 			src={icon_url}
 		/>
 
-		<div>
-			<h1 class="text-3xl font-bold">r/{data.display_name}</h1>
-			<h2 class="text-xl text-zinc-200">
-				Active since {new Date(data.created_utc * 1000).getFullYear()}
-			</h2>
+		<div class="flex w-full">
+			<div>
+				<h1 class="text-3xl font-bold">r/{data.display_name}</h1>
+				<div class="flex gap-2">
+					<div class="flex items-center gap-1 text-lg text-zinc-400">
+						<span>
+							Active since {new Date(data.created_utc * 1000).getFullYear()}
+						</span>
+					</div>
+				</div>
+			</div>
 
-			<div class="flex gap-3">
-				<div>
-					<span class="font-medium" style="color: {data.key_color};">
+			<div class="mb-auto ml-auto flex h-fit gap-6">
+				<div class="ml-auto flex flex-col">
+					<span class="text-2xl text-zinc-300">Subscribers</span>
+					<span class="ml-auto text-xl" style="color: {data.key_color};">
 						{data.subscribers?.toLocaleString()}
 					</span>
-					<span class="text-zinc-300">Subscribers</span>
 				</div>
 
-				<div class="flex">
-					<span class="font-medium" style="color: {data.primary_color};">
-						{data.active_user_count?.toLocaleString()}
-					</span>
+				<div class="flex flex-col">
 					<div class="flex items-center">
 						<div class="ml-1.5 mr-0.5 h-2 w-2 rounded-full bg-green-600"></div>
-						<span class="text-zinc-300"> Online </span>
+						<span class="text-2xl text-zinc-300"> Online </span>
 					</div>
+					<span class="ml-auto text-xl" style="color: {data.primary_color};">
+						{data.active_user_count?.toLocaleString()}
+					</span>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="md mt-2 border-l-4 pl-2 text-zinc-300">
+	<div class="md mt-2 text-zinc-300">
 		<Markdown text={data.public_description} />
 	</div>
 </div>

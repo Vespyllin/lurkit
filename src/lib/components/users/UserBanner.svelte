@@ -20,20 +20,22 @@
 		{/if}
 		<div class="absolute inset-0 h-full bg-gradient-to-b from-transparent to-background"></div>
 	</div>
+
 	<div class="flex">
 		{#if !!icon_img?.length}
 			<img
 				alt=""
-				class="my-auto mr-4 aspect-square h-[5.5rem] rounded-full border-2 border-accent"
+				class="my-auto mr-4 aspect-square h-[5.5rem] rounded-full border-2 border-primary"
 				src={icon_img}
 			/>
 		{/if}
+
 		<div class="w-96">
 			<h1 class="text-3xl font-bold">
 				{!data.subreddit?.title.length ? data.name : data.subreddit?.title}
 			</h1>
 			<div class="flex gap-2">
-				<h2 class="inline text-lg text-accent">u/{data.name}</h2>
+				<h2 class="inline text-lg text-primary">u/{data.name}</h2>
 				<div class="flex items-center gap-1 text-lg text-zinc-400">
 					<Timer />
 					<span>

@@ -121,9 +121,11 @@ export const fetchUserCommented = async (
 
 export const fetchSearchQuery = async (
 	queryString: string,
-	type?: RedditSearchCategories
+	type?: RedditSearchCategories,
+	count?: number,
+	after?: string
 ): Promise<RedditListing<RedditT3DataWrapper>> => {
-	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1 });
+	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1, count, after });
 	const url = `${baseURL}/search/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);

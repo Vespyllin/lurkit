@@ -14,68 +14,66 @@
 {#if username === '[deleted]' || username === 'AutoModerator'}
 	<span class={className}>{username}</span>
 {:else}
-	<Tooltip.Provider>
-		<Tooltip.Root delayDuration={200}>
-			<Tooltip.Trigger>
-				<a class={cn('hover:underline', className)} href={`/u/${username}`}>
-					{username}
-				</a>
-			</Tooltip.Trigger>
-			<Tooltip.Content class="flex gap-1">
-				{#if $userQuery.isLoading}
-					<Spinner class="mx-auto" />
-				{:else if $userQuery.error}
-					<span>Error: {$userQuery.error}</span>
-				{:else if $userQuery.data?.data}
-					{@const { data } = $userQuery.data}
-					{@const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0)}
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<a class={cn('hover:underline', className)} href={`/u/${username}`}>
+				{username}
+			</a>
+		</Tooltip.Trigger>
+		<Tooltip.Content class="flex gap-1">
+			{#if $userQuery.isLoading}
+				<Spinner class="mx-auto" />
+			{:else if $userQuery.error}
+				<span>Error: {$userQuery.error}</span>
+			{:else if $userQuery.data?.data}
+				{@const { data } = $userQuery.data}
+				{@const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0)}
 
-					{#if data.snoovatar_img}
-						<img src={data.snoovatar_img} alt="" class="h-24 pr-2" />
-					{/if}
-					<div class="flex flex-col">
-						<div class="flex items-center text-xl font-semibold">
-							<a class={cn('hover:underline', className)} href={`/u/${username}`}>
-								{data.subreddit.display_name_prefixed}
-							</a>
+				{#if data.snoovatar_img}
+					<img src={data.snoovatar_img} alt="" class="h-24 pr-2" />
+				{/if}
+				<div class="flex flex-col">
+					<div class="flex items-center text-xl font-semibold">
+						<a class={cn('hover:underline', className)} href={`/u/${username}`}>
+							{data.subreddit.display_name_prefixed}
+						</a>
 
-							<div class="mt-0.5">
-								{#if verifiedLevel == 0}
-									<Cross1 size={22} />
-								{:else if verifiedLevel == 1}
-									<Minus size={22} />
-								{:else}
-									<Check size={22} />
-								{/if}
-							</div>
-						</div>
-
-						<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
-							<Timer />
-							<span
-								>{new Date(data.created_utc * 1000)
-									.toDateString()
-									.split(' ')
-									.slice(1)
-									.join(' ')}</span
-							>
-						</div>
-
-						<div class="grid w-fit grid-cols-2 gap-4">
-							<div class="flex flex-col">
-								<span class="text-lg">Posts</span>
-								<span class="text-zinc-400">
-									{(data.awarder_karma + data.link_karma)?.toLocaleString()} karma
-								</span>
-							</div>
-							<div class="ml-auto flex flex-col">
-								<span class="text-lg">Comments</span>
-								<span class="text-zinc-400">{data.comment_karma?.toLocaleString()} karma</span>
-							</div>
+						<div class="mt-0.5">
+							{#if verifiedLevel == 0}
+								<Cross1 size={22} />
+							{:else if verifiedLevel == 1}
+								<Minus size={22} />
+							{:else}
+								<Check size={22} />
+							{/if}
 						</div>
 					</div>
-				{/if}
-			</Tooltip.Content>
-		</Tooltip.Root>
-	</Tooltip.Provider>
+
+					<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
+						<Timer />
+						<span
+							>{new Date(data.created_utc * 1000)
+								.toDateString()
+								.split(' ')
+								.slice(1)
+								.join(' ')}</span
+						>
+					</div>
+
+					<div class="grid w-fit grid-cols-2 gap-4">
+						<div class="flex flex-col">
+							<span class="text-lg">Posts</span>
+							<span class="text-zinc-400">
+								{(data.awarder_karma + data.link_karma)?.toLocaleString()} karma
+							</span>
+						</div>
+						<div class="ml-auto flex flex-col">
+							<span class="text-lg">Comments</span>
+							<span class="text-zinc-400">{data.comment_karma?.toLocaleString()} karma</span>
+						</div>
+					</div>
+				</div>
+			{/if}
+		</Tooltip.Content>
+	</Tooltip.Root>
 {/if}

@@ -190,19 +190,26 @@
 				error={$listingsQuery.error as string | undefined}
 			/>
 		{:else}
-			{#key timescaleParam}
-				{#each $listingsQuery.data?.pages ?? [] as page}
-					{#each page?.data?.children ?? [] as listing}
-						<ListingPortal inSubreddit listing={listing.data} />
-						<Separator />
-					{/each}
-				{/each}
-			{/key}
+			{@const pages = $listingsQuery.data?.pages ?? []}
 
-			<FetchMoreStatus
-				fetching={$listingsQuery.isFetching}
-				error={$listingsQuery.error as string | undefined}
-			/>
+			{#each pages as page, pIdx}
+				{@const listings = page?.data?.children ?? []}
+
+				{#each listings as listing, lIdx}
+					<ListingPortal inSubreddit listing={listing.data} />
+
+					<Separator
+						class={cn(pIdx + 1 == pages.length && lIdx + 1 == listings.length && 'hidden')}
+					/>
+				{/each}
+			{/each}
+
+			{#if $listingsQuery.isFetching || !!$listingsQuery.error}
+				<FetchMoreStatus
+					fetching={$listingsQuery.isFetching}
+					error={$listingsQuery.error as string | undefined}
+				/>
+			{/if}
 		{/if}
 	</div>
 {/if}

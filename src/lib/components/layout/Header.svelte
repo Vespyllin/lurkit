@@ -1,5 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
+
+	let searchString = $state('');
 </script>
 
 <div class="fixed z-20 flex h-14 w-full border-b-2 bg-background p-8">
@@ -11,12 +13,12 @@
 		<input
 			class="hidden h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:flex lg:mx-auto"
 			placeholder="Search Lurkit"
+			bind:value={searchString}
 			onkeydown={(e) => {
-				if (e.key == 'Enter' && e.currentTarget.value.length > 0)
-					goto(`/search/?q=${e.currentTarget.value}`);
-			}}
-			onsubmit={() => {
 				console.log('A');
+				if (e.key == 'Enter' && searchString.length > 0) {
+					goto(`/search/?q=${searchString}`, { invalidateAll: true });
+				}
 			}}
 		/>
 	</div>

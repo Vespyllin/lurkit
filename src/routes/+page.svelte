@@ -8,6 +8,7 @@
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 	import { untrack } from 'svelte';
 	import type { Filter } from '$lib/db/filters';
+	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
 
 	const lastFetchedListingIds = new Set<string>();
 
@@ -113,10 +114,11 @@
 />
 
 {#if !$listingsQuery.data}
-	<FetchStatus
-		fetching={$listingsQuery.isFetching || $filtersQuery.isFetching}
-		error={$listingsQuery.error as string | undefined}
-	/>
+	{#if $listingsQuery.isFetching || $filtersQuery.isFetching}
+		<ImageListingSkeleton />
+	{:else}
+		<FetchStatus fetching={false} error={$listingsQuery.error as string | undefined} />
+	{/if}
 {:else}
 	<div class="mt-1 space-y-2">
 		{#each $listingsQuery.data.pages as page}
@@ -126,9 +128,12 @@
 			{/each}
 		{/each}
 
-		<FetchMoreStatus
-			fetching={$listingsQuery.isFetching}
-			error={$listingsQuery.error as string | undefined}
-		/>
+		{#if $listingsQuery.isFetching || !!$listingsQuery.error}
+			<FetchMoreStatus
+				fetching={$listingsQuery.isFetching}
+				error={$listingsQuery.error as string | undefined}
+				retryFn={$listingsQuery.fetchNextPage}
+			/>
+		{/if}
 	</div>
 {/if}

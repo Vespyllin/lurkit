@@ -11,8 +11,10 @@
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import { cn } from '$lib/utils';
 	import UserPopover from '../users/UserPopover.svelte';
+	import type { ClassValue } from 'tailwind-variants';
 
 	let {
+		class: className,
 		subreddit,
 		edited,
 		author,
@@ -25,12 +27,13 @@
 		flairColor,
 		distinguished
 	}: {
+		class?: ClassValue;
 		subreddit?: RedditSrDetail;
 		edited?: boolean | number;
 		author: string;
 		created_utc: number;
 		over_18: boolean;
-		crossposted_from: string | undefined;
+		crossposted_from?: string;
 		locked: boolean;
 		stickied?: boolean;
 		flairs?: RedditLinkFlairRichText[];
@@ -39,7 +42,7 @@
 	} = $props();
 </script>
 
-<div class="flex h-5 items-center gap-2">
+<div class={cn('flex h-5 items-center gap-2', className)}>
 	{#if subreddit}
 		<SubredditPopover {subreddit} />
 	{/if}

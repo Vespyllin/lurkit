@@ -95,7 +95,10 @@
 
 		<div class="space-x-2 py-2">
 			<Button
-				class={cn('min-w-24 rounded-full', category == 'overview' ? 'bg-primary' : 'bg-muted')}
+				class={cn(
+					'min-w-24 rounded-full transition-colors duration-500',
+					category == 'overview' ? 'bg-primary' : 'bg-muted'
+				)}
 				onclick={() => {
 					if (category != 'overview') category = 'overview';
 				}}
@@ -103,7 +106,10 @@
 				Overview
 			</Button>
 			<Button
-				class={cn('min-w-24 rounded-full', category == 'submitted' ? 'bg-primary' : 'bg-muted')}
+				class={cn(
+					'min-w-24 rounded-full transition-colors duration-500',
+					category == 'submitted' ? 'bg-primary' : 'bg-muted'
+				)}
 				onclick={() => {
 					if (category != 'submitted') category = 'submitted';
 				}}
@@ -111,7 +117,10 @@
 				Posts
 			</Button>
 			<Button
-				class={cn('min-w-24 rounded-full', category == 'comments' ? 'bg-primary' : 'bg-muted')}
+				class={cn(
+					'min-w-24 rounded-full transition-colors duration-500',
+					category == 'comments' ? 'bg-primary' : 'bg-muted'
+				)}
 				onclick={() => {
 					if (category != 'comments') category = 'comments';
 				}}

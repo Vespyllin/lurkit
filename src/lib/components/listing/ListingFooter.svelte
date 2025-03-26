@@ -3,7 +3,11 @@
 	import Separator from '../ui/separator/separator.svelte';
 	import { cn } from '$lib/utils';
 
-	let { listing, class: className }: { listing: RedditT3Data; class?: string } = $props();
+	let {
+		listing,
+		plain,
+		class: className
+	}: { listing: RedditT3Data; class?: string; plain?: boolean } = $props();
 </script>
 
 <div class={cn('flex gap-4 text-base font-medium text-zinc-200 md:gap-10', className)}>
@@ -28,7 +32,7 @@
 		<span class="ml-1">{listing.num_comments.toLocaleString()}</span>
 	</div>
 
-	<div class="hidden w-full items-center md:flex">
+	<div class={cn('hidden w-full items-center', !plain && 'md:flex')}>
 		<Separator class="h-0.5 bg-zinc-600" />
 	</div>
 </div>
