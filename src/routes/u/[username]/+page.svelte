@@ -56,11 +56,29 @@
 		const feedHeight = document.body.offsetHeight - window.innerHeight;
 		const remainingPx = feedHeight - window.scrollY;
 
-		const { hasNextPage, isFetching, isError } = $overviewQuery;
-		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
-			if (category == 'overview') $overviewQuery.fetchNextPage();
-			else if (category == 'submitted') $submittedQuery.fetchNextPage();
-			else if (category == 'comments') $commentedQuery.fetchNextPage();
+		if (remainingPx < 1000) {
+			if (
+				category == 'overview' &&
+				$overviewQuery.hasNextPage &&
+				!$overviewQuery.isFetching &&
+				!$overviewQuery.isError
+			) {
+				$overviewQuery.fetchNextPage();
+			} else if (
+				category == 'submitted' &&
+				$submittedQuery.hasNextPage &&
+				!$submittedQuery.isFetching &&
+				!$submittedQuery.isError
+			) {
+				$submittedQuery.fetchNextPage();
+			} else if (
+				category == 'comments' &&
+				$commentedQuery.hasNextPage &&
+				!$commentedQuery.isFetching &&
+				!$commentedQuery.isError
+			) {
+				$commentedQuery.fetchNextPage();
+			}
 		}
 	}}
 />
