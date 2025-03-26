@@ -93,6 +93,32 @@ export const fetchUserOverview = async (
 	return await fetchRes.json();
 };
 
+export const fetchUserSubmitted = async (
+	username: string,
+	count?: number,
+	after?: string
+): Promise<RedditListing<RedditT3DataWrapper>> => {
+	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+
+	const url = `${baseURL}/user/${username}/submitted.json${queryParams}`;
+
+	const fetchRes = await fetch(url);
+	return await fetchRes.json();
+};
+
+export const fetchUserCommented = async (
+	username: string,
+	count?: number,
+	after?: string
+): Promise<RedditListing<RedditT1DataWrapper>> => {
+	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+
+	const url = `${baseURL}/user/${username}/comments.json${queryParams}`;
+
+	const fetchRes = await fetch(url);
+	return await fetchRes.json();
+};
+
 export const fetchSearchQuery = async (
 	queryString: string,
 	type?: RedditSearchCategories

@@ -23,7 +23,7 @@
 
 	const initSortParam = searchParams.get('sort') ?? undefined;
 	const initTimescaleParam =
-		initSortParam == 'top' ? undefined : (searchParams.get('timescale') ?? undefined);
+		initSortParam == 'top' ? (searchParams.get('timescale') ?? undefined) : undefined;
 
 	let sortParam: string | undefined = $state(initSortParam);
 	let timescaleParam: string | undefined = $state(initTimescaleParam);
@@ -31,7 +31,6 @@
 	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
-		console.log('Fetch');
 		return await fetchListings(
 			subreddit,
 			50,
@@ -49,14 +48,11 @@
 	);
 
 	afterNavigate((e) => {
-		console.log('moving from', e.from?.url?.search, 'to', e.to?.url?.search);
 		if (!e.from || !e.from.url) return;
 
 		const newSort = $page.url.searchParams.get('sort') ?? undefined;
 		const newTimescale =
 			newSort == 'top' ? ($page.url.searchParams.get('timescale') ?? undefined) : undefined;
-
-		console.log(newSort, newTimescale);
 
 		sortParam = newSort;
 		timescaleParam = newTimescale;
@@ -65,8 +61,6 @@
 			queryKey: [subreddit, newSort, newTimescale],
 			queryFn: fetchNextListings
 		});
-
-		$listingsQuery.refetch();
 	});
 
 	const sortOptions: {

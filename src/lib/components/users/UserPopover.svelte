@@ -29,7 +29,7 @@
 				{:else if $userQuery.data?.data}
 					{@const { data } = $userQuery.data}
 					{@const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0)}
-					{@const dateTime = new Date(data.created_utc * 1000)}
+
 					{#if data.snoovatar_img}
 						<img src={data.snoovatar_img} alt="" class="h-24 pr-2" />
 					{/if}
@@ -50,8 +50,15 @@
 							</div>
 						</div>
 
-						<div class="mt-0.5 flex items-center gap-1 text-zinc-200">
-							<Timer /> <span>{dateTime.toDateString()}</span>
+						<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
+							<Timer />
+							<span
+								>{new Date(data.created_utc * 1000)
+									.toDateString()
+									.split(' ')
+									.slice(1)
+									.join(' ')}</span
+							>
 						</div>
 
 						<div class="grid w-fit grid-cols-2 gap-4">

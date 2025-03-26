@@ -3,7 +3,6 @@
 	import { cn } from '$lib/utils';
 	import type { CarouselAPI } from '../ui/carousel/context';
 	import ExpandedGallery from './ExpandedGallery.svelte';
-	import ExpandedImage from './ExpandedImage.svelte';
 
 	let {
 		post,

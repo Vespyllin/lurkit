@@ -5,7 +5,7 @@
 	import { cn } from '$lib/utils';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
-	let status: 'neutral' | 'loading' | 'done' = $state('neutral');
+	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
 
 	const icon_url =
 		(subreddit?.community_icon?.split('?')[0] ?? '').length > 0
@@ -41,8 +41,9 @@
 					</a>
 
 					<button
-						onclick={async () => {
-							status = 'loading';
+						onclick={async (e) => {
+							e.preventDefault();
+							status = 'LOADING';
 
 							const res = await fetch('/api/filters/subreddit', {
 								method: 'POST',
@@ -51,19 +52,19 @@
 							const resJson = await res.json();
 
 							if (!!resJson.success) {
-								status = 'done';
+								status = 'DONE';
 							} else {
-								status = 'neutral';
+								status = 'INIT';
 							}
 						}}
 						class={cn(
 							'hover ml-1 size-fit rounded-md p-1 transition-opacity hover:bg-zinc-700',
-							status !== 'neutral' && 'pointer-events-none bg-none opacity-0 duration-1000'
+							status !== 'INIT' && 'pointer-events-none bg-none opacity-0 duration-1000'
 						)}
 					>
-						{#if status == 'neutral'}
+						{#if status == 'INIT'}
 							<Trash size={20} />
-						{:else if status == 'loading'}
+						{:else if status == 'LOADING'}
 							<Spinner class="size-5" />
 						{:else}
 							<Check size={20} />

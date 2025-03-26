@@ -1,21 +1,42 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fetchUserAbout, fetchUserOverview } from '$lib/client';
+	import {
+		fetchUserAbout,
+		fetchUserCommented,
+		fetchUserOverview,
+		fetchUserSubmitted
+	} from '$lib/client';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import UserBanner from '$lib/components/users/UserBanner.svelte';
 	import UserComment from '$lib/components/users/UserComment.svelte';
+	import { cn } from '$lib/utils';
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 
 	const {
 		params: { username }
 	} = $page;
 
+	let category = $state<'overview' | 'submitted' | 'comments'>('overview');
+
 	const overviewQuery = useInfiniteQuery(
 		[username, 'overview'],
 		({ pageParam }: { pageParam?: string }) => fetchUserOverview(username, 50, pageParam),
+		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+	);
+
+	const submittedQuery = useInfiniteQuery(
+		[username, 'submitted'],
+		({ pageParam }: { pageParam?: string }) => fetchUserSubmitted(username, 50, pageParam),
+		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+	);
+
+	const commentedQuery = useInfiniteQuery(
+		[username, 'commented'],
+		({ pageParam }: { pageParam?: string }) => fetchUserCommented(username, 50, pageParam),
 		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
 	);
 
@@ -37,7 +58,9 @@
 
 		const { hasNextPage, isFetching, isError } = $overviewQuery;
 		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
-			$overviewQuery.fetchNextPage();
+			if (category == 'overview') $overviewQuery.fetchNextPage();
+			else if (category == 'submitted') $submittedQuery.fetchNextPage();
+			else if (category == 'comments') $commentedQuery.fetchNextPage();
 		}
 	}}
 />
@@ -52,36 +75,99 @@
 	<div class="space-y-2">
 		<UserBanner data={$aboutQuery.data.data} />
 
+		<div class="space-x-2 py-2">
+			<Button
+				class={cn('min-w-24 rounded-full', category == 'overview' ? 'bg-primary' : 'bg-muted')}
+				onclick={() => {
+					if (category != 'overview') category = 'overview';
+				}}
+			>
+				Overview
+			</Button>
+			<Button
+				class={cn('min-w-24 rounded-full', category == 'submitted' ? 'bg-primary' : 'bg-muted')}
+				onclick={() => {
+					if (category != 'submitted') category = 'submitted';
+				}}
+			>
+				Posts
+			</Button>
+			<Button
+				class={cn('min-w-24 rounded-full', category == 'comments' ? 'bg-primary' : 'bg-muted')}
+				onclick={() => {
+					if (category != 'comments') category = 'comments';
+				}}
+			>
+				Comments
+			</Button>
+		</div>
+
 		<Separator class="h-0.5" />
 
-		{#if !$overviewQuery.data && ($overviewQuery.isError || $overviewQuery.isFetching)}
-			<FetchStatus
-				fetching={$overviewQuery.isFetching}
-				error={$overviewQuery.error as string | undefined}
-			/>
-		{:else}
-			{#each $overviewQuery.data?.pages ?? [] as page}
-				{#each page.data?.children ?? [] as child}
-					<div>
+		{#if category == 'overview'}
+			{#if !$overviewQuery.data && ($overviewQuery.isError || $overviewQuery.isFetching)}
+				<FetchStatus
+					fetching={$overviewQuery.isFetching}
+					error={$overviewQuery.error as string | undefined}
+				/>
+			{:else}
+				{#each $overviewQuery.data?.pages ?? [] as page}
+					{#each page.data?.children ?? [] as child}
 						{#if child.kind == 't1'}
 							<UserComment comment={child.data} />
-						{:else if child.kind == 't3'}
-							<ListingPortal listing={child.data} />
 						{:else}
-							<div class="rounded-md border border-red-500">
-								Unhandled submission type: {(child as any).kind}
-							</div>
+							<ListingPortal listing={child.data} />
 						{/if}
-					</div>
 
-					<Separator />
+						<Separator />
+					{/each}
 				{/each}
-			{/each}
 
-			<FetchMoreStatus
-				fetching={$overviewQuery.isFetching}
-				error={$overviewQuery.error as string | undefined}
-			/>
+				<FetchMoreStatus
+					fetching={$overviewQuery.isFetching}
+					error={$overviewQuery.error as string | undefined}
+				/>
+			{/if}
+		{:else if category == 'submitted'}
+			{#if !$submittedQuery.data && ($submittedQuery.isError || $submittedQuery.isFetching)}
+				<FetchStatus
+					fetching={$submittedQuery.isFetching}
+					error={$submittedQuery.error as string | undefined}
+				/>
+			{:else}
+				{#each $submittedQuery.data?.pages ?? [] as page}
+					{#each page.data?.children ?? [] as child}
+						<ListingPortal listing={child.data} />
+
+						<Separator />
+					{/each}
+				{/each}
+
+				<FetchMoreStatus
+					fetching={$submittedQuery.isFetching}
+					error={$submittedQuery.error as string | undefined}
+				/>
+			{/if}
+		{:else if category == 'comments'}
+			{#if !$commentedQuery.data && ($commentedQuery.isError || $commentedQuery.isFetching)}
+				<FetchStatus
+					fetching={$commentedQuery.isFetching}
+					error={$commentedQuery.error as string | undefined}
+				/>
+			{:else}
+				{#each $commentedQuery.data?.pages ?? [] as page}
+					{#each page.data?.children ?? [] as child}
+						<UserComment comment={child.data} />
+
+						<Separator />
+					{/each}
+				{/each}
+
+				<FetchMoreStatus
+					fetching={$commentedQuery.isFetching}
+					error={$commentedQuery.error as string | undefined}
+				/>
+			{/if}
 		{/if}
 	</div>
 {/if}

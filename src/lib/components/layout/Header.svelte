@@ -9,7 +9,7 @@
 			<h1 class="text-3xl font-semibold tracking-tight">Lurkit</h1>
 		</a>
 		<input
-			class="flex h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 lg:mx-auto"
+			class="hidden h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:flex lg:mx-auto"
 			placeholder="Search Lurkit"
 			onkeydown={(e) => {
 				if (e.key == 'Enter' && e.currentTarget.value.length > 0)

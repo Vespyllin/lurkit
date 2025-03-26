@@ -118,7 +118,7 @@
 		error={$listingsQuery.error as string | undefined}
 	/>
 {:else}
-	<div class="space-y-2">
+	<div class="mt-1 space-y-2">
 		{#each $listingsQuery.data.pages as page}
 			{#each page?.data?.children ?? [] as listing}
 				<ListingPortal listing={listing.data} />
