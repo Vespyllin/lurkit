@@ -15,9 +15,9 @@
 			placeholder="Search Lurkit"
 			bind:value={searchString}
 			onkeydown={(e) => {
-				console.log('A');
 				if (e.key == 'Enter' && searchString.length > 0) {
-					goto(`/search/?q=${searchString}`, { invalidateAll: true });
+					e.preventDefault();
+					goto(`/search/?q=${searchString}`);
 				}
 			}}
 		/>

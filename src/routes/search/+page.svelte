@@ -4,7 +4,10 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
 	import ThumbnailPortal from '../../lib/components/listing/ThumbnailPortal.svelte';
-	import { afterNavigate, onNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
+	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
+	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
+	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 
 	const {
 		url: { searchParams }
@@ -26,7 +29,7 @@
 		if (!e.from || !e.from.url) return;
 
 		const newQ = $page.url.searchParams.get('q');
-		const newType = searchParams.get('type') as RedditSearchCategories | null;
+		const newType = $page.url.searchParams.get('type') as RedditSearchCategories | null;
 
 		searchQuery.setOptions({
 			queryKey: [newQ, newType],
@@ -49,16 +52,31 @@
 	}}
 />
 
-<p>Add category tabs</p>
+<!-- <p>Add category tabs</p>
 <p>instead of listing portals use a reduced portal w/ a thumbnail</p>
-<p>have a short community summary (click to go to community tab)</p>
+<p>have a short community summary (click to go to community tab)</p> -->
+{#if !$searchQuery.data}
+	{#if $searchQuery.isFetching}
+		<ImageListingSkeleton />
+	{:else}
+		<FetchStatus fetching={false} error={$searchQuery.error as string | undefined} />
+	{/if}
+{:else}
+	<div class="space-y-2">
+		{#each $searchQuery.data?.pages ?? [] as page}
+			{#each page?.data?.children ?? [] as listing}
+				<ThumbnailPortal listing={listing.data} />
 
-<div class="space-y-2">
-	{#each $searchQuery.data?.pages ?? [] as page}
-		{#each page?.data?.children ?? [] as listing}
-			<ThumbnailPortal listing={listing.data} />
-
-			<Separator />
+				<Separator />
+			{/each}
 		{/each}
-	{/each}
-</div>
+
+		{#if $searchQuery.isFetching || !!$searchQuery.error}
+			<FetchMoreStatus
+				fetching={$searchQuery.isFetching}
+				error={$searchQuery.error as string | undefined}
+				retryFn={$searchQuery.fetchNextPage}
+			/>
+		{/if}
+	</div>
+{/if}

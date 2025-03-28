@@ -70,7 +70,7 @@
 				{#if !comments?.data || !comments.data?.children?.length}
 					<span class="text-2xl text-zinc-400">No comments to display...</span>
 				{:else}
-					<Comments fold={false} {comments} />
+					<Comments shelve={false} {comments} />
 				{/if}
 			</div>
 		{/if}

@@ -42,7 +42,7 @@
 	} = $props();
 </script>
 
-<div class={cn('flex h-5 items-center gap-2', className)}>
+<div class={cn('flex flex-wrap items-center gap-2', className)}>
 	{#if subreddit}
 		<SubredditPopover {subreddit} />
 	{/if}
