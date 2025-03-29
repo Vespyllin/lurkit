@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Carousel from '$lib/components/ui/carousel';
 	import { cn } from '$lib/utils';
+	import { Cross2 } from 'radix-icons-svelte';
 	import type { CarouselAPI } from '../ui/carousel/context';
-	import ExpandedGallery from './ExpandedGallery.svelte';
 
 	let {
 		post,
@@ -51,11 +51,31 @@
 	}}
 />
 
-<div class={cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div
+	class={cn(
+		expanded
+			? 'fixed left-0 top-0 z-30 flex h-lvh w-lvw justify-center overflow-auto bg-background'
+			: cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)
+	)}
+>
+	{#if expanded}
+		<div
+			class="fixed left-4 top-4 z-30 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
+			onclick={(e) => {
+				e.stopPropagation();
+				handleExpand();
+			}}
+		>
+			<Cross2 size={25} />
+		</div>
+	{/if}
+
 	<Carousel.Root
 		setApi={(emblaApi) => (api = emblaApi)}
 		opts={{ duration: 20 }}
-		class="flex max-h-[600px] items-center justify-center"
+		class={cn(expanded ? 'w-lvh h-lvh' : 'flex max-h-[600px] items-center justify-center')}
 	>
 		{#if blur}
 			<button
@@ -70,14 +90,17 @@
 		<Carousel.Content>
 			{#each galleryItems as galleryItem}
 				<Carousel.Item>
-					<div class="mx-auto flex h-full items-center justify-center">
+					<div
+						class={cn(expanded ? 'w-lvh h-lvh' : 'mx-auto flex h-full items-center justify-center')}
+					>
 						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<img
 							alt=""
 							onclick={handleExpand}
 							class={cn(
-								'h-full max-h-[600px] w-fit max-w-full cursor-pointer object-contain',
+								expanded ? 'mx-auto h-full' : 'h-full max-h-[600px] w-fit max-w-full',
+								'cursor-pointer object-contain',
 								blur && 'pointer-events-none scale-90 blur-lg'
 							)}
 							src={mediaIdToURL(galleryItem.media_id)}
@@ -101,7 +124,3 @@
 		></div>
 	{/each}
 </div>
-
-{#if expanded}
-	<ExpandedGallery url={mediaIdToURL(galleryItems[current - 1].media_id)} onClick={handleExpand} />
-{/if}

@@ -20,7 +20,7 @@
 	{variant}
 	{size}
 	class={cn(
-		'absolute size-8 touch-manipulation rounded-full',
+		'absolute size-8 touch-manipulation rounded-full focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0',
 		emblaCtx.orientation === 'horizontal'
 			? '-right-12 top-1/2 h-full w-12 -translate-y-1/2 cursor-pointer touch-manipulation text-zinc-500 hover:bg-transparent hover:brightness-200'
 			: '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
