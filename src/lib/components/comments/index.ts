@@ -4,20 +4,11 @@ const FOLDED_COMMENT_DEPTH = parseInt(PUBLIC_FOLD_COMMENT_DEPTH);
 const foldedDepth = !isNaN(FOLDED_COMMENT_DEPTH) ? FOLDED_COMMENT_DEPTH : 1;
 
 export const validateCommentSort = (sortString: string | null) => {
-	const validSortOptions = [
-		'confidence',
-		'top',
-		'new',
-		'controversial',
-		'old',
-		'random',
-		'qa',
-		'blank'
-	];
+	const validSortOptions = ['confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa'];
 
 	const isValid = !!sortString && validSortOptions.includes(sortString);
 
-	return isValid ? (sortString as RedditCommentSortOption) : 'blank';
+	return isValid ? (sortString as RedditCommentSortOption) : undefined;
 };
 
 export const assignCommentState = (

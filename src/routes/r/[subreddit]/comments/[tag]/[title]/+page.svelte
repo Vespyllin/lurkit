@@ -8,7 +8,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { fetchListingComments } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import Comments from '$lib/components/comments/Comments.svelte';
 	import { validateCommentSort } from '$lib/components/comments';
 
@@ -16,20 +16,27 @@
 		params: { subreddit, tag, title }
 	} = $page;
 
-	let sort: RedditCommentSortOption = $state($page.url.searchParams.get('sort') as any);
+	const sortParam = validateCommentSort($page.url.searchParams.get('sort'));
+	let sort: RedditCommentSortOption | undefined = $state(sortParam);
 
-	const listingQuery = useQuery([subreddit, tag, title], () =>
-		fetchListingComments(subreddit, tag, title, sort)
+	const listingQuery = useQuery([subreddit, tag, title, sortParam], () =>
+		fetchListingComments(subreddit, tag, title, sortParam)
 	);
 
 	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
 	let comments = $derived($listingQuery.data?.[1]);
 
-	$effect(() => {
+	afterNavigate((e) => {
+		if (!e.from || !e.from.url) return;
+
 		const newSort = validateCommentSort($page.url.searchParams.get('sort'));
-		if (sort == newSort) return;
+
 		sort = newSort;
-		$listingQuery.refetch();
+
+		listingQuery.setOptions({
+			queryKey: [subreddit, tag, title, newSort],
+			queryFn: () => fetchListingComments(subreddit, tag, title, newSort)
+		});
 	});
 </script>
 
@@ -53,7 +60,7 @@
 		<Listing {listing} />
 		<CommentSortDropdown
 			{sort}
-			onChange={(sortOption) => goto(`${title}?sort=${sortOption}`)}
+			onChange={(sortOption) => goto(!sortOption ? `${title}` : `${title}?sort=${sortOption}`)}
 			class="mt-2"
 		/>
 

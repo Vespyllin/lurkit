@@ -202,8 +202,8 @@
 			{/if}
 
 			{#key seek}
-				<div class="flex gap-2 text-sm opacity-90">
-					<span class="flex h-8 items-center gap-1">
+				<div class="flex h-8 w-fit items-center font-mono text-sm opacity-90">
+					<span>
 						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
 							toZero(mediaData?.duration ?? video?.duration ?? 0)
 						)}

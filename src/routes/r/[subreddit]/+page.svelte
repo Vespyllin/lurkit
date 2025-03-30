@@ -15,6 +15,7 @@
 	import { type ComponentType } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { cn } from '$lib/utils';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	const {
 		params: { subreddit },
@@ -213,3 +214,15 @@
 		{/if}
 	</div>
 {/if}
+
+<p>
+	hasNext: {$listingsQuery.hasNextPage}
+</p>
+<p>
+	isFetching: {$listingsQuery.isFetching}
+</p>
+<p>
+	isError: {$listingsQuery.isError}
+</p>
+
+<Button onclick={$listingsQuery.refetch}>retry</Button>

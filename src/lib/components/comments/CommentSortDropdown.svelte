@@ -18,17 +18,17 @@
 		sort = $bindable(),
 		onChange
 	}: {
-		sort: RedditCommentSortOption;
-		onChange?: (v: RedditCommentSortOption) => void;
+		sort: RedditCommentSortOption | undefined;
+		onChange?: (v: RedditCommentSortOption | undefined) => void;
 		class?: string;
 	} = $props();
 
 	const sortOptions: {
-		value: RedditCommentSortOption;
+		value: RedditCommentSortOption | 'default';
 		display: string;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ value: 'blank', display: 'default', icon: Gear },
+		{ value: 'default', display: 'default', icon: Gear },
 		{ value: 'confidence', display: 'best', icon: Rocket },
 		{ value: 'top', display: 'top', icon: Star },
 		{ value: 'new', display: 'new', icon: LightningBolt },
@@ -46,7 +46,7 @@
 			<DropdownMenu.Trigger>
 				<div class="flex items-center rounded-sm text-zinc-400 hover:text-zinc-300">
 					<span class="ml-2 text-lg">
-						{sortOptions.find((x) => x.value == (sort ?? 'blank'))!.display}
+						{sortOptions.find((x) => x.value == (sort ?? 'default'))!.display}
 					</span>
 					<CaretDown size={18} />
 				</div>
@@ -58,8 +58,9 @@
 					<DropdownMenu.Item
 						class="cursor-pointer rounded-sm font-normal hover:bg-accent"
 						onclick={() => {
-							sort = sortOption.value;
-							onChange?.(sortOption.value);
+							const x = sortOption.value == 'default' ? undefined : sortOption.value;
+							sort = x;
+							onChange?.(x);
 						}}
 					>
 						<sortOption.icon class="mr-1" />

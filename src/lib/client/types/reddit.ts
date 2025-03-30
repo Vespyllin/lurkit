@@ -5,8 +5,7 @@ type RedditCommentSortOption =
 	| 'controversial'
 	| 'old'
 	| 'random'
-	| 'qa'
-	| 'blank';
+	| 'qa';
 
 type RedditSubredditSortOptions = 'new' | 'top' | 'hot' | 'rising';
 
