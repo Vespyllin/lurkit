@@ -3,9 +3,15 @@
 	import { Check, Trash } from 'radix-icons-svelte';
 	import Spinner from '../layout/Spinner.svelte';
 	import { cn } from '$lib/utils';
+	import { getContext } from 'svelte';
+	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
+	import type { Filter } from '$lib/db/filters';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
+
+	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
+		getContext('filters');
 
 	const _icon_url: string | undefined =
 		subreddit?.community_icon?.split('?')[0] ?? subreddit.icon_img;
@@ -46,6 +52,7 @@
 						const resJson = await res.json();
 
 						if (!!resJson.success) {
+							await $filterContext?.refetch();
 							status = 'DONE';
 						} else {
 							status = 'INIT';

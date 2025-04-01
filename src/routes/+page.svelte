@@ -6,7 +6,7 @@
 
 	import { fetchListings } from '$lib/client';
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
-	import { untrack } from 'svelte';
+	import { setContext, untrack } from 'svelte';
 	import type { Filter } from '$lib/db/filters';
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
 
@@ -19,10 +19,12 @@
 		return filterContent;
 	});
 
+	setContext('filters', filtersQuery);
+
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
-		const subredditFilter = $filtersQuery.data?.[0].content;
-		const titleFilter = $filtersQuery.data?.[1].content;
+		const subredditFilter = $filtersQuery.data?.find((x) => x.type == 'subreddit')?.content;
+		const titleFilter = $filtersQuery.data?.find((x) => x.type == 'title')?.content;
 
 		if (!data || !data.data || !subredditFilter || !titleFilter) return;
 
@@ -34,18 +36,8 @@
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
-
 				const titleBan = !titleFilter.every((title) => !listingTitle.toLowerCase().includes(title));
-				if (subredditBan || titleBan) {
-					let banReason = 'Banned ';
-
-					if (subredditBan) banReason += 'Subreddit';
-					if (subredditBan && titleBan) banReason += ' and ';
-					if (titleBan) banReason += 'Keyword';
-
-					console.log(`${banReason}:\n"${listingTitle} - ${subreddit}"`);
-					return false;
-				}
+				if (subredditBan || titleBan) return false;
 
 				const { crosspost_parent, crosspost_parent_list } = listing.data;
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
