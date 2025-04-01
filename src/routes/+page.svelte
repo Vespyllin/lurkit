@@ -9,7 +9,6 @@
 	import { untrack } from 'svelte';
 	import type { Filter } from '$lib/db/filters';
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
 
 	const lastFetchedListingIds = new Set<string>();
 
@@ -138,15 +137,3 @@
 		{/if}
 	</div>
 {/if}
-
-<p>
-	hasNext: {$listingsQuery.hasNextPage}
-</p>
-<p>
-	isFetching: {$listingsQuery.isFetching}
-</p>
-<p>
-	isError: {$listingsQuery.isError}
-</p>
-
-<Button onclick={$listingsQuery.refetch}>retry</Button>

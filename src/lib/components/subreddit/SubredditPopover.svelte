@@ -7,30 +7,28 @@
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
 
-	const icon_url =
-		(subreddit?.community_icon?.split('?')[0] ?? '').length > 0
-			? subreddit?.community_icon?.split('?')[0]
-			: (subreddit.icon_img ?? '').length > 0
-				? subreddit.icon_img
-				: '/favicon.png';
+	const _icon_url: string | undefined =
+		subreddit?.community_icon?.split('?')[0] ?? subreddit.icon_img;
+	const icon_url: string | undefined = !!_icon_url ? _icon_url : undefined;
 </script>
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		<a class="flex items-center gap-2 hover:underline" href={`/${subreddit.display_name_prefixed}`}>
-			<img alt="" src={icon_url} class="h-5 rounded-full object-contain" />
+			<img alt="" src={icon_url ?? '/favicon.png'} class="h-5 rounded-full object-contain" />
 			<span class="text-zinc-200">
 				{subreddit.display_name_prefixed}
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content>
-		<div class="flex gap-1">
-			<img alt="" src={icon_url} class="mr-2 mt-1 h-[100px]" />
-
-			<div>
+	<Tooltip.Content class="flex gap-1 p-1 px-2">
+		{#if icon_url}
+			<img alt="" src={icon_url} class="my-auto mr-2 aspect-square h-[100px]" />
+		{/if}
+		<div>
+			<div class="flex items-center gap-2">
 				<a
-					class="w-full text-xl font-semibold tracking-tighter hover:underline"
+					class="w-fit text-xl font-semibold tracking-tighter hover:underline"
 					href={`/${subreddit.display_name_prefixed}`}
 				>
 					{subreddit.display_name_prefixed}
@@ -54,7 +52,7 @@
 						}
 					}}
 					class={cn(
-						'hover ml-1 size-fit rounded-md p-1 transition-opacity hover:bg-zinc-700',
+						'hover size-fit rounded-md p-1 transition-opacity hover:bg-zinc-700',
 						status !== 'INIT' && 'pointer-events-none bg-none opacity-0 duration-1000'
 					)}
 				>
@@ -66,17 +64,17 @@
 						<Check size={20} />
 					{/if}
 				</button>
-
-				{#if !subreddit.public_description}
-					<div class="w-32 italic text-zinc-400">No description.</div>
-				{:else}
-					<div
-						class="line-clamp-4 h-20 w-fit min-w-72 max-w-[500px] overflow-hidden text-ellipsis break-words text-zinc-400"
-					>
-						{subreddit.public_description}
-					</div>
-				{/if}
 			</div>
+
+			{#if !subreddit.public_description}
+				<div class="w-32 italic text-zinc-400">No description.</div>
+			{:else}
+				<div
+					class="line-clamp-4 h-20 w-fit min-w-72 max-w-[450px] overflow-hidden text-ellipsis break-words text-zinc-400"
+				>
+					{subreddit.public_description}
+				</div>
+			{/if}
 		</div>
 	</Tooltip.Content>
 </Tooltip.Root>

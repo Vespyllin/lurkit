@@ -19,13 +19,13 @@ const formatQueryParams = (paramObj: Object) => {
 
 export const fetchListings = async (
 	subreddit?: string,
-	count?: number,
+	limit?: number,
 	after?: string,
 	sort?: RedditSubredditSortOptions,
 	sr_detail?: boolean,
 	timescale?: string
 ): Promise<RedditListing<RedditT3DataWrapper> | undefined> => {
-	const queryParams = formatQueryParams({ count, after, sr_detail, t: timescale });
+	const queryParams = formatQueryParams({ limit, after, sr_detail, t: timescale });
 
 	const cleanSubreddit = subreddit ? `/r/${subreddit}` : '';
 	const cleanSort = sort ? `/${sort}` : '';
@@ -82,10 +82,10 @@ export const fetchUserAbout = async (username: string): Promise<RedditT2DataWrap
 
 export const fetchUserOverview = async (
 	username: string,
-	count?: number,
+	limit?: number,
 	after?: string
 ): Promise<RedditUserWrapper> => {
-	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+	const queryParams = formatQueryParams({ sr_detail: 1, limit, after });
 
 	const url = `${baseURL}/user/${username}/.json${queryParams}`;
 
@@ -95,10 +95,10 @@ export const fetchUserOverview = async (
 
 export const fetchUserSubmitted = async (
 	username: string,
-	count?: number,
+	limit?: number,
 	after?: string
 ): Promise<RedditListing<RedditT3DataWrapper>> => {
-	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+	const queryParams = formatQueryParams({ sr_detail: 1, limit, after });
 
 	const url = `${baseURL}/user/${username}/submitted.json${queryParams}`;
 
@@ -108,10 +108,10 @@ export const fetchUserSubmitted = async (
 
 export const fetchUserCommented = async (
 	username: string,
-	count?: number,
+	limit?: number,
 	after?: string
 ): Promise<RedditListing<RedditT1DataWrapper>> => {
-	const queryParams = formatQueryParams({ sr_detail: 1, count, after });
+	const queryParams = formatQueryParams({ sr_detail: 1, limit, after });
 
 	const url = `${baseURL}/user/${username}/comments.json${queryParams}`;
 
@@ -122,10 +122,10 @@ export const fetchUserCommented = async (
 export const fetchSearchQuery = async (
 	queryString: string,
 	type?: RedditSearchCategories,
-	count?: number,
+	limit?: number,
 	after?: string
 ): Promise<RedditListing<RedditT3DataWrapper>> => {
-	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1, count, after });
+	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1, limit, after });
 	const url = `${baseURL}/search/.json${queryParams}`;
 
 	const fetchRes = await fetch(url);

@@ -15,7 +15,6 @@
 	import { type ComponentType } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { cn } from '$lib/utils';
-	import Button from '$lib/components/ui/button/button.svelte';
 
 	const {
 		params: { subreddit },
@@ -32,14 +31,16 @@
 	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
-		return await fetchListings(
+		const x = await fetchListings(
 			subreddit,
-			50,
+			25,
 			pageParam,
 			sortParam as RedditSubredditSortOptions,
 			true,
 			timescaleParam
 		);
+
+		return x;
 	};
 
 	const listingsQuery = useInfiniteQuery(
@@ -214,15 +215,3 @@
 		{/if}
 	</div>
 {/if}
-
-<p>
-	hasNext: {$listingsQuery.hasNextPage}
-</p>
-<p>
-	isFetching: {$listingsQuery.isFetching}
-</p>
-<p>
-	isError: {$listingsQuery.isError}
-</p>
-
-<Button onclick={$listingsQuery.refetch}>retry</Button>

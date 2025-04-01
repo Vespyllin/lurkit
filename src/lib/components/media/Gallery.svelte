@@ -12,6 +12,7 @@
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
+	let zoomed = $state(false);
 
 	let api = $state<CarouselAPI>();
 	let current = $state(0);
@@ -54,11 +55,9 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
-	class={cn(
-		expanded
-			? 'fixed left-0 top-0 z-30 flex h-lvh w-lvw justify-center overflow-auto bg-background'
-			: cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)
-	)}
+	class={expanded
+		? 'fixed left-0 top-0 z-30 flex h-lvh w-lvw justify-center overflow-auto bg-background'
+		: cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)}
 >
 	{#if expanded}
 		<div
@@ -75,7 +74,7 @@
 	<Carousel.Root
 		setApi={(emblaApi) => (api = emblaApi)}
 		opts={{ duration: 20 }}
-		class={cn(expanded ? 'w-lvh h-lvh' : 'flex max-h-[600px] items-center justify-center')}
+		class={cn(expanded ? 'h-full w-full' : 'flex max-h-[600px] items-center justify-center')}
 	>
 		{#if blur}
 			<button
@@ -87,7 +86,11 @@
 				Unblur Images
 			</button>
 		{/if}
-		<Carousel.Content>
+		<Carousel.Content
+			onclick={() => {
+				if (expanded) handleExpand();
+			}}
+		>
 			{#each galleryItems as galleryItem}
 				<Carousel.Item>
 					<div
@@ -97,7 +100,10 @@
 						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<img
 							alt=""
-							onclick={handleExpand}
+							onclick={(e) => {
+								e.stopImmediatePropagation();
+								if (!expanded) return handleExpand();
+							}}
 							class={cn(
 								expanded ? 'mx-auto h-full' : 'h-full max-h-[600px] w-fit max-w-full',
 								'cursor-pointer object-contain',
@@ -111,16 +117,17 @@
 		</Carousel.Content>
 		<Carousel.Previous class="translate-x-12" />
 		<Carousel.Next class="-translate-x-12" />
-	</Carousel.Root>
-</div>
-
-<div class={'mt-1.5 flex items-center justify-center'}>
-	{#each { length: count } as _, idx}
 		<div
-			class={cn(
-				'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
-				current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
-			)}
-		></div>
-	{/each}
+			class="absolute bottom-0 left-1/2 z-50 mb-2 flex -translate-x-1/2 items-center justify-center rounded-md bg-background/50 p-1"
+		>
+			{#each { length: count } as _, idx}
+				<div
+					class={cn(
+						'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
+						current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+					)}
+				></div>
+			{/each}
+		</div>
+	</Carousel.Root>
 </div>

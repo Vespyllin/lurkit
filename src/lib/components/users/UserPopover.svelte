@@ -62,14 +62,14 @@
 
 					<div class="grid w-fit grid-cols-2 gap-4">
 						<div class="flex flex-col">
-							<span class="text-lg">Posts</span>
-							<span class="text-zinc-400">
+							<p class="text-lg">Posts</p>
+							<p class="text-zinc-400">
 								{(data.awarder_karma + data.link_karma)?.toLocaleString()} karma
-							</span>
+							</p>
 						</div>
 						<div class="ml-auto flex flex-col">
-							<span class="text-lg">Comments</span>
-							<span class="text-zinc-400">{data.comment_karma?.toLocaleString()} karma</span>
+							<p class="text-lg">Comments</p>
+							<p class="text-zinc-400">{data.comment_karma?.toLocaleString()} karma</p>
 						</div>
 					</div>
 				</div>
