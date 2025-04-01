@@ -6,13 +6,15 @@
 
 	let {
 		post,
-		blur: _blur,
+		blur,
 		class: className
 	}: { post: RedditT3Data; blur?: boolean; class?: string } = $props();
+
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
 	let zoomed = $state(false);
+	let blurred = $state(blur ?? false);
 
 	let api = $state<CarouselAPI>();
 	let current = $state(0);
@@ -27,12 +29,19 @@
 		});
 	});
 
-	let blur = $state(_blur ?? false);
+	$effect(() => {
+		if (!api) return;
+		if (!blurred) api.reInit({ active: true });
+	});
 
 	const getMediaType = (post: RedditT3Data, media_id: string) => {
 		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
+	};
+
+	const mediaIdToURL = (media_id: string) => {
+		return `https://i.redd.it/${media_id}.${getMediaType(post, media_id)}`;
 	};
 
 	const handleExpand = () => {
@@ -41,9 +50,6 @@
 		const body = document.querySelector('body');
 		if (body) body.style.overflow = expanded ? 'hidden' : 'auto';
 	};
-
-	const mediaIdToURL = (media_id: string) =>
-		`https://i.redd.it/${media_id}.${getMediaType(post, media_id)}`;
 </script>
 
 <svelte:window
@@ -73,14 +79,14 @@
 
 	<Carousel.Root
 		setApi={(emblaApi) => (api = emblaApi)}
-		opts={{ duration: 20 }}
+		opts={{ duration: 20, active: !blurred }}
 		class={cn(expanded ? 'h-full w-full' : 'flex max-h-[600px] items-center justify-center')}
 	>
-		{#if blur}
+		{#if blurred}
 			<button
 				class="absolute z-10 h-fit w-36 rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
 				onclick={() => {
-					blur = false;
+					blurred = false;
 				}}
 			>
 				Unblur Images
@@ -107,7 +113,7 @@
 							class={cn(
 								expanded ? 'mx-auto h-full' : 'h-full max-h-[600px] w-fit max-w-full',
 								'cursor-pointer object-contain',
-								blur && 'pointer-events-none scale-90 blur-lg'
+								blurred && 'pointer-events-none scale-90 blur-lg'
 							)}
 							src={mediaIdToURL(galleryItem.media_id)}
 						/>
@@ -115,10 +121,13 @@
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
-		<Carousel.Previous class="translate-x-12" />
-		<Carousel.Next class="-translate-x-12" />
+		<Carousel.Previous disabled={blurred} class="translate-x-12" />
+		<Carousel.Next disabled={blurred} class="-translate-x-12" />
 		<div
-			class="absolute bottom-0 left-1/2 z-50 mb-2 flex -translate-x-1/2 items-center justify-center rounded-md bg-background/50 p-1"
+			class={cn(
+				'absolute bottom-0 left-1/2 mb-2 flex -translate-x-1/2 items-center justify-center rounded-md bg-background/50 p-1',
+				expanded && 'z-50'
+			)}
 		>
 			{#each { length: count } as _, idx}
 				<div
