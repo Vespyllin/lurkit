@@ -3,7 +3,7 @@
 	import { fetchSearchQuery } from '$lib/client';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
-	import ThumbnailPortal from '../../lib/components/listing/ThumbnailPortal.svelte';
+	import ThumbnailPortal from '$lib/components/listing/ThumbnailPortal.svelte';
 	import { afterNavigate } from '$app/navigation';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
