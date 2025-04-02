@@ -60,7 +60,7 @@
 						>
 					</div>
 
-					<div class="grid w-fit grid-cols-2 gap-4">
+					<div class="grid w-fit grid-cols-2 gap-4 text-start">
 						<div class="flex flex-col">
 							<p class="text-lg">Posts</p>
 							<p class="text-zinc-400">
