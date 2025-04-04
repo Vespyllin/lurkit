@@ -13,7 +13,8 @@
 		.replaceAll(wrapATagRegex(IMAGE_REGEX), '<a href="$1"><img src="$1"/></a>')
 		.replaceAll(wrapATagRegex(GIPHY_REGEX), '<a href="$1"><img src="$1"/></a>')
 		.replaceAll(/(www|new).reddit.com/g, 'lurkit-six.vercel.app')
-		.replaceAll(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
+		.replaceAll(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>')
+		.replaceAll(/<a\b(?![^>]*\srel\s*=\s*['"]external['"])([^>]*)>/gi, '<a rel="external"$1>');
 
 	let container: HTMLDivElement | undefined = $state();
 
