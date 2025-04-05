@@ -60,10 +60,19 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div
-	class={expanded
-		? 'fixed left-0 top-0 z-30 flex h-lvh w-lvw justify-center overflow-auto bg-background'
-		: cn('justify-center rounded-md', galleryItems.length == 0 && 'hidden', className)}
+
+<Carousel.Root
+	setApi={(emblaApi) => (api = emblaApi)}
+	opts={{ duration: 20, active: !blurred }}
+	onclick={() => {
+		if (blurred) blurred = false;
+	}}
+	class={cn(
+		galleryItems.length == 0 && 'hidden',
+		(blurred || !expanded) && 'cursor-pointer',
+		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw overflow-auto bg-background p-0',
+		className
+	)}
 >
 	{#if expanded}
 		<div
@@ -77,66 +86,56 @@
 		</div>
 	{/if}
 
-	<Carousel.Root
-		setApi={(emblaApi) => (api = emblaApi)}
-		opts={{ duration: 20, active: !blurred }}
-		class={cn(expanded ? 'h-full w-full' : 'flex max-h-[600px] items-center justify-center')}
+	<Carousel.Content
+		onclick={() => {
+			if (expanded) handleExpand();
+		}}
 	>
-		{#if blurred}
-			<button
-				class="absolute z-10 h-fit w-36 rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
-				onclick={() => {
-					blurred = false;
-				}}
-			>
-				Unblur Images
-			</button>
-		{/if}
-		<Carousel.Content
-			onclick={() => {
-				if (expanded) handleExpand();
-			}}
-		>
-			{#each galleryItems as galleryItem}
-				<Carousel.Item>
-					<div
-						class={cn(expanded ? 'w-lvh h-lvh' : 'mx-auto flex h-full items-center justify-center')}
-					>
-						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-						<!-- svelte-ignore a11y_click_events_have_key_events -->
-						<img
-							alt=""
-							onclick={(e) => {
-								e.stopImmediatePropagation();
-								if (!expanded) return handleExpand();
-							}}
-							class={cn(
-								expanded ? 'mx-auto h-full' : 'h-full max-h-[600px] w-fit max-w-full',
-								'cursor-pointer object-contain',
-								blurred && 'pointer-events-none scale-90 blur-lg'
-							)}
-							src={mediaIdToURL(galleryItem.media_id)}
-						/>
-					</div>
-				</Carousel.Item>
-			{/each}
-		</Carousel.Content>
-		<Carousel.Previous disabled={blurred} class="translate-x-12" />
-		<Carousel.Next disabled={blurred} class="-translate-x-12" />
-		<div
-			class={cn(
-				'absolute bottom-0 left-1/2 mb-2 flex -translate-x-1/2 items-center justify-center rounded-md bg-background/50 p-1',
-				expanded && 'z-50'
-			)}
-		>
-			{#each { length: count } as _, idx}
-				<div
+		{#each galleryItems as galleryItem}
+			<Carousel.Item>
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<img
+					alt=""
+					onclick={(e) => {
+						e.stopImmediatePropagation();
+						if (!expanded) handleExpand();
+						else {
+							zoomed = !zoomed;
+							console.log('zoom', zoomed);
+						}
+					}}
 					class={cn(
-						'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
-						current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+						'mx-auto object-contain',
+						expanded
+							? zoomed
+								? 'min-w-lvh min-h-lvh cursor-zoom-out'
+								: 'max-w-lvh max-h-lvh cursor-zoom-in'
+							: 'max-h-[600px]',
+						blurred && 'pointer-events-none scale-90 blur-lg'
 					)}
-				></div>
-			{/each}
-		</div>
-	</Carousel.Root>
-</div>
+					src={mediaIdToURL(galleryItem.media_id)}
+				/>
+			</Carousel.Item>
+		{/each}
+	</Carousel.Content>
+
+	<Carousel.Previous disabled={blurred} class="translate-x-12" />
+	<Carousel.Next disabled={blurred} class="-translate-x-12" />
+
+	<div
+		class={cn(
+			'bottom-0 left-1/2 mb-2 flex -translate-x-1/2 rounded-md bg-background/50 p-1',
+			expanded ? 'fixed z-50' : 'absolute'
+		)}
+	>
+		{#each { length: count } as _, idx}
+			<div
+				class={cn(
+					'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
+					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+				)}
+			></div>
+		{/each}
+	</div>
+</Carousel.Root>
