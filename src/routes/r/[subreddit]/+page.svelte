@@ -30,8 +30,8 @@
 
 	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
 
-	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
-		const x = await fetchListings(
+	const fetchNextListings = ({ pageParam }: { pageParam?: string }) =>
+		fetchListings(
 			subreddit,
 			25,
 			pageParam,
@@ -39,9 +39,6 @@
 			true,
 			timescaleParam
 		);
-
-		return x;
-	};
 
 	const listingsQuery = useInfiniteQuery(
 		[subreddit, initSortParam, initTimescaleParam],
@@ -97,8 +94,12 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $listingsQuery;
-		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError)
-			$listingsQuery.fetchNextPage();
+		if (remainingPx < 1000 && !isFetching) {
+			console.log('Attempting to fetch next\n\thasParam: ', hasNextPage, '\n\tisError:', isError);
+			if (hasNextPage && !isFetching && !isError) {
+				$listingsQuery.fetchNextPage();
+			}
+		}
 	}}
 />
 

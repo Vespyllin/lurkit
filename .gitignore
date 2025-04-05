@@ -21,3 +21,4 @@ vite.config.ts.timestamp-*
 symlink-from
 .idea/
 test/
+*.cmd
