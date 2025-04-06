@@ -31,7 +31,7 @@ type T1CommentProp = {
 	folded: boolean;
 	replies: CommentsProp[];
 	deleted: 'deleted' | 'removed' | undefined;
-	__reason: any;
+	reason: string | undefined;
 };
 
 type CommentsProp = MoreCommentProp | T1CommentProp;

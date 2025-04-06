@@ -70,7 +70,7 @@ export const assignCommentState = (
 			subreddit,
 			subreddit_name_prefixed,
 			deleted: !!removal_reason ? (removal_reason == 'legal' ? 'removed' : 'deleted') : undefined,
-			__reason: !!removal_reason,
+			reason: removal_reason,
 			folded:
 				foldingEnabled &&
 				((idx >= 4 && depth != 0) || depth >= foldedDepth || (stickied && depth == 0)),

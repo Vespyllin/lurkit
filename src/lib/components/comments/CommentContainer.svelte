@@ -153,10 +153,12 @@
 							<div class="text-wrap break-words text-base text-zinc-200">
 								{#if comments[idx].deleted}
 									{#if comments[idx].deleted == 'removed'}
-										<p class="italic text-zinc-400">Comment Moderated: {comments[idx].__reason}</p>
+										<p class="capitalize italic text-zinc-400">
+											Comment Moderated{!!comments[idx].reason ? `: ${comments[idx].reason}` : ''}
+										</p>
 									{:else}
-										<p class="italic text-zinc-400">
-											Comment Deleted: {comments[idx].__reason ?? 'None'}
+										<p class="capitalize italic text-zinc-400">
+											Comment Deleted{!!comments[idx].reason ? `: ${comments[idx].reason}` : ''}
 										</p>
 									{/if}
 								{:else}
