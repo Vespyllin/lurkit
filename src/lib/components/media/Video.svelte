@@ -95,7 +95,12 @@
 	let loadingIntervalId: number | undefined = undefined;
 	const initLoadingLoop = () => {
 		if (!audio || !video) return;
-		if (toZero(seek * 100) < 1 || toZero(seek) > 99) return;
+
+		if (toZero(seek) > 99) {
+			seek = 0;
+			video.currentTime = 0;
+		}
+
 		if (loadingIntervalId) return;
 
 		loadingIntervalId = setInterval(async () => {
@@ -143,6 +148,7 @@
 
 	const onTimeUpdate = () => {
 		if (!video) return;
+
 		if (audio && video.currentTime < audio.currentTime - 0.25)
 			video.currentTime = audio.currentTime;
 
@@ -182,7 +188,7 @@
 	class={cn(
 		'group',
 		fullscreen ? 'w-lvh fixed left-0 top-0 z-50 h-lvh bg-black' : 'relative',
-		className
+		!fullscreen && className
 	)}
 >
 	{#if !hasVideo || loading}
@@ -195,7 +201,7 @@
 		<div
 			class={cn(
 				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen ? 'h-12 bg-black/75 px-32 pb-3 text-lg' : '',
+				fullscreen && 'h-12 bg-black/75 px-32 pb-3 text-lg',
 				playing && 'opacity-0'
 			)}
 		>
@@ -234,7 +240,7 @@
 				<div class="flex h-8 w-fit items-center font-mono text-sm opacity-90">
 					<span>
 						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
-							toZero(mediaData?.duration ?? video?.duration ?? 0)
+							toZero(video?.duration ?? mediaData?.duration ?? 0)
 						)}
 					</span>
 				</div>

@@ -62,21 +62,21 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
 	class={cn(
-		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw overflow-auto bg-background',
+		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw items-center overflow-auto bg-background',
 		galleryItems.length == 0 && 'hidden',
 		(blurred || !expanded) && 'cursor-pointer',
 		!expanded && className
 	)}
 >
 	<Carousel.Root
-		class="w-full"
 		setApi={(emblaApi) => (api = emblaApi)}
 		opts={{ duration: 20, active: !blurred }}
 		onclick={() => {
 			if (blurred) blurred = false;
 		}}
+		class="w-full"
 	>
-		{#if expanded}
+		<!-- {#if expanded}
 			<div
 				class="fixed left-4 top-4 z-30 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
 				onclick={(e) => {
@@ -86,9 +86,10 @@
 			>
 				<Cross2 size={25} />
 			</div>
-		{/if}
+		{/if} -->
 
 		<Carousel.Content
+			class="flex items-center"
 			onclick={() => {
 				if (expanded) handleExpand();
 			}}
