@@ -3,6 +3,7 @@
 	import { cn } from '$lib/utils';
 	import { Cross2 } from 'radix-icons-svelte';
 	import type { CarouselAPI } from '../ui/carousel/context';
+	import { setSiteScrollable } from '$lib';
 
 	let {
 		post,
@@ -47,8 +48,7 @@
 	const handleExpand = () => {
 		expanded = !expanded;
 
-		const body = document.querySelector('body');
-		if (body) body.style.overflow = expanded ? 'hidden' : 'auto';
+		setSiteScrollable(!expanded);
 	};
 </script>
 
@@ -60,82 +60,82 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-
-<Carousel.Root
-	setApi={(emblaApi) => (api = emblaApi)}
-	opts={{ duration: 20, active: !blurred }}
-	onclick={() => {
-		if (blurred) blurred = false;
-	}}
+<div
 	class={cn(
+		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw overflow-auto bg-background',
 		galleryItems.length == 0 && 'hidden',
 		(blurred || !expanded) && 'cursor-pointer',
-		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw overflow-auto bg-background p-0',
-		className
+		!expanded && className
 	)}
 >
-	{#if expanded}
-		<div
-			class="fixed left-4 top-4 z-30 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
-			onclick={(e) => {
-				e.stopPropagation();
-				handleExpand();
-			}}
-		>
-			<Cross2 size={25} />
-		</div>
-	{/if}
-
-	<Carousel.Content
+	<Carousel.Root
+		class="w-full"
+		setApi={(emblaApi) => (api = emblaApi)}
+		opts={{ duration: 20, active: !blurred }}
 		onclick={() => {
-			if (expanded) handleExpand();
+			if (blurred) blurred = false;
 		}}
 	>
-		{#each galleryItems as galleryItem}
-			<Carousel.Item>
-				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<img
-					alt=""
-					onclick={(e) => {
-						e.stopImmediatePropagation();
-						if (!expanded) handleExpand();
-						else {
-							zoomed = !zoomed;
-							console.log('zoom', zoomed);
-						}
-					}}
-					class={cn(
-						'mx-auto object-contain',
-						expanded
-							? zoomed
-								? 'min-w-lvh min-h-lvh cursor-zoom-out'
-								: 'max-w-lvh max-h-lvh cursor-zoom-in'
-							: 'max-h-[600px]',
-						blurred && 'pointer-events-none scale-90 blur-lg'
-					)}
-					src={mediaIdToURL(galleryItem.media_id)}
-				/>
-			</Carousel.Item>
-		{/each}
-	</Carousel.Content>
-
-	<Carousel.Previous disabled={blurred} class="translate-x-12" />
-	<Carousel.Next disabled={blurred} class="-translate-x-12" />
-
-	<div
-		class={cn(
-			'bottom-0 left-1/2 mb-2 flex -translate-x-1/2 rounded-md bg-background/50 p-1',
-			expanded ? 'fixed z-50' : 'absolute'
-		)}
-	>
-		{#each { length: count } as _, idx}
+		{#if expanded}
 			<div
-				class={cn(
-					'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
-					current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
-				)}
-			></div>
-		{/each}
-	</div>
-</Carousel.Root>
+				class="fixed left-4 top-4 z-30 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
+				onclick={(e) => {
+					e.stopPropagation();
+					handleExpand();
+				}}
+			>
+				<Cross2 size={25} />
+			</div>
+		{/if}
+
+		<Carousel.Content
+			onclick={() => {
+				if (expanded) handleExpand();
+			}}
+		>
+			{#each galleryItems as galleryItem}
+				<Carousel.Item>
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<img
+						alt=""
+						onclick={(e) => {
+							e.stopImmediatePropagation();
+							if (!expanded) handleExpand();
+							else zoomed = !zoomed;
+						}}
+						class={cn(
+							'mx-auto object-contain',
+							expanded
+								? zoomed
+									? 'min-w-lvh min-h-lvh cursor-zoom-out'
+									: 'max-w-lvh max-h-lvh cursor-zoom-in'
+								: 'max-h-[600px]',
+							blurred && 'pointer-events-none scale-90 blur-lg'
+						)}
+						src={mediaIdToURL(galleryItem.media_id)}
+					/>
+				</Carousel.Item>
+			{/each}
+		</Carousel.Content>
+
+		<Carousel.Previous disabled={blurred} class="translate-x-12" />
+		<Carousel.Next disabled={blurred} class="-translate-x-12" />
+
+		<div
+			class={cn(
+				'bottom-0 left-1/2 mb-2 flex -translate-x-1/2 rounded-md bg-background/50 p-1',
+				expanded ? 'fixed z-50' : 'absolute'
+			)}
+		>
+			{#each { length: count } as _, idx}
+				<div
+					class={cn(
+						'mx-[1px] size-1.5 rounded-full bg-zinc-200 bg-opacity-45 transition-all duration-200',
+						current - 1 == idx && 'w-2.5 bg-opacity-85 brightness-105'
+					)}
+				></div>
+			{/each}
+		</div>
+	</Carousel.Root>
+</div>

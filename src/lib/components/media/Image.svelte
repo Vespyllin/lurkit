@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { setSiteScrollable } from '$lib';
 	import { cn } from '$lib/utils';
 	import Spinner from '../layout/Spinner.svelte';
 	import ExpandedImage from './ExpandedImage.svelte';
@@ -17,8 +18,7 @@
 	const handleClick = () => {
 		expanded = !expanded;
 
-		const body = document.querySelector('body');
-		if (body) body.style.overflow = expanded ? 'hidden' : 'auto';
+		setSiteScrollable(!expanded);
 	};
 </script>
 

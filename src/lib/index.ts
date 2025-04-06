@@ -136,3 +136,8 @@ export const isDarkHex = (hex: string) => {
 	const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
 	return brightness < 127.5;
 };
+
+export const setSiteScrollable = (to: boolean) => {
+	const body = document.querySelector('body');
+	if (body) body.style.overflow = to ? 'auto' : 'hidden';
+};
