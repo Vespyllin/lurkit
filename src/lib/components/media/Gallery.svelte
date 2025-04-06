@@ -74,7 +74,7 @@
 		onclick={() => {
 			if (blurred) blurred = false;
 		}}
-		class={cn('h-full w-full ', !zoomed && 'flex items-center')}
+		class={cn('h-full w-full', !zoomed && 'flex items-center')}
 	>
 		{#if expanded}
 			<div
@@ -89,7 +89,7 @@
 		{/if}
 
 		<Carousel.Content
-			class="flex items-center"
+			class={cn('flex items-center', expanded && !zoomed && 'h-lvh w-[101lvw]')}
 			onclick={() => {
 				if (expanded) handleExpand();
 			}}
