@@ -1,8 +1,16 @@
 <script lang="ts">
-	import { onDestroy, untrack } from 'svelte';
-	import { EnterFullScreen, Pause, Play, SpeakerLoud, SpeakerOff, Video } from 'radix-icons-svelte';
+	import { onDestroy } from 'svelte';
+	import {
+		EnterFullScreen,
+		ExitFullScreen,
+		Pause,
+		Play,
+		SpeakerLoud,
+		SpeakerOff
+	} from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 	import Spinner from '../layout/Spinner.svelte';
+	import { setSiteScrollable } from '$lib';
 
 	let {
 		url,
@@ -17,11 +25,9 @@
 	let hasAudio = $state(false);
 
 	let muted = $state(true);
-
 	let fullscreen = $state(false);
 
-	let videoLoading = $state(false);
-
+	let loading = $state(false);
 	let playing = $state(false);
 	let seek = $state(0);
 	let volume = $state(25);
@@ -104,12 +110,12 @@
 			}
 
 			if (withinBuffer) {
-				videoLoading = false;
+				loading = false;
 				setPlaying(playing);
 
 				clearInterval(loadingIntervalId);
 			} else {
-				videoLoading = true;
+				loading = true;
 				setPlaying(false);
 			}
 		}, 500);
@@ -137,6 +143,9 @@
 
 	const onTimeUpdate = () => {
 		if (!video) return;
+		if (audio && video.currentTime < audio.currentTime - 0.25)
+			video.currentTime = audio.currentTime;
+
 		seek = (video.currentTime / video.duration) * 100;
 	};
 
@@ -155,18 +164,38 @@
 		video.pause();
 		audio.pause();
 	});
+
+	const handleFullscreen = () => {
+		fullscreen = !fullscreen;
+
+		setSiteScrollable(!fullscreen);
+	};
 </script>
 
-<div class={cn('group relative', className)}>
-	{#if !hasVideo || videoLoading}
+<svelte:window
+	onkeydown={(e) => {
+		if (e.code == 'Escape' && fullscreen) handleFullscreen();
+	}}
+/>
+
+<div
+	class={cn(
+		'group',
+		fullscreen ? 'w-lvh fixed left-0 top-0 z-50 h-lvh bg-black' : 'relative',
+		className
+	)}
+>
+	{#if !hasVideo || loading}
 		<div class="pointer-events-none absolute bottom-0 z-10 flex h-full w-full items-center">
 			<Spinner class="mx-auto size-20" />
 		</div>
 	{/if}
+
 	{#if hasVideo}
 		<div
 			class={cn(
 				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				fullscreen ? 'h-14 bg-black/75 px-32 pb-3 text-lg' : '',
 				playing && 'opacity-0'
 			)}
 		>
@@ -211,7 +240,7 @@
 				</div>
 			{/key}
 
-			<div class="h-[2.1rem] w-full content-center opacity-80 hover:opacity-100">
+			<div class="h-[2.2rem] w-full content-center opacity-80 hover:opacity-100">
 				<input
 					step="0.5"
 					min="0"
@@ -223,13 +252,12 @@
 				/>
 			</div>
 
-			<button
-				class="h-8 opacity-80 hover:opacity-100"
-				onclick={() => {
-					video?.requestFullscreen();
-				}}
-			>
-				<EnterFullScreen size={22} />
+			<button class="h-8 opacity-80 hover:opacity-100" onclick={handleFullscreen}>
+				{#if !fullscreen}
+					<EnterFullScreen size={22} />
+				{:else}
+					<ExitFullScreen size={22} />
+				{/if}
 			</button>
 		</div>
 	{/if}
@@ -254,14 +282,14 @@
 			seek = 0;
 			hasVideo = true;
 		}}
-		onwaiting={() => {
-			onWaiting();
-		}}
+		onwaiting={onWaiting}
 		onended={() => (playing = false)}
 		onclick={onPlayChange}
 		ontimeupdate={onTimeUpdate}
 		bind:this={video}
-		class="max-h-[600px] w-full rounded-md bg-black object-contain"
+		class={cn(
+			fullscreen ? 'inset-0 h-lvh w-lvw' : 'max-h-[600px] w-full rounded-md bg-black object-contain'
+		)}
 	>
 		<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
 		<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
