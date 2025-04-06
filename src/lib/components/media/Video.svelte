@@ -306,6 +306,7 @@
 
 <style>
 	.slider {
+		appearance: none;
 		-webkit-appearance: none;
 		border-radius: 1rem;
 		width: 100%;

@@ -13,7 +13,7 @@
 
 	const galleryItems = post?.gallery_data?.items ?? [];
 
-	let expanded = $state(false);
+	let expanded = $state(true);
 	let zoomed = $state(false);
 	let blurred = $state(blur ?? false);
 
@@ -74,9 +74,9 @@
 		onclick={() => {
 			if (blurred) blurred = false;
 		}}
-		class="h-full w-full"
+		class={cn('h-full w-full ', !zoomed && 'flex items-center')}
 	>
-		<!-- {#if expanded}
+		{#if expanded}
 			<div
 				class="fixed left-4 top-4 z-30 cursor-pointer rounded-full border-2 border-white bg-zinc-900 p-2.5 opacity-25 hover:opacity-85 hover:brightness-110"
 				onclick={(e) => {
@@ -86,7 +86,7 @@
 			>
 				<Cross2 size={25} />
 			</div>
-		{/if} -->
+		{/if}
 
 		<Carousel.Content
 			class="flex items-center"
