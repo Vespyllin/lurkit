@@ -195,7 +195,7 @@
 		<div
 			class={cn(
 				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen ? 'h-14 bg-black/75 px-32 pb-3 text-lg' : '',
+				fullscreen ? 'h-12 bg-black/75 px-32 pb-3 text-lg' : '',
 				playing && 'opacity-0'
 			)}
 		>
