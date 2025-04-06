@@ -74,7 +74,7 @@
 		onclick={() => {
 			if (blurred) blurred = false;
 		}}
-		class="w-full"
+		class="h-full w-full"
 	>
 		<!-- {#if expanded}
 			<div
@@ -94,7 +94,7 @@
 				if (expanded) handleExpand();
 			}}
 		>
-			{#each galleryItems as galleryItem}
+			{#each galleryItems as galleryItem, idx}
 				<Carousel.Item>
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -106,9 +106,9 @@
 							else zoomed = !zoomed;
 						}}
 						class={cn(
-							'mx-auto object-contain',
+							'mx-auto my-auto object-contain',
 							expanded
-								? zoomed
+								? zoomed && idx + 1 == current
 									? 'min-w-lvh min-h-lvh cursor-zoom-out'
 									: 'max-w-lvh max-h-lvh cursor-zoom-in'
 								: 'max-h-[600px]',
