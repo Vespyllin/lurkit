@@ -13,7 +13,7 @@
 
 	const galleryItems = post?.gallery_data?.items ?? [];
 
-	let expanded = $state(true);
+	let expanded = $state(false);
 	let zoomed = $state(false);
 	let blurred = $state(blur ?? false);
 
