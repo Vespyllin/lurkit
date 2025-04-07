@@ -109,8 +109,8 @@
 							'mx-auto my-auto object-contain',
 							expanded
 								? zoomed && idx + 1 == current
-									? 'min-w-lvh min-h-lvh cursor-zoom-out'
-									: 'max-w-lvh max-h-lvh cursor-zoom-in'
+									? 'min-h-lvh min-w-[85lvw] cursor-zoom-out'
+									: 'h-full max-h-lvh max-w-[85lvw] cursor-zoom-in'
 								: 'max-h-[600px]',
 							blurred && 'pointer-events-none scale-90 blur-lg'
 						)}
