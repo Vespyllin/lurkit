@@ -187,7 +187,7 @@
 <div
 	class={cn(
 		'group',
-		fullscreen ? 'fixed left-0 top-0 z-50 h-lvh w-[85lvw] bg-black' : 'relative',
+		fullscreen ? 'fixed left-0 top-0 z-50 h-lvh w-[100lvw] bg-black' : 'relative',
 		!fullscreen && className
 	)}
 >
