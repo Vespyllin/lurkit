@@ -260,9 +260,9 @@
 
 			<button class="h-8 opacity-80 hover:opacity-100" onclick={handleFullscreen}>
 				{#if !fullscreen}
-					<EnterFullScreen size={22} />
+					<EnterFullScreen size={25} />
 				{:else}
-					<ExitFullScreen size={22} />
+					<ExitFullScreen size={25} />
 				{/if}
 			</button>
 		</div>

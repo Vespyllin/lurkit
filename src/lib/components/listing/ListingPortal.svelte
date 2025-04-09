@@ -46,7 +46,7 @@
 		<a href={listing.permalink} draggable="false">
 			<h1
 				class={cn(
-					'mt-2 text-wrap break-words text-2xl font-medium',
+					'my-2 text-wrap break-words text-2xl font-medium',
 					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
 				)}
 			>
@@ -55,19 +55,19 @@
 		</a>
 
 		{#if crosspost}
-			<div class="mt-2 rounded-lg border-2">
+			<div class="rounded-lg border-2">
 				<Self listing={crosspost} />
 			</div>
 		{:else if listing.is_video}
-			<Video class="mt-2" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
+			<Video url={listing.url} mediaData={listing.secure_media?.reddit_video} />
 		{:else if listing.url.includes('.gifv')}
-			<Video class="mt-2" url={listing.url.replace('.gifv', '.mp4')} />
+			<Video url={listing.url.replace('.gifv', '.mp4')} />
 		{:else if listing.post_hint == 'image' || urlIsImage}
-			<Image class="mt-2" url={listing.url} blur={listing.spoiler} />
+			<Image url={listing.url} blur={listing.spoiler} />
 		{:else if listing.is_gallery}
-			<Gallery class="mt-2" post={listing} blur={listing.spoiler} />
+			<Gallery post={listing} blur={listing.spoiler} />
 		{:else if listing.post_hint == 'rich:video'}
-			<div class="mt-2 flex items-center justify-center">
+			<div class="flex items-center justify-center">
 				<IFrame post={listing} />
 			</div>
 		{:else if listing.selftext?.length > 0}
@@ -77,7 +77,7 @@
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown class="mt-2" crop text={listing.selftext_html} />
+				<Markdown crop text={listing.selftext_html} />
 			</a>
 		{/if}
 	{/if}
