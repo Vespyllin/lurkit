@@ -58,10 +58,7 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
-			class={cn(
-				'max-h-[600px] grow cursor-pointer object-contain',
-				blurred && 'pointer-events-none blur-xl'
-			)}
+			class={cn('max-h-[600px] grow cursor-pointer object-contain', blurred && 'blur-xl')}
 			src={url}
 			onclick={handleClick}
 			onerror={() => (error = true)}
