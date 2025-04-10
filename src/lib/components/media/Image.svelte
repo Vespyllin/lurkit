@@ -4,20 +4,17 @@
 	import Spinner from '../layout/Spinner.svelte';
 	import ExpandedImage from './ExpandedImage.svelte';
 
-	let {
-		url,
-		blur: _blur,
-		class: className
-	}: { url: string; blur?: boolean; class?: string } = $props();
+	let { url, blur, class: className }: { url: string; blur?: boolean; class?: string } = $props();
 
-	let blur = $state(_blur ?? false);
+	let blurred = $state(blur ?? false);
 	let expanded = $state(false);
 	let error = $state(false);
 	let loading = $state(false);
 
 	const handleClick = () => {
-		expanded = !expanded;
+		if (blurred) return (blurred = false);
 
+		expanded = !expanded;
 		setSiteScrollable(!expanded);
 	};
 </script>
@@ -58,22 +55,12 @@
 	{:else if loading}
 		<Spinner class="h-20" />
 	{:else}
-		{#if blur}
-			<button
-				class="absolute z-10 mx-auto h-fit rounded-xl bg-background px-3 py-2 hover:bg-zinc-900"
-				onclick={() => {
-					blur = false;
-				}}
-			>
-				Unblur Image
-			</button>
-		{/if}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
 			class={cn(
 				'max-h-[600px] grow cursor-pointer object-contain',
-				blur && 'pointer-events-none blur-xl'
+				blurred && 'pointer-events-none blur-xl'
 			)}
 			src={url}
 			onclick={handleClick}

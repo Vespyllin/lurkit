@@ -111,7 +111,7 @@
 								? zoomed && idx + 1 == current
 									? 'min-h-lvh min-w-[85lvw] cursor-zoom-out'
 									: 'h-full max-h-lvh max-w-[85lvw] cursor-zoom-in'
-								: 'max-h-[600px]',
+								: 'max-h-[600px] w-full',
 							blurred && 'pointer-events-none scale-90 blur-lg'
 						)}
 						src={mediaIdToURL(galleryItem.media_id)}
