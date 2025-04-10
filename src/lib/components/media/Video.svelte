@@ -20,6 +20,7 @@
 
 	let video: HTMLVideoElement | undefined = $state();
 	let audio: HTMLAudioElement | undefined = $state();
+	let container: HTMLDivElement | undefined = $state();
 
 	let hasVideo = $state(false);
 	let hasAudio = $state(false);
@@ -172,19 +173,28 @@
 	});
 
 	const handleFullscreen = () => {
+		console.log('fullscreen', fullscreen);
+		if (!container) return;
 		fullscreen = !fullscreen;
+
+		if (fullscreen) {
+			container.requestFullscreen();
+		} else {
+			document.exitFullscreen();
+		}
 
 		setSiteScrollable(!fullscreen);
 	};
 </script>
 
-<svelte:window
-	onkeydown={(e) => {
-		if (e.code == 'Escape' && fullscreen) handleFullscreen();
+<svelte:document
+	onfullscreenchange={() => {
+		if (!document.fullscreenElement && fullscreen) handleFullscreen();
 	}}
 />
 
 <div
+	bind:this={container}
 	class={cn(
 		'group',
 		fullscreen ? 'fixed left-0 top-0 z-50 h-lvh w-[100lvw] bg-black' : 'relative',
@@ -200,8 +210,8 @@
 	{#if hasVideo}
 		<div
 			class={cn(
-				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-all duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen && 'h-12 bg-black/75 px-32 pb-2 text-lg',
+				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				fullscreen && 'h-12 bg-black/75 pb-2 text-lg',
 				playing && 'opacity-0'
 			)}
 		>
