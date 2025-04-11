@@ -74,7 +74,7 @@
 		onclick={() => {
 			if (blurred) blurred = false;
 		}}
-		class={cn('h-full w-full', !zoomed && 'flex items-center')}
+		class={cn('h-full w-full', expanded && !zoomed && 'flex items-center')}
 	>
 		{#if expanded}
 			<div
