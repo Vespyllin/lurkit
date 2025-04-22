@@ -143,7 +143,7 @@
 						{#if child.kind == 't1'}
 							<UserComment comment={child.data} />
 						{:else}
-							<ListingPortal listing={child.data} />
+							<ListingPortal inSubreddit listing={child.data} />
 						{/if}
 
 						<Separator />

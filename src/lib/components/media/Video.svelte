@@ -38,7 +38,7 @@
 	const formatPlaytime = (seconds: number) => {
 		const hours = Math.floor(seconds / 3600);
 		const minutes = Math.floor((seconds % 3600) / 60);
-		const secs = Math.floor(seconds % 60);
+		const secs = Math.round(seconds % 60);
 
 		const hrsString = `${String(hours).padStart(2, '0')}`;
 		const minString = `${String(minutes).padStart(2, '0')}`;
@@ -69,14 +69,18 @@
 	};
 
 	const setMuted = (toMuted: boolean) => {
-		if (!audio) return;
+		if (!audio || !video) return;
 
 		muted = toMuted;
 		if (toMuted) {
+			video.volume = 0;
 			audio.volume = 0;
 		} else {
 			if (volume == 0) volume = 10;
-			else audio.volume = volume / 100;
+			else {
+				audio.volume = volume / 100;
+				video.volume = volume / 100;
+			}
 		}
 	};
 
@@ -97,7 +101,7 @@
 	const initLoadingLoop = () => {
 		if (!audio || !video) return;
 
-		if (toZero(seek) > 99) {
+		if (toZero(seek) > 99 || toZero(seek) < 1) {
 			seek = 0;
 			video.currentTime = 0;
 		}
@@ -157,11 +161,13 @@
 	};
 
 	$effect(() => {
-		if (!audio) return;
+		if (!audio || !video) return;
 		if (muted) {
 			audio.volume = 0;
+			video.volume = 0;
 		} else {
 			audio.volume = volume / 100;
+			video.volume = volume / 100;
 		}
 	});
 
@@ -294,7 +300,7 @@
 
 	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
-		onloadeddata={() => {
+		onloadeddata={(e) => {
 			seek = 0;
 			hasVideo = true;
 		}}

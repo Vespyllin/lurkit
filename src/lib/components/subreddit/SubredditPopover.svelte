@@ -6,6 +6,7 @@
 	import { getContext } from 'svelte';
 	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 	import type { Filter } from '$lib/db/filters';
+	import { cleanText } from '$lib';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
@@ -79,7 +80,7 @@
 				<div
 					class="line-clamp-4 h-20 w-fit min-w-72 max-w-[450px] overflow-hidden text-ellipsis break-words text-zinc-400"
 				>
-					{subreddit.public_description}
+					{cleanText(subreddit.public_description)}
 				</div>
 			{/if}
 		</div>
