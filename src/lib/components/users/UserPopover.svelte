@@ -20,7 +20,7 @@
 				{username}
 			</a>
 		</Tooltip.Trigger>
-		<Tooltip.Content class="flex gap-1">
+		<Tooltip.Content class="flex h-28 items-center gap-1 p-1 pr-1.5">
 			{#if $userQuery.isLoading}
 				<Spinner class="mx-auto" />
 			{:else if $userQuery.error}
@@ -29,8 +29,12 @@
 				{@const { data } = $userQuery.data}
 				{@const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0)}
 
-				{#if data.snoovatar_img}
-					<img src={data.snoovatar_img} alt="" class="h-24 pr-2" />
+				{#if data.snoovatar_img || data.icon_img}
+					<img
+						src={data.snoovatar_img ? data.snoovatar_img : data.icon_img.split('?')[0]}
+						alt=""
+						class="h-full rounded-md pr-2"
+					/>
 				{/if}
 				<div class="flex flex-col">
 					<div class="flex items-center text-xl font-semibold">
@@ -38,7 +42,7 @@
 							{data.subreddit.display_name_prefixed}
 						</a>
 
-						<div class="mt-0.5">
+						<div class="ml-0.5">
 							{#if verifiedLevel == 0}
 								<Cross1 size={22} />
 							{:else if verifiedLevel == 1}
