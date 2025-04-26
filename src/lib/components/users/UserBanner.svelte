@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { Timer } from 'radix-icons-svelte';
+	import Check from '@lucide/svelte/icons/check';
+	import { Minus } from 'lucide-svelte';
+	import { Cross1, Timer } from 'radix-icons-svelte';
 
 	let { data }: { data: RedditT2Data } = $props();
 
 	const icon_img = data.icon_img?.split('?')[0];
+	const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0);
 </script>
 
 <div>
@@ -31,9 +34,20 @@
 		{/if}
 
 		<div class="w-96">
-			<h1 class="text-3xl font-bold">
-				{!data.subreddit?.title.length ? data.name : data.subreddit?.title}
-			</h1>
+			<div class="flex items-center">
+				<h1 class="inline text-3xl font-bold">
+					{!data.subreddit?.title.length ? data.name : data.subreddit?.title}
+				</h1>
+				<div class="ml-2">
+					{#if verifiedLevel == 0}
+						<Cross1 size={22} />
+					{:else if verifiedLevel == 1}
+						<Minus size={22} />
+					{:else}
+						<Check size={22} />
+					{/if}
+				</div>
+			</div>
 			<div class="flex gap-2">
 				<h2 class="inline text-lg text-primary">u/{data.name}</h2>
 				<div class="flex items-center gap-1 text-lg text-zinc-400">

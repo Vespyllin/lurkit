@@ -20,7 +20,7 @@
 				{username}
 			</a>
 		</Tooltip.Trigger>
-		<Tooltip.Content class="flex h-28 items-center gap-1 p-1 pr-1.5">
+		<Tooltip.Content class="flex h-28 min-w-28 items-center gap-1 p-1 pr-1.5">
 			{#if $userQuery.isLoading}
 				<Spinner class="mx-auto" />
 			{:else if $userQuery.error}

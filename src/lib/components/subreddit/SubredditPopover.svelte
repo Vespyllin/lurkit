@@ -14,9 +14,8 @@
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
 
-	const _icon_url: string | undefined =
-		subreddit?.community_icon?.split('?')[0] ?? subreddit.icon_img;
-	const icon_url: string | undefined = !!_icon_url ? _icon_url : undefined;
+	const icon_url: string | undefined =
+		subreddit?.community_icon?.split('?')[0] || subreddit.icon_img || undefined;
 </script>
 
 <Tooltip.Root>
@@ -28,9 +27,9 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content class="flex gap-1 p-1 px-2">
+	<Tooltip.Content class="flex h-[7.25rem] gap-1 p-1 pr-1.5">
 		{#if icon_url}
-			<img alt="" src={icon_url} class="my-auto mr-2 aspect-square h-[100px]" />
+			<img alt="" src={icon_url} class="mr-2 aspect-square h-full rounded-md" />
 		{/if}
 		<div>
 			<div class="flex items-center gap-2">
@@ -81,7 +80,7 @@
 				<div class="w-32 italic text-zinc-400">No description.</div>
 			{:else}
 				<div
-					class="line-clamp-4 h-20 w-fit min-w-72 max-w-[450px] overflow-hidden text-ellipsis break-words text-zinc-400"
+					class="line-clamp-4 w-fit min-w-72 max-w-[450px] overflow-hidden text-ellipsis break-words text-zinc-400"
 				>
 					{cleanText(subreddit.public_description)}
 				</div>

@@ -46,6 +46,11 @@
 						<span>
 							Active since {new Date(data.created_utc * 1000).getFullYear()}
 						</span>
+						{#if data.subreddit_type !== 'public'}
+							<h1 class={cn('lowercase', data.subreddit_type !== 'private' && 'text-red-600')}>
+								({data.subreddit_type ?? 'Untyped'})
+							</h1>
+						{/if}
 					</div>
 				</div>
 			</div>
@@ -75,14 +80,3 @@
 		<Markdown text={data.public_description} />
 	</div>
 </div>
-
-{#if data.subreddit_type !== 'public'}
-	<h1
-		class={cn(
-			'text-4xl font-semibold capitalize',
-			data.subreddit_type !== 'private' && 'text-red-600'
-		)}
-	>
-		-- {data.subreddit_type ?? 'Untyped'} Subreddit --
-	</h1>
-{/if}

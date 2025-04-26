@@ -148,7 +148,6 @@
 					</button>
 
 					{#if !comments[idx].folded}
-						<!-- max-w-[calc(100lvw-3rem)] -->
 						<div class="mt-1.5 min-h-4">
 							<div class="text-wrap break-words text-base text-zinc-200">
 								{#if comments[idx].deleted}

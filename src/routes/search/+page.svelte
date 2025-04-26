@@ -52,9 +52,7 @@
 	}}
 />
 
-<!-- <p>Add category tabs</p>
-<p>instead of listing portals use a reduced portal w/ a thumbnail</p>
-<p>have a short community summary (click to go to community tab)</p> -->
+<!-- <p>have a short community summary (click to go to community tab)</p> -->
 {#if !$searchQuery.data}
 	{#if $searchQuery.isFetching}
 		<ImageListingSkeleton />
