@@ -60,8 +60,11 @@
 						}
 					}}
 					class={cn(
+						!!$filterContext?.data
+							?.find((x) => x.type == 'subreddit')
+							?.content.find((x) => x == subreddit.display_name_prefixed) && 'hidden',
 						'hover size-fit rounded-md p-1 transition-opacity hover:bg-zinc-700',
-						status !== 'INIT' && 'pointer-events-none bg-none opacity-0 duration-1000'
+						status !== 'INIT' && 'pointer-events-none bg-none opacity-0 duration-1000 ease-in'
 					)}
 				>
 					{#if status == 'INIT'}

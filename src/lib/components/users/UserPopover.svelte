@@ -33,7 +33,7 @@
 					<img
 						src={data.snoovatar_img ? data.snoovatar_img : data.icon_img.split('?')[0]}
 						alt=""
-						class="h-full rounded-md pr-2"
+						class="mr-2 h-full rounded-md"
 					/>
 				{/if}
 				<div class="flex flex-col">
