@@ -73,7 +73,7 @@
 		{:else if listing.selftext?.length > 0}
 			<a
 				href={listing.permalink}
-				class="overflow-hidden [&_*]:pointer-events-none"
+				class="h-fit [&_*]:pointer-events-none"
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>

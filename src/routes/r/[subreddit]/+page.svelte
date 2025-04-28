@@ -94,11 +94,8 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $listingsQuery;
-		if (remainingPx < 1000 && !isFetching) {
-			console.log('Attempting to fetch next\n\thasParam: ', hasNextPage, '\n\tisError:', isError);
-			if (hasNextPage && !isFetching && !isError) {
-				$listingsQuery.fetchNextPage();
-			}
+		if (remainingPx < 1000 && !isFetching && hasNextPage && !isFetching && !isError) {
+			$listingsQuery.fetchNextPage();
 		}
 	}}
 />

@@ -179,7 +179,6 @@
 	});
 
 	const handleFullscreen = () => {
-		console.log('fullscreen', fullscreen);
 		if (!container) return;
 		fullscreen = !fullscreen;
 
