@@ -9,24 +9,33 @@
 	import { fetchComment } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import Comments from '$lib/components/comments/Comments.svelte';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { ArrowLeft, ArrowUp } from 'lucide-svelte';
 
 	const {
 		params: { subreddit, tag, comment_id }
 	} = $page;
 
-	let sort: RedditCommentSortOption = $state($page.url.searchParams.get('sort') as any);
+	const sortParam = validateCommentSort($page.url.searchParams.get('sort'));
+	let sort: RedditCommentSortOption | undefined = $state(sortParam);
 
-	const queryUrl = `${subreddit}${tag}${comment_id}}`;
-	const listingQuery = useQuery(queryUrl, () => fetchComment(subreddit, tag, comment_id, sort));
+	const listingQuery = useQuery([subreddit, tag, comment_id, sortParam], () =>
+		fetchComment(subreddit, tag, comment_id, sortParam)
+	);
 
 	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
 	let comments = $derived($listingQuery.data?.[1]);
+	afterNavigate((e) => {
+		if (!e.from || !e.from.url) return;
 
-	$effect(() => {
 		const newSort = validateCommentSort($page.url.searchParams.get('sort'));
-		if (sort == newSort) return;
+
 		sort = newSort;
-		$listingQuery.refetch();
+
+		listingQuery.setOptions({
+			queryKey: [subreddit, tag, comment_id, newSort],
+			queryFn: () => fetchComment(subreddit, tag, comment_id, newSort)
+		});
 	});
 </script>
 
@@ -45,18 +54,26 @@
 		error={$listingQuery.error as string | undefined}
 	/>
 {:else}
+	{@const parent = comments?.data?.children?.[0].data.parent_id.split('_')[1]}
 	<div class="flex flex-col px-2">
 		<Listing {listing} />
 
-		<CommentSortDropdown
-			{sort}
-			onChange={(sortOption) => {
-				if (sortOption == sort) return;
-				sort = sortOption;
-				$listingQuery.refetch();
-			}}
-			class="mt-2"
-		/>
+		<div class="mt-2 flex items-center gap-2">
+			<CommentSortDropdown
+				{sort}
+				onChange={(sortOption) =>
+					goto(!sortOption ? comment_id : `${comment_id}?sort=${sortOption}`)}
+				class="mr-auto"
+			/>
+			{#if parent}
+				<a data-sveltekit-reload class="flex text-zinc-400 hover:text-inherit" href={parent}>
+					<ArrowUp /> Up one comment
+				</a>
+			{/if}
+			<a class="flex text-zinc-400 hover:text-inherit" href={listing.permalink}
+				><ArrowLeft /> Back to post</a
+			>
+		</div>
 
 		<Separator class="mt-2" />
 
