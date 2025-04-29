@@ -55,7 +55,7 @@
 		error={$listingQuery.error as string | undefined}
 	/>
 {:else}
-	{@const parent = comments?.data?.children?.[0].data.parent_id.split('_')[1]}
+	{@const parent = comments?.data?.children?.[0].data.parent_id.split('t1_')[1]}
 	<div class="flex flex-col px-2">
 		<Listing {listing} />
 
