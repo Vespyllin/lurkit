@@ -29,6 +29,7 @@
 		imgElements.forEach((img) => img.parentElement?.remove());
 
 		let innerHeight = 0;
+		let deleted = false;
 
 		children.forEach((_child, idx) => {
 			const child = _child as HTMLElement;
@@ -42,11 +43,12 @@
 			}
 
 			// Hardcoded for h-48
-			if (child.clientHeight && innerHeight > 192) {
-				if (idx !== 0) {
-					child.remove();
+			if ((child.clientHeight && innerHeight > 192) || deleted) {
+				if (idx == 0 && !!child.textContent?.length) {
+					child.className += 'line-clamp-4';
 				} else {
-					child.className += ' line-clamp-4';
+					deleted = true;
+					child.remove();
 				}
 			}
 		});
