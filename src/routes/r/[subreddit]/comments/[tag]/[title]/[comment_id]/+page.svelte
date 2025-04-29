@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import { validateCommentSort } from '$lib/components/comments/';
@@ -14,9 +15,9 @@
 
 	const {
 		params: { subreddit, tag, comment_id }
-	} = $page;
+	} = page;
 
-	const sortParam = validateCommentSort($page.url.searchParams.get('sort'));
+	const sortParam = validateCommentSort(page.url.searchParams.get('sort'));
 	let sort: RedditCommentSortOption | undefined = $state(sortParam);
 
 	const listingQuery = useQuery([subreddit, tag, comment_id, sortParam], () =>
@@ -28,7 +29,7 @@
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
 
-		const newSort = validateCommentSort($page.url.searchParams.get('sort'));
+		const newSort = validateCommentSort(page.url.searchParams.get('sort'));
 
 		sort = newSort;
 

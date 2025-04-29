@@ -15,7 +15,7 @@
 	import Markdown from '../media/Markdown.svelte';
 	import { PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
 	import UserPopover from '../users/UserPopover.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
@@ -30,7 +30,7 @@
 
 	const {
 		params: { subreddit, title, tag }
-	} = $page;
+	} = page;
 </script>
 
 <div>

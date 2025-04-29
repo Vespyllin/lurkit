@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import {
 		fetchUserAbout,
 		fetchUserCommented,
@@ -18,7 +18,7 @@
 
 	const {
 		params: { username }
-	} = $page;
+	} = page;
 
 	let category = $state<'overview' | 'submitted' | 'comments'>('overview');
 

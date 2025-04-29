@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import Listing from '$lib/components/listing/Listing.svelte';
-
-	import { cleanText } from '$lib';
-	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { fetchListingComments } from '$lib/client';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { afterNavigate, goto } from '$app/navigation';
-	import Comments from '$lib/components/comments/Comments.svelte';
+
+	import { cleanText } from '$lib';
 	import { validateCommentSort } from '$lib/components/comments';
+
+	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
+	import Listing from '$lib/components/listing/Listing.svelte';
+	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
+	import { fetchListingComments } from '$lib/client';
+	import Comments from '$lib/components/comments/Comments.svelte';
 
 	const sortParam = validateCommentSort(page.url.searchParams.get('sort'));
 	let sort: RedditCommentSortOption | undefined = $state(sortParam);
@@ -76,7 +77,11 @@
 			/>
 		{:else}
 			<div class="mt-1 space-y-4 pb-3">
-				<Comments {comments} />
+				{#if !comments?.data || !comments.data?.children?.length}
+					<span class="text-2xl text-zinc-400">No comments to display...</span>
+				{:else}
+					<Comments {comments} />
+				{/if}
 			</div>
 		{/if}
 	</div>

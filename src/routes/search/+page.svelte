@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+
 	import { fetchSearchQuery } from '$lib/client';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { useInfiniteQuery } from '@sveltestack/svelte-query';
@@ -11,7 +12,7 @@
 
 	const {
 		url: { searchParams }
-	} = $page;
+	} = page;
 
 	const queryParam = searchParams.get('q');
 	const typeParam = searchParams.get('type') as RedditSearchCategories | null;
@@ -28,8 +29,8 @@
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
 
-		const newQ = $page.url.searchParams.get('q');
-		const newType = $page.url.searchParams.get('type') as RedditSearchCategories | null;
+		const newQ = page.url.searchParams.get('q');
+		const newType = page.url.searchParams.get('type') as RedditSearchCategories | null;
 
 		searchQuery.setOptions({
 			queryKey: [newQ, newType],

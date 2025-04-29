@@ -8,13 +8,21 @@
 
 	let { listing }: { listing: RedditT3Data } = $props();
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
-	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
+	const getCrosspost = (() => {
+		let crosspost: RedditT3Data | undefined = undefined;
+		return () => {
+			if (!crosspost)
+				crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
+
+			return crosspost;
+		};
+	})();
 </script>
 
 <div class="mt-2 flex flex-col gap-y-2 rounded-md [&_p]:cursor-auto">
 	<ListingHeader
 		edited={listing.edited}
-		crossposted_from={crosspost?.subreddit_name_prefixed}
+		crossposted_from={getCrosspost()?.subreddit_name_prefixed}
 		locked={listing.locked}
 		flairs={listing.link_flair_richtext}
 		flairColor={listing.link_flair_background_color}
@@ -26,7 +34,7 @@
 		distinguished={listing.distinguished}
 	/>
 
-	{#if (listing.post_hint == 'link' || !(listing.domain.includes('redd') || listing.domain.includes('self.'))) && !crosspost && !urlIsImage && !listing.url.includes('.gifv')}
+	{#if (listing.post_hint == 'link' || !(listing.domain.includes('redd') || listing.domain.includes('self.'))) && !getCrosspost() && !urlIsImage && !listing.url.includes('.gifv')}
 		{@const { thumbnail, title, url } = listing}
 
 		<Link {thumbnail} title={cleanText(title)} {url} />
@@ -38,7 +46,7 @@
 		<h1
 			class={cn(
 				'cursor-text text-wrap break-words text-2xl font-medium',
-				crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
+				getCrosspost()?.title == listing.title && 'line-clamp-1 text-ellipsis'
 			)}
 		>
 			{cleanText(listing.title)}
@@ -52,9 +60,9 @@
 			<p class="text-zinc-300">
 				[Removed by {listing.removed_by}]
 			</p>
-		{:else if crosspost}
+		{:else if getCrosspost()}
 			<div class="rounded-lg border-2">
-				<ListingPortal listing={crosspost} />
+				<ListingPortal listing={getCrosspost()!} />
 			</div>
 		{:else if listing.is_video}
 			<div>

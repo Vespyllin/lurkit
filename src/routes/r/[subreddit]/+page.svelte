@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	import { fetchListings, fetchSubreddit } from '$lib/client';
 
@@ -19,7 +19,7 @@
 	const {
 		params: { subreddit },
 		url: { searchParams }
-	} = $page;
+	} = page;
 
 	const initSortParam = searchParams.get('sort') ?? undefined;
 	const initTimescaleParam =
@@ -49,9 +49,9 @@
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
 
-		const newSort = $page.url.searchParams.get('sort') ?? undefined;
+		const newSort = page.url.searchParams.get('sort') ?? undefined;
 		const newTimescale =
-			newSort == 'top' ? ($page.url.searchParams.get('timescale') ?? undefined) : undefined;
+			newSort == 'top' ? (page.url.searchParams.get('timescale') ?? undefined) : undefined;
 
 		sortParam = newSort;
 		timescaleParam = newTimescale;
