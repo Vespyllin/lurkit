@@ -11,7 +11,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const res = await pushSubredditFilter(subreddit.toLowerCase());
 
-	if (!res) return json({ error: 'Internal Error' }, { status: 500 });
+	if (res == undefined) return json({ error: 'Internal Error' }, { status: 500 });
 
 	return json({ success: true });
 };

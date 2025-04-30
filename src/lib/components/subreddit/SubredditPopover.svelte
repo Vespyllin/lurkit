@@ -7,6 +7,7 @@
 	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 	import type { Filter } from '$lib/db/filters';
 	import { cleanText } from '$lib';
+	import { CrossIcon } from 'lucide-svelte';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
@@ -59,14 +60,16 @@
 						}
 					}}
 					class={cn(
-						!!$filterContext?.data
-							?.find((x) => x.type == 'subreddit')
-							?.content.find((x) => x == subreddit.display_name_prefixed) && 'hidden',
 						'size-fit rounded-md p-1',
-						status === 'INIT' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none'
+						status === 'INIT' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
+						status === 'DONE' && 'text-green-600'
 					)}
 				>
-					{#if status == 'INIT'}
+					{#if !!$filterContext?.data
+						?.find((x) => x.type == 'subreddit')
+						?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
+						<CrossIcon size={20} />
+					{:else if status == 'INIT'}
 						<Trash size={20} />
 					{:else if status == 'LOADING'}
 						<Spinner class="size-5" />
