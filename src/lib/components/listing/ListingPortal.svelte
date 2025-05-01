@@ -17,13 +17,11 @@
 </script>
 
 <div
-	class={cn(
-		'flex cursor-default flex-col gap-y-2 rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer',
-		classList
-	)}
+	class={cn('cursor-default rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer', classList)}
 >
 	<a href={listing.permalink} draggable="false">
 		<ListingHeader
+			class="mb-2"
 			crossposted_from={crosspost?.subreddit_name_prefixed}
 			locked={listing.locked}
 			author={listing.author}
@@ -40,13 +38,13 @@
 		{@const { thumbnail, title, url } = listing}
 
 		<a href={listing.permalink} draggable="false">
-			<Link class="mt-2" {thumbnail} title={cleanText(title)} {url} clamp />
+			<Link class="mb-2" {thumbnail} title={cleanText(title)} {url} clamp />
 		</a>
 	{:else}
 		<a href={listing.permalink} draggable="false">
 			<h1
 				class={cn(
-					'text-wrap break-words text-2xl font-medium',
+					'mb-2 text-wrap break-words text-2xl font-medium',
 					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
 				)}
 			>
@@ -85,6 +83,6 @@
 	{/if}
 
 	<a href={listing.permalink} draggable="false">
-		<ListingFooter {listing} />
+		<ListingFooter class="mt-2" {listing} />
 	</a>
 </div>
