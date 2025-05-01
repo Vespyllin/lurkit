@@ -65,17 +65,20 @@
 						status === 'DONE' && 'text-green-600'
 					)}
 				>
-					{#if !!$filterContext?.data
-						?.find((x) => x.type == 'subreddit')
-						?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
-						<CrossIcon size={20} />
-					{:else if status == 'INIT'}
-						<Trash size={20} />
-					{:else if status == 'LOADING'}
-						<Spinner class="size-5" />
-					{:else}
-						<Check size={20} />
-					{/if}
+					<div class="flex gap-2">
+						<span>{status}</span>
+						{#if !!$filterContext?.data
+							?.find((x) => x.type == 'subreddit')
+							?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
+							<CrossIcon size={20} />
+						{:else if status == 'INIT'}
+							<Trash size={20} />
+						{:else if status == 'LOADING'}
+							<Spinner class="size-5" />
+						{:else}
+							<Check size={20} />
+						{/if}
+					</div>
 				</button>
 			</div>
 

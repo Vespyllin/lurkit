@@ -18,7 +18,7 @@
 
 <div
 	class={cn(
-		'flex cursor-default flex-col rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer',
+		'flex cursor-default flex-col gap-y-2 rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer',
 		classList
 	)}
 >
@@ -46,7 +46,7 @@
 		<a href={listing.permalink} draggable="false">
 			<h1
 				class={cn(
-					'my-2 text-wrap break-words text-2xl font-medium',
+					'text-wrap break-words text-2xl font-medium',
 					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
 				)}
 			>
@@ -85,6 +85,6 @@
 	{/if}
 
 	<a href={listing.permalink} draggable="false">
-		<ListingFooter class="mt-2" {listing} />
+		<ListingFooter {listing} />
 	</a>
 </div>
