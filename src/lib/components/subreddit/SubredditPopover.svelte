@@ -65,8 +65,7 @@
 						status === 'DONE' && 'text-green-600'
 					)}
 				>
-					<div class="flex gap-2">
-						<span>{status}</span>
+					<div>
 						{#if !!$filterContext?.data
 							?.find((x) => x.type == 'subreddit')
 							?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
