@@ -28,7 +28,7 @@
 		{#if !!icon_img?.length}
 			<img
 				alt=""
-				class="my-auto mr-4 aspect-square h-[5.5rem] rounded-full border-2 border-primary"
+				class="my-auto mr-4 size-[5.5rem] rounded-full border-2 border-primary object-cover"
 				src={icon_img}
 			/>
 		{/if}

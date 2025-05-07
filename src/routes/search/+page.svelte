@@ -49,6 +49,13 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $searchQuery;
+		if (remainingPx < 1000)
+			console.log(
+				isFetching ? 'Fetching' : 'NotFetching',
+				hasNextPage ? 'Next' : 'NotNext',
+				isError ? 'Error' : 'NotError'
+			);
+
 		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) $searchQuery.fetchNextPage();
 	}}
 />
