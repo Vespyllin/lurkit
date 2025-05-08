@@ -24,18 +24,24 @@
 		fetchComment(subreddit, tag, comment_id, sortParam)
 	);
 
+	const commentQuery = useQuery(
+		[subreddit, tag, comment_id, 'comments', sortParam],
+		() => fetchComment(subreddit, tag, comment_id, sortParam).then(([, c]) => c),
+		{ enabled: false }
+	);
+
 	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
-	let comments = $derived($listingQuery.data?.[1]);
+	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
+
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
 
 		const newSort = validateCommentSort(page.url.searchParams.get('sort'));
-
 		sort = newSort;
 
-		listingQuery.setOptions({
-			queryKey: [subreddit, tag, comment_id, newSort],
-			queryFn: () => fetchComment(subreddit, tag, comment_id, newSort)
+		commentQuery.setOptions({
+			queryKey: [subreddit, tag, comment_id, 'comments', newSort],
+			queryFn: () => fetchComment(subreddit, tag, comment_id, newSort).then(([, c]) => c)
 		});
 	});
 </script>

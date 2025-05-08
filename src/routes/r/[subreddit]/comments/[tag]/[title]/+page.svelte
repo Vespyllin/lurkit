@@ -24,8 +24,14 @@
 		fetchListingComments(subreddit, tag, title, sortParam)
 	);
 
+	const commentQuery = useQuery(
+		[subreddit, tag, title, 'comments', sortParam],
+		() => fetchListingComments(subreddit, tag, title, sortParam).then(([, c]) => c),
+		{ enabled: false }
+	);
+
 	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
-	let comments = $derived($listingQuery.data?.[1]);
+	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
 
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
@@ -37,9 +43,9 @@
 		const newSort = validateCommentSort(page.url.searchParams.get('sort'));
 		sort = newSort;
 
-		listingQuery.setOptions({
-			queryKey: [subreddit, tag, title, newSort],
-			queryFn: () => fetchListingComments(subreddit, tag, title, newSort)
+		commentQuery.setOptions({
+			queryKey: [subreddit, tag, title, 'comments', newSort],
+			queryFn: () => fetchListingComments(subreddit, tag, title, newSort).then(([, c]) => c)
 		});
 	});
 </script>
@@ -70,10 +76,10 @@
 
 		<Separator class="mt-2" />
 
-		{#if $listingQuery.isFetching}
+		{#if $listingQuery.isFetching || $commentQuery.isFetching}
 			<FetchStatus
-				fetching={$listingQuery.isFetching}
-				error={$listingQuery.error as string | undefined}
+				fetching={$listingQuery.isFetching || $commentQuery.isFetching}
+				error={($listingQuery.error ?? $commentQuery.error) as string | undefined}
 			/>
 		{:else}
 			<div class="mt-1 space-y-4 pb-3">
