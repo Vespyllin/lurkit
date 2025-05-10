@@ -1,4 +1,10 @@
-const baseURL = 'https://www.reddit.com';
+const baseURL = 'https://oauth.reddit.com';
+
+const headers = new Headers({
+	Accept: 'application/json',
+	'Content-Type': 'application/json',
+	'User-Agent': 'fspez/420 by [redacted]'
+});
 
 const formatQueryParams = (paramObj: Object) => {
 	const entries = Object.entries(paramObj);
@@ -32,7 +38,7 @@ export const fetchListings = async (
 
 	const url = `${baseURL}${cleanSubreddit}${cleanSort}/.json${queryParams}`;
 
-	const res = await fetch(url);
+	const res = await fetch(url, { headers });
 	return await res.json();
 };
 
@@ -46,7 +52,7 @@ export const fetchListingComments = async (
 
 	const url = `${baseURL}/r/${subreddit}/comments/${tag}/${title}/.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -55,7 +61,7 @@ export const fetchSubreddit = async (
 ): Promise<RedditT5DataWrapper | undefined> => {
 	const url = `${baseURL}/r/${subreddit}/about/.json`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -69,14 +75,14 @@ export const fetchComment = async (
 
 	const url = `${baseURL}/r/${subreddit}/comments/${tag}/comment/${comment_id}/.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
 export const fetchUserAbout = async (username: string): Promise<RedditT2DataWrapper> => {
 	const url = `${baseURL}/user/${username}/about/.json`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -89,7 +95,7 @@ export const fetchUserOverview = async (
 
 	const url = `${baseURL}/user/${username}/.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -102,7 +108,7 @@ export const fetchUserSubmitted = async (
 
 	const url = `${baseURL}/user/${username}/submitted.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -115,7 +121,7 @@ export const fetchUserCommented = async (
 
 	const url = `${baseURL}/user/${username}/comments.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
 
@@ -128,6 +134,6 @@ export const fetchSearchQuery = async (
 	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1, limit, after });
 	const url = `${baseURL}/search/.json${queryParams}`;
 
-	const fetchRes = await fetch(url);
+	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();
 };
