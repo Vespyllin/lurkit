@@ -21,7 +21,7 @@
 >
 	<a href={listing.permalink} draggable="false">
 		<ListingHeader
-			class="mb-2"
+			class="pb-2"
 			crossposted_from={crosspost?.subreddit_name_prefixed}
 			locked={listing.locked}
 			author={listing.author}
@@ -38,13 +38,13 @@
 		{@const { thumbnail, title, url } = listing}
 
 		<a href={listing.permalink} draggable="false">
-			<Link class="mb-2" {thumbnail} title={cleanText(title)} {url} clamp />
+			<Link class="pb-2" {thumbnail} title={cleanText(title)} {url} clamp />
 		</a>
 	{:else}
 		<a href={listing.permalink} draggable="false">
 			<h1
 				class={cn(
-					'mb-2 text-wrap break-words text-2xl font-medium',
+					'text-wrap break-words pb-2 text-2xl font-medium',
 					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
 				)}
 			>
@@ -52,37 +52,39 @@
 			</h1>
 		</a>
 
-		{#if crosspost}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<!-- svelte-ignore a11y_click_events_have_key_events -->
-			<div class="rounded-lg border-2">
-				<Self listing={crosspost} />
-			</div>
-		{:else if listing.is_video}
-			<Video url={listing.url} mediaData={listing.secure_media?.reddit_video} />
-		{:else if listing.url.includes('.gifv')}
-			<Video url={listing.url.replace('.gifv', '.mp4')} />
-		{:else if listing.post_hint == 'image' || urlIsImage}
-			<Image url={listing.url} blur={listing.spoiler} />
-		{:else if listing.is_gallery}
-			<Gallery post={listing} blur={listing.spoiler} />
-		{:else if listing.post_hint == 'rich:video'}
-			<div class="flex items-center justify-center">
-				<IFrame post={listing} />
-			</div>
-		{:else if listing.selftext?.length > 0}
-			<a
-				href={listing.permalink}
-				class="h-fit [&_*]:pointer-events-none"
-				data-sveltekit-preload-data="off"
-				draggable="false"
-			>
-				<Markdown crop text={listing.selftext_html} />
-			</a>
-		{/if}
+		<div class="pb-2">
+			{#if crosspost}
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<div class="rounded-lg border-2">
+					<Self listing={crosspost} />
+				</div>
+			{:else if listing.is_video}
+				<Video url={listing.url} mediaData={listing.secure_media?.reddit_video} />
+			{:else if listing.url.includes('.gifv')}
+				<Video url={listing.url.replace('.gifv', '.mp4')} />
+			{:else if listing.post_hint == 'image' || urlIsImage}
+				<Image url={listing.url} blur={listing.spoiler} />
+			{:else if listing.is_gallery}
+				<Gallery post={listing} blur={listing.spoiler} />
+			{:else if listing.post_hint == 'rich:video'}
+				<div class="flex items-center justify-center">
+					<IFrame post={listing} />
+				</div>
+			{:else if listing.selftext?.length > 0}
+				<a
+					href={listing.permalink}
+					class="h-fit [&_*]:pointer-events-none"
+					data-sveltekit-preload-data="off"
+					draggable="false"
+				>
+					<Markdown crop text={listing.selftext_html} />
+				</a>
+			{/if}
+		</div>
 	{/if}
 
 	<a href={listing.permalink} draggable="false">
-		<ListingFooter class="mt-2" {listing} />
+		<ListingFooter {listing} />
 	</a>
 </div>

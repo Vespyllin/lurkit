@@ -215,8 +215,8 @@
 	{#if hasVideo}
 		<div
 			class={cn(
-				'pointer-events-none absolute bottom-0 z-10 flex w-full items-end gap-2 px-2 pb-[3px] transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen && 'h-12 bg-black/75 pb-2 text-lg',
+				'pointer-events-none absolute bottom-0 z-10 flex h-10 w-full items-end gap-2 bg-black/75 px-2 pb-[3px] transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				fullscreen && 'h-12 pb-2 text-lg',
 				playing && 'opacity-0'
 			)}
 		>
