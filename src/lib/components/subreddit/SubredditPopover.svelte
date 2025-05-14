@@ -1,13 +1,12 @@
 <script lang="ts">
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
-	import { Check, Trash } from 'radix-icons-svelte';
+	import { Check, Cross1, Trash } from 'radix-icons-svelte';
 	import Spinner from '../layout/Spinner.svelte';
 	import { cn } from '$lib/utils';
 	import { getContext } from 'svelte';
 	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 	import type { Filter } from '$lib/db/filters';
 	import { cleanText } from '$lib';
-	import { CrossIcon } from 'lucide-svelte';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
 	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
@@ -41,44 +40,46 @@
 					{subreddit.display_name_prefixed}
 				</a>
 
-				<button
-					onclick={async (e) => {
-						e.preventDefault();
-						status = 'LOADING';
+				{#if !!$filterContext?.data
+					?.find((x) => x.type == 'subreddit')
+					?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
+					<Cross1 color="#f00" size={20} />
+				{:else}
+					<button
+						onclick={async (e) => {
+							e.preventDefault();
+							status = 'LOADING';
 
-						const res = await fetch('/api/filters/subreddit', {
-							method: 'POST',
-							body: JSON.stringify({ subreddit: subreddit.display_name_prefixed })
-						});
-						const resJson = await res.json();
+							const res = await fetch('/api/filters/subreddit', {
+								method: 'POST',
+								body: JSON.stringify({ subreddit: subreddit.display_name_prefixed })
+							});
+							const resJson = await res.json();
 
-						if (!!resJson.success) {
-							await $filterContext?.refetch();
-							status = 'DONE';
-						} else {
-							status = 'INIT';
-						}
-					}}
-					class={cn(
-						'size-fit rounded-md p-1',
-						status === 'INIT' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
-						status === 'DONE' && 'text-green-600'
-					)}
-				>
-					<div>
-						{#if !!$filterContext?.data
-							?.find((x) => x.type == 'subreddit')
-							?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
-							<CrossIcon size={20} />
-						{:else if status == 'INIT'}
-							<Trash size={20} />
-						{:else if status == 'LOADING'}
-							<Spinner class="size-5" />
-						{:else}
-							<Check size={20} />
-						{/if}
-					</div>
-				</button>
+							if (!!resJson.success) {
+								await $filterContext?.refetch();
+								status = 'DONE';
+							} else {
+								status = 'INIT';
+							}
+						}}
+						class={cn(
+							'size-fit rounded-md p-1',
+							status === 'INIT' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
+							status === 'DONE' && 'text-green-600'
+						)}
+					>
+						<div>
+							{#if status == 'INIT'}
+								<Trash size={20} />
+							{:else if status == 'LOADING'}
+								<Spinner class="size-5" />
+							{:else}
+								<Check size={20} />
+							{/if}
+						</div>
+					</button>
+				{/if}
 			</div>
 
 			{#if !subreddit.public_description}

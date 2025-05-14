@@ -30,7 +30,7 @@
 
 	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
 
-	const fetchNextListings = ({ pageParam }: { pageParam?: string }) =>
+	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) =>
 		fetchListings(
 			subreddit,
 			25,
@@ -43,7 +43,10 @@
 	const listingsQuery = useInfiniteQuery(
 		[subreddit, initSortParam, initTimescaleParam],
 		fetchNextListings,
-		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+		{
+			getNextPageParam: (lastGroup) =>
+				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+		}
 	);
 
 	afterNavigate((e) => {

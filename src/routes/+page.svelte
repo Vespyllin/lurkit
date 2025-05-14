@@ -69,7 +69,8 @@
 	};
 
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
-		getNextPageParam: (lastGroup) => lastGroup?.data?.after,
+		getNextPageParam: (lastGroup) =>
+			lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name,
 		enabled: $filtersQuery.isFetched
 	});
 
@@ -77,7 +78,8 @@
 		if ($filtersQuery.isFetched) {
 			untrack(() => {
 				listingsQuery.setOptions('r/all', fetchNextListings, {
-					getNextPageParam: (lastGroup) => lastGroup?.data?.after,
+					getNextPageParam: (lastGroup) =>
+						lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name,
 					enabled: true
 				});
 			});

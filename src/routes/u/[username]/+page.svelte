@@ -25,19 +25,28 @@
 	const overviewQuery = useInfiniteQuery(
 		[username, 'overview'],
 		({ pageParam }: { pageParam?: string }) => fetchUserOverview(username, 50, pageParam),
-		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+		{
+			getNextPageParam: (lastGroup) =>
+				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+		}
 	);
 
 	const submittedQuery = useInfiniteQuery(
 		[username, 'submitted'],
 		({ pageParam }: { pageParam?: string }) => fetchUserSubmitted(username, 50, pageParam),
-		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+		{
+			getNextPageParam: (lastGroup) =>
+				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+		}
 	);
 
 	const commentedQuery = useInfiniteQuery(
 		[username, 'commented'],
 		({ pageParam }: { pageParam?: string }) => fetchUserCommented(username, 50, pageParam),
-		{ getNextPageParam: (lastGroup) => lastGroup?.data?.after }
+		{
+			getNextPageParam: (lastGroup) =>
+				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+		}
 	);
 
 	const aboutQuery = useQuery([username, 'about'], () => fetchUserAbout(username));
