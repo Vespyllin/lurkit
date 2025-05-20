@@ -27,7 +27,7 @@
 			</span>
 		</a>
 	</Tooltip.Trigger>
-	<Tooltip.Content class="flex h-[7.25rem] gap-1 p-1 pr-1.5">
+	<Tooltip.Content class={cn('flex gap-1 ', icon_url ? 'h-[7.25rem] p-1 pr-1.5' : 'h-fit p-2')}>
 		{#if icon_url}
 			<img alt="" src={icon_url} class="mr-2 aspect-square h-full rounded-md" />
 		{/if}
@@ -86,7 +86,10 @@
 				<div class="w-32 italic text-zinc-400">No description.</div>
 			{:else}
 				<div
-					class="line-clamp-4 w-fit min-w-72 max-w-[450px] overflow-hidden text-ellipsis break-words text-zinc-400"
+					class={cn(
+						'line-clamp-4 w-fit  overflow-hidden text-ellipsis break-words text-zinc-400',
+						icon_url ? 'min-w-72 max-w-[450px]' : 'min-w-60 max-w-[325px]'
+					)}
 				>
 					{cleanText(subreddit.public_description)}
 				</div>
