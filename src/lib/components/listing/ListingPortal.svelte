@@ -17,11 +17,14 @@
 </script>
 
 <div
-	class={cn('cursor-default rounded-md p-2 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer', classList)}
+	class={cn(
+		'cursor-default rounded-md p-2 pt-1 hover:bg-[hsl(0,2,7)] [&_a]:cursor-pointer',
+		classList
+	)}
 >
 	<a href={listing.permalink} draggable="false">
 		<ListingHeader
-			class="pb-1"
+			class="pb-0.5"
 			crossposted_from={crosspost?.subreddit_name_prefixed}
 			locked={listing.locked}
 			author={listing.author}

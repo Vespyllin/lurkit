@@ -19,8 +19,9 @@
 	})();
 </script>
 
-<div class="mt-2 flex flex-col gap-y-2 rounded-md [&_p]:cursor-auto">
+<div class="mt-2 flex flex-col rounded-md [&_p]:cursor-auto">
 	<ListingHeader
+		class="pb-0.5"
 		edited={listing.edited}
 		crossposted_from={getCrosspost()?.subreddit_name_prefixed}
 		locked={listing.locked}
@@ -53,33 +54,31 @@
 		</h1>
 
 		{#if listing.selftext?.length > 0}
-			<Markdown text={listing.selftext_html} />
+			<Markdown class="pt-1.5" text={listing.selftext_html} />
 		{/if}
 
 		{#if listing.removed_by && listing.removed_by != 'deleted'}
-			<p class="text-zinc-300">
+			<p class="pt-1.5 text-zinc-300">
 				[Removed by {listing.removed_by}]
 			</p>
 		{:else if getCrosspost()}
-			<div class="rounded-lg border-2">
-				<ListingPortal listing={getCrosspost()!} />
+			<div class="pt-1.5">
+				<ListingPortal class="rounded-lg border-2 p-1.5 px-2" listing={getCrosspost()!} />
 			</div>
 		{:else if listing.is_video}
-			<div>
-				<Video url={listing.url} mediaData={listing.secure_media?.reddit_video} />
-			</div>
+			<Video class="pt-1.5" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
 		{:else if listing.url.includes('.gifv')}
-			<Video url={listing.url.replace('.gifv', '.mp4')} />
+			<Video class="pt-1.5" url={listing.url.replace('.gifv', '.mp4')} />
 		{:else if listing.post_hint == 'image' || urlIsImage}
-			<Image url={listing.url} blur={listing.spoiler} />
+			<Image class="pt-1.5" url={listing.url} blur={listing.spoiler} />
 		{:else if listing.is_gallery}
-			<Gallery post={listing} blur={listing.spoiler} />
+			<Gallery class="pt-1.5" post={listing} blur={listing.spoiler} />
 		{:else if listing.post_hint == 'rich:video'}
-			<div class="flex items-center justify-center">
+			<div class="flex items-center justify-center pt-1.5">
 				<IFrame post={listing} />
 			</div>
 		{/if}
 	{/if}
 
-	<ListingFooter class="[&_span]:cursor-text" {listing} />
+	<ListingFooter class="pt-1.5 [&_span]:cursor-text" {listing} />
 </div>
