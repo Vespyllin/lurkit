@@ -21,7 +21,7 @@
 >
 	<a href={listing.permalink} draggable="false">
 		<ListingHeader
-			class="pb-1.5"
+			class="pb-1"
 			crossposted_from={crosspost?.subreddit_name_prefixed}
 			locked={listing.locked}
 			author={listing.author}
@@ -55,8 +55,8 @@
 		{#if crosspost}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
-			<div class="rounded-lg border-2">
-				<Self class="pt-1.5" listing={crosspost} />
+			<div class="pt-1.5">
+				<Self class="rounded-lg border-2 p-1.5 px-2" listing={crosspost} />
 			</div>
 		{:else if listing.is_video}
 			<Video class="pt-1.5" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
@@ -73,11 +73,11 @@
 		{:else if listing.selftext?.length > 0}
 			<a
 				href={listing.permalink}
-				class="h-fit pt-1.5 [&_*]:pointer-events-none"
+				class=" [&_*]:pointer-events-none"
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown crop text={listing.selftext_html} />
+				<Markdown class="pt-1.5" crop text={listing.selftext_html} />
 			</a>
 		{/if}
 	{/if}

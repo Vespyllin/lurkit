@@ -12,6 +12,7 @@
 	import { cn } from '$lib/utils';
 	import UserPopover from '../users/UserPopover.svelte';
 	import type { ClassValue } from 'tailwind-variants';
+	import * as HoverCard from '../ui/hover-card';
 
 	let {
 		class: className,
@@ -40,6 +41,20 @@
 		flairColor?: string;
 		distinguished?: string;
 	} = $props();
+
+	const formatDate = (date_utc: number) => {
+		const date = new Date(date_utc * 1000);
+		const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		const dayName = days[date.getDay()];
+		const day = String(date.getDate()).padStart(2, '0');
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const year = date.getFullYear();
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		const seconds = String(date.getSeconds()).padStart(2, '0');
+
+		return `${dayName}, ${day}-${month}-${year} at ${hours}:${minutes}:${seconds}`;
+	};
 </script>
 
 <div class={cn('flex flex-wrap items-center gap-2', className)}>
@@ -66,16 +81,23 @@
 	</div>
 
 	•
-	<span class="hidden text-zinc-400 md:inline">
-		{getTimeAgo(created_utc)}{#if edited}
-			*
-		{/if}
-	</span>
-	<span class="text-zinc-400 md:hidden">
-		{getTimeAgo(created_utc, true)}{#if edited}
-			*
-		{/if}
-	</span>
+	<HoverCard.Root>
+		<HoverCard.Trigger>
+			<span class="hidden text-zinc-400 md:inline">
+				{getTimeAgo(created_utc)}{#if edited}
+					*
+				{/if}
+			</span>
+			<span class="text-zinc-400 md:hidden">
+				{getTimeAgo(created_utc, true)}{#if edited}
+					*
+				{/if}
+			</span>
+		</HoverCard.Trigger>
+		<HoverCard.Content class="size-fit p-0.5 px-1.5">
+			{formatDate(created_utc)}
+		</HoverCard.Content>
+	</HoverCard.Root>
 
 	{#if over_18}
 		•
