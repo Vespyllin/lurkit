@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
+	import { cleanText, isDarkHex } from '$lib';
 	import { cn } from '$lib/utils';
 	import {
 		ArrowUp,
@@ -16,6 +16,7 @@
 	import { PUBLIC_SHELF_COMMENT_LENGTH } from '$env/static/public';
 	import UserPopover from '../users/UserPopover.svelte';
 	import { page } from '$app/state';
+	import TimeHoverCard from '../layout/TimeHoverCard.svelte';
 
 	const SHELF_COMMENT_DEPTH = parseInt(PUBLIC_SHELF_COMMENT_LENGTH);
 	const shelfDepth = !isNaN(SHELF_COMMENT_DEPTH) ? SHELF_COMMENT_DEPTH : 1;
@@ -115,11 +116,10 @@
 
 						<span>•</span>
 						<div class="text-zinc-400">
-							<span class="hidden md:inline">
-								{getTimeAgo(comments[idx].created_utc)}
-							</span><span class="inline md:hidden">
-								{getTimeAgo(comments[idx].created_utc, true)}
-							</span>{#if comments[idx].edited}<span>*</span>{/if}
+							<TimeHoverCard
+								created_utc={comments[idx].created_utc}
+								edited={comments[idx].edited}
+							/>
 						</div>
 
 						{#if authorFlairTexts && authorFlairTexts.length > 0 && !(authorFlairTexts.length == 1 && authorFlairTexts[0]?.t == '​')}

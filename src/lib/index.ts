@@ -34,7 +34,7 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 
 	const givenDate = new Date(timestamp * 1000);
 	const difference = Date.now() - givenDate.getTime();
-	const differenceInSeconds = Math.floor(difference / 1000);
+	const differenceInSeconds = Math.round(difference / 1000);
 
 	const minuteThreshold = 60;
 	const hourThreshold = minuteThreshold * 60;
@@ -49,13 +49,13 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		value = differenceInSeconds;
 	} else if (differenceInSeconds < hourThreshold) {
 		unit = 'minute';
-		value = Math.floor(differenceInSeconds / minuteThreshold);
+		value = Math.round(differenceInSeconds / minuteThreshold);
 	} else if (differenceInSeconds < dayThreshold) {
 		unit = 'hour';
-		value = Math.floor(differenceInSeconds / hourThreshold);
+		value = Math.round(differenceInSeconds / hourThreshold);
 	} else if (differenceInSeconds < weekThreshold) {
 		unit = 'day';
-		value = Math.floor(differenceInSeconds / dayThreshold);
+		value = Math.round(differenceInSeconds / dayThreshold);
 	} else {
 		const givenMonth = givenDate.getMonth();
 		const givenYear = givenDate.getFullYear();
@@ -64,15 +64,15 @@ export const getTimeAgo = (timestamp: number, short: boolean = false) => {
 		const todayMonth = today.getMonth();
 		const todayYear = today.getFullYear();
 
-		if (todayYear - givenYear > 0) {
+		if ((todayYear - givenYear == 1 && todayMonth - givenMonth > 0) || todayYear - givenYear > 1) {
 			unit = 'year';
 			value = todayYear - givenYear;
-		} else if (todayMonth - givenMonth > 0) {
+		} else if (todayMonth < givenMonth && todayYear - givenYear == 1) {
 			unit = 'month';
-			value = todayMonth - givenMonth;
+			value = 12 - givenMonth + todayMonth;
 		} else {
 			unit = 'week';
-			value = Math.floor(differenceInSeconds / weekThreshold);
+			value = Math.round(differenceInSeconds / weekThreshold);
 		}
 	}
 

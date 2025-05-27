@@ -7,12 +7,12 @@
 		MagicWand,
 		VercelLogo
 	} from 'radix-icons-svelte';
-	import { cleanText, getTimeAgo, isDarkHex } from '$lib';
+	import { cleanText, isDarkHex } from '$lib';
 	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import { cn } from '$lib/utils';
 	import UserPopover from '../users/UserPopover.svelte';
 	import type { ClassValue } from 'tailwind-variants';
-	import * as HoverCard from '../ui/hover-card';
+	import TimeHoverCard from '../layout/TimeHoverCard.svelte';
 
 	let {
 		class: className,
@@ -81,23 +81,7 @@
 	</div>
 
 	•
-	<HoverCard.Root>
-		<HoverCard.Trigger>
-			<span class="hidden text-zinc-400 md:inline">
-				{getTimeAgo(created_utc)}{#if edited}
-					*
-				{/if}
-			</span>
-			<span class="text-zinc-400 md:hidden">
-				{getTimeAgo(created_utc, true)}{#if edited}
-					*
-				{/if}
-			</span>
-		</HoverCard.Trigger>
-		<HoverCard.Content class="size-fit p-0.5 px-1.5">
-			{formatDate(created_utc)}
-		</HoverCard.Content>
-	</HoverCard.Root>
+	<TimeHoverCard {created_utc} {edited} />
 
 	{#if over_18}
 		•
