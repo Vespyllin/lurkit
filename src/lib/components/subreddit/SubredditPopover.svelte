@@ -14,8 +14,11 @@
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
 
-	const icon_url: string | undefined =
-		subreddit?.community_icon?.split('?')[0] || subreddit.icon_img || undefined;
+	const icon_url: string | undefined = (
+		subreddit?.community_icon ||
+		subreddit.icon_img ||
+		undefined
+	)?.split('?')[0];
 </script>
 
 <Tooltip.Root>
