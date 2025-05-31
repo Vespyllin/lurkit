@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {
 		CaretDown,
-		Star,
 		Target,
 		Update,
 		Rocket,
@@ -12,6 +11,7 @@
 	} from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { type ComponentType } from 'svelte';
+	import { ArrowBigUp } from 'lucide-svelte';
 
 	let {
 		class: className,
@@ -28,9 +28,10 @@
 		display: string;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ value: 'default', display: 'default', icon: Gear },
+		{ value: 'default', display: 'top', icon: ArrowBigUp },
+		// { value: 'default', display: 'default', icon: Gear },
 		{ value: 'confidence', display: 'best', icon: Rocket },
-		{ value: 'top', display: 'top', icon: Star },
+		// { value: 'top', display: 'top', icon: Star },
 		{ value: 'new', display: 'new', icon: LightningBolt },
 		{ value: 'controversial', display: 'controversial', icon: Target },
 		{ value: 'old', display: 'old', icon: Archive },
@@ -52,6 +53,7 @@
 				</div>
 			</DropdownMenu.Trigger>
 		</div>
+
 		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
 			{#each sortOptions as sortOption}
 				{#if (sort == undefined ? 'default' : sort) !== sortOption.value}
