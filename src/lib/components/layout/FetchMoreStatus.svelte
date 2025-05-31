@@ -15,7 +15,7 @@
 	} = $props();
 </script>
 
-<div class={cn('mx-auto justify-center py-4 text-center md:max-w-5xl', className)}>
+<div class={cn('mx-auto h-20 justify-center py-2 text-center md:max-w-5xl', className)}>
 	{#if fetching}
 		<div class="flex items-center justify-center gap-4">
 			<Spinner class="size-8" />

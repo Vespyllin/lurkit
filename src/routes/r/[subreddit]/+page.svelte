@@ -15,6 +15,7 @@
 	import { type ComponentType } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { cn } from '$lib/utils';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	const {
 		params: { subreddit },
@@ -44,8 +45,8 @@
 		[subreddit, initSortParam, initTimescaleParam],
 		fetchNextListings,
 		{
-			getNextPageParam: (lastGroup) =>
-				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+			getNextPageParam: (lastGroup) => undefined
+			// lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
 		}
 	);
 
@@ -97,12 +98,6 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $listingsQuery;
-		if (remainingPx < 1000)
-			console.log(
-				isFetching ? 'Fetching' : 'NotFetching',
-				hasNextPage ? 'Next' : 'NotNext',
-				isError ? 'Error' : 'NotError'
-			);
 
 		if (remainingPx < 1000 && !isFetching && hasNextPage && !isError) {
 			$listingsQuery.fetchNextPage();
@@ -208,9 +203,7 @@
 				{#each listings as listing, lIdx}
 					<ListingPortal inSubreddit listing={listing.data} />
 
-					<Separator
-						class={cn(pIdx + 1 == pages.length && lIdx + 1 == listings.length && 'hidden')}
-					/>
+					<Separator class={pIdx + 1 == pages.length && lIdx + 1 == listings.length && 'hidden'} />
 				{/each}
 			{/each}
 
@@ -219,6 +212,15 @@
 					fetching={$listingsQuery.isFetching}
 					error={$listingsQuery.error as string | undefined}
 				/>
+			{:else if !$listingsQuery.hasNextPage && !$listingsQuery.isFetching && !$listingsQuery.isError}
+				<div class="mx-auto h-20 justify-center py-2 text-center">
+					<Button
+						class="h-12 rounded-full bg-primary text-lg hover:bg-primary/90"
+						onclick={() => $listingsQuery.refetch()}
+					>
+						<LightningBolt size={25} /> Load more
+					</Button>
+				</div>
 			{/if}
 		{/if}
 	</div>

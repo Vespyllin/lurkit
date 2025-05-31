@@ -9,6 +9,8 @@
 	import { setContext, untrack } from 'svelte';
 	import type { Filter } from '$lib/db/filters';
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import { LightningBolt } from 'radix-icons-svelte';
 
 	const lastFetchedListingIds = new Set<string>();
 
@@ -31,6 +33,8 @@
 		const filteredChildren = data.data.children
 			?.filter((listing) => {
 				if (lastFetchedListingIds.has(listing.data.name)) return false;
+
+				if (listing.data.score > 40_000 && listing.data.upvote_ratio > 0.9) return false;
 
 				const listingTitle = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
@@ -128,6 +132,15 @@
 				error={$listingsQuery.error as string | undefined}
 				retryFn={$listingsQuery.fetchNextPage}
 			/>
+		{:else if !$listingsQuery.hasNextPage && !$listingsQuery.isFetching && !$listingsQuery.isError}
+			<div class="mx-auto h-20 justify-center py-2 text-center">
+				<Button
+					class="h-12 rounded-full bg-primary text-lg hover:bg-primary/90"
+					onclick={() => $listingsQuery.refetch()}
+				>
+					<LightningBolt size={25} /> Load more
+				</Button>
+			</div>
 		{/if}
 	</div>
 {/if}

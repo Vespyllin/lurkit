@@ -9,6 +9,8 @@
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import { LightningBolt } from 'radix-icons-svelte';
 
 	const {
 		url: { searchParams }
@@ -49,14 +51,10 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		const { hasNextPage, isFetching, isError } = $searchQuery;
-		if (remainingPx < 1000)
-			console.log(
-				isFetching ? 'Fetching' : 'NotFetching',
-				hasNextPage ? 'Next' : 'NotNext',
-				isError ? 'Error' : 'NotError'
-			);
 
-		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) $searchQuery.fetchNextPage();
+		if (remainingPx < 1000 && hasNextPage && !isFetching && !isError) {
+			$searchQuery.fetchNextPage();
+		}
 	}}
 />
 
@@ -83,6 +81,15 @@
 				error={$searchQuery.error as string | undefined}
 				retryFn={$searchQuery.fetchNextPage}
 			/>
+		{:else if !$searchQuery.hasNextPage && !$searchQuery.isFetching && !$searchQuery.isError}
+			<div class="mx-auto h-20 justify-center py-2 text-center">
+				<Button
+					class="h-12 rounded-full bg-primary text-lg hover:bg-primary/90"
+					onclick={() => $searchQuery.refetch()}
+				>
+					<LightningBolt size={25} /> Load more
+				</Button>
+			</div>
 		{/if}
 	</div>
 {/if}
