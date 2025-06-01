@@ -3,15 +3,19 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-
-	import { fetchListings } from '$lib/client';
-	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
-	import { setContext, untrack } from 'svelte';
-	import type { Filter } from '$lib/db/filters';
-	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { LightningBolt } from 'radix-icons-svelte';
 
+	import { setContext, untrack } from 'svelte';
+	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
+	import { PUBLIC_UPVOTE_CUTOFF } from '$env/static/public';
+
+	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
+
+	import { fetchListings } from '$lib/client';
+	import type { Filter } from '$lib/db/filters';
+
+	const UPVOTE_CUTOFF = parseInt(PUBLIC_UPVOTE_CUTOFF) || Infinity;
 	const lastFetchedListingIds = new Set<string>();
 
 	const filtersQuery = useQuery('filters', async () => {
@@ -34,7 +38,7 @@
 			?.filter((listing) => {
 				if (lastFetchedListingIds.has(listing.data.name)) return false;
 
-				if (listing.data.score > 40_000 && listing.data.upvote_ratio > 0.9) return false;
+				if (listing.data.score > UPVOTE_CUTOFF && listing.data.upvote_ratio > 0.9) return false;
 
 				const listingTitle = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
@@ -46,6 +50,8 @@
 				const { crosspost_parent, crosspost_parent_list } = listing.data;
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
 				if (!crosspost) return true;
+
+				if (crosspost.score > UPVOTE_CUTOFF && crosspost.upvote_ratio > 0.9) return false;
 
 				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
 				const crossTitle = crosspost.title.toLowerCase();
