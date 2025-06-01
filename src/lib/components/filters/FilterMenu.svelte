@@ -15,7 +15,9 @@
 	const tabs = ['subreddit', 'keyword'];
 	let displayFilters: Filter[] | undefined = $state(undefined);
 
-	let searchString = $state('');
+	let inputString = $state('');
+	let inputError = $state('');
+	let inputLoading = $state(false);
 
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
@@ -26,50 +28,94 @@
 </script>
 
 <Dialog.Root
-	open={true}
 	onOpenChange={(toOpen) => {
 		if (!toOpen && change) $filterContext?.refetch();
 		change = false;
+		inputString = '';
+		inputError = '';
 	}}
 >
 	<Dialog.Trigger class="p-0.5">
 		<Shield class="text-zinc-400 hover:text-zinc-100" />
 	</Dialog.Trigger>
 	<Dialog.Content
-		class="py-3"
+		class="w-[50lvw] p-2"
 		preventScroll={false}
 		escapeKeydownBehavior="close"
 		interactOutsideBehavior="close"
 	>
-		<Dialog.Header>
-			<Dialog.Title class="text-2xl">Edit Filters</Dialog.Title>
+		<Dialog.Header class="w-full p-0">
+			<Dialog.Title class="flex items-center space-x-2 text-2xl font-semibold text-primary">
+				<Shield class="size-7" />
+				<span class="text-zinc-100">
+					Edit {tab.charAt(0).toUpperCase() + String(tab).slice(1)} Filters
+				</span>
+			</Dialog.Title>
 			<Dialog.Description>
-				<div class="flex space-x-2 pr-2">
-					<h2 class="mb-3 mt-1 flex w-32 items-center space-x-2 text-xl font-semibold text-primary">
-						<Shield className="h-5 w-5" /> <span class=" capitalize text-zinc-100">{tab}s</span>
-					</h2>
-
-					<div class="flex space-x-1">
+				<div class="mb-2 flex items-center justify-between space-x-2">
+					<div class="flex w-full space-x-1">
 						<input
-							class="h-9 w-60 rounded-lg border border-input bg-background p-2 px-2.5 text-base text-zinc-100 placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none"
-							placeholder={`Add ${tab}`}
-							bind:value={searchString}
+							disabled={inputLoading}
+							class="h-10 w-full rounded-lg border border-input bg-background p-2 px-2.5 text-base text-zinc-100 placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none"
+							placeholder={`Add ${tab.charAt(0).toUpperCase() + String(tab).slice(1)}`}
+							bind:value={inputString}
+							onkeydown={(e) => {
+								if (e.key == 'Enter') {
+									e.preventDefault();
+									document.getElementById('submitButton')?.click();
+								}
+							}}
 						/>
 
-						<Button
-							class="size-9 p-2.5"
-							disabled={searchString.length == 0 || true}
-							onclick={() => {
-								console.log('TODO: Submit');
-								searchString = '';
+						<LoadingButton
+							class="size-10 p-2.5"
+							disabled={inputString.length == 0 ||
+								(tab == 'subreddit' &&
+									!(
+										inputString.split('r/').length === 2 &&
+										inputString.split('r/')[0]?.length == 0 &&
+										inputString.split('r/')[1]?.length >= 1
+									))}
+							id="submitButton"
+							onclick={async () => {
+								inputError = '';
+								inputLoading = true;
+
+								const res = await fetch(`/api/filters/${tab}`, {
+									method: 'POST',
+									body: JSON.stringify({ [tab]: inputString })
+								});
+
+								const resJson = await res.json();
+								if (res.status == 200 || resJson.success) {
+									const newContent = [
+										...(displayFilters!.find((x) => x.type == tab)?.content ?? []),
+										inputString
+									];
+
+									if (newContent !== undefined) {
+										const oldFilters = displayFilters!.filter((x) => x.type !== tab);
+
+										const update: Filter = { type: tab, content: newContent };
+
+										displayFilters = [...oldFilters, update];
+									}
+
+									inputString = '';
+									change = true;
+								} else {
+									inputError = resJson.error ?? 'Internal Error';
+								}
+
+								inputLoading = false;
 							}}
 						>
 							<Plus size={25} />
-						</Button>
+						</LoadingButton>
 					</div>
 
 					<Button
-						class="ml-auto size-9 p-2.5"
+						class="size-10 p-2.5"
 						onclick={() => {
 							tab = tabs[(tabs.findIndex((x) => x == tab) + 1) % tabs.length];
 						}}
@@ -112,14 +158,14 @@
 									if (res.status == 200 && resJson.success) {
 										change = true;
 
-										const newSubreddits = displayFilters!
+										const newContent = displayFilters!
 											.find((x) => x.type == tab)
 											?.content.filter((x) => x != bannedElement);
 
-										if (newSubreddits !== undefined) {
+										if (newContent !== undefined) {
 											const oldFilters = displayFilters!.filter((x) => x.type !== tab);
 
-											const update: Filter = { type: tab, content: newSubreddits };
+											const update: Filter = { type: tab, content: newContent };
 
 											displayFilters = [...oldFilters, update];
 										}
@@ -131,6 +177,7 @@
 						</div>
 					{/each}
 				</div>
+				<h3 class="mt-2 text-base text-red-600">{inputError}</h3>
 			</Dialog.Description>
 		</Dialog.Header>
 	</Dialog.Content>

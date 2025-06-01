@@ -7,9 +7,10 @@
 	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 	import type { Filter } from '$lib/db/filters';
 	import { cleanText } from '$lib';
+	import { GavelIcon } from 'lucide-svelte';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
-	let status: 'INIT' | 'LOADING' | 'DONE' = $state('INIT');
+	let status: 'OK' | 'LOADING' | 'BANNED' = $state('LOADING');
 
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
@@ -19,6 +20,15 @@
 		subreddit.icon_img ||
 		undefined
 	)?.split('?')[0];
+
+	$effect(() => {
+		const inBanlist = $filterContext?.data
+			?.find((x) => x.type == 'subreddit')
+			?.content.includes(subreddit.display_name_prefixed.toLowerCase());
+
+		if (inBanlist) status = 'BANNED';
+		else status = 'OK';
+	});
 </script>
 
 <Tooltip.Root>
@@ -45,7 +55,7 @@
 
 				{#if !!$filterContext?.data
 					?.find((x) => x.type == 'subreddit')
-					?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'INIT'}
+					?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'OK'}
 					<Cross1 color="#f00" size={20} />
 				{:else}
 					<button
@@ -61,24 +71,23 @@
 
 							if (!!resJson.success) {
 								await $filterContext?.refetch();
-								status = 'DONE';
 							} else {
-								status = 'INIT';
+								status = 'OK';
 							}
 						}}
 						class={cn(
 							'size-fit rounded-md p-1',
-							status === 'INIT' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
-							status === 'DONE' && 'text-green-600'
+							status === 'OK' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
+							status === 'BANNED' && 'text-red-600'
 						)}
 					>
 						<div>
-							{#if status == 'INIT'}
+							{#if status == 'OK'}
 								<Trash size={20} />
 							{:else if status == 'LOADING'}
 								<Spinner class="size-5" />
 							{:else}
-								<Check size={20} />
+								<GavelIcon size={20} />
 							{/if}
 						</div>
 					</button>

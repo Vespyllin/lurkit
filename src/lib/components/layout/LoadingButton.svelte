@@ -3,14 +3,15 @@
 	import Button from '../ui/button/button.svelte';
 	import Spinner from './Spinner.svelte';
 
-	let { onclick, children, ...restProps }: ButtonProps & { onclick: () => Promise<any> } = $props();
+	let { onclick, disabled, children, ...restProps }: ButtonProps & { onclick: () => Promise<any> } =
+		$props();
 
 	let loading = $state(false);
 </script>
 
 <Button
 	{...restProps}
-	disabled={loading}
+	disabled={disabled || loading}
 	onclick={async () => {
 		loading = true;
 		await onclick();

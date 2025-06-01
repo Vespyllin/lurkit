@@ -45,8 +45,8 @@
 		[subreddit, initSortParam, initTimescaleParam],
 		fetchNextListings,
 		{
-			getNextPageParam: (lastGroup) => undefined
-			// lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
+			getNextPageParam: (lastGroup) =>
+				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
 		}
 	);
 
@@ -111,7 +111,7 @@
 		error={$subredditQuery.error as string | undefined}
 	/>
 {:else if !$subredditQuery.data || 'error' in $subredditQuery.data}
-	<div class="mx-auto py-24 text-center uppercase">
+	<div class="mx-auto py-24 text-center">
 		<h1 class="text-7xl text-red-600">
 			{$subredditQuery.data?.reason ?? 'ERROR: Could not fetch subreddit info'}
 		</h1>
