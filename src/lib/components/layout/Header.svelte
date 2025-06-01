@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
+
+	import FilterMenu from '../filters/FilterMenu.svelte';
 
 	let searchString = $state('');
 </script>
@@ -10,6 +12,7 @@
 			<img alt="" src="/favicon.png" class="size-10" />
 			<h1 class="text-3xl font-semibold tracking-tight">Lurkit</h1>
 		</a>
+
 		<input
 			class="hidden h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:flex lg:mx-auto"
 			placeholder="Search Lurkit"
@@ -21,5 +24,7 @@
 				}
 			}}
 		/>
+
+		<FilterMenu />
 	</div>
 </div>

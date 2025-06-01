@@ -25,7 +25,7 @@
 </script>
 
 <div class={className}>
-	<DropdownMenu.Root preventScroll={false}>
+	<DropdownMenu.Root>
 		<div class="flex leading-8">
 			<span class="mr-2 text-lg">Sort by:</span>
 			<DropdownMenu.Trigger>
@@ -35,7 +35,10 @@
 				</div>
 			</DropdownMenu.Trigger>
 		</div>
-		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
+		<DropdownMenu.Content
+			preventScroll={false}
+			class="space-y-0.5 bg-background font-['Montserrat']"
+		>
 			{#each sortOptions as sortOption}
 				<DropdownMenu.Item
 					class="cursor-pointer rounded-sm font-normal hover:bg-accent"

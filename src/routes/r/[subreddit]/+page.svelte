@@ -134,7 +134,10 @@
 						</div>
 					</DropdownMenu.Trigger>
 				</div>
-				<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
+				<DropdownMenu.Content
+					preventScroll={false}
+					class="space-y-0.5 bg-background font-['Montserrat']"
+				>
 					{#each sortOptions as sortOption}
 						{@const route = `/r/${subreddit}${sortOption.option !== 'default' ? `?sort=${sortOption.option}` : ''}`}
 						{#if (sortParam == undefined ? 'default' : sortParam) !== sortOption.option}
@@ -165,7 +168,10 @@
 							</div>
 						</DropdownMenu.Trigger>
 					</div>
-					<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
+					<DropdownMenu.Content
+						preventScroll={false}
+						class="space-y-0.5 bg-background font-['Montserrat']"
+					>
 						{#each timescales as timescaleOption}
 							{@const route =
 								`/r/${subreddit}?sort=top` +

@@ -6,8 +6,8 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { LightningBolt } from 'radix-icons-svelte';
 
-	import { setContext, untrack } from 'svelte';
-	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
+	import { getContext, untrack } from 'svelte';
+	import { useInfiniteQuery, type UseQueryStoreResult } from '@sveltestack/svelte-query';
 	import { PUBLIC_UPVOTE_CUTOFF } from '$env/static/public';
 
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
@@ -18,21 +18,13 @@
 	const UPVOTE_CUTOFF = parseInt(PUBLIC_UPVOTE_CUTOFF) || Infinity;
 	const lastFetchedListingIds = new Set<string>();
 
-	const filtersQuery = useQuery('filters', async () => {
-		const fetchData = await fetch('/api/filters');
-		const filterContent = (await fetchData.json()) as Filter[];
-
-		return filterContent;
-	});
-
-	console.log('Cutoff:', PUBLIC_UPVOTE_CUTOFF, UPVOTE_CUTOFF);
-
-	setContext('filters', filtersQuery);
+	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
+		getContext('filters');
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
-		const subredditFilter = $filtersQuery.data?.find((x) => x.type == 'subreddit')?.content;
-		const titleFilter = $filtersQuery.data?.find((x) => x.type == 'title')?.content;
+		const subredditFilter = $filterContext?.data?.find((x) => x.type == 'subreddit')?.content;
+		const titleFilter = $filterContext?.data?.find((x) => x.type == 'keyword')?.content;
 
 		if (!data || !data.data || !subredditFilter || !titleFilter) return;
 
@@ -83,11 +75,11 @@
 	const listingsQuery = useInfiniteQuery('r/all', fetchNextListings, {
 		getNextPageParam: (lastGroup) =>
 			lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name,
-		enabled: $filtersQuery.isFetched
+		enabled: $filterContext?.isFetched ?? false
 	});
 
 	$effect(() => {
-		if ($filtersQuery.isFetched) {
+		if ($filterContext?.isFetched ?? false) {
 			untrack(() => {
 				listingsQuery.setOptions('r/all', fetchNextListings, {
 					getNextPageParam: (lastGroup) =>
@@ -101,7 +93,7 @@
 
 <svelte:head>
 	<title>
-		{($listingsQuery.isFetching && !$listingsQuery.data) || $filtersQuery.isFetching
+		{($listingsQuery.isFetching && !$listingsQuery.data) || ($filterContext?.isFetching ?? true)
 			? 'Loading...'
 			: ($listingsQuery.error ?? 'Lurkit')}
 	</title>
@@ -120,7 +112,7 @@
 />
 
 {#if !$listingsQuery.data}
-	{#if $listingsQuery.isFetching || $filtersQuery.isFetching}
+	{#if $listingsQuery.isFetching || ($filterContext?.isFetching ?? true)}
 		<ImageListingSkeleton />
 	{:else}
 		<FetchStatus fetching={false} error={$listingsQuery.error as string | undefined} />

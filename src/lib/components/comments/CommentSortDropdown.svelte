@@ -5,7 +5,6 @@
 		Update,
 		Rocket,
 		LightningBolt,
-		Gear,
 		Archive,
 		Keyboard
 	} from 'radix-icons-svelte';
@@ -54,7 +53,10 @@
 			</DropdownMenu.Trigger>
 		</div>
 
-		<DropdownMenu.Content class="space-y-0.5 bg-background font-['Montserrat']">
+		<DropdownMenu.Content
+			preventScroll={false}
+			class="space-y-0.5 bg-background font-['Montserrat']"
+		>
 			{#each sortOptions as sortOption}
 				{#if (sort == undefined ? 'default' : sort) !== sortOption.value}
 					<DropdownMenu.Item

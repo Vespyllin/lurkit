@@ -34,5 +34,10 @@ const log = async (reqIp: string) => {
 export async function handle({ event, resolve }) {
 	if (!dev) await log(event.getClientAddress());
 
+	// Suppress well-known Chrome DevTools requests
+	if (event.url.pathname.startsWith('/.well-known/appspecific/com.chrome.devtools')) {
+		return new Response(null, { status: 204 }); // Return empty response with 204 No Content
+	}
+
 	return resolve(event);
 }

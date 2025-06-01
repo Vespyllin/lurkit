@@ -1,10 +1,12 @@
 <script lang="ts">
 	import '../app.pcss';
-	import type { Snippet } from 'svelte';
+	import { setContext, type Snippet } from 'svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 
-	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+	import { QueryClient, QueryClientProvider, useQuery } from '@sveltestack/svelte-query';
 	import { TooltipProvider } from '$lib/components/ui/tooltip';
+	import type { Filter } from '$lib/db/filters';
+	import FilterProvider from '$lib/components/providers/FilterProvider.svelte';
 
 	const queryClient = new QueryClient({
 		defaultOptions: {
@@ -33,15 +35,18 @@
 <main style="font-family: 'Montserrat'" class="min-h-screen overflow-auto bg-background">
 	<QueryClientProvider client={queryClient}>
 		<TooltipProvider delayDuration={200}>
-			<Header />
-			<div
-				data-sveltekit-preload-data="off"
-				class="mx-auto mt-16 max-w-full px-4 py-2 md:max-w-4xl md:px-8"
-			>
-				{@render children?.()}
-			</div>
+			<FilterProvider>
+				<Header />
+				<div
+					data-sveltekit-preload-data="off"
+					class="mx-auto mt-16 max-w-full px-4 py-2 md:max-w-4xl md:px-8"
+				>
+					{@render children?.()}
+				</div>
+			</FilterProvider>
 		</TooltipProvider>
 	</QueryClientProvider>
+
 	<!-- This hidden <div> is here to prevent the "md" class from being discarded by Tailwind treeshaking -->
 	<div class="md hidden"></div>
 </main>
