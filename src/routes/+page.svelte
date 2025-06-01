@@ -25,6 +25,8 @@
 		return filterContent;
 	});
 
+	console.log('Cutoff:', PUBLIC_UPVOTE_CUTOFF, UPVOTE_CUTOFF);
+
 	setContext('filters', filtersQuery);
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
@@ -38,7 +40,7 @@
 			?.filter((listing) => {
 				if (lastFetchedListingIds.has(listing.data.name)) return false;
 
-				if (listing.data.score > UPVOTE_CUTOFF && listing.data.upvote_ratio > 0.9) return false;
+				if (listing.data.score >= UPVOTE_CUTOFF && listing.data.upvote_ratio >= 0.9) return false;
 
 				const listingTitle = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
@@ -51,7 +53,7 @@
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
 				if (!crosspost) return true;
 
-				if (crosspost.score > UPVOTE_CUTOFF && crosspost.upvote_ratio > 0.9) return false;
+				if (crosspost.score >= UPVOTE_CUTOFF && crosspost.upvote_ratio >= 0.9) return false;
 
 				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
 				const crossTitle = crosspost.title.toLowerCase();
