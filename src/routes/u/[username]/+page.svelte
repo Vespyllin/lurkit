@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import {
-		fetchUserAbout,
-		fetchUserCommented,
-		fetchUserOverview,
-		fetchUserSubmitted
-	} from '$lib/client';
+	import { fetchUserAbout, fetchUserOverview } from '$lib/client';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
@@ -13,6 +8,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import UserBanner from '$lib/components/users/UserBanner.svelte';
 	import UserComment from '$lib/components/users/UserComment.svelte';
+	import UserNavigation from '$lib/components/users/UserNavigation.svelte';
 	import { cn } from '$lib/utils';
 	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 
@@ -31,24 +27,6 @@
 		}
 	);
 
-	const submittedQuery = useInfiniteQuery(
-		[username, 'submitted'],
-		({ pageParam }: { pageParam?: string }) => fetchUserSubmitted(username, 50, pageParam),
-		{
-			getNextPageParam: (lastGroup) =>
-				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
-		}
-	);
-
-	const commentedQuery = useInfiniteQuery(
-		[username, 'commented'],
-		({ pageParam }: { pageParam?: string }) => fetchUserCommented(username, 50, pageParam),
-		{
-			getNextPageParam: (lastGroup) =>
-				lastGroup?.data?.after ?? lastGroup?.data?.children?.at(-1)?.data.name
-		}
-	);
-
 	const aboutQuery = useQuery([username, 'about'], () => fetchUserAbout(username));
 </script>
 
@@ -56,7 +34,7 @@
 	<title>
 		{$aboutQuery.isFetching || $overviewQuery.isFetching
 			? 'Loading...'
-			: ($aboutQuery.error ?? `Lurkit - ${username}`)}
+			: ($aboutQuery.error ?? $overviewQuery.error ?? `Lurkit - ${username}`)}
 	</title>
 </svelte:head>
 
@@ -66,27 +44,8 @@
 		const remainingPx = feedHeight - window.scrollY;
 
 		if (remainingPx < 1000) {
-			if (
-				category == 'overview' &&
-				$overviewQuery.hasNextPage &&
-				!$overviewQuery.isFetching &&
-				!$overviewQuery.isError
-			) {
+			if ($overviewQuery.hasNextPage && !$overviewQuery.isFetching && !$overviewQuery.isError) {
 				$overviewQuery.fetchNextPage();
-			} else if (
-				category == 'submitted' &&
-				$submittedQuery.hasNextPage &&
-				!$submittedQuery.isFetching &&
-				!$submittedQuery.isError
-			) {
-				$submittedQuery.fetchNextPage();
-			} else if (
-				category == 'comments' &&
-				$commentedQuery.hasNextPage &&
-				!$commentedQuery.isFetching &&
-				!$commentedQuery.isError
-			) {
-				$commentedQuery.fetchNextPage();
 			}
 		}
 	}}
@@ -102,108 +61,30 @@
 	<div class="space-y-2">
 		<UserBanner data={$aboutQuery.data.data} />
 
-		<div class="space-x-2 py-2">
-			<Button
-				class={cn(
-					'min-w-24 rounded-full transition-colors duration-500',
-					category == 'overview' ? 'bg-primary' : 'bg-muted'
-				)}
-				onclick={() => {
-					if (category != 'overview') category = 'overview';
-				}}
-			>
-				Overview
-			</Button>
-			<Button
-				class={cn(
-					'min-w-24 rounded-full transition-colors duration-500',
-					category == 'submitted' ? 'bg-primary' : 'bg-muted'
-				)}
-				onclick={() => {
-					if (category != 'submitted') category = 'submitted';
-				}}
-			>
-				Posts
-			</Button>
-			<Button
-				class={cn(
-					'min-w-24 rounded-full transition-colors duration-500',
-					category == 'comments' ? 'bg-primary' : 'bg-muted'
-				)}
-				onclick={() => {
-					if (category != 'comments') category = 'comments';
-				}}
-			>
-				Comments
-			</Button>
-		</div>
+		<UserNavigation {category} {username} />
 
-		<Separator class="h-0.5" />
-
-		{#if category == 'overview'}
-			{#if !$overviewQuery.data && ($overviewQuery.isError || $overviewQuery.isFetching)}
-				<FetchStatus
-					fetching={$overviewQuery.isFetching}
-					error={$overviewQuery.error as string | undefined}
-				/>
-			{:else}
-				{#each $overviewQuery.data?.pages ?? [] as page}
-					{#each page.data?.children ?? [] as child}
-						{#if child.kind == 't1'}
-							<UserComment comment={child.data} />
-						{:else}
-							<ListingPortal inSubreddit listing={child.data} />
-						{/if}
-
-						<Separator />
-					{/each}
-				{/each}
-
-				<FetchMoreStatus
-					fetching={$overviewQuery.isFetching}
-					error={$overviewQuery.error as string | undefined}
-				/>
-			{/if}
-		{:else if category == 'submitted'}
-			{#if !$submittedQuery.data && ($submittedQuery.isError || $submittedQuery.isFetching)}
-				<FetchStatus
-					fetching={$submittedQuery.isFetching}
-					error={$submittedQuery.error as string | undefined}
-				/>
-			{:else}
-				{#each $submittedQuery.data?.pages ?? [] as page}
-					{#each page.data?.children ?? [] as child}
-						<ListingPortal listing={child.data} />
-
-						<Separator />
-					{/each}
-				{/each}
-
-				<FetchMoreStatus
-					fetching={$submittedQuery.isFetching}
-					error={$submittedQuery.error as string | undefined}
-				/>
-			{/if}
-		{:else if category == 'comments'}
-			{#if !$commentedQuery.data && ($commentedQuery.isError || $commentedQuery.isFetching)}
-				<FetchStatus
-					fetching={$commentedQuery.isFetching}
-					error={$commentedQuery.error as string | undefined}
-				/>
-			{:else}
-				{#each $commentedQuery.data?.pages ?? [] as page}
-					{#each page.data?.children ?? [] as child}
+		{#if !$overviewQuery.data && ($overviewQuery.isError || $overviewQuery.isFetching)}
+			<FetchStatus
+				fetching={$overviewQuery.isFetching}
+				error={$overviewQuery.error as string | undefined}
+			/>
+		{:else}
+			{#each $overviewQuery.data?.pages ?? [] as page}
+				{#each page.data?.children ?? [] as child}
+					{#if child.kind == 't1'}
 						<UserComment comment={child.data} />
+					{:else}
+						<ListingPortal inSubreddit listing={child.data} />
+					{/if}
 
-						<Separator />
-					{/each}
+					<Separator />
 				{/each}
+			{/each}
 
-				<FetchMoreStatus
-					fetching={$commentedQuery.isFetching}
-					error={$commentedQuery.error as string | undefined}
-				/>
-			{/if}
+			<FetchMoreStatus
+				fetching={$overviewQuery.isFetching}
+				error={$overviewQuery.error as string | undefined}
+			/>
 		{/if}
 	</div>
 {/if}

@@ -69,7 +69,7 @@ export const fetchComment = async (
 	subreddit: string,
 	tag: string,
 	comment_id: string,
-	sort?: RedditCommentSortOption
+	sort: RedditCommentSortOption | undefined = 'top'
 ): Promise<RedditListingCommentsDataWrapper> => {
 	const queryParams = formatQueryParams({ sr_detail: 1, sort });
 

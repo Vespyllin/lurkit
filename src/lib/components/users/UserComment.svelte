@@ -5,7 +5,9 @@
 	const { comment }: { comment: RedditT1Data } = $props();
 </script>
 
-<div class="border-l-2 pl-3 hover:border-accent hover:bg-[hsl(0,2,7)]">
+<div
+	class="overflow-hidden border-l-4 border-l-muted p-1 pl-3 transition-all duration-300 hover:border-l-primary hover:bg-[hsl(0,2,7)]"
+>
 	<div>
 		<a class="text-primary hover:underline" href={`/${comment.subreddit_name_prefixed}`}>
 			{comment.subreddit_name_prefixed}
@@ -15,7 +17,10 @@
 	</div>
 
 	<a class="space-y-1 rounded-md" href={comment.permalink}>
-		<p class="text-zinc-400">{comment.author} commented {getTimeAgo(comment.created_utc)}</p>
+		<div class="mt-0.5 flex items-center gap-2 text-sm">
+			<span class="text-primary">{comment.author}</span>
+			<p class="text-zinc-400">commented {getTimeAgo(comment.created_utc)}</p>
+		</div>
 
 		<div>{@html cleanText(comment.body_html)}</div>
 

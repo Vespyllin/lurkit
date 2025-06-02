@@ -1,84 +1,76 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import Check from '@lucide/svelte/icons/check';
-	import { Minus } from 'lucide-svelte';
-	import { Cross1, Timer } from 'radix-icons-svelte';
+	import { User } from 'lucide-svelte';
 
 	let { data }: { data: RedditT2Data } = $props();
 
 	const icon_img = data.icon_img?.split('?')[0];
-	const verifiedLevel = (data.has_verified_email ? 1 : 0) + (data.verified ? 1 : 0);
 </script>
 
-<div>
-	<div class="relative">
-		{#if data.subreddit.banner_img}
-			<img
-				alt=""
-				class="h-40 w-full rounded-md object-cover"
-				src={data.subreddit.banner_img.split('?')[0]}
-			/>
-		{:else}
-			<div class="h-20 w-full rounded-md bg-primary"></div>
-		{/if}
-		<div class="absolute inset-0 h-full bg-gradient-to-b from-transparent to-background"></div>
-	</div>
+{#if data.subreddit.banner_img}
+	<img
+		alt=""
+		class="h-40 w-full rounded-md object-cover"
+		src={data.subreddit.banner_img.split('?')[0]}
+	/>
+{/if}
 
-	<div class="flex">
-		{#if !!icon_img?.length}
+<div
+	class="relative overflow-hidden rounded-lg border-border/50 bg-gradient-to-br from-card via-card to-card/80 backdrop-blur-sm"
+>
+	<div class="absolute inset-0 -z-50 bg-gradient-to-br from-accent/15 to-zinc-800/5"></div>
+
+	<div class="flex items-start gap-4 p-2">
+		<div class="relative">
 			<img
-				alt=""
-				class="my-auto mr-4 size-[5.5rem] rounded-full border-2 border-primary object-cover"
 				src={icon_img}
+				alt={data.subreddit.title}
+				class="h-20 w-20 rounded-full border-2 border-border/50 bg-muted"
 			/>
-		{/if}
 
-		<div class="w-96">
-			<div class="flex items-center">
-				<h1 class="inline text-3xl font-bold">
+			<div
+				class="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-background bg-accent"
+			>
+				<User class="h-3 w-3 text-white" />
+			</div>
+		</div>
+
+		<div class="flex-1 space-y-1">
+			<div class="flex items-center gap-2">
+				<h1 class="text-2xl font-bold text-foreground">
 					{!data.subreddit?.title.length ? data.name : data.subreddit?.title}
 				</h1>
-				<div class="ml-2">
-					{#if verifiedLevel == 0}
-						<Cross1 size={22} />
-					{:else if verifiedLevel == 1}
-						<Minus size={22} />
-					{:else}
-						<Check size={22} />
-					{/if}
-				</div>
-			</div>
-			<div class="flex gap-2">
-				<h2 class="inline text-lg text-primary">u/{data.name}</h2>
-				<div class="flex items-center gap-1 text-lg text-zinc-400">
-					<Timer />
+
+				{#if data.verified}
+					<div class="rounded-full bg-zinc-500 p-0.5 px-1.5 text-xs font-medium">Verified</div>
+				{/if}
+
+				<div class="ml-auto">
+					<span class="text-muted-foreground">Created: </span>
 					<span>
 						{new Date(data.created_utc * 1000).toDateString().split(' ').slice(1).join(' ')}
 					</span>
 				</div>
 			</div>
-			<h2
-				class={cn(
-					'text-base ',
-					!!data.subreddit.public_description ? 'text-zinc-100' : 'text-zinc-500'
-				)}
-			>
+
+			<p class={!!data.subreddit.public_description ? 'text-zinc-100' : 'text-muted-foreground'}>
 				{!!data.subreddit.public_description
 					? data.subreddit.public_description
 					: 'No description.'}
-			</h2>
-		</div>
+			</p>
 
-		<div class="ml-auto mt-auto flex h-fit gap-6">
-			<div class="flex flex-col">
-				<span class="text-3xl">Posts</span>
-				<span class="text-xl text-zinc-400">
-					{(data.awarder_karma + data.link_karma).toLocaleString()} karma
-				</span>
-			</div>
-			<div class="ml-auto flex flex-col">
-				<span class="text-3xl">Comments</span>
-				<span class="text-xl text-zinc-400">{data.comment_karma.toLocaleString()} karma</span>
+			<div class="flex items-center gap-4 text-sm text-muted-foreground">
+				<div class="flex items-center gap-1">
+					<span class="font-medium text-foreground"
+						>{(data.awarder_karma + data.link_karma).toLocaleString()}</span
+					>
+					<span>post karma</span>
+				</div>
+
+				<div class="flex items-center gap-1">
+					<span class="font-medium text-foreground">{data.comment_karma.toLocaleString()}</span>
+					<span>comment karma</span>
+				</div>
 			</div>
 		</div>
 	</div>

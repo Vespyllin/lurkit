@@ -31,6 +31,7 @@
 	onOpenChange={(toOpen) => {
 		if (!toOpen && change) $filterContext?.refetch();
 		change = false;
+		tab = tabs[0];
 		inputString = '';
 		inputError = '';
 	}}
@@ -55,6 +56,7 @@
 				<div class="mb-2 flex items-center justify-between space-x-2">
 					<div class="flex w-full space-x-1">
 						<input
+							id="filter_input"
 							disabled={inputLoading}
 							class="h-10 w-full rounded-lg border border-input bg-background p-2 px-2.5 text-base text-zinc-100 placeholder:text-muted-foreground focus:border-accent focus-visible:outline-none"
 							placeholder={`Add ${tab.charAt(0).toUpperCase() + String(tab).slice(1)}`}
@@ -62,7 +64,7 @@
 							onkeydown={(e) => {
 								if (e.key == 'Enter') {
 									e.preventDefault();
-									document.getElementById('submitButton')?.click();
+									document.getElementById('filter_submit')?.click();
 								}
 							}}
 						/>
@@ -75,8 +77,9 @@
 										inputString.split('r/').length === 2 &&
 										inputString.split('r/')[0]?.length == 0 &&
 										inputString.split('r/')[1]?.length >= 1
-									))}
-							id="submitButton"
+									)) ||
+								(displayFilters!.find((x) => x.type == tab)?.content ?? []).includes(inputString)}
+							id="filter_submit"
 							onclick={async () => {
 								inputError = '';
 								inputLoading = true;

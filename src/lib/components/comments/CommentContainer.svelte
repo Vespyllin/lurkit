@@ -24,8 +24,9 @@
 	const {
 		comments = $bindable(),
 		class: className,
-		shelved: _shelved = true
-	}: { comments: CommentsProp[]; class?: string; shelved?: boolean } = $props();
+		shelved: _shelved = true,
+		nofold = false
+	}: { comments: CommentsProp[]; class?: string; shelved?: boolean; nofold?: boolean } = $props();
 
 	let shelved = $state(_shelved);
 
@@ -62,8 +63,12 @@
 				{@const authorFlairTexts = comments[idx].author_flair_richtext}
 				<div class={cn('mt-2.5 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
-						class="flex h-full w-full cursor-pointer flex-wrap items-center gap-1.5 text-lg leading-tight md:gap-2"
+						class={cn(
+							'flex h-full w-full flex-wrap items-center gap-1.5 text-lg leading-tight md:gap-2',
+							nofold ? 'cursor-default' : 'cursor-pointer'
+						)}
 						onclick={() => {
+							if (nofold) return;
 							(comments[idx] as T1CommentProp).folded = !(comments[idx] as T1CommentProp).folded;
 						}}
 					>

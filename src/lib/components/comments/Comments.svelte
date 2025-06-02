@@ -8,4 +8,4 @@
 	let commentState = $state(assignCommentState(comments));
 </script>
 
-<CommentContainer bind:comments={commentState} shelved={shelve} />
+<CommentContainer bind:comments={commentState} shelved={shelve} nofold={commentState.length == 1} />
