@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 	import { fetchUserAbout, fetchUserOverview } from '$lib/client';
+
+	import Separator from '$lib/components/ui/separator/separator.svelte';
+
+	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import FetchMoreStatus from '$lib/components/layout/FetchMoreStatus.svelte';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
-	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
+
 	import UserBanner from '$lib/components/users/UserBanner.svelte';
 	import UserComment from '$lib/components/users/UserComment.svelte';
 	import UserNavigation from '$lib/components/users/UserNavigation.svelte';
-	import { cn } from '$lib/utils';
-	import { useInfiniteQuery, useQuery } from '@sveltestack/svelte-query';
 
 	const {
 		params: { username }
