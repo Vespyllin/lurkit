@@ -35,7 +35,7 @@ const log = async (reqIp: string) => {
 export async function handle({ event, resolve }) {
 	// if (!dev) await log(event.getClientAddress());
 	if (!dev && PRIVATE_IP_WHITELIST !== event.getClientAddress()) {
-		return new Response(null, { status: 204 }); // Return empty response with 204 No Content
+		return new Response(null, { status: 404 });
 	}
 
 	// Suppress well-known Chrome DevTools requests

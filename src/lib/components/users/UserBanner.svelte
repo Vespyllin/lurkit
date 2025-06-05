@@ -25,7 +25,7 @@
 			<img
 				src={icon_img}
 				alt={data.subreddit.title}
-				class="h-20 w-20 rounded-full border-2 border-border/50 bg-muted"
+				class="h-20 w-20 rounded-full border-2 border-border/50 bg-muted object-cover"
 			/>
 
 			<div
