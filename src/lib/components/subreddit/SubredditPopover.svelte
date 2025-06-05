@@ -1,12 +1,14 @@
 <script lang="ts">
-	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
-	import { Check, Cross1, Trash } from 'radix-icons-svelte';
-	import Spinner from '../layout/Spinner.svelte';
-	import { cn } from '$lib/utils';
 	import { getContext } from 'svelte';
 	import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
-	import type { Filter } from '$lib/db/filters';
+
+	import { cn } from '$lib/utils';
 	import { cleanText } from '$lib';
+	import type { Filter } from '$lib/db/filters';
+
+	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+	import Spinner from '../layout/Spinner.svelte';
+	import { Trash } from 'radix-icons-svelte';
 	import { GavelIcon } from 'lucide-svelte';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
@@ -22,12 +24,15 @@
 	)?.split('?')[0];
 
 	$effect(() => {
-		const inBanlist = $filterContext?.data
-			?.find((x) => x.type == 'subreddit')
-			?.content.includes(subreddit.display_name_prefixed.toLowerCase());
+		if (!$filterContext || $filterContext.isFetching) {
+			status = 'LOADING';
+		} else {
+			const filtered = $filterContext?.data
+				?.find((x) => x.type == 'subreddit')
+				?.content.includes(subreddit.display_name_prefixed.toLowerCase());
 
-		if (inBanlist) status = 'BANNED';
-		else status = 'OK';
+			status = filtered ? 'BANNED' : 'OK';
+		}
 	});
 </script>
 
@@ -53,45 +58,40 @@
 					{subreddit.display_name_prefixed}
 				</a>
 
-				{#if !!$filterContext?.data
-					?.find((x) => x.type == 'subreddit')
-					?.content.find((x) => x == subreddit.display_name_prefixed) && status == 'OK'}
-					<Cross1 color="#f00" size={20} />
-				{:else}
-					<button
-						onclick={async (e) => {
-							e.preventDefault();
-							status = 'LOADING';
+				<button
+					onclick={async (e) => {
+						e.preventDefault();
+						status = 'LOADING';
 
-							const res = await fetch('/api/filters/subreddit', {
-								method: 'POST',
-								body: JSON.stringify({ subreddit: subreddit.display_name_prefixed })
-							});
-							const resJson = await res.json();
+						const res = await fetch('/api/filters/subreddit', {
+							method: 'POST',
+							body: JSON.stringify({ subreddit: subreddit.display_name_prefixed })
+						});
 
-							if (!!resJson.success) {
-								await $filterContext?.refetch();
-							} else {
-								status = 'OK';
-							}
-						}}
-						class={cn(
-							'size-fit rounded-md p-1',
-							status === 'OK' ? 'hover:bg-zinc-700' : 'pointer-events-none bg-none',
-							status === 'BANNED' && 'text-red-600'
-						)}
-					>
-						<div>
-							{#if status == 'OK'}
-								<Trash size={20} />
-							{:else if status == 'LOADING'}
-								<Spinner class="size-5" />
-							{:else}
-								<GavelIcon size={20} />
-							{/if}
-						</div>
-					</button>
-				{/if}
+						const resJson = await res.json();
+
+						if (!!resJson.success) {
+							await $filterContext?.refetch();
+						} else {
+							status = 'OK';
+						}
+					}}
+					disabled={status !== 'OK'}
+					class={cn(
+						'size-fit rounded-md p-1',
+						status === 'OK' && 'hover:bg-zinc-700',
+						status === 'BANNED' && 'text-red-600',
+						status !== 'OK' && 'pointer-events-none bg-none'
+					)}
+				>
+					{#if status == 'OK'}
+						<Trash size={20} />
+					{:else if status == 'LOADING'}
+						<Spinner class="size-5" />
+					{:else}
+						<GavelIcon size={20} />
+					{/if}
+				</button>
 			</div>
 
 			{#if !subreddit.public_description}
