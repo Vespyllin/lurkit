@@ -34,12 +34,17 @@
 
 				if (listing.data.score >= UPVOTE_CUTOFF && listing.data.upvote_ratio >= 0.9) return false;
 
-				const listingTitle = listing.data.title.toLowerCase();
+				const title = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
+				if (title.includes('india') || subreddit?.includes('india')) return false;
+
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
-				const titleBan = !titleFilter.every((title) => !listingTitle.toLowerCase().includes(title));
-				if (subredditBan || titleBan) return false;
+				const titleBan = !titleFilter.every((title) => !title.toLowerCase().includes(title));
+				if (subredditBan || titleBan) {
+					console.log(title, subreddit);
+					return false;
+				}
 
 				const { crosspost_parent, crosspost_parent_list } = listing.data;
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
@@ -47,11 +52,14 @@
 
 				if (crosspost.score >= UPVOTE_CUTOFF && crosspost.upvote_ratio >= 0.9) return false;
 
-				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
 				const crossTitle = crosspost.title.toLowerCase();
+				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
+
+				if (crossTitle.includes('india') || crosspostSubreddit?.includes('india')) return false;
 
 				if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
-				if (!titleFilter.every((title) => !crossTitle.toLowerCase().includes(title))) return false;
+				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword)))
+					return false;
 
 				return true;
 			})
