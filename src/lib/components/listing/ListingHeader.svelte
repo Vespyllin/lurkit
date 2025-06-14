@@ -81,7 +81,7 @@
 	</div>
 
 	•
-	<TimeHoverCard {created_utc} {edited} />
+	<TimeHoverCard {created_utc} {edited} class="cursor-default" />
 
 	{#if over_18}
 		•

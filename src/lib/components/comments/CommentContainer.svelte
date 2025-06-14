@@ -122,6 +122,7 @@
 						<span>•</span>
 						<div class="text-zinc-400">
 							<TimeHoverCard
+								class={nofold ? 'cursor-default' : 'cursor-pointer'}
 								created_utc={comments[idx].created_utc}
 								edited={comments[idx].edited}
 							/>

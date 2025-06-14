@@ -3,7 +3,11 @@
 
 	import * as HoverCard from '../ui/hover-card';
 
-	let { created_utc, edited }: { created_utc: number; edited?: boolean | number } = $props();
+	let {
+		created_utc,
+		edited,
+		class: className
+	}: { created_utc: number; edited?: boolean | number; class?: string } = $props();
 
 	const formatDate = (date_utc: number) => {
 		const date = new Date(date_utc * 1000);
@@ -21,7 +25,7 @@
 </script>
 
 <HoverCard.Root>
-	<HoverCard.Trigger>
+	<HoverCard.Trigger class={className}>
 		<span class="hidden text-zinc-400 md:inline">
 			{getTimeAgo(created_utc)}{#if edited}
 				*
@@ -33,7 +37,7 @@
 			{/if}
 		</span>
 	</HoverCard.Trigger>
-	<HoverCard.Content class="size-fit bg-black p-1 px-1.5">
+	<HoverCard.Content class="size-fit bg-black p-1 px-1.5 text-sm">
 		<p>
 			{#if edited}
 				<span class="font-semibold text-zinc-100">Submitted:</span>
