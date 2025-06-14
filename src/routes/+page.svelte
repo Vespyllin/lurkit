@@ -37,12 +37,10 @@
 				const title = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
-				if (title.includes('india') || subreddit?.includes('india')) return false;
-
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
-				const titleBan = !titleFilter.every((title) => !title.toLowerCase().includes(title));
-				if (subredditBan || titleBan) {
-					console.log(title, subreddit);
+				const titleBan = !titleFilter.every((keyword) => !title.toLowerCase().includes(keyword));
+				if (subredditBan || titleBan || title.includes('india') || subreddit?.includes('india')) {
+					console.log(`${title} - ${subreddit}`);
 					return false;
 				}
 
