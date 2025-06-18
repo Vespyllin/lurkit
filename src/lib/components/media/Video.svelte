@@ -160,6 +160,11 @@
 		seek = (video.currentTime / video.duration) * 100;
 	};
 
+	const onEnd = () => {
+		seek = 100;
+		playing = false;
+	};
+
 	$effect(() => {
 		if (!audio || !video) return;
 		if (muted) {
@@ -307,7 +312,7 @@
 			hasVideo = true;
 		}}
 		onwaiting={onWaiting}
-		onended={() => (playing = false)}
+		onended={onEnd}
 		onclick={onPlayChange}
 		ontimeupdate={onTimeUpdate}
 		bind:this={video}
