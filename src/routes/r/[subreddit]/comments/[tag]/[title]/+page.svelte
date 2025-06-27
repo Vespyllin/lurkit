@@ -10,7 +10,7 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
-	import { fetchListingComments } from '$lib/client';
+	import { fetchListing } from '$lib/client';
 	import Comments from '$lib/components/comments/Comments.svelte';
 
 	const sortParam = validateCommentSort(page.url.searchParams.get('sort'));
@@ -21,12 +21,12 @@
 	} = page;
 
 	const listingQuery = useQuery([subreddit, tag, title, sortParam], () =>
-		fetchListingComments(subreddit, tag, title, sortParam)
+		fetchListing(subreddit, tag, title, sortParam)
 	);
 
 	const commentQuery = useQuery(
 		[subreddit, tag, title, 'comments', sortParam],
-		() => fetchListingComments(subreddit, tag, title, sortParam).then(([, c]) => c),
+		() => fetchListing(subreddit, tag, title, sortParam).then(([, c]) => c),
 		{ enabled: false }
 	);
 
@@ -45,7 +45,7 @@
 
 		commentQuery.setOptions({
 			queryKey: [subreddit, tag, title, 'comments', newSort],
-			queryFn: () => fetchListingComments(subreddit, tag, title, newSort).then(([, c]) => c)
+			queryFn: () => fetchListing(subreddit, tag, title, newSort).then(([, c]) => c)
 		});
 	});
 </script>

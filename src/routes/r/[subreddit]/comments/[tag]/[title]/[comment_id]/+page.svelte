@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { afterNavigate, goto } from '$app/navigation';
 
+	import { ArrowLeft, ArrowUp } from 'lucide-svelte';
+	import { useQuery } from '@sveltestack/svelte-query';
+
+	import { cleanText } from '$lib';
+	import { fetchComment } from '$lib/client';
+	import { validateCommentSort } from '$lib/components/comments/';
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import Listing from '$lib/components/listing/Listing.svelte';
-	import { validateCommentSort } from '$lib/components/comments/';
-	import { cleanText } from '$lib';
 	import CommentSortDropdown from '$lib/components/comments/CommentSortDropdown.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { fetchComment } from '$lib/client';
-	import { useQuery } from '@sveltestack/svelte-query';
 	import Comments from '$lib/components/comments/Comments.svelte';
-	import { afterNavigate, goto } from '$app/navigation';
-	import { ArrowLeft, ArrowUp } from 'lucide-svelte';
 
 	const {
 		params: { subreddit, tag, comment_id }
@@ -25,7 +26,7 @@
 	);
 
 	const commentQuery = useQuery(
-		[subreddit, tag, comment_id, 'comments', sortParam],
+		[subreddit, tag, comment_id, 'comment', sortParam],
 		() => fetchComment(subreddit, tag, comment_id, sortParam).then(([, c]) => c),
 		{ enabled: false }
 	);
@@ -40,7 +41,7 @@
 		sort = newSort;
 
 		commentQuery.setOptions({
-			queryKey: [subreddit, tag, comment_id, 'comments', newSort],
+			queryKey: [subreddit, tag, comment_id, 'comment', newSort],
 			queryFn: () => fetchComment(subreddit, tag, comment_id, newSort).then(([, c]) => c)
 		});
 	});
@@ -84,10 +85,10 @@
 
 		<Separator class="mt-2" />
 
-		{#if $listingQuery.isFetching}
+		{#if $listingQuery.isFetching || $commentQuery.isFetching}
 			<FetchStatus
-				fetching={$listingQuery.isFetching}
-				error={$listingQuery.error as string | undefined}
+				fetching={$listingQuery.isFetching || $commentQuery.isFetching}
+				error={($listingQuery.error ?? $commentQuery.error) as string | undefined}
 			/>
 		{:else}
 			<div class="mt-1 space-y-4 pb-3">

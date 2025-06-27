@@ -42,7 +42,7 @@ export const fetchListings = async (
 	return await res.json();
 };
 
-export const fetchListingComments = async (
+export const fetchListing = async (
 	subreddit: string,
 	tag: string,
 	title: string,
