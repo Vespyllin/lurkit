@@ -1,5 +1,4 @@
 import { dev } from '$app/environment';
-import { PRIVATE_IP_WHITELIST } from '$env/static/private';
 import { insertLog } from '$lib/db/log';
 import { getGeoLocationData } from '$lib/geoClient';
 import type { GeolocationData } from '$lib/geoClient/types';
@@ -34,9 +33,6 @@ const log = async (reqIp: string) => {
 
 export async function handle({ event, resolve }) {
 	// if (!dev) await log(event.getClientAddress());
-	if (!dev && PRIVATE_IP_WHITELIST !== event.getClientAddress()) {
-		return new Response(null, { status: 404 });
-	}
 
 	// Suppress well-known Chrome DevTools requests
 	if (event.url.pathname.startsWith('/.well-known/appspecific/com.chrome.devtools')) {
