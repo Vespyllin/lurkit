@@ -2,8 +2,8 @@ const baseURL = 'https://oauth.reddit.com';
 
 const headers = new Headers({
 	Accept: 'application/json',
-	'Content-Type': 'application/json',
-	'User-Agent': 'fspez/420 by [redacted]'
+	'Content-Type': 'application/json'
+	// 'User-Agent': 'fspez/420 by [redacted]'
 });
 
 const formatQueryParams = (paramObj: Object) => {
