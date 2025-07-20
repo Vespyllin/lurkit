@@ -62,7 +62,7 @@
 		<SubredditPopover {subreddit} />
 	{/if}
 
-	<div class="hidden gap-2 md:flex">
+	<div class="flex gap-2">
 		•
 		<div class="flex items-center gap-1 text-zinc-400">
 			<UserPopover username={author} />

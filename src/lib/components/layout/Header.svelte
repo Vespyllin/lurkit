@@ -6,15 +6,15 @@
 	let searchString = $state('');
 </script>
 
-<div class="fixed z-20 flex h-14 w-full border-b-2 bg-background p-8">
-	<div class="mx-auto flex w-full items-center gap-4">
-		<a class="flex w-64 items-center gap-4 lg:absolute" href="/" data-sveltekit-reload>
+<div class="fixed z-20 flex h-14 w-full border-b-2 bg-background p-2 sm:p-8">
+	<div class="flex w-full items-center justify-between">
+		<a class="flex min-w-fit items-center gap-2" href="/" data-sveltekit-reload>
 			<img alt="" src="/favicon.png" class="size-10" />
 			<h1 class="text-3xl font-semibold tracking-tight">Lurkit</h1>
 		</a>
 
 		<input
-			class="hidden h-10 w-[32rem] rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:flex lg:mx-auto"
+			class="h-10 rounded-full border border-input bg-background px-5 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 lg:w-[32rem]"
 			placeholder="Search Lurkit"
 			bind:value={searchString}
 			onkeydown={(e) => {
