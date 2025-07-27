@@ -23,14 +23,8 @@
 		<ListingHeader
 			class="pb-0.5"
 			crossposted_from={crosspost?.subreddit_name_prefixed}
-			locked={listing.locked}
-			author={listing.author}
-			created_utc={listing.created_utc}
-			over_18={listing.over_18}
-			subreddit={listing.sr_detail}
-			stickied={!!inSubreddit && (listing.stickied || listing.pinned)}
-			flairs={!!inSubreddit ? listing.link_flair_richtext : undefined}
-			flairColor={!!inSubreddit ? listing.link_flair_background_color : undefined}
+			{listing}
+			flaired={inSubreddit}
 		/>
 	</a>
 
@@ -38,7 +32,7 @@
 		{@const { thumbnail, title, url } = listing}
 
 		<a href={listing.permalink} draggable="false">
-			<Link {thumbnail} title={cleanText(title)} {url} clamp />
+			<Link class="pointer-events-none" {thumbnail} title={cleanText(title)} {url} clamp />
 		</a>
 	{:else}
 		<a href={listing.permalink} draggable="false">
@@ -55,19 +49,19 @@
 		{#if crosspost}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
-			<div class="pt-1.5">
+			<div class="mt-1.5">
 				<Self class="rounded-lg border-2 p-1.5 px-2" listing={crosspost} />
 			</div>
 		{:else if listing.is_video}
-			<Video class="pt-1.5" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
+			<Video class="mt-1.5" url={listing.url} mediaData={listing.secure_media?.reddit_video} />
 		{:else if listing.url.includes('.gifv')}
-			<Video class="pt-1.5" url={listing.url.replace('.gifv', '.mp4')} />
+			<Video class="mt-1.5" url={listing.url.replace('.gifv', '.mp4')} />
 		{:else if listing.post_hint == 'image' || urlIsImage}
-			<Image class="pt-1.5" url={listing.url} blur={listing.spoiler} />
+			<Image class="mt-1.5" url={listing.url} blur={listing.spoiler} />
 		{:else if listing.is_gallery}
-			<Gallery class="pt-1.5" post={listing} blur={listing.spoiler} />
+			<Gallery class="mt-1.5" post={listing} blur={listing.spoiler} />
 		{:else if listing.post_hint == 'rich:video'}
-			<div class="flex items-center justify-center pt-1.5">
+			<div class="mt-1.5 flex items-center justify-center">
 				<IFrame post={listing} />
 			</div>
 		{:else if listing.selftext?.length > 0}
@@ -77,12 +71,12 @@
 				data-sveltekit-preload-data="off"
 				draggable="false"
 			>
-				<Markdown class="pt-1.5" crop text={listing.selftext_html} />
+				<Markdown class="mt-1.5" crop text={listing.selftext_html} />
 			</a>
 		{/if}
 	{/if}
 
 	<a href={listing.permalink} draggable="false">
-		<ListingFooter class="pt-1.5" {listing} />
+		<ListingFooter class="mt-1.5" {listing} />
 	</a>
 </div>

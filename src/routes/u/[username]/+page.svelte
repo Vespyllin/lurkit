@@ -15,7 +15,7 @@
 
 	const {
 		params: { username }
-	} = page;
+	} = page as { params: { username: string } };
 
 	let category = $state<'overview' | 'submitted' | 'comments'>('overview');
 

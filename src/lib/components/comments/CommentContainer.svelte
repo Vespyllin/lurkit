@@ -192,7 +192,7 @@
 							</div>
 						</div>
 
-						<Self class="md:ml-2" shelved={_shelved} comments={comments[idx].replies} />
+						<Self class="md:ml-2" shelved={_shelved} bind:comments={comments[idx].replies} />
 					{/if}
 				</div>
 			{/if}

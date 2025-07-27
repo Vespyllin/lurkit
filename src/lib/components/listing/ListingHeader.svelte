@@ -1,46 +1,49 @@
 <script lang="ts">
+	import type { ClassValue } from 'tailwind-variants';
+
 	import {
 		ExclamationTriangle,
 		LockClosed,
 		Reload,
 		DrawingPin,
 		MagicWand,
-		VercelLogo
+		VercelLogo,
+		Trash
 	} from 'radix-icons-svelte';
 	import { cleanText, isDarkHex } from '$lib';
-	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import { cn } from '$lib/utils';
+
+	import SubredditPopover from '../subreddit/SubredditPopover.svelte';
 	import UserPopover from '../users/UserPopover.svelte';
-	import type { ClassValue } from 'tailwind-variants';
 	import TimeHoverCard from '../layout/TimeHoverCard.svelte';
 
 	let {
 		class: className,
-		subreddit,
+		listing,
+		crossposted_from,
+		flaired
+	}: {
+		class?: ClassValue;
+		listing: RedditT3Data;
+		crossposted_from?: string;
+		flaired?: boolean;
+	} = $props();
+
+	const {
+		sr_detail: subreddit,
 		edited,
 		author,
 		created_utc,
-		crossposted_from,
 		over_18,
 		locked,
 		stickied,
-		flairs,
-		flairColor,
+		pinned,
+		removed_by,
+		removed_by_category,
+		link_flair_richtext: flairs,
+		link_flair_background_color: flairColor,
 		distinguished
-	}: {
-		class?: ClassValue;
-		subreddit?: RedditSrDetail;
-		edited?: boolean | number;
-		author: string;
-		created_utc: number;
-		over_18: boolean;
-		crossposted_from?: string;
-		locked: boolean;
-		stickied?: boolean;
-		flairs?: RedditLinkFlairRichText[];
-		flairColor?: string;
-		distinguished?: string;
-	} = $props();
+	} = listing;
 
 	const formatDate = (date_utc: number) => {
 		const date = new Date(date_utc * 1000);
@@ -112,7 +115,7 @@
 		</div>
 	{/if}
 
-	{#if stickied}
+	{#if stickied || (flaired && pinned)}
 		•
 		<div class="flex items-center gap-1">
 			<div class="size-fit text-zinc-400">
@@ -123,19 +126,32 @@
 		</div>
 	{/if}
 
-	<div
-		class={cn(
-			'flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm',
-			flairColor && (isDarkHex(flairColor) ? 'text-white' : 'text-zinc-900')
-		)}
-		style="background-color: {flairColor};"
-	>
-		{#each flairs ?? [] as flair}
-			{#if flair.e == 'text'}
-				{cleanText(flair.t!)}
-			{:else if flair.e == 'emoji'}
-				<img alt="" src={flair.u} class="h-4 px-0.5" />
-			{/if}
-		{/each}
-	</div>
+	{#if removed_by || removed_by_category}
+		•
+		<div class="flex items-center gap-1">
+			<div class="size-fit text-zinc-400">
+				<Trash />
+			</div>
+
+			<span class="hidden text-zinc-400 md:inline"> removed </span>
+		</div>
+	{/if}
+
+	{#if flaired}
+		<div
+			class={cn(
+				'flex h-fit w-fit items-center gap-1 rounded-2xl bg-secondary px-2 text-sm',
+				flairColor && (isDarkHex(flairColor) ? 'text-white' : 'text-zinc-900')
+			)}
+			style="background-color: {flairColor};"
+		>
+			{#each flairs ?? [] as flair}
+				{#if flair.e == 'text'}
+					{cleanText(flair.t!)}
+				{:else if flair.e == 'emoji'}
+					<img alt="" src={flair.u} class="h-4 px-0.5" />
+				{/if}
+			{/each}
+		</div>
+	{/if}
 </div>
