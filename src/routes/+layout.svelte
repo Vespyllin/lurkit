@@ -1,12 +1,13 @@
 <script lang="ts">
-	import '../app.pcss';
-	import { setContext, type Snippet } from 'svelte';
-	import Header from '$lib/components/layout/Header.svelte';
+	import '../app.css';
 
-	import { QueryClient, QueryClientProvider, useQuery } from '@sveltestack/svelte-query';
+	import { type Snippet } from 'svelte';
+
+	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 	import { TooltipProvider } from '$lib/components/ui/tooltip';
-	import type { Filter } from '$lib/db/filters';
 	import FilterProvider from '$lib/components/providers/FilterProvider.svelte';
+
+	import Header from '$lib/components/layout/Header.svelte';
 
 	const queryClient = new QueryClient({
 		defaultOptions: {
@@ -26,7 +27,10 @@
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+		rel="stylesheet"
+	/>
 </svelte:head>
 
 <main style="font-family: 'Montserrat'" class="min-h-screen overflow-auto bg-background">
