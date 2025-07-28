@@ -60,58 +60,58 @@
 					<span>View {comments[idx].count} more comment{comments[idx].count == 1 ? '' : 's'}</span>
 				</a>
 			{:else if comments[idx].kind == 't1'}
-				{@const authorFlairTexts = comments[idx].author_flair_richtext}
+				{@const comment = comments[idx]}
+				{@const authorFlairTexts = comment.author_flair_richtext}
 				<div class={cn('mt-2.5 border-l-2 pl-3 text-base hover:border-accent', className)}>
 					<button
 						class={cn(
 							'flex h-full w-full flex-wrap items-center gap-1.5 text-lg leading-tight md:gap-2',
 							nofold ? 'cursor-default' : 'cursor-pointer'
 						)}
-						onclick={() => {
-							if (nofold) return;
-							(comments[idx] as T1CommentProp).folded = !(comments[idx] as T1CommentProp).folded;
+						onclick={(e) => {
+							e.stopImmediatePropagation();
+							if (nofold) return console.log('no fold');
+							comment.folded = !comment.folded;
 						}}
 					>
 						<span
 							class={cn(
 								'flex items-center gap-1 text-primary',
-								comments[idx].is_submitter && 'underline'
+								comment.is_submitter && 'underline'
 							)}
 						>
-							<UserPopover username={comments[idx].author} />
-
-							{#if comments[idx].distinguished}
-								{#if comments[idx].distinguished == 'moderator'}
+							<UserPopover username={comment.author} />
+							{#if comment.distinguished}
+								{#if comment.distinguished == 'moderator'}
 									<MagicWand />
-								{:else if comments[idx].distinguished == 'admin'}
+								{:else if comment.distinguished == 'admin'}
 									<VercelLogo />
 								{:else}
-									<span class="capitalize">({comments[idx].distinguished})</span>
+									<span class="capitalize">({comment.distinguished})</span>
 								{/if}
 							{/if}
 						</span>
 
-						{#if !comments[idx].score_hidden}
+						{#if !comment.score_hidden}
 							<span class="hidden md:inline">•</span>
 							<div class="hidden items-center text-zinc-400 md:flex">
 								<ArrowUp />
-								<span>{comments[idx].score.toLocaleString()}</span>
+								<span>{comment.score.toLocaleString()}</span>
 							</div>
 						{/if}
 
 						<span class="hidden md:inline">•</span>
 						<div class="hidden items-center gap-1 text-zinc-400 md:flex">
 							<ChatBubble />
-
-							{#if comments[idx].replies.length || !comments[idx].locked}
-								<span>{(comments[idx].replies.length ?? 0).toLocaleString()}</span>
+							{#if comment.replies.length || !comment.locked}
+								<span>{(comment.replies.length ?? 0).toLocaleString()}</span>
 							{/if}
-							{#if comments[idx].locked}
+							{#if comment.locked}
 								<LockClosed />
 							{/if}
 						</div>
 
-						{#if comments[idx].stickied}
+						{#if comment.stickied}
 							<span class="hidden md:inline">•</span>
 							<div class="flex items-center gap-1 text-zinc-400">
 								<DrawingPin />
@@ -123,23 +123,23 @@
 						<div class="text-zinc-400">
 							<TimeHoverCard
 								class={nofold ? 'cursor-default' : 'cursor-pointer'}
-								created_utc={comments[idx].created_utc}
-								edited={comments[idx].edited}
+								created_utc={comment.created_utc}
+								edited={comment.edited}
 							/>
 						</div>
 
 						{#if authorFlairTexts && authorFlairTexts.length > 0 && !(authorFlairTexts.length == 1 && authorFlairTexts[0]?.t == '​')}
 							<div
 								class="flex h-full w-fit max-w-72 items-center rounded-2xl bg-secondary px-2 py-0.5 text-sm"
-								style="background-color: {comments[idx].author_flair_background_color};"
+								style="background-color: {comment.author_flair_background_color};"
 							>
 								{#each authorFlairTexts as flair}
 									{#if flair.e == 'text'}
 										<span
 											class={cn(
 												'overflow-hidden text-ellipsis whitespace-nowrap break-all [&:not(:first-child)]:ml-1.5',
-												comments[idx].author_flair_background_color &&
-													!isDarkHex(comments[idx].author_flair_background_color) &&
+												comment.author_flair_background_color &&
+													!isDarkHex(comment.author_flair_background_color) &&
 													'text-zinc-900'
 											)}
 										>
@@ -153,46 +153,45 @@
 						{/if}
 					</button>
 
-					{#if !comments[idx].folded}
+					{#if !comment.folded}
 						<div class="mt-1.5 min-h-4">
 							<div class="text-wrap break-words text-base text-zinc-200">
-								{#if comments[idx].deleted}
-									{#if comments[idx].deleted == 'removed'}
+								{#if comment.deleted}
+									{#if comment.deleted == 'removed'}
 										<p class="capitalize italic text-zinc-400">
-											Comment Moderated{!!comments[idx].reason ? `: ${comments[idx].reason}` : ''}
+											Comment Moderated{!!comment.reason ? `: ${comment.reason}` : ''}
 										</p>
 									{:else}
 										<p class="capitalize italic text-zinc-400">
-											Comment Deleted{!!comments[idx].reason ? `: ${comments[idx].reason}` : ''}
+											Comment Deleted{!!comment.reason ? `: ${comment.reason}` : ''}
 										</p>
 									{/if}
 								{:else}
-									<Markdown text={comments[idx].body_html} />
+									<Markdown text={comment.body_html} />
 								{/if}
 							</div>
 
-							<!-- Mobile -->
 							<div class="mt-1 flex gap-4 md:hidden">
-								{#if comments[idx].score}
+								{#if comment.score}
 									<div class="flex items-center text-zinc-400">
 										<ArrowUp />
-										<span>{comments[idx].score.toLocaleString()}</span>
+										<span>{comment.score.toLocaleString()}</span>
 									</div>
 								{/if}
 
 								<div class="flex items-center gap-1 text-zinc-400">
 									<ChatBubble />
-									{#if !comments[idx].replies.length || !comments[idx].locked}
-										<span>{(comments[idx].replies.length ?? 0).toLocaleString()}</span>
+									{#if !comment.replies.length || !comment.locked}
+										<span>{(comment.replies.length ?? 0).toLocaleString()}</span>
 									{/if}
-									{#if comments[idx].locked}
+									{#if comment.locked}
 										<LockClosed />
 									{/if}
 								</div>
 							</div>
 						</div>
 
-						<Self class="md:ml-2" shelved={_shelved} bind:comments={comments[idx].replies} />
+						<Self class="md:ml-2" shelved={_shelved} bind:comments={comment.replies} />
 					{/if}
 				</div>
 			{/if}
