@@ -29,10 +29,8 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class={cn(
-		'mx-auto flex max-h-[600px] w-full items-center justify-center overflow-hidden',
-		className
-	)}
+	class={cn('mx-auto flex h-fit w-full cursor-pointer  justify-center', className)}
+	onclick={handleClick}
 >
 	{#if error}
 		<div class="flex flex-col items-center">
@@ -55,12 +53,10 @@
 	{:else if loading}
 		<Spinner class="h-20" />
 	{:else}
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<img
 			alt=""
-			class={cn(' cursor-pointer object-contain', blurred && 'blur-xl')}
+			class={cn('max-h-[600px] object-contain', blurred && 'blur-xl')}
 			src={url}
-			onclick={handleClick}
 			onerror={() => (error = true)}
 			onload={() => (loading = false)}
 		/>
