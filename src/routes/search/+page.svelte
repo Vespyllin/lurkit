@@ -68,8 +68,8 @@
 {:else}
 	<div class="space-y-2">
 		{#each $searchQuery.data?.pages ?? [] as page}
-			{#each page?.data?.children ?? [] as listing}
-				<ThumbnailPortal listing={listing.data} />
+			{#each page?.data?.children ?? [] as { data: listing }}
+				<ThumbnailPortal {listing} />
 
 				<Separator />
 			{/each}

@@ -133,6 +133,7 @@ export const fetchSearchQuery = async (
 ): Promise<RedditListing<RedditT3DataWrapper>> => {
 	const queryParams = formatQueryParams({ q: queryString, type, sr_detail: 1, limit, after });
 	const url = `${baseURL}/search/.json${queryParams}`;
+	console.log(url);
 
 	const fetchRes = await fetch(url, { headers });
 	return await fetchRes.json();

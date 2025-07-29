@@ -44,20 +44,6 @@
 		link_flair_background_color: flairColor,
 		distinguished
 	} = listing;
-
-	const formatDate = (date_utc: number) => {
-		const date = new Date(date_utc * 1000);
-		const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		const dayName = days[date.getDay()];
-		const day = String(date.getDate()).padStart(2, '0');
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const year = date.getFullYear();
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
-		const seconds = String(date.getSeconds()).padStart(2, '0');
-
-		return `${dayName}, ${day}-${month}-${year} at ${hours}:${minutes}:${seconds}`;
-	};
 </script>
 
 <div class={cn('flex flex-wrap items-center gap-2', className)}>
@@ -90,7 +76,7 @@
 		•
 		<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
 			<ExclamationTriangle />
-			<span class="text-zinc-400">18+</span>
+			<span class="text-zinc-400 md:inline">18+</span>
 		</div>
 	{/if}
 
@@ -100,7 +86,7 @@
 			<div class="size-fit text-zinc-400">
 				<Reload />
 			</div>
-			<span class="text-zinc-400"> crosspost </span>
+			<span class="text-zinc-400 md:inline">crosspost</span>
 		</div>
 	{/if}
 
@@ -111,7 +97,7 @@
 				<LockClosed />
 			</div>
 
-			<span class="hidden text-zinc-400 md:inline"> locked </span>
+			<span class="hidden text-zinc-400 md:inline">locked</span>
 		</div>
 	{/if}
 
@@ -122,7 +108,7 @@
 				<DrawingPin />
 			</div>
 
-			<span class="hidden text-zinc-400 md:inline"> pinned </span>
+			<span class="hidden text-zinc-400 md:inline">pinned</span>
 		</div>
 	{/if}
 
@@ -133,7 +119,7 @@
 				<Trash />
 			</div>
 
-			<span class="hidden text-zinc-400 md:inline"> removed </span>
+			<span class="hidden text-zinc-400 md:inline">removed</span>
 		</div>
 	{/if}
 
