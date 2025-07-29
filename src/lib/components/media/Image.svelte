@@ -29,7 +29,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class={cn('mx-auto flex h-fit w-full cursor-pointer  justify-center', className)}
+	class={cn('mx-auto flex h-fit w-full cursor-pointer justify-center overflow-hidden', className)}
 	onclick={handleClick}
 >
 	{#if error}
