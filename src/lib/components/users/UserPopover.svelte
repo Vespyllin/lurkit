@@ -22,7 +22,6 @@
 		</Tooltip.Trigger>
 		<Tooltip.Content
 			onclick={(e) => {
-				console.log('A');
 				e.preventDefault();
 				e.stopPropagation();
 			}}
