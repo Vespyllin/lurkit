@@ -6,11 +6,11 @@
 		Rocket,
 		LightningBolt,
 		Archive,
-		Keyboard
+		Keyboard,
+		ThickArrowUp
 	} from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { type ComponentType } from 'svelte';
-	import { ArrowBigUp } from 'lucide-svelte';
 
 	let {
 		class: className,
@@ -27,7 +27,7 @@
 		display: string;
 		icon: ComponentType | undefined;
 	}[] = [
-		{ value: 'default', display: 'top', icon: ArrowBigUp },
+		{ value: 'default', display: 'top', icon: ThickArrowUp },
 		// { value: 'default', display: 'default', icon: Gear },
 		{ value: 'confidence', display: 'best', icon: Rocket },
 		// { value: 'top', display: 'top', icon: Star },

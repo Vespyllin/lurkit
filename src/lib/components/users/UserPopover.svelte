@@ -20,7 +20,14 @@
 				{username}
 			</a>
 		</Tooltip.Trigger>
-		<Tooltip.Content class="flex h-28 min-w-28 items-center gap-1 p-1 pr-1.5">
+		<Tooltip.Content
+			onclick={(e) => {
+				console.log('A');
+				e.preventDefault();
+				e.stopPropagation();
+			}}
+			class="flex h-28 min-w-28 cursor-default items-center gap-1 p-1 pr-1.5 [&_p]:cursor-text [&_span]:cursor-text"
+		>
 			{#if $userQuery.isLoading}
 				<Spinner class="mx-auto" />
 			{:else if $userQuery.error}
