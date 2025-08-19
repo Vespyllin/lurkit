@@ -101,7 +101,7 @@
 		</div>
 	{/if}
 
-	{#if stickied || (flaired && pinned)}
+	{#if flaired && (stickied || pinned)}
 		•
 		<div class="flex items-center gap-1">
 			<div class="size-fit text-zinc-400">
