@@ -6,7 +6,11 @@
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import { Check, Cross1, Minus, Timer } from 'radix-icons-svelte';
 
-	let { username, class: className }: { username: string; class?: string } = $props();
+	let {
+		username,
+		highlight,
+		class: className
+	}: { username: string; highlight?: boolean; class?: string } = $props();
 
 	const userQuery = useQuery([username, 'about'], () => fetchUserAbout(username));
 </script>
@@ -16,7 +20,7 @@
 {:else}
 	<Tooltip.Root>
 		<Tooltip.Trigger>
-			<a class={cn('hover:underline', className)} href={`/u/${username}`}>
+			<a class={cn('hover:underline', highlight && 'underline', className)} href={`/u/${username}`}>
 				{username}
 			</a>
 		</Tooltip.Trigger>

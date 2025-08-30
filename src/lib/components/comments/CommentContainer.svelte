@@ -74,13 +74,8 @@
 							comment.folded = !comment.folded;
 						}}
 					>
-						<span
-							class={cn(
-								'flex items-center gap-1 text-primary',
-								comment.is_submitter && 'underline'
-							)}
-						>
-							<UserPopover username={comment.author} />
+						<span class={cn('flex items-center gap-1 text-primary')}>
+							<UserPopover highlight={comment.is_submitter} username={comment.author} />
 							{#if comment.distinguished}
 								{#if comment.distinguished == 'moderator'}
 									<MagicWand />
