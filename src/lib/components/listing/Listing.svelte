@@ -22,6 +22,7 @@
 
 <div class="mt-2 flex flex-col rounded-md [&_p]:cursor-auto">
 	<ListingHeader
+		flaired
 		class="pb-0.5"
 		{listing}
 		crossposted_from={getCrosspost()?.subreddit_name_prefixed}
