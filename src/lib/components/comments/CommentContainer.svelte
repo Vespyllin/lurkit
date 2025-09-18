@@ -102,6 +102,7 @@
 								<span>{(comment.replies.length ?? 0).toLocaleString()}</span>
 							{/if}
 							{#if comment.locked}
+								<span class="hidden md:inline">•</span>
 								<LockClosed />
 							{/if}
 						</div>
@@ -167,7 +168,7 @@
 							</div>
 
 							<div class="mt-1 flex gap-4 md:hidden">
-								{#if comment.score}
+								{#if comment.score !== undefined || comment.score !== null}
 									<div class="flex items-center text-zinc-400">
 										<ArrowUp />
 										<span>{comment.score.toLocaleString()}</span>

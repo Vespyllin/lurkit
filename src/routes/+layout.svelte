@@ -31,6 +31,10 @@
 		href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
 		rel="stylesheet"
 	/>
+	<title>Lurkit - Reddit Sucks</title>
+
+	<meta property="og:title" content="Lurkit" />
+	<meta property="og:description" content="Reddit Sucks" />
 </svelte:head>
 
 <main style="font-family: 'Montserrat'" class="min-h-screen overflow-auto bg-background">
