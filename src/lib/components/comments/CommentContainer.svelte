@@ -95,17 +95,21 @@
 							</div>
 						{/if}
 
-						<span class="hidden md:inline">•</span>
-						<div class="hidden items-center gap-1 text-zinc-400 md:flex">
-							<ChatBubble />
-							{#if comment.replies.length || !comment.locked}
+						{#if comment.replies.length || !comment.locked}
+							<span class="hidden md:inline">•</span>
+							<div class="hidden items-center gap-1 text-zinc-400 md:flex">
+								<ChatBubble />
 								<span>{(comment.replies.length ?? 0).toLocaleString()}</span>
-							{/if}
-							{#if comment.locked}
-								<span class="hidden md:inline">•</span>
+							</div>
+						{/if}
+
+						{#if comment.locked}
+							<span class="hidden md:inline">•</span>
+							<div class="flex items-center gap-1 text-zinc-400">
 								<LockClosed />
-							{/if}
-						</div>
+								<span class="hidden text-zinc-400 md:inline">locked</span>
+							</div>
+						{/if}
 
 						{#if comment.stickied}
 							<span class="hidden md:inline">•</span>
@@ -175,15 +179,18 @@
 									</div>
 								{/if}
 
-								<div class="flex items-center gap-1 text-zinc-400">
-									<ChatBubble />
-									{#if !comment.replies.length || !comment.locked}
+								{#if comment.replies.length || !comment.locked}
+									<div class="flex items-center gap-1 text-zinc-400">
+										<ChatBubble />
 										<span>{(comment.replies.length ?? 0).toLocaleString()}</span>
-									{/if}
-									{#if comment.locked}
+									</div>
+								{/if}
+
+								{#if comment.locked}
+									<div class="flex items-center gap-1 text-zinc-400">
 										<LockClosed />
-									{/if}
-								</div>
+									</div>
+								{/if}
 							</div>
 						</div>
 
