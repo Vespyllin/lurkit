@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { CaretDown, Star, Rocket, LightningBolt, DoubleArrowUp, Gear } from 'radix-icons-svelte';
+	import {
+		CaretDown,
+		Star,
+		Rocket,
+		LightningBolt,
+		DoubleArrowUp,
+		Gear,
+		Target
+	} from 'radix-icons-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import type { ComponentType } from 'svelte';
 
@@ -18,8 +26,9 @@
 	}[] = [
 		{ option: 'default', icon: Gear },
 		{ option: 'top', icon: Star },
-		{ option: 'rising', icon: DoubleArrowUp },
 		{ option: 'new', icon: LightningBolt },
+		{ option: 'controversial', icon: Target },
+		{ option: 'rising', icon: DoubleArrowUp },
 		{ option: 'hot', icon: Rocket }
 	];
 </script>

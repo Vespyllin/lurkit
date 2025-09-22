@@ -7,7 +7,7 @@ type RedditCommentSortOption =
 	| 'random'
 	| 'qa';
 
-type RedditSubredditSortOptions = 'new' | 'top' | 'hot' | 'rising';
+type RedditSubredditSortOptions = 'new' | 'top' | 'hot' | 'rising' | 'controversial';
 
 type RedditSearchCategories = 'posts' | 'communities' | 'comments' | 'media' | 'people';
 
