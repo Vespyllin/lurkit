@@ -36,7 +36,7 @@
 	});
 
 	const getMediaType = (post: RedditT3Data, media_id: string) => {
-		const mediaType = post?.media_metadata[media_id].m as string; // example: "image/png"
+		const mediaType = post?.media_metadata[media_id]?.m as string; // example: "image/png"
 		if (mediaType) return mediaType.substring(mediaType.indexOf('/') + 1);
 		else return '';
 	};
