@@ -30,6 +30,8 @@
 
 		const filteredChildren = data.data.children
 			?.filter((listing) => {
+				const rawContents = JSON.stringify(listing).toLowerCase();
+
 				if (lastFetchedListingIds.has(listing.data.name)) return false;
 
 				if (listing.data.score >= UPVOTE_CUTOFF && listing.data.upvote_ratio >= 0.9) return false;
@@ -37,10 +39,15 @@
 				const title = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
+				if (rawContents.includes('india') || rawContents.includes('anime')) {
+					console.log(`India/Anime: ${title} - ${subreddit}`);
+					return false;
+				}
+
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
 				const titleBan = !titleFilter.every((keyword) => !title.toLowerCase().includes(keyword));
-				if (subredditBan || titleBan || title.includes('india') || subreddit?.includes('india')) {
-					console.log(`${title} - ${subreddit}`);
+				if (subredditBan || titleBan) {
+					// console.log(`${title} - ${subreddit}`);
 					return false;
 				}
 
