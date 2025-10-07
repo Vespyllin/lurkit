@@ -47,7 +47,7 @@
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
 				const titleBan = !titleFilter.every((keyword) => !title.toLowerCase().includes(keyword));
 				if (subredditBan || titleBan) {
-					// console.log(`${title} - ${subreddit}`);
+					console.log(`Blacklist: ${title} - ${subreddit}`);
 					return false;
 				}
 
