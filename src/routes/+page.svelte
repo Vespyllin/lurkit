@@ -39,7 +39,11 @@
 				const title = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
 
-				if (rawContents.includes('india') || rawContents.includes('anime')) {
+				if (
+					rawContents.includes('india') ||
+					rawContents.includes('anime') ||
+					rawContents.includes('pizzacakecomic')
+				) {
 					console.log(`India/Anime: ${title} - ${subreddit}`);
 					return false;
 				}
@@ -59,8 +63,6 @@
 
 				const crossTitle = crosspost.title.toLowerCase();
 				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
-
-				if (crossTitle.includes('india') || crosspostSubreddit?.includes('india')) return false;
 
 				if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
 				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword)))
