@@ -320,7 +320,7 @@
 			fullscreen ? 'inset-0 h-lvh w-lvw' : 'max-h-[600px] w-full rounded-md bg-black object-contain'
 		)}
 	>
-		{#each [1080, 720, 480] as res}
+		{#each [1080, 720, 480, 270] as res}
 			<source src={`${url}/CMAF_${res}.mp4`} type="video/mp4" />
 			<source src={`${url}/DASH_${res}.mp4`} type="video/mp4" />
 		{/each}
