@@ -299,10 +299,10 @@
 		onloadeddata={() => (hasAudio = true)}
 		class="hidden"
 	>
-		<source src={`${url}/DASH_AUDIO_128.mp4`} type="audio/mp4" />
-		<source src={`${url}/DASH_AUDIO_64.mp4`} type="audio/mp4" />
-		<source src={`${url}/DASH_AUDIO_32.mp4`} type="audio/mp4" />
-		<source src={`${url}/DASH_AUDIO_16.mp4`} type="audio/mp4" />
+		{#each [128, 64, 32] as res}
+			<source src={`${url}/CMAF_AUDIO_${res}.mp4`} type="audio/mp4" />
+			<source src={`${url}/DASH_AUDIO_${res}.mp4`} type="audio/mp4" />
+		{/each}
 	</audio>
 
 	<!-- svelte-ignore a11y_media_has_caption -->
@@ -320,10 +320,10 @@
 			fullscreen ? 'inset-0 h-lvh w-lvw' : 'max-h-[600px] w-full rounded-md bg-black object-contain'
 		)}
 	>
-		<source src={`${url}/DASH_1080.mp4`} type="video/mp4" />
-		<source src={`${url}/DASH_720.mp4`} type="video/mp4" />
-		<source src={`${url}/DASH_480.mp4`} type="video/mp4" />
-		<source src={`${url}/DASH_270.mp4`} type="video/mp4" />
+		{#each [1080, 720, 480] as res}
+			<source src={`${url}/CMAF_${res}.mp4`} type="video/mp4" />
+			<source src={`${url}/DASH_${res}.mp4`} type="video/mp4" />
+		{/each}
 	</video>
 </div>
 
