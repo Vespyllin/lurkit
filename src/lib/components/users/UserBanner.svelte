@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cleanText } from '$lib';
 	import { User } from 'lucide-svelte';
 
 	let { data }: { data: RedditT2Data } = $props();
@@ -55,7 +55,7 @@
 
 			<p class={!!data.subreddit.public_description ? 'text-zinc-100' : 'text-muted-foreground'}>
 				{!!data.subreddit.public_description
-					? data.subreddit.public_description
+					? cleanText(data.subreddit.public_description)
 					: 'No description.'}
 			</p>
 

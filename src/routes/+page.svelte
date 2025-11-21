@@ -147,15 +147,6 @@
 				error={$listingsQuery.error as string | undefined}
 				retryFn={$listingsQuery.fetchNextPage}
 			/>
-		{:else if !$listingsQuery.hasNextPage && !$listingsQuery.isFetching && !$listingsQuery.isError}
-			<div class="mx-auto h-20 justify-center py-2 text-center">
-				<Button
-					class="h-12 rounded-full bg-primary text-lg hover:bg-primary/90"
-					onclick={() => $listingsQuery.refetch()}
-				>
-					<LightningBolt size={25} /> Load more
-				</Button>
-			</div>
 		{/if}
 	</div>
 {/if}

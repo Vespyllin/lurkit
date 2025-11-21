@@ -15,7 +15,7 @@
 
 	const {
 		params: { username }
-	} = page as { params: { username: string } };
+	} = page as unknown as { params: { username: string } };
 
 	let category = $state<'overview' | 'submitted' | 'comments'>('overview');
 
@@ -69,7 +69,7 @@
 				fetching={$overviewQuery.isFetching}
 				error={$overviewQuery.error as string | undefined}
 			/>
-		{:else}
+		{:else if $overviewQuery.data?.pages?.some((page) => page.data?.children?.length > 0)}
 			{#each $overviewQuery.data?.pages ?? [] as page}
 				{#each page.data?.children ?? [] as child}
 					{#if child.kind == 't1'}
@@ -77,15 +77,17 @@
 					{:else}
 						<ListingPortal inSubreddit listing={child.data} />
 					{/if}
-
 					<Separator />
 				{/each}
 			{/each}
-
 			<FetchMoreStatus
 				fetching={$overviewQuery.isFetching}
 				error={$overviewQuery.error as string | undefined}
 			/>
+		{:else}
+			<div class="text-3xl text-muted-foreground">
+				This user does not have any posts or comments.
+			</div>
 		{/if}
 	</div>
 {/if}

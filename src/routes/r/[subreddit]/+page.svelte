@@ -218,18 +218,6 @@
 					fetching={$listingsQuery.isFetching}
 					error={$listingsQuery.error as string | undefined}
 				/>
-			{:else if !$listingsQuery.hasNextPage && !$listingsQuery.isFetching && !$listingsQuery.isError}
-				<div class="mx-auto h-20 justify-center py-2 text-center">
-					<Button
-						class="h-12 rounded-full bg-primary text-lg hover:bg-primary/90"
-						onclick={() => {
-							console.log($listingsQuery.data?.pages.at(-1));
-							$listingsQuery.refetch();
-						}}
-					>
-						<LightningBolt size={25} /> Load more
-					</Button>
-				</div>
 			{/if}
 		{/if}
 	</div>
