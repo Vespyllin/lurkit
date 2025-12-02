@@ -30,7 +30,9 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class={cn('mx-auto flex h-fit w-full cursor-pointer justify-center overflow-hidden', className)}
-	onclick={handleClick}
+	onclick={() => {
+		if (!error) handleClick();
+	}}
 >
 	{#if error}
 		<div class="flex flex-col items-center">
@@ -48,7 +50,7 @@
 					}}>Retry</button
 				>
 			</div>
-			<a href={url}> {url}</a>
+			<a href={url}>{url}</a>
 		</div>
 	{:else if loading}
 		<Spinner class="h-20" />
