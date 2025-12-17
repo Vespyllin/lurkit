@@ -66,13 +66,21 @@
 		@apply space-y-3;
 	}
 
+	.link {
+		@apply text-blue-600;
+		@apply underline;
+	}
+
+	.link:hover {
+		@apply text-blue-800;
+	}
+
 	.md a {
 		@apply break-all;
 		@apply text-blue-600;
 		@apply underline;
 		@apply contents;
 		@apply w-fit;
-		@apply bg-emerald-500;
 	}
 
 	.md a:hover {
@@ -140,6 +148,10 @@
 		display: none;
 	}
 	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.link {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}

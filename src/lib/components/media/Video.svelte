@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
 	import {
 		EnterFullScreen,
 		ExitFullScreen,
@@ -59,6 +58,11 @@
 		if (!audio || !video) return;
 
 		if (toPlaying) {
+			if (video.currentTime == video.duration) {
+				video.currentTime = 0;
+				seek = 0;
+			}
+
 			await video.play();
 			if (hasAudio) await audio.play();
 		} else {
@@ -98,13 +102,9 @@
 	};
 
 	let loadingIntervalId: number | undefined = undefined;
-	const initLoadingLoop = () => {
-		if (!audio || !video) return;
 
-		if (toZero(seek) > 99 || toZero(seek) < 1) {
-			seek = 0;
-			video.currentTime = 0;
-		}
+	const onWaiting = () => {
+		if (!audio || !video) return;
 
 		if (loadingIntervalId) return;
 
@@ -115,26 +115,17 @@
 				const start = video.buffered.start(i);
 				const end = video.buffered.end(i);
 				const currentTime = video.currentTime;
-
-				if (start < currentTime && currentTime < end) withinBuffer = true;
+				if (start <= currentTime && currentTime <= end) withinBuffer = true;
 			}
 
 			if (withinBuffer) {
 				loading = false;
-				setPlaying(playing);
-
 				clearInterval(loadingIntervalId);
 			} else {
 				loading = true;
 				setPlaying(false);
 			}
 		}, 500);
-	};
-
-	const onWaiting = () => {
-		if (!audio || !video) return;
-
-		initLoadingLoop();
 	};
 
 	const onPlayChange = () => {
@@ -155,14 +146,13 @@
 		if (!video) return;
 
 		if (audio && video.currentTime < audio.currentTime - 0.25)
-			video.currentTime = audio.currentTime;
+			audio.currentTime = video.currentTime;
 
 		seek = (video.currentTime / video.duration) * 100;
-	};
 
-	const onEnd = () => {
-		seek = 100;
-		playing = false;
+		if (video.currentTime == video.duration) {
+			playing = false;
+		}
 	};
 
 	$effect(() => {
@@ -174,13 +164,6 @@
 			audio.volume = volume / 100;
 			video.volume = volume / 100;
 		}
-	});
-
-	onDestroy(() => {
-		if (!audio || !video) return;
-
-		video.pause();
-		audio.pause();
 	});
 
 	const handleFullscreen = () => {
@@ -312,7 +295,6 @@
 			hasVideo = true;
 		}}
 		onwaiting={onWaiting}
-		onended={onEnd}
 		onclick={onPlayChange}
 		ontimeupdate={onTimeUpdate}
 		bind:this={video}
