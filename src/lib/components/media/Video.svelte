@@ -31,6 +31,12 @@
 	let playing = $state(false);
 	let seek = $state(0);
 	let volume = $state(25);
+	
+	let showControls = $state(true);
+	let hideControlsTimer: number | undefined = undefined;
+	let isHoveringControls = $state(false);
+
+	const fadeTimeoutMs = 1000;
 
 	const toZero = (x: number | undefined) => (!x || typeof x !== 'number' || isNaN(x) ? 0 : x);
 
@@ -178,6 +184,52 @@
 
 		setSiteScrollable(!fullscreen);
 	};
+
+	const onMouseEnter = () => {
+		if (hideControlsTimer) {
+			clearTimeout(hideControlsTimer);
+			hideControlsTimer = undefined;
+		}
+		showControls = true;
+		startHideControlsTimer();
+	};
+
+	const onMouseMove = () => {
+		showControls = true;
+		startHideControlsTimer();
+	};
+
+	const onMouseLeave = () => {
+		if (!playing) return;
+		
+		if (hideControlsTimer) {
+			clearTimeout(hideControlsTimer);
+		}
+		
+		startHideControlsTimer()
+	};
+
+	const startHideControlsTimer = () => {
+		if (!playing || isHoveringControls) return;
+		
+		if (hideControlsTimer) {
+			clearTimeout(hideControlsTimer);
+		}
+		
+		hideControlsTimer = setTimeout(() => {
+			showControls = false;
+		}, fadeTimeoutMs);
+	};
+
+	$effect(() => {
+		if (!playing) {
+			showControls = true;
+			if (hideControlsTimer) {
+				clearTimeout(hideControlsTimer);
+				hideControlsTimer = undefined;
+			}
+		}
+	});
 </script>
 
 <svelte:document
@@ -186,10 +238,14 @@
 	}}
 />
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={container}
+	onmouseenter={onMouseEnter}
+	onmousemove={onMouseMove}
+	onmouseleave={onMouseLeave}
 	class={cn(
-		'group',
+		!showControls && 'cursor-none',
 		fullscreen ? 'fixed left-0 top-0 z-50 h-lvh w-[100lvw] bg-black' : 'relative',
 		!fullscreen && className
 	)}
@@ -205,75 +261,86 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
 			onclick={(e) => e.preventDefault()}
+			onmouseenter={() => {
+				isHoveringControls = true;
+				if (hideControlsTimer) {
+					clearTimeout(hideControlsTimer);
+					hideControlsTimer = undefined;
+				}
+			}}
+			onmouseleave={() => {
+				isHoveringControls = false;
+				startHideControlsTimer();
+			}}
 			class={cn(
-				'px-2 pb-1 w-full absolute bottom-0 transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen && 'text-lg' ,
-				playing && 'opacity-0'
+				'px-2 pb-1 w-full absolute bottom-0 transition-opacity duration-500 ease-out [&_*]:pointer-events-auto',
+				fullscreen && 'text-lg',
+				!showControls && playing && 'opacity-0 pointer-events-none'
 			)}
 		>
-		<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full items-end gap-2">
+			<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full items-end gap-2.5">
 
-			<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
-				{#if !playing}
-					<Play size={22} />
-				{:else}
-					<Pause size={22} />
-				{/if}
-			</button>
+				<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
+					{#if !playing}
+						<Play size={22} />
+					{:else}
+						<Pause size={22} />
+					{/if}
+				</button>
 
-			{#if hasAudio}
-				<div class="group/overlay flex flex-col opacity-80 hover:opacity-100">
-					<div
-						class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
-					>
-						<input
-							oninput={(e) => setVolume(+(e.currentTarget.value ?? 0))}
-							bind:value={volume}
-							class="slider"
-							type="range"
-							style="writing-mode: vertical-lr; direction: rtl; height: 7rem; width: 0.5rem; margin-left: 0.5rem;"
-						/>
+				{#if hasAudio}
+					<div class="group/overlay flex flex-col opacity-80 hover:opacity-100">
+						<div
+							class="pointer-events-none flex h-32 py-1 align-middle opacity-0 group-hover/overlay:pointer-events-auto group-hover/overlay:opacity-100"
+						>
+							<input
+								oninput={(e) => setVolume(+(e.currentTarget.value ?? 0))}
+								bind:value={volume}
+								class="slider"
+								type="range"
+								style="writing-mode: vertical-lr; direction: rtl; height: 7rem; width: 0.5rem; margin-left: 0.5rem;"
+							/>
+						</div>
+						<button class="h-8" onclick={toggleMute}>
+							{#if !muted}
+								<SpeakerLoud size={22} />
+							{:else}
+								<SpeakerOff size={22} />
+							{/if}
+						</button>
 					</div>
-					<button class="h-8" onclick={toggleMute}>
-						{#if !muted}
-							<SpeakerLoud size={22} />
-						{:else}
-							<SpeakerOff size={22} />
-						{/if}
-					</button>
-				</div>
-			{/if}
-
-			{#key seek}
-				<div class="flex h-8 w-fit items-center font-mono text-sm opacity-90">
-					<span>
-						{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
-							toZero(video?.duration ?? mediaData?.duration ?? 0)
-						)}
-					</span>
-				</div>
-			{/key}
-
-			<div class="h-[2.2rem] w-full content-center opacity-80 hover:opacity-100">
-				<input
-					step="0.5"
-					min="0"
-					max="100"
-					type="range"
-					oninput={onSeek}
-					bind:value={seek}
-					class="slider"
-				/>
-			</div>
-
-			<button class="h-8 opacity-80 hover:opacity-100" onclick={handleFullscreen}>
-				{#if !fullscreen}
-					<EnterFullScreen size={25} />
-				{:else}
-					<ExitFullScreen size={25} />
 				{/if}
-			</button>
-		</div>
+
+				{#key seek}
+					<div class="flex h-8 w-fit items-center font-mono text-sm opacity-90">
+						<span>
+							{formatPlaytime(toZero(video?.currentTime ?? 0))}/{formatPlaytime(
+								toZero(video?.duration ?? mediaData?.duration ?? 0)
+							)}
+						</span>
+					</div>
+				{/key}
+
+				<div class="h-[2.2rem] w-full content-center opacity-80 hover:opacity-100">
+					<input
+						step="0.5"
+						min="0"
+						max="100"
+						type="range"
+						oninput={onSeek}
+						bind:value={seek}
+						class="slider"
+					/>
+				</div>
+
+				<button class="h-8 opacity-80 hover:opacity-100" onclick={handleFullscreen}>
+					{#if !fullscreen}
+						<EnterFullScreen size={25} />
+					{:else}
+						<ExitFullScreen size={25} />
+					{/if}
+				</button>
+			</div>
 		</div>
 	{/if}
 
@@ -317,6 +384,7 @@
 	.slider {
 		appearance: none;
 		-webkit-appearance: none;
+		-moz-appearance: none;
 		border-radius: 1rem;
 		width: 100%;
 		height: 0.5rem;
@@ -339,5 +407,19 @@
 		height: 1rem;
 		background: #ff0033;
 		cursor: pointer;
+	}
+
+	.slider::-moz-range-thumb {
+		border-radius: 100%;
+		border: none;
+		width: 1rem;
+		height: 1rem;
+		background: #ff0033;
+		cursor: pointer;
+	}
+
+	.slider::-moz-range-track {
+		background: transparent;
+		border: none;
 	}
 </style>
