@@ -12,6 +12,7 @@
 		class: className
 	}: { username: string; highlight?: boolean; class?: string } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const userQuery = useQuery([username, 'about'], () => fetchUserAbout(username));
 </script>
 

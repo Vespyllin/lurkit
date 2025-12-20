@@ -5,7 +5,7 @@
 	import ExpandedImage from './ExpandedImage.svelte';
 
 	let { url, blur, class: className }: { url: string; blur?: boolean; class?: string } = $props();
-
+// svelte-ignore state_referenced_locally
 	let blurred = $state(blur ?? false);
 	let expanded = $state(false);
 	let error = $state(false);

@@ -11,6 +11,7 @@
 		class: className
 	}: { title: string; url: string; thumbnail: string; clamp?: boolean; class?: string } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const hasThumbnail = thumbnail && thumbnail.indexOf('.') > -1;
 </script>
 

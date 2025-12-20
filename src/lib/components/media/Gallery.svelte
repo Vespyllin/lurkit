@@ -11,10 +11,12 @@
 		class: className
 	}: { post: RedditT3Data; blur?: boolean; class?: string } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const galleryItems = post?.gallery_data?.items ?? [];
 
 	let expanded = $state(false);
 	let zoomed = $state(false);
+	// svelte-ignore state_referenced_locally
 	let blurred = $state(blur ?? false);
 
 	let api = $state<CarouselAPI>();

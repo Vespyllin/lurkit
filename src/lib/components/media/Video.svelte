@@ -200,17 +200,19 @@
 		</div>
 	{/if}
 
-	{#if hasVideo}
+	{#if hasVideo || true}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
 			onclick={(e) => e.preventDefault()}
 			class={cn(
-				'pointer-events-none absolute bottom-0 z-10 flex h-10 w-full select-none items-end gap-2 bg-black/75 px-2 pb-[3px] transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
-				fullscreen ? 'h-12 pb-2 text-lg' : 'rounded-b-md',
+				'px-2 pb-1 w-full absolute bottom-0 transition-opacity duration-500 ease-out group-hover:opacity-100 [&_*]:pointer-events-auto',
+				fullscreen && 'text-lg' ,
 				playing && 'opacity-0'
 			)}
 		>
+		<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full items-end gap-2">
+
 			<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
 				{#if !playing}
 					<Play size={22} />
@@ -272,6 +274,7 @@
 				{/if}
 			</button>
 		</div>
+		</div>
 	{/if}
 
 	<audio
@@ -288,6 +291,7 @@
 		{/each}
 	</audio>
 
+	
 	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
 		onloadeddata={(e) => {

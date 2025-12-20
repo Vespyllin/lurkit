@@ -17,6 +17,7 @@
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
 
+	// svelte-ignore state_referenced_locally
 	const icon_url: string | undefined = (
 		subreddit?.community_icon ||
 		subreddit.icon_img ||

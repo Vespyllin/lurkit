@@ -7,7 +7,9 @@
 	import { cn } from '$lib/utils';
 	import { CircleBackslash } from 'radix-icons-svelte';
 
+
 	let { listing }: { listing: RedditT3Data } = $props();
+	// svelte-ignore state_referenced_locally
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
 	const getCrosspost = (() => {
 		let crosspost: RedditT3Data | undefined = undefined;
