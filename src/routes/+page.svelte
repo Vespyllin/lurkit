@@ -38,14 +38,12 @@
 
 				const title = listing.data.title.toLowerCase();
 				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
+				const author = listing.data.author;
 
-				if (
-					rawContents.includes('india') ||
-					rawContents.includes('anime') ||
-					rawContents.includes('pizzacakecomic')
-				) {
-					console.log(`India/Anime: ${title} - ${subreddit}`);
-					return false;
+				const botOrLowIQ = /([-_].*\d{4}$|^[A-Z][a-z]*[A-Z][a-z]*.*\d{4}$)/.test(author);
+				if(botOrLowIQ) {
+					console.log(`Bot or low IQ author: ${title} - ${subreddit} by ${author}`);
+					return false
 				}
 
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
@@ -65,8 +63,18 @@
 				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
 
 				if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
-				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword)))
+				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword))) {
 					return false;
+				}
+
+				if (
+					rawContents.includes('india') ||
+					rawContents.includes('anime') ||
+					rawContents.includes('pizzacakecomic')
+				) {
+					console.log(`India/Anime: ${title} - ${subreddit}`);
+					return false;
+				}
 
 				return true;
 			})
