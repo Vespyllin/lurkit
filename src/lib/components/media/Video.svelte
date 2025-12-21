@@ -218,16 +218,6 @@
 			showControls = false;
 		}, fadeTimeoutMs);
 	};
-
-	// $effect(() => {
-	// 	if (!playing) {
-	// 		showControls = true;
-	// 		if (hideControlsTimer) {
-	// 			clearTimeout(hideControlsTimer);
-	// 			hideControlsTimer = undefined;
-	// 		}
-	// 	}
-	// });
 </script>
 
 <svelte:document
@@ -271,9 +261,9 @@
 				startHideControlsTimer();
 			}}
 			class={cn(
-				'px-2 w-full absolute bottom-0 transition-opacity duration-500 ease-in [&_*]:pointer-events-auto select-none',
+				'px-2 w-full absolute bottom-0 transition-opacity duration-500  [&_*]:pointer-events-auto select-none',
 				fullscreen ? 'text-lg pb-2' : 'pb-1',
-				!showControls && 'opacity-0 pointer-events-none'
+				(!showControls && seek != 0 && seek != 100) ? 'opacity-0 pointer-events-none ease-in' : 'ease-out'
 			)}
 		>
 			<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full max-w-[75rem] mx-auto items-end gap-2.5">
