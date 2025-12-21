@@ -200,8 +200,6 @@
 	};
 
 	const onMouseLeave = () => {
-		if (!playing) return;
-		
 		if (hideControlsTimer) {
 			clearTimeout(hideControlsTimer);
 		}
@@ -210,7 +208,7 @@
 	};
 
 	const startHideControlsTimer = () => {
-		if (!playing || isHoveringControls) return;
+		if (isHoveringControls) return;
 		
 		if (hideControlsTimer) {
 			clearTimeout(hideControlsTimer);
@@ -221,15 +219,15 @@
 		}, fadeTimeoutMs);
 	};
 
-	$effect(() => {
-		if (!playing) {
-			showControls = true;
-			if (hideControlsTimer) {
-				clearTimeout(hideControlsTimer);
-				hideControlsTimer = undefined;
-			}
-		}
-	});
+	// $effect(() => {
+	// 	if (!playing) {
+	// 		showControls = true;
+	// 		if (hideControlsTimer) {
+	// 			clearTimeout(hideControlsTimer);
+	// 			hideControlsTimer = undefined;
+	// 		}
+	// 	}
+	// });
 </script>
 
 <svelte:document
@@ -256,7 +254,7 @@
 		</div>
 	{/if}
 
-	{#if hasVideo || true}
+	{#if hasVideo }
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
@@ -273,12 +271,12 @@
 				startHideControlsTimer();
 			}}
 			class={cn(
-				'px-2 pb-1 w-full absolute bottom-0 transition-opacity duration-500 ease-out [&_*]:pointer-events-auto',
-				fullscreen && 'text-lg',
-				!showControls && playing && 'opacity-0 pointer-events-none'
+				'px-2 w-full absolute bottom-0 transition-opacity duration-500 ease-in [&_*]:pointer-events-auto select-none',
+				fullscreen ? 'text-lg pb-2' : 'pb-1',
+				!showControls && 'opacity-0 pointer-events-none'
 			)}
 		>
-			<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full items-end gap-2.5">
+			<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full max-w-[75rem] mx-auto items-end gap-2.5">
 
 				<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
 					{#if !playing}
