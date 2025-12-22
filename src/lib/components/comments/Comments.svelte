@@ -5,6 +5,7 @@
 	const { comments, shelve }: { comments: RedditListing<RedditT1DataWrapper>; shelve?: boolean } =
 		$props();
 
+	// svelte-ignore state_referenced_locally
 	let commentState = $state(assignCommentState(comments));
 </script>
 

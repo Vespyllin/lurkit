@@ -15,8 +15,12 @@
 	import Comments from '$lib/components/comments/Comments.svelte';
 
 	const {
-		params: { subreddit, tag, comment_id }
+		params: { subreddit: _subreddit, tag: _tag, comment_id: _comment_id }
 	} = page;
+
+	const subreddit = _subreddit as string;
+	const tag = _tag as string;
+	const comment_id = _comment_id as string;
 
 	const sortParam = validateCommentSort(page.url.searchParams.get('sort'));
 	let sort: RedditCommentSortOption | undefined = $state(sortParam);
@@ -31,8 +35,8 @@
 		{ enabled: false }
 	);
 
-	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
-	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
+	let listing = $listingQuery.data?.[0].data?.children?.[0].data;
+	let comments = $commentQuery.data || $listingQuery.data?.[1];
 
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;

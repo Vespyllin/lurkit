@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { Timer } from 'radix-icons-svelte';
 	import Markdown from '../media/Markdown.svelte';
 
 	const { data, class: classList }: { data: RedditT5Data; class?: string } = $props();

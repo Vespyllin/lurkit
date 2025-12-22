@@ -29,7 +29,6 @@
 		flaired?: boolean;
 	} = $props();
 
-	// svelte-ignore state_referenced_locally
 	const {
 		sr_detail: subreddit,
 		edited,

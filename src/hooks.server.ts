@@ -36,7 +36,7 @@ export async function handle({ event, resolve }) {
 
 	// Suppress well-known Chrome DevTools requests
 	if (event.url.pathname.startsWith('/.well-known/appspecific/com.chrome.devtools')) {
-		return new Response(null, { status: 204 }); 
+		return new Response(null, { status: 204 });
 	}
 
 	return resolve(event);

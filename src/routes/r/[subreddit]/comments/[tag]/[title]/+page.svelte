@@ -17,8 +17,12 @@
 	let sort: RedditCommentSortOption | undefined = $state(sortParam);
 
 	const {
-		params: { subreddit, tag, title }
+		params: { subreddit: _subreddit, tag: _tag, title: _title }
 	} = page;
+
+	const subreddit = _subreddit as string;
+	const tag = _tag as string;
+	const title = _title as string;
 
 	const listingQuery = useQuery([subreddit, tag, title, sortParam], () =>
 		fetchListing(subreddit, tag, title, sortParam)
@@ -30,8 +34,8 @@
 		{ enabled: false }
 	);
 
-	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
-	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
+	let listing = $listingQuery.data?.[0].data?.children?.[0].data;
+	let comments = $commentQuery.data || $listingQuery.data?.[1];
 
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;

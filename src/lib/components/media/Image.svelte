@@ -5,7 +5,7 @@
 	import ExpandedImage from './ExpandedImage.svelte';
 
 	let { url, blur, class: className }: { url: string; blur?: boolean; class?: string } = $props();
-// svelte-ignore state_referenced_locally
+	// svelte-ignore state_referenced_locally
 	let blurred = $state(blur ?? false);
 	let expanded = $state(false);
 	let error = $state(false);
@@ -25,9 +25,6 @@
 	}}
 />
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class={cn('mx-auto flex h-fit w-full justify-center overflow-hidden', className)}>
 	{#if error}
 		<div class="flex flex-col items-center">

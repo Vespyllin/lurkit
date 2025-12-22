@@ -13,8 +13,10 @@
 	import UserNavigation from '$lib/components/users/UserNavigation.svelte';
 
 	const {
-		params: { username }
+		params: { username: _username }
 	} = page;
+
+	const username = _username as string;
 
 	const submittedQuery = useInfiniteQuery(
 		[username, 'submitted'],

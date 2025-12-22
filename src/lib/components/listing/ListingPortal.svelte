@@ -12,9 +12,7 @@
 		class: classList
 	}: { listing: RedditT3Data; inSubreddit?: boolean; class?: string } = $props();
 
-	// svelte-ignore state_referenced_locally
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
-	// svelte-ignore state_referenced_locally
 	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
@@ -49,8 +47,6 @@
 		</a>
 
 		{#if crosspost}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<div class="pt-1.5">
 				<Self class="rounded-lg border-2 p-1.5 px-2" listing={crosspost} />
 			</div>

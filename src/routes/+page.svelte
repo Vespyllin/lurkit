@@ -41,9 +41,9 @@
 				const author = listing.data.author;
 
 				const botOrLowIQ = /([-_].*\d{4}$|^[A-Z][a-z]*[A-Z][a-z]*.*\d{4}$)/.test(author);
-				if(botOrLowIQ) {
+				if (botOrLowIQ) {
 					console.log(`Bot or low IQ author: ${title} - ${subreddit} by ${author}`);
-					return false
+					return false;
 				}
 
 				const subredditBan = subreddit && subredditFilter.includes(subreddit);
@@ -53,7 +53,7 @@
 					return false;
 				}
 
-						if (
+				if (
 					rawContents.includes('india') ||
 					rawContents.includes('anime') ||
 					rawContents.includes('pizzacakecomic')
@@ -75,8 +75,6 @@
 				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword))) {
 					return false;
 				}
-
-		
 
 				return true;
 			})

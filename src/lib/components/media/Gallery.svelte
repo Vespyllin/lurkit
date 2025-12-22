@@ -59,8 +59,6 @@
 	}}
 />
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
 	class={cn(
 		expanded && 'fixed left-0 top-0 z-30 flex h-lvh w-lvw items-center overflow-auto bg-background',
@@ -97,8 +95,6 @@
 		>
 			{#each galleryItems as galleryItem, idx}
 				<Carousel.Item>
-					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<img
 						alt=""
 						onclick={(e) => {

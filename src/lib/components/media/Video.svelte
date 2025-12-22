@@ -31,7 +31,7 @@
 	let playing = $state(false);
 	let seek = $state(0);
 	let volume = $state(25);
-	
+
 	let showControls = $state(true);
 	let hideControlsTimer: number | undefined = undefined;
 	let isHoveringControls = $state(false);
@@ -203,17 +203,17 @@
 		if (hideControlsTimer) {
 			clearTimeout(hideControlsTimer);
 		}
-		
-		startHideControlsTimer()
+
+		startHideControlsTimer();
 	};
 
 	const startHideControlsTimer = () => {
 		if (isHoveringControls) return;
-		
+
 		if (hideControlsTimer) {
 			clearTimeout(hideControlsTimer);
 		}
-		
+
 		hideControlsTimer = setTimeout(() => {
 			showControls = false;
 		}, fadeTimeoutMs);
@@ -226,7 +226,6 @@
 	}}
 />
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={container}
 	onmouseenter={onMouseEnter}
@@ -244,9 +243,7 @@
 		</div>
 	{/if}
 
-	{#if hasVideo }
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
+	{#if hasVideo}
 		<div
 			onclick={(e) => e.preventDefault()}
 			onmouseenter={() => {
@@ -261,13 +258,16 @@
 				startHideControlsTimer();
 			}}
 			class={cn(
-				'px-2 w-full absolute bottom-0 transition-opacity duration-500 [&_*]:pointer-events-auto select-none',
-				fullscreen ? 'text-lg pb-2' : 'pb-1',
-				(!showControls && seek != 0 && seek != 100) ? 'opacity-0 pointer-events-none ease-in' : 'ease-out'
+				'absolute bottom-0 w-full select-none px-2 transition-opacity duration-500 [&_*]:pointer-events-auto',
+				fullscreen ? 'pb-2 text-lg' : 'pb-1',
+				!showControls && seek != 0 && seek != 100
+					? 'pointer-events-none opacity-0 ease-in'
+					: 'ease-out'
 			)}
 		>
-			<div class="rounded-full px-2.5 py-1 bg-black/75 z-10 flex h-10 w-full max-w-[75rem] mx-auto items-end gap-2.5">
-
+			<div
+				class="z-10 mx-auto flex h-10 w-full max-w-[75rem] items-end gap-2.5 rounded-full bg-black/75 px-2.5 py-1"
+			>
 				<button class="h-8 opacity-80 hover:opacity-100" onclick={onPlayChange}>
 					{#if !playing}
 						<Play size={22} />
@@ -346,8 +346,6 @@
 		{/each}
 	</audio>
 
-	
-	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
 		onloadeddata={(e) => {
 			seek = 0;
