@@ -28,7 +28,7 @@
 		nofold = false
 	}: { comments: CommentsProp[]; class?: string; shelved?: boolean; nofold?: boolean } = $props();
 
-	let shelved = $state(_shelved);
+	let shelved = $state((() => _shelved)());
 
 	const {
 		params: { subreddit, title, tag }

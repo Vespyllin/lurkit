@@ -17,12 +17,8 @@
 	let sort: RedditCommentSortOption | undefined = $state(sortParam);
 
 	const {
-		params: { subreddit: _subreddit, tag: _tag, title: _title }
-	} = page;
-
-	const subreddit = _subreddit as string;
-	const tag = _tag as string;
-	const title = _title as string;
+		params: { subreddit, tag, title }
+	} = page as any;
 
 	const listingQuery = useQuery([subreddit, tag, title, sortParam], () =>
 		fetchListing(subreddit, tag, title, sortParam)
@@ -34,15 +30,15 @@
 		{ enabled: false }
 	);
 
-	let listing = $listingQuery.data?.[0].data?.children?.[0].data;
-	let comments = $commentQuery.data || $listingQuery.data?.[1];
+	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
+	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
 
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
 
 		const {
 			params: { subreddit, tag, title }
-		} = page;
+		} = page as any;
 
 		const newSort = validateCommentSort(page.url.searchParams.get('sort'));
 		sort = newSort;
@@ -74,7 +70,11 @@
 		<Listing {listing} />
 		<CommentSortDropdown
 			{sort}
-			onChange={(sortOption) => goto(!sortOption ? `${title}` : `${title}?sort=${sortOption}`)}
+			onChange={(sortOption) =>
+				goto(!sortOption ? `${title}` : `${title}?sort=${sortOption}`, {
+					noScroll: true,
+					keepFocus: true
+				})}
 			class="mt-2"
 		/>
 

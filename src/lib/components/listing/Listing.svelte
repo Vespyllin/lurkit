@@ -9,7 +9,8 @@
 
 	let { listing }: { listing: RedditT3Data } = $props();
 
-	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	// const urlIsImage = $derived(listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/));
+	const urlIsImage = false;
 	const getCrosspost = (() => {
 		let crosspost: RedditT3Data | undefined = undefined;
 		return () => {

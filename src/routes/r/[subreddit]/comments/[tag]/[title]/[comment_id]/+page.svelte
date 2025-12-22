@@ -74,7 +74,10 @@
 			<CommentSortDropdown
 				{sort}
 				onChange={(sortOption) =>
-					goto(!sortOption ? comment_id : `${comment_id}?sort=${sortOption}`)}
+					goto(!sortOption ? comment_id : `${comment_id}?sort=${sortOption}`, {
+						noScroll: true,
+						keepFocus: true
+					})}
 				class="mr-auto"
 			/>
 			{#if parent}
