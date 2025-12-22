@@ -233,7 +233,7 @@
 	onmousemove={onMouseMove}
 	onmouseleave={onMouseLeave}
 	class={cn(
-		!showControls && 'cursor-none',
+		!showControls && playing && 'cursor-none',
 		fullscreen ? 'fixed left-0 top-0 z-50 h-lvh w-[100lvw] bg-black' : 'relative',
 		!fullscreen && className
 	)}
@@ -261,7 +261,7 @@
 				startHideControlsTimer();
 			}}
 			class={cn(
-				'px-2 w-full absolute bottom-0 transition-opacity duration-500  [&_*]:pointer-events-auto select-none',
+				'px-2 w-full absolute bottom-0 transition-opacity duration-500 [&_*]:pointer-events-auto select-none',
 				fullscreen ? 'text-lg pb-2' : 'pb-1',
 				(!showControls && seek != 0 && seek != 100) ? 'opacity-0 pointer-events-none ease-in' : 'ease-out'
 			)}

@@ -53,6 +53,15 @@
 					return false;
 				}
 
+						if (
+					rawContents.includes('india') ||
+					rawContents.includes('anime') ||
+					rawContents.includes('pizzacakecomic')
+				) {
+					console.log(`India/Anime: ${title} - ${subreddit}`);
+					return false;
+				}
+
 				const { crosspost_parent, crosspost_parent_list } = listing.data;
 				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
 				if (!crosspost) return true;
@@ -67,14 +76,7 @@
 					return false;
 				}
 
-				if (
-					rawContents.includes('india') ||
-					rawContents.includes('anime') ||
-					rawContents.includes('pizzacakecomic')
-				) {
-					console.log(`India/Anime: ${title} - ${subreddit}`);
-					return false;
-				}
+		
 
 				return true;
 			})
