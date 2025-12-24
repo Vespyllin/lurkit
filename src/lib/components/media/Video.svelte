@@ -137,6 +137,12 @@
 	const onPlayChange = () => {
 		if (!hasVideo) return;
 		playing = !playing;
+
+		showControls = true;
+		if (playing) {
+			startHideControlsTimer();
+		}
+
 		return setPlaying(playing);
 	};
 
@@ -183,6 +189,9 @@
 		}
 
 		setSiteScrollable(!fullscreen);
+
+		showControls = true;
+		startHideControlsTimer();
 	};
 
 	const onMouseEnter = () => {
@@ -190,6 +199,7 @@
 			clearTimeout(hideControlsTimer);
 			hideControlsTimer = undefined;
 		}
+
 		showControls = true;
 		startHideControlsTimer();
 	};
@@ -204,19 +214,20 @@
 			clearTimeout(hideControlsTimer);
 		}
 
-		startHideControlsTimer();
+		if (playing) showControls = false;
 	};
 
 	const startHideControlsTimer = () => {
 		if (isHoveringControls) return;
 
-		if (hideControlsTimer) {
+		if (hideControlsTimer || playing) {
 			clearTimeout(hideControlsTimer);
 		}
 
-		hideControlsTimer = setTimeout(() => {
-			showControls = false;
-		}, fadeTimeoutMs);
+		if (playing)
+			hideControlsTimer = setTimeout(() => {
+				showControls = false;
+			}, fadeTimeoutMs);
 	};
 </script>
 
