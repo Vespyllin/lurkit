@@ -35,8 +35,8 @@
 		{ enabled: false }
 	);
 
-	let listing = $listingQuery.data?.[0].data?.children?.[0].data;
-	let comments = $commentQuery.data || $listingQuery.data?.[1];
+	let listing = $derived($listingQuery.data?.[0].data?.children?.[0].data);
+	let comments = $derived($commentQuery.data || $listingQuery.data?.[1]);
 
 	afterNavigate((e) => {
 		if (!e.from || !e.from.url) return;
