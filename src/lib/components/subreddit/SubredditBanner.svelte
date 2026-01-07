@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
+	import { ExclamationTriangle } from 'radix-icons-svelte';
 	import Markdown from '../media/Markdown.svelte';
 
 	const { data, class: classList }: { data: RedditT5Data; class?: string } = $props();
@@ -40,37 +41,32 @@
 		<div class="flex w-full">
 			<div>
 				<h1 class="text-3xl font-bold">r/{data.display_name}</h1>
-				<div class="flex gap-2">
-					<div class="flex items-center gap-1 text-lg text-zinc-400">
-						<span>
-							Active since {new Date(data.created_utc * 1000).getFullYear()}
-						</span>
-						{#if data.subreddit_type !== 'public'}
-							<h1 class={cn('lowercase', data.subreddit_type !== 'private' && 'text-red-600')}>
-								({data.subreddit_type ?? 'Untyped'})
-							</h1>
-						{/if}
-					</div>
+
+				<div class="flex items-center gap-2 text-lg">
+					<span class="text-zinc-400">
+						Active since {new Date(data.created_utc * 1000).getFullYear()}
+					</span>
+
+					{#if data.over18}
+						•
+						<div class="mt-0.5 flex items-center gap-1 text-zinc-400">
+							<ExclamationTriangle />
+							<span class="text-zinc-400 md:inline">18+</span>
+						</div>
+					{/if}
+					{#if data.subreddit_type !== 'public'}
+						<h1 class={cn('lowercase', data.subreddit_type !== 'private' && 'text-red-600')}>
+							({data.subreddit_type ?? 'Untyped'})
+						</h1>
+					{/if}
 				</div>
 			</div>
 
-			<div class="mb-auto ml-auto flex h-fit gap-6">
-				<div class="ml-auto flex flex-col">
-					<span class="text-2xl text-zinc-300">Subscribers</span>
-					<span class="ml-auto text-xl" style="color: {data.key_color};">
-						{data.subscribers?.toLocaleString()}
-					</span>
-				</div>
-
-				<div class="flex flex-col">
-					<div class="flex items-center">
-						<div class="ml-1.5 mr-0.5 h-2 w-2 rounded-full bg-green-600"></div>
-						<span class="text-2xl text-zinc-300"> Online </span>
-					</div>
-					<span class="ml-auto text-xl" style="color: {data.primary_color};">
-						{data.active_user_count?.toLocaleString()}
-					</span>
-				</div>
+			<div class="ml-auto flex h-fit flex-col">
+				<span class="text-2xl text-zinc-300">Subscribers</span>
+				<span class="ml-auto text-xl" style="color: {data.key_color};">
+					{data.subscribers?.toLocaleString()}
+				</span>
 			</div>
 		</div>
 	</div>

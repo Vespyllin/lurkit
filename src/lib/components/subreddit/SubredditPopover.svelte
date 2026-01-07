@@ -8,7 +8,7 @@
 
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import Spinner from '../layout/Spinner.svelte';
-	import { Trash } from 'radix-icons-svelte';
+	import { ExclamationTriangle, Trash } from 'radix-icons-svelte';
 	import { GavelIcon } from 'lucide-svelte';
 
 	let { subreddit }: { subreddit: RedditSrDetail } = $props();
@@ -44,6 +44,10 @@
 			<span class="text-zinc-200">
 				{subreddit.display_name_prefixed}
 			</span>
+
+			{#if subreddit.over_18}
+				<ExclamationTriangle />
+			{/if}
 		</a>
 	</Tooltip.Trigger>
 	<Tooltip.Content class={cn('flex gap-1 ', icon_url ? 'h-[7.25rem] p-1 pr-1.5' : 'h-fit p-2')}>

@@ -15,7 +15,6 @@
 	import { type ComponentType } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
 	import { cn } from '$lib/utils';
-	import Button from '$lib/components/ui/button/button.svelte';
 
 	const {
 		params: { subreddit },
@@ -29,7 +28,7 @@
 	let sortParam: string | undefined = $state(initSortParam);
 	let timescaleParam: string | undefined = $state(initTimescaleParam);
 
-	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit));
+	const subredditQuery = useQuery([subreddit], () => fetchSubreddit(subreddit!));
 
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) =>
 		fetchListings(

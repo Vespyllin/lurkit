@@ -3,8 +3,6 @@
 	import FetchStatus from '$lib/components/layout/FetchStatus.svelte';
 	import ListingPortal from '$lib/components/listing/ListingPortal.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { LightningBolt } from 'radix-icons-svelte';
 
 	import { getContext, untrack } from 'svelte';
 	import { useInfiniteQuery, type UseQueryStoreResult } from '@sveltestack/svelte-query';
@@ -21,6 +19,51 @@
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
 		getContext('filters');
 
+	const filterListing = (
+		listing: RedditT3Data,
+		subredditFilter: string[],
+		titleFilter: string[]
+	) => {
+		const rawContents = JSON.stringify(listing).toLowerCase();
+
+		if (lastFetchedListingIds.has(listing.name)) return false;
+
+		// if (listing.data.score >= UPVOTE_CUTOFF && listing.data.upvote_ratio >= 0.9) return false;
+
+		const title = listing.title.toLowerCase();
+		const subreddit = listing.sr_detail?.display_name_prefixed?.toLowerCase();
+		const author = listing.author;
+
+		const botOrLowIQ = /([-_].*\d{4}$|^[A-Z][a-z]*[A-Z][a-z]*.*\d{4}$)/.test(author);
+		if (botOrLowIQ) {
+			console.log(`Bot or low IQ author: ${title} - ${subreddit} by ${author}`);
+			return false;
+		}
+
+		const subredditBan = subreddit && subredditFilter.includes(subreddit);
+		const titleBan = !titleFilter.every((keyword) => !title.toLowerCase().includes(keyword));
+		if (subredditBan || titleBan) {
+			console.log(`Blacklist: ${title} - ${subreddit}`);
+			return false;
+		}
+
+		if (
+			rawContents.includes('india') ||
+			rawContents.includes('anime') ||
+			rawContents.includes('pizzacakecomic')
+		) {
+			console.log(`India/Anime: ${title} - ${subreddit}`);
+			return false;
+		}
+
+		const { crosspost_parent, crosspost_parent_list } = listing;
+		const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
+
+		if (crosspost) return filterListing(crosspost, subredditFilter, titleFilter);
+
+		return true;
+	};
+
 	const fetchNextListings = async ({ pageParam }: { pageParam?: string }) => {
 		const data = await fetchListings(undefined, 50, pageParam, undefined, true);
 		const subredditFilter = $filterContext?.data?.find((x) => x.type == 'subreddit')?.content;
@@ -29,55 +72,7 @@
 		if (!data || !data.data || !subredditFilter || !titleFilter) return;
 
 		const filteredChildren = data.data.children
-			?.filter((listing) => {
-				const rawContents = JSON.stringify(listing).toLowerCase();
-
-				if (lastFetchedListingIds.has(listing.data.name)) return false;
-
-				if (listing.data.score >= UPVOTE_CUTOFF && listing.data.upvote_ratio >= 0.9) return false;
-
-				const title = listing.data.title.toLowerCase();
-				const subreddit = listing.data.sr_detail?.display_name_prefixed?.toLowerCase();
-				const author = listing.data.author;
-
-				const botOrLowIQ = /([-_].*\d{4}$|^[A-Z][a-z]*[A-Z][a-z]*.*\d{4}$)/.test(author);
-				if (botOrLowIQ) {
-					console.log(`Bot or low IQ author: ${title} - ${subreddit} by ${author}`);
-					return false;
-				}
-
-				const subredditBan = subreddit && subredditFilter.includes(subreddit);
-				const titleBan = !titleFilter.every((keyword) => !title.toLowerCase().includes(keyword));
-				if (subredditBan || titleBan) {
-					console.log(`Blacklist: ${title} - ${subreddit}`);
-					return false;
-				}
-
-				if (
-					rawContents.includes('india') ||
-					rawContents.includes('anime') ||
-					rawContents.includes('pizzacakecomic')
-				) {
-					console.log(`India/Anime: ${title} - ${subreddit}`);
-					return false;
-				}
-
-				const { crosspost_parent, crosspost_parent_list } = listing.data;
-				const crosspost = crosspost_parent_list?.find((x) => x.name == crosspost_parent);
-				if (!crosspost) return true;
-
-				if (crosspost.score >= UPVOTE_CUTOFF && crosspost.upvote_ratio >= 0.9) return false;
-
-				const crossTitle = crosspost.title.toLowerCase();
-				const crosspostSubreddit = crosspost.sr_detail?.display_name_prefixed.toLowerCase();
-
-				if (crosspostSubreddit && subredditFilter.includes(crosspostSubreddit)) return false;
-				if (!titleFilter.every((keyword) => !crossTitle.toLowerCase().includes(keyword))) {
-					return false;
-				}
-
-				return true;
-			})
+			?.filter((listing) => filterListing(listing.data, subredditFilter, titleFilter))
 			.map((x) => {
 				return { ...x, data: { ...x.data, pinned: false } };
 			});
