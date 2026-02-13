@@ -6,13 +6,19 @@
 	let { text, crop, class: classList }: { text: string; crop?: boolean; class?: string } = $props();
 	const IMAGE_REGEX = /(http(s?):)([/|.|\w|\s|-])*\.(png|jpg|jpeg|gif|bmp|svg|webp).*/g;
 	const GIPHY_REGEX = /!\[gif\]\(giphy\|([\w-]+)\|?.*\)/g;
+	const GIPHY_PAGE_REGEX = /https:\/\/giphy\.com\/gifs\/([\w-]+)/g;
 
-	const wrapATagRegex = (regex: RegExp) => new RegExp(`<a href="(${regex.source})">\\1<\\/a>`, 'g');
+	const wrapATagRegex = (regex: RegExp) =>
+		new RegExp(`<a href="(${regex.source})"( target="_blank")?>\\1<\\/a>`, 'g');
 
 	// svelte-ignore state_referenced_locally
 	const formattedText = cleanText(text)
 		.replaceAll(wrapATagRegex(IMAGE_REGEX), '<a href="$1"><img src="$1"/></a>')
 		.replaceAll(wrapATagRegex(GIPHY_REGEX), '<a href="$1"><img src="$1"/></a>')
+		.replaceAll(
+			wrapATagRegex(GIPHY_PAGE_REGEX),
+			'<iframe src="https://giphy.com/embed/$2"></iframe>'
+		)
 		.replaceAll(/(www|new).reddit.com/g, 'lurkit-six.vercel.app')
 		.replaceAll(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>')
 		.replaceAll(/<a\b(?![^>]*\srel\s*=\s*['"]external['"])([^>]*)>/gi, '<a rel="external"$1>');
