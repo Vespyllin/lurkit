@@ -12,7 +12,9 @@
 		class: classList
 	}: { listing: RedditT3Data; inSubreddit?: boolean; class?: string } = $props();
 
+	// svelte-ignore state_referenced_locally
 	const urlIsImage = listing.url.match(/(png|jpg|jpeg|gif|bmp|svg|webp)$/);
+	// svelte-ignore state_referenced_locally
 	const crosspost = listing.crosspost_parent_list?.find((x) => x.name == listing.crosspost_parent);
 </script>
 
@@ -38,7 +40,7 @@
 		<a href={listing.permalink} draggable="false">
 			<h1
 				class={cn(
-					'text-wrap break-words text-2xl font-medium',
+					'min-h-8 text-wrap break-words text-2xl font-medium',
 					crosspost?.title == listing.title && 'line-clamp-1 text-ellipsis'
 				)}
 			>

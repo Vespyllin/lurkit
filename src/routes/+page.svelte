@@ -6,14 +6,12 @@
 
 	import { getContext, untrack } from 'svelte';
 	import { useInfiniteQuery, type UseQueryStoreResult } from '@sveltestack/svelte-query';
-	import { PUBLIC_UPVOTE_CUTOFF } from '$env/static/public';
 
 	import ImageListingSkeleton from '$lib/components/layout/ImageListingSkeleton.svelte';
 
 	import { fetchListings } from '$lib/client';
 	import type { Filter } from '$lib/db/filters';
 
-	const UPVOTE_CUTOFF = parseInt(PUBLIC_UPVOTE_CUTOFF) || Infinity;
 	const lastFetchedListingIds = new Set<string>();
 
 	const filterContext: UseQueryStoreResult<Filter[], unknown, Filter[], 'filters'> | null =
