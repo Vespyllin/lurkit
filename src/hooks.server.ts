@@ -12,6 +12,13 @@ const log = async (reqIp: string) => {
 		geoLocData = { message: 'Could not retrieve geolocation data' };
 	}
 
+	// if (
+	// 	geoLocData &&
+	// 	!('message' in geoLocData) &&
+	// 	(geoLocData.country_name == 'Malta' || geoLocData.country_name == 'Denmark')
+	// )
+	// 	return;
+
 	try {
 		let mongoRes: InsertOneResult<Document> | undefined;
 
