@@ -1,85 +1,83 @@
 export const getTimeAgo = (timestamp: number, short: boolean = false) => {
-	if (!timestamp) return `?`;
+	if (!timestamp) return '?';
 
 	const unitDic: { [unit: string]: { short: string; long: string } } = {
-		second: {
-			short: 's',
-			long: 'sec'
-		},
-		minute: {
-			short: 'm',
-			long: 'min'
-		},
-		hour: {
-			short: 'h',
-			long: 'hr'
-		},
-		day: {
-			short: 'd',
-			long: ' day'
-		},
-		week: {
-			short: 'w',
-			long: ' week'
-		},
-		month: {
-			short: 'mon',
-			long: ' month'
-		},
-		year: {
-			short: 'y',
-			long: ' year'
-		}
+		year: { short: 'y', long: 'year' },
+		month: { short: 'mon', long: 'month' },
+		week: { short: 'w', long: 'week' },
+		day: { short: 'd', long: 'day' },
+		hour: { short: 'h', long: 'hr' },
+		minute: { short: 'm', long: 'min' },
+		second: { short: 's', long: 'sec' }
 	};
 
-	const givenDate = new Date(timestamp * 1000);
-	const difference = Date.now() - givenDate.getTime();
-	const differenceInSeconds = Math.round(difference / 1000);
+	const given = new Date(timestamp * 1000);
+	const now = new Date();
 
-	const minuteThreshold = 60;
-	const hourThreshold = minuteThreshold * 60;
-	const dayThreshold = hourThreshold * 24;
-	const weekThreshold = dayThreshold * 7;
+	// Get differences
+	let years = now.getFullYear() - given.getFullYear();
+	let months = now.getMonth() - given.getMonth();
+	let days = now.getDate() - given.getDate();
+	let hours = now.getHours() - given.getHours();
+	let minutes = now.getMinutes() - given.getMinutes();
+	let seconds = now.getSeconds() - given.getSeconds();
 
-	let unit;
-	let value;
+	// Compute carryover
+	if (seconds < 0) {
+		seconds += 60;
+		minutes--;
+	}
+	if (minutes < 0) {
+		minutes += 60;
+		hours--;
+	}
+	if (hours < 0) {
+		hours += 24;
+		days--;
+	}
+	if (days < 0) {
+		days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+		months--;
+	}
+	if (months < 0) {
+		months += 12;
+		years--;
+	}
 
-	if (differenceInSeconds < minuteThreshold) {
-		unit = 'second';
-		value = differenceInSeconds;
-	} else if (differenceInSeconds < hourThreshold) {
-		unit = 'minute';
-		value = Math.round(differenceInSeconds / minuteThreshold);
-	} else if (differenceInSeconds < dayThreshold) {
-		unit = 'hour';
-		value = Math.round(differenceInSeconds / hourThreshold);
-	} else if (differenceInSeconds < weekThreshold) {
+	const weeks = Math.floor(days / 7);
+	const remainingDays = days % 7;
+
+	let unit: string;
+	let value: number;
+
+	// Take coarsest applicable unit
+	if (years > 0) {
+		unit = 'year';
+		value = years;
+	} else if (months > 0) {
+		unit = 'month';
+		value = months;
+	} else if (weeks > 0) {
+		unit = 'week';
+		value = weeks;
+	} else if (remainingDays > 0) {
 		unit = 'day';
-		value = Math.round(differenceInSeconds / dayThreshold);
+		value = remainingDays;
+	} else if (hours > 0) {
+		unit = 'hour';
+		value = hours;
+	} else if (minutes > 0) {
+		unit = 'minute';
+		value = minutes;
 	} else {
-		const givenMonth = givenDate.getMonth();
-		const givenYear = givenDate.getFullYear();
-
-		const today = new Date();
-		const todayMonth = today.getMonth();
-		const todayYear = today.getFullYear();
-
-		if ((todayYear - givenYear == 1 && todayMonth - givenMonth > 0) || todayYear - givenYear > 1) {
-			unit = 'year';
-			value = todayYear - givenYear;
-		} else if (todayMonth < givenMonth && todayYear - givenYear == 1) {
-			unit = 'month';
-			value = 12 - givenMonth + todayMonth;
-		} else {
-			unit = 'week';
-			value = Math.round(differenceInSeconds / weekThreshold);
-		}
+		unit = 'second';
+		value = seconds;
 	}
 
 	const displayUnit = short ? unitDic[unit].short : unitDic[unit].long;
-
 	return (
-		(value < 1 && displayUnit == 'second' ? '<1' : value) +
+		(value < 1 && unit === 'second' ? '<1' : value) +
+		' ' +
 		displayUnit +
 		`${value !== 1 && !short ? 's ago' : ' ago'}`
 	);
